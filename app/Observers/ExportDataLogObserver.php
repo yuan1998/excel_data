@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Observers;
+
+use App\Jobs\ExportJob;
+use App\Models\ExportDataLog;
+use Illuminate\Support\Facades\Storage;
+
+class ExportDataLogObserver
+{
+    /**
+     * Handle the export data log "created" event.
+     *
+     * @param \App\Models\ExportDataLog $exportDataLog
+     * @return void
+     */
+    public function created(ExportDataLog $exportDataLog)
+    {
+        ExportJob::dispatch($exportDataLog)->onQueue('data_exports');
+    }
+
+    /**
+     * Handle the export data log "updated" event.
+     *
+     * @param \App\Models\ExportDataLog $exportDataLog
+     * @return void
+     */
+    public function updated(ExportDataLog $exportDataLog)
+    {
+        //
+    }
+
+    /**
+     * Handle the export data log "deleted" event.
+     *
+     * @param \App\Models\ExportDataLog $exportDataLog
+     * @return void
+     */
+    public function deleted(ExportDataLog $exportDataLog)
+    {
+        Storage::disk('public')->delete($exportDataLog->path . $exportDataLog->file_name);
+    }
+
+    /**
+     * Handle the export data log "restored" event.
+     *
+     * @param \App\Models\ExportDataLog $exportDataLog
+     * @return void
+     */
+    public function restored(ExportDataLog $exportDataLog)
+    {
+        //
+    }
+
+    /**
+     * Handle the export data log "force deleted" event.
+     *
+     * @param \App\Models\ExportDataLog $exportDataLog
+     * @return void
+     */
+    public function forceDeleted(ExportDataLog $exportDataLog)
+    {
+        //
+    }
+}

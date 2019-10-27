@@ -1,0 +1,231 @@
+<?php
+
+namespace App\Models;
+
+use App\Helpers;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Builder;
+use Illuminate\Support\Facades\Log;
+
+class BillAccountData extends Model
+{
+    public static $excelFields = [
+        "线上客服"    => "online_customer",
+        "建档人"     => "archive_by",
+        "建档类型"    => "archive_type",
+        "网电回访人"   => "online_return_visit_by",
+        "媒介类型"    => "medium_type",
+        "媒介来源"    => "medium_source",
+        "开单"      => "account_by",
+        "收费单号"    => "order_form_number",
+        "收费单类型"   => "order_type",
+        "客户姓名"    => "customer",
+        "客户状态"    => "customer_status",
+        "二次来院"    => "again_arriving",
+        "电话"      => "phone",
+        "客户卡号"    => "customer_card_number",
+        "结账日期"    => "pay_date",
+        "总金额"     => "total",
+        "应付金额"    => "payable",
+        "实付金额"    => "real_payment",
+        "开单业绩"    => "order_account",
+        "美容院类型"   => "beauty_salon_type",
+        "美容院"     => "beauty_salon_name",
+        "财务收支总金额" => "total_pay",
+        "返款后业绩"   => "total_account",
+        "访客ID"    => "visitor_id",
+        "建档时间"    => "archive_date",
+    ];
+
+    protected $fillable = [
+        'archive_id',
+        "online_customer",
+        "archive_by",
+        "archive_type",
+        "online_return_visit_by",
+        "medium_type",
+        "medium_source",
+        "account_by",
+        "order_form_number",
+        "order_type",
+        "customer",
+        "customer_status",
+        "again_arriving",
+        "phone",
+        "customer_card_number",
+        "pay_date",
+        "total",
+        "payable",
+        "real_payment",
+        "order_account",
+        "beauty_salon_type",
+        "beauty_salon_name",
+        "total_pay",
+        "total_account",
+        "visitor_id",
+        "archive_date",
+        "type",
+        'uuid',
+        'customer_id',
+        'medium_id',
+    ];
+
+    public static $BillAccountCountDataFormat = [
+        'total_account'     => 0,
+        'new_account'       => 0,
+        'new_again_account' => 0,
+        'new_first_account' => 0,
+        'old_account'       => 0,
+        'new_first_count'   => 0,
+        'new_again_count'   => 0,
+        'new_count'         => 0,
+        'old_count'         => 0,
+    ];
+
+    public function projects()
+    {
+        return $this->morphToMany(ProjectType::class, 'model', 'project_list', 'model_id', 'project_id');
+    }
+
+    public function archive()
+    {
+        return $this->belongsTo(ArchiveType::class, 'archive_id', 'id');
+    }
+
+    public function customerPhone()
+    {
+        return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
+    }
+
+    public static function recheckCustomerPhone()
+    {
+        return static::query()
+            ->doesntHave('customerPhone')
+            ->get()->each(function ($data) {
+                CustomerPhone::firstOrCreate([
+                    'customer_id' => $data->customer_id,
+                    'type'        => $data->type,
+                ]);
+            })->count();
+    }
+
+    public static function recheckProjects()
+    {
+        static::all()->each(function ($item) {
+            $item->update([
+                'archive_id' => Helpers::getArchiveTypeId($item->archive_type),
+            ]);
+        });
+    }
+
+    public static function getBillAccountData($type, $data)
+    {
+        $client = Helpers::typeClient($type);
+        if (!$client) {
+            return [];
+        }
+
+        return $client::accountSearchData($data);
+    }
+
+    public static function getBillAccountDataOfDate($type, $start, $end, $count = 10000)
+    {
+        return static::getBillAccountData($type, [
+            'DatetimeCheckoutStart' => $start,
+            'DatetimeCheckoutEnd'   => $end,
+            'pageSize'              => $count,
+        ]);
+    }
+
+    public static function generateBillAccountOfData($type, $data)
+    {
+        $uuid = collect();
+        collect($data)->filter(function ($data) {
+            return isset($data['pay_date']) && isset($data['customer_id']);
+        })->each(function ($item) use ($type, $uuid) {
+            $key = $item['pay_date'] . $item['customer_id'] . $item['order_type'] . $item['order_account'];
+
+            $item['uuid'] = md5($key);
+
+            $item['type']       = $type;
+            $item['pay_date']   = Carbon::parse($item['pay_date'])->toDateString();
+            $item['medium_id']  = Helpers::getMediumTypeId($item['medium_source']);
+            $item['visitor_id'] = mb_substr(
+                $item['visitor_id'] ?? '',
+                0,
+                Builder::$defaultStringLength
+            );
+            $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
+
+            $uuid->push($item['uuid']);
+            static::updateOrCreate([
+                'uuid' => $item['uuid'],
+            ], $item);
+            CustomerPhone::firstOrCreate([
+                'customer_id' => $item['customer_id'],
+                'type'        => $type,
+            ]);
+        });
+        return $uuid;
+    }
+
+    public static function getDataOfDate($type, $start, $end, $count = 10000)
+    {
+        $data        = static::getBillAccountDataOfDate($type, $start, $end, $count);
+        $uuidList    = static::generateBillAccountOfData($type, $data);
+        $deleteCount = static::removeNotInDateUUID($uuidList, $type, [$start, $end]);
+
+        return $data ? [
+            'createCount' => $uuidList->count(),
+            'deleteCount' => $deleteCount,
+        ] : null;
+    }
+
+    public static function removeNotInDateUUID($uuid, $type, $dates)
+    {
+        return static::query()
+            ->where('type', $type)
+            ->whereBetween('pay_date', $dates)
+            ->whereNotIn('uuid', $uuid)
+            ->delete();
+    }
+
+
+    public static function todayBillAccountData($type)
+    {
+        $today = Carbon::now()->toDateString();
+        return CrmGrabLog::generate($type, 'billAccountData', $today, $today);
+    }
+
+    public static function yesterdayBillAccountData($type)
+    {
+        $yesterday = Carbon::yesterday()->toDateString();
+        return CrmGrabLog::generate($type, 'billAccountData', $yesterday, $yesterday);
+    }
+
+    public static function monthBillAccountData($type)
+    {
+        $date  = Carbon::today();
+        $start = $date->firstOfMonth()->toDateString();
+        $end   = $date->lastOfMonth()->toDateString();
+
+        $result = collect();
+        Helpers::dateRangeForEach([$start, $end], function ($date) use ($type, $result) {
+            $dateString = $date->toDateString();
+            $data       = CrmGrabLog::generate($type, 'billAccountData', $dateString, $dateString);
+            $result->push($data);
+        });
+        return $result;
+    }
+
+    public static function prevMonthBillAccountData($type)
+    {
+        $date  = Carbon::today();
+        $start = $date->firstOfMonth()->toDateString();
+        $end   = $date->lastOfMonth()->toDateString();
+        return static::getDataOfDate($type, $start, $end);
+    }
+
+
+}
