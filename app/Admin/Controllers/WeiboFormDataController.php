@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
+use App\Admin\Actions\WeiboUpload;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use Carbon\Carbon;
@@ -35,6 +36,7 @@ class WeiboFormDataController extends AdminController
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
             });
+            $tools->append(new WeiboUpload());
         });
         $grid->disableCreateButton();
 
@@ -44,8 +46,8 @@ class WeiboFormDataController extends AdminController
             return $val ? '已回访' : '未回访';
         })->label();
         $grid->column('phone', __('Phone'));
-        $grid->column('is_back', '回访时间')->display(function () {
-            return Carbon::parse($this->upload_date)->diffForHumans($this->recall_date);
+        $grid->column('is_back', '反应时间')->display(function () {
+            return $this->recall_date ? Carbon::parse($this->upload_date)->diffForHumans($this->recall_date) : '-';
         });
         $grid->column('upload_date', __('上传时间'));
 
