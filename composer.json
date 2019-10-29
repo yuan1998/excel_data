@@ -11,6 +11,7 @@
     "php": "^7.1.3",
     "ext-curl": "*",
     "ext-json": "*",
+    "barryvdh/laravel-cors": "^0.11.4",
     "dingo/api": "^2.3",
     "encore/laravel-admin": "^1.7",
     "fideloper/proxy": "^4.0",
@@ -22,7 +23,8 @@
     "orangehill/iseed": "^2.6",
     "overtrue/laravel-lang": "~3.0",
     "paquettg/php-html-parser": "^2.1",
-    "predis/predis": "^1.1"
+    "predis/predis": "^1.1",
+    "tymon/jwt-auth": "1.0.*"
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.0",

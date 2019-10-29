@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerPhone extends Model
 {
     protected $fillable = [
+        'customer_type',
         'customer_id',
         'phone',
         'type',

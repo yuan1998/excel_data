@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Helpers;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Builder;
 
 class TempCustomerData extends Model
 {
@@ -79,9 +82,99 @@ class TempCustomerData extends Model
         "visitor_id",
         "staff_referrer",
 
+        'uuid',
         'archive_id',
         'customer_id',
         'medium_id',
         'type',
     ];
+
+    public static function getTempCustomerDataOfCrm($data, $type)
+    {
+        $client = Helpers::typeClient($type);
+        if (!$client) {
+            return [];
+        }
+        return $client::tempSearchData($data);
+    }
+
+    public static function getTempCustomerDataOfDate($type, $start, $end, $count = 10000)
+    {
+        return static::getTempCustomerDataOfCrm([
+            'DatetimeRegStart' => $start,
+            'DatetimeRegEnd'   => $end,
+            'pageSize'         => $count
+        ], $type);
+    }
+
+    public static function tempCustomerDataGenerate($array, $type)
+    {
+        $uuid = collect();
+        collect($array)->filter(function ($data) {
+            return isset($data['customer_id']);
+        })->each(function ($item) use ($type, $uuid) {
+            $key = $item['customer_id'] . $item['archive_type'] . $item['archive_date'];
+
+            $item['uuid']      = md5($key);
+            $item['type']      = $type;
+            $item['medium_id'] = Helpers::getMediumTypeId($item['medium_source']);
+
+            $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
+            $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
+            $uuid->push($item['uuid']);
+
+            static::updateOrCreate([
+                'uuid' => $item['uuid'],
+            ], $item);
+            CustomerPhone::firstOrCreate([
+                'customer_id'   => $item['customer_id'],
+                'type'          => $type,
+                'customer_type' => 'temp_cust_info_cross',
+            ]);
+        });
+
+        return $uuid;
+    }
+
+    public static function removeNotInDateUUID($uuid, $type, $dates)
+    {
+        return static::query()
+            ->where('type', $type)
+            ->whereBetween('archive_date', $dates)
+            ->whereNotIn('uuid', $uuid)
+            ->delete();
+    }
+
+
+    public static function getDataOfDate($type, $start, $end, $count = 10000)
+    {
+        $data        = static::getTempCustomerDataOfDate($type, $start, $end, $count);
+        $uuid        = static::tempCustomerDataGenerate($data, $type);
+        $deleteCount = static::removeNotInDateUUID($uuid, $type, [$start, $end]);
+
+        return $data ? [
+            'createCount' => $uuid->count(),
+            'deleteCount' => $deleteCount,
+        ] : null;
+    }
+
+    public static function getToday($type, $queue = true)
+    {
+        $date = Carbon::today()->toDateString();
+        if ($queue) {
+            return CrmGrabLog::generate($type, 'tempCustomerData', $date, $date);
+        } else {
+            return static::getDataOfDate($type, $date, $date);
+        }
+    }
+
+    public static function yesterday($type)
+    {
+
+        $date = Carbon::yesterday()->toDateString();
+
+        return CrmGrabLog::generate($type, 'tempCustomerData', $date, $date);
+    }
+
+
 }

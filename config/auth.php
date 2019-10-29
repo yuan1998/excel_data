@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard'     => 'web',
         'passwords' => 'users',
     ],
 
@@ -36,15 +36,19 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
+        'web'   => [
+            'driver'   => 'session',
             'provider' => 'users',
         ],
+        'weibo' => [
+            'driver'   => 'jwt',
+            'provider' => 'weibo_users',
+        ],
 
-        'api' => [
-            'driver' => 'token',
+        'api'   => [
+            'driver'   => 'token',
             'provider' => 'users',
-            'hash' => false,
+            'hash'     => false,
         ],
     ],
 
@@ -66,9 +70,13 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'users'      => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model'  => App\User::class,
+        ],
+        'weibo_users' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\WeiboUser::class,
         ],
 
         // 'users' => [
@@ -95,8 +103,13 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
+            'table'    => 'password_resets',
+            'expire'   => 60,
+        ],
+        'weibo_users' => [
+            'provider' => 'weibo_users',
+            'table'    => 'password_resets',
+            'expire'   => 60,
         ],
     ],
 

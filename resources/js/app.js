@@ -7,12 +7,13 @@ import Vue              from 'vue';
 import ElementUI        from 'element-ui'
 import ExampleComponent from "./components/ExampleComponent";
 import ExportDataForm   from "./components/exportDataForm";
+import GrabDataForm     from "./components/GrabDataForm";
 
 Vue.use(ElementUI);
 Vue.component('example-component', ExampleComponent);
 Vue.component('export-data-form', ExportDataForm);
+Vue.component('grab-data-form', GrabDataForm);
 
-console.log('123 :', 123);
 // const app = new Vue({
 //     el: '#app'
 // });

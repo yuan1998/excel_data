@@ -6,6 +6,7 @@ use App\Jobs\ArrivingDataYesterday;
 use App\Jobs\BillAccountDataYesterday;
 use App\Models\ArrivingData;
 use App\Models\BillAccountData;
+use App\Models\TempCustomerData;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
@@ -43,12 +44,28 @@ class Kernel extends ConsoleKernel
             ArrivingData::getToday('kq');
         })->dailyAt('22:50');
 
+
+        $schedule->call(function () {
+            TempCustomerData::getToday('zx');
+        })->dailyAt('22:40');
+        $schedule->call(function () {
+            TempCustomerData::getToday('kq');
+        })->dailyAt('22:50');
+
+        $schedule->call(function () {
+            TempCustomerData::yesterday('zx');
+        })->dailyAt('22:40');
+        $schedule->call(function () {
+            TempCustomerData::yesterday('kq');
+        })->dailyAt('22:50');
+
         $schedule->call(function () {
             BillAccountData::yesterdayBillAccountData('zx');
         })->dailyAt('23:00');
         $schedule->call(function () {
             BillAccountData::yesterdayBillAccountData('kq');
         })->dailyAt('23:20');
+
 
         $schedule->call(function () {
             ArrivingData::getYesterday('zx');

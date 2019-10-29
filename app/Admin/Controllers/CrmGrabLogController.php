@@ -5,7 +5,6 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\CrmGrabData;
 use App\Admin\Actions\ExcelUpload;
 use App\Models\CrmGrabLog;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Tools\BatchActions;
@@ -29,6 +28,7 @@ class CrmGrabLogController extends AdminController
     {
         $grid = new Grid(new CrmGrabLog);
         $grid->model()->orderBy('id', 'desc');
+        $this->initVue();
 
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function (BatchActions $batch) {

@@ -9,6 +9,7 @@ use App\Models\CustomerPhone;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -136,10 +137,12 @@ class BaseClient
 
     public static $login_url = '/Account/Auth/Login';
     public static $temp_search_url = '/Reservation/TempCustSearch/Index';
+    public static $customer_info_check_url = '/Reservation/TempCustInfo/Index';
     public static $reservation_search_url = '/Reservation/ReservationSearch/Index';
     public static $to_hospital_search_url = '/Reservation/ToHospital/Index';
     public static $account_search_url = '/ReportCenter/NetBillAccount/Index';
     public static $customer_phone_check_url = '/CommonArea/CustInfo/ShowPhoneAndLog';
+    public static $customer_info_create_url = '/Reservation/TempCustInfo/Create';
 
     public static $temp_search_result_selector = 'table[data-toggle]';
     public static $reservation_search_result_selector = 'table[data-toggle]';
@@ -242,18 +245,19 @@ class BaseClient
     /**
      * 查询客户电话APi, 根据ID查询客户电话
      * @param $id
+     * @param $type
      * @return string|null
-     * @throws GuzzleException
      * @throws ChildNotFoundException
      * @throws CircularException
      * @throws CurlException
+     * @throws GuzzleException
      * @throws StrictException
      */
-    public static function customerPhoneApi($id)
+    public static function customerPhoneApi($id, $type)
     {
         $data = [
             'id'   => $id,
-            'type' => 'cust_info'
+            'type' => $type
         ];
         $json = static::postUriGetDom(static::$customer_phone_check_url, $data, false);
         preg_match("/\{\"Phone\"\:\"(.*?)\"\}/", $json, $match);
@@ -263,20 +267,22 @@ class BaseClient
 
     /**
      * 根据 客户ID 查询对应的电话号码
-     * @param $id
+     * @param        $id
+     * @param string $type
      * @return CustomerPhone|null
-     * @throws GuzzleException
      * @throws ChildNotFoundException
      * @throws CircularException
      * @throws CurlException
+     * @throws GuzzleException
      * @throws StrictException
      */
-    public static function customerPhoneCreate($id)
+    public static function customerPhoneCreate($id, $type = 'cust_info')
     {
-        $phone = static::customerPhoneApi($id);
+        $phone = static::customerPhoneApi($id, $type);
         if ($phone) {
             return CustomerPhone::updateOrCreate([
-                'customer_id' => $id,
+                'customer_id'   => $id,
+                'customer_type' => $type,
             ], [
                 'phone' => $phone
             ]);
@@ -304,12 +310,12 @@ class BaseClient
         return static::postUriGetDom(static::$temp_search_url, $data);
     }
 
-    public static function tempSearchOfDate($start , $end , $count = 10000)
+    public static function tempSearchOfDate($start, $end, $count = 10000)
     {
         return static::tempSearchData([
             'DatetimeRegStart' => $start,
-            'DatetimeRegEnd' => $end,
-            'pageSize' => $count,
+            'DatetimeRegEnd'   => $end,
+            'pageSize'         => $count,
         ]);
     }
 
@@ -562,14 +568,107 @@ class BaseClient
         return static::parserDomTableData($dom);
     }
 
+    public static function tempCustomerInfoCreateApi($data)
+    {
+        $date = Carbon::now()->toDateTimeString();
+        $data = array_merge([
+            'DatetimeReg'    => $date,
+            'CustName'       => '自动创建',
+            'Province'       => '610000',
+            'Age'            => '1',
+            'Sex'            => '1',
+            'City'           => '610100',
+            'Country'        => '0',
+            'IncomeCapacity' => 'IC_CHA',
+        ], $data);
+        return static::postUriGetDom(static::$customer_info_create_url, $data, false);
+    }
+
+    public static function createCustomerInfo($data)
+    {
+        if (!isset($data['phone'])) {
+            throw new \Exception('电话不能为空.');
+        }
+        if (!isset($data['TmpCustRegType'])) {
+            throw new \Exception('建档类型不能为空.');
+        }
+        if (!isset($data['CreatedBy'])) {
+            throw new \Exception('建档人不能为空.');
+        }
+        if (!isset($data['PlanRecallEmps'])) {
+            throw new \Exception('回访人不能为空.');
+        }
+        if (!isset($data['MediaSource'])) {
+            throw new \Exception('媒介不能为空.');
+        }
+        if (!isset($data['MediaSourceType'])) {
+            throw new \Exception('媒介类型不能为空.');
+        }
+
+        $data['TmpCustRegType'] = Arr::get(Helpers::$ArchiveTypeCode, $data['TmpCustRegType'], null);
+
+        if (!$data['TmpCustRegType']) {
+            throw new \Exception('错误的建档类型.');
+        }
+
+        $data['CreatedBy'] = Arr::get(Helpers::$UserIdCode, $data['CreatedBy'], null);
+
+        if (!$data['CreatedBy']) {
+            throw new \Exception('错误的建档人.');
+        }
+
+        $data['MediaSource'] = Arr::get(Helpers::$MediumSourceCode, $data['MediaSource'], null);
+
+        if (!$data['MediaSource']) {
+            throw new \Exception('错误的媒介.');
+        }
+        $data['MediaSourceType'] = Arr::get(Helpers::$MediumSourceTypeCode, $data['MediaSourceType'], null);
+
+        if (!$data['MediaSourceType']) {
+            throw new \Exception('错误的媒介类型.');
+        }
+        $data['PlanRecallEmp'] = Arr::get(Helpers::$UserIdCode, $data['PlanRecallEmps'], null);
+
+        if (!$data['PlanRecallEmp']) {
+            throw new \Exception('错误的回访人.');
+        }
+
+        return static::tempCustomerInfoCreateApi($data);
+    }
+
+    public static function tempCustomerInfoCheckApi($phone)
+    {
+        $data = array_merge([
+            'pageCurrent' => 1,
+        ], ['Phone' => $phone]);
+        return static::postUriGetDom(static::$customer_info_check_url, $data);
+    }
+
+
+    public static function tempCustomerInfoCheckData($phone)
+    {
+        $dom = static::tempCustomerInfoCheckApi($phone);
+        return static::parserDomTableData($dom, 'table.table-hover');
+    }
+
+    public static function tempCustomerInfoCheckExists($phone)
+    {
+        $dom = static::tempCustomerInfoCheckApi($phone);
+        return static::parserDomTableData($dom, 'table.table-hover')->isNotEmpty();
+    }
+
+
     /**
      * 解析HTML Dom to Array Data
-     * @param $dom
+     * @param      $dom
+     * @param null $select
      * @return \Illuminate\Support\Collection
      */
-    public static function parserDomTableData($dom)
+    public static function parserDomTableData($dom, $select = null)
     {
-        $dataList = $dom->find(static::$to_hospital_search_result_selector);
+        $select = $select ?? static::$to_hospital_search_result_selector;
+
+        $dataList = $dom->find($select);
         $data     = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type));
         return $data;
     }

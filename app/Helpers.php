@@ -14,6 +14,7 @@ use App\Models\DepartmentType;
 use App\Models\FeiyuData;
 use App\Models\MediumType;
 use App\Models\ProjectType;
+use App\Models\TempCustomerData;
 use App\Models\WeiboData;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -67,6 +68,23 @@ class Helpers
         'total_average'              => 0,
         'proportion_total'           => 0,
         'proportion_new'             => 0,
+    ];
+
+    public static $MediumSourceTypeCode = [
+        '微博 (表单)' => '9295C7B6F93E4E51A9C09E1C2198CCB5',
+    ];
+
+    public static $MediumSourceCode = [
+        '信息流' => '5506D677F2934624A9A8D83E9876C4CA',
+    ];
+
+    public static $UserIdCode = [
+        '口腔网电公用' => 'BF6CE41EC9204AD9BA30A994016EEDAA',
+        '洪诩'     => 'B90B67132A564A759E16A98E01269A10',
+    ];
+
+    public static $ArchiveTypeCode = [
+        '成人-矫正-口腔' => '3705079BD641454FAAFDAA4600E14BAD',
     ];
 
 
@@ -198,7 +216,8 @@ class Helpers
                 $name = $keys[$key];
 
                 if ($name === '客户' || $name === '客户姓名' || $name == '网电客户') {
-                    preg_match("/EditCustInfo\(\'(.*?)\'\)/", $value->outerHTML, $match);
+//                    dd($value->outerHTML);
+                    preg_match("/CustInfo\(\'(.*?)\'\)/", $value->outerHTML, $match);
                     if (isset($match[1])) {
                         $arr['customer_id'] = $match[1];
                     }
@@ -502,13 +521,13 @@ class Helpers
         });
 
         if ($result) {
-            return (float) $result->rebate;
+            return (float)$result->rebate;
         }
 
         $result = $data->first(function ($data) {
             return $data->is_default;
         });
-        return $result ?(float) $result->rebate : 0;
+        return $result ? (float)$result->rebate : 0;
     }
 
     public static function dateRangeForEach($dates, $callBack)
@@ -565,6 +584,9 @@ class Helpers
         }
         if ($type === 'arrivingData') {
             return ArrivingData::class;
+        }
+        if ($type === 'tempCustomerData') {
+            return TempCustomerData::class;
         }
     }
 

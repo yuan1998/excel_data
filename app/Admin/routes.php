@@ -28,6 +28,8 @@ Route::group([
     $router->resource('bill_account_data', "BillAccountDataController");
     $router->resource('crm_grab_logs', "CrmGrabLogController");
     $router->resource('export_data_logs', "ExportDataLogController");
-
+    $router->resource('account_data', "AccountDataController");
     $router->resource('account_return_point', "AccountReturnPointController");
+    $router->resource('weibo_user', 'WeiboUserController');
+    $router->resource('weibo_form_data', "WeiboFormDataController");
 });

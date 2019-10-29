@@ -37,7 +37,7 @@ class CustomerPhoneCheckJob implements ShouldQueue
         $model = $this->model;
         if ($model) {
             $client = Helpers::typeClient($model->type);
-            $data   = $client::customerPhoneCreate($model->customer_id);
+            $data   = $client::customerPhoneCreate($model->customer_id, $model->customer_type);
             Log::info('Check Customer Phone', [$data]);
         }
     }

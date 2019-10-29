@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
+/**
+ * @var Dingo\Api\Routing\Router
+ */
 $api = app('Dingo\Api\Routing\Router');
 
 
@@ -87,5 +90,34 @@ $api->version('v1', [
 
     $api->get('/department/archives', "DepartmentController@departmentArchives")
         ->name('api.department.archives');
+
+
+    $api->group([
+        'prefix' => 'weibo',
+    ], function ($api) {
+        $api->post('/authenticate', 'WeiboAuthController@authenticate')
+            ->name('api.weibo.authenticate');
+
+
+        $api->get('/authenticate', 'WeiboAuthController@current')
+            ->name('api.weibo.current');
+        $api->put('/authenticate/current', 'WeiboAuthController@refresh')
+            ->name('api.weibo.authenticate.refresh');
+        $api->delete('/authenticate/current', 'WeiboAuthController@destroyToken')
+            ->name('api.weibo.authenticate.destroyToken');
+
+        $api->get('/formData/', 'WeiboFormDataController@userIndex')
+            ->name('api.weiboFormData.index');
+        $api->get('/formData/hasNew', 'WeiboFormDataController@userHasNew')
+            ->name('api.weiboFormData.userHasNew');
+        $api->put('/formData/{formData}', 'WeiboFormDataController@userUpdate')
+            ->name('api.weiboFormData.update');
+
+
+        $api->get('/user/pause', "WeiboUserController@updatePause")
+            ->name('api.weiboUser.updatePause');
+
+    });
+
 
 });

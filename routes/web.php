@@ -14,7 +14,17 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::group([
+    'prefix' => 'weibo'
+] , function () {
+    Route::get('/login', "WeiboUserController@loginPage");
+});
+
 
 Route::get('/excelView/{key}', "ExcelViewController@index");
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

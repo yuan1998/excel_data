@@ -136,16 +136,13 @@
                     .catch(_ => {
                     });
             },
-
             resetForm() {
                 this.$refs.form.resetFields();
             },
-
             closeDialog() {
                 this.resetForm();
                 this.dialogFormVisible = false;
             },
-
             responseResolver(res) {
                 if (typeof res !== 'object') {
                     this.$alert('这个错误', '错误', {
