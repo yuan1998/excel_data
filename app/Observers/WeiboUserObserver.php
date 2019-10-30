@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -27,14 +28,7 @@ class WeiboUserObserver
      */
     public function updated(WeiboUser $weiboUser)
     {
-        $changes = $weiboUser->getChanges();
-        if (isset($changes['pause'])) {
-            if ($changes['pause']) {
-                $weiboUser->userRemoveToDispatchList();
-            } else {
-                $weiboUser->userAddToDispatchList();
-            }
-        }
+        WeiboFormData::unallocated();
     }
 
     /**
@@ -45,7 +39,6 @@ class WeiboUserObserver
      */
     public function deleted(WeiboUser $weiboUser)
     {
-        $weiboUser->userRemoveToDispatchList();
     }
 
     /**

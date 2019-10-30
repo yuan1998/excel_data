@@ -58,7 +58,7 @@ class WeiboUser extends Authenticatable implements JWTSubject
 
         $data = $data->sortBy('weibo_form_data_null_count')->first();
 
-        return $data->id;
+        return $data ? $data->id : null;
     }
 
     public static function dispatchFormData()

@@ -30,21 +30,27 @@ class WeiboFormData extends Model
 
     }
 
-    public static function myCreate($condition , $attributes)
+    public static function myCreate($condition, $attributes)
     {
         $query = static::query();
         foreach ($condition as $key => $value) {
-            $query->where($key , $value);
+            $query->where($key, $value);
         }
     }
 
     public static function unallocated()
     {
-        $data = static::query()
-            ->whereNull('weibo_user_id' )
-            ->get();
-
-
-
+        if (WeiboUser::newDispatchData()) {
+            static::query()
+                ->whereNull('weibo_user_id')
+                ->get()
+                ->each(function ($item) {
+                    $id = WeiboUser::newDispatchData();
+                    if ($id) {
+                        $item->weibo_user_id = $id;
+                        $item->save();
+                    }
+                });
+        }
     }
 }
