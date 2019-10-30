@@ -48,11 +48,21 @@ class WeiboUser extends Authenticatable implements JWTSubject
         return null;
     }
 
+    public static function userListInit()
+    {
+        static::query()
+            ->update([
+                'pause' => 1
+            ]);
+        static::setUserList(collect());
+
+    }
+
 
     public static function getUserList()
     {
         $redisUser = Redis::get('weibo_user_list');
-        $result = collect($redisUser ? json_decode($redisUser) : []);
+        $result    = collect($redisUser ? json_decode($redisUser) : []);
         Log::info("user dispatch list :", $result->toArray());
         return $result;
     }
