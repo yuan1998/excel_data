@@ -16,13 +16,7 @@ class WeiboFormDataObserver
      */
     public function created(WeiboFormData $weiboFormData)
     {
-        $id = WeiboUser::newDispatchData();
-
-        Log::info('dispatcher', [$id]);
-        if ($id) {
-            $weiboFormData->weibo_user_id = $id;
-            $weiboFormData->save();
-        }
+        $weiboFormData->dispatchItem();
     }
 
     /**

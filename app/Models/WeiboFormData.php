@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class WeiboFormData extends Model
@@ -21,6 +22,7 @@ class WeiboFormData extends Model
         'tags',
         'remark',
         'weibo_user_id',
+        'dispatch_date',
         'upload_date',
         'recall_date',
     ];
@@ -48,6 +50,16 @@ class WeiboFormData extends Model
         }
     }
 
+    public function dispatchItem()
+    {
+        $id = WeiboUser::newDispatchData();
+        if ($id) {
+            $this->weibo_user_id = $id;
+            $this->dispatch_date = Carbon::now()->toDateTimeString();
+            $this->save();
+        }
+    }
+
     public static function unallocated()
     {
         if (WeiboUser::newDispatchData()) {
@@ -55,11 +67,7 @@ class WeiboFormData extends Model
                 ->whereNull('weibo_user_id')
                 ->get()
                 ->each(function ($item) {
-                    $id = WeiboUser::newDispatchData();
-                    if ($id) {
-                        $item->weibo_user_id = $id;
-                        $item->save();
-                    }
+                    $item->dispatchItem();
                 });
         }
     }
