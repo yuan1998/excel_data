@@ -29,9 +29,15 @@ class WeiboFormDataImport implements ToCollection
                 && !!$item['phone']
                 && isset($item['post_date']);
         })->each(function ($item) use ($date) {
-            WeiboFormData::updateOrCreate([
-                'phone'    => $item['phone'],
-                'upload_date' => $date,
+            if ($item['comment']) {
+                $item['recall_date'] = $date;
+            }
+            $item['post_date']   = Carbon::parse($item['post_date'])->toDateString();
+            $item['upload_date'] = $date;
+            
+            WeiboFormData::firstOrCreate([
+                'phone'     => $item['phone'],
+                'post_date' => $item['post_date'],
             ], $item);
         });
     }

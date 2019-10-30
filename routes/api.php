@@ -98,7 +98,6 @@ $api->version('v1', [
         $api->post('/authenticate', 'WeiboAuthController@authenticate')
             ->name('api.weibo.authenticate');
 
-
         $api->get('/authenticate', 'WeiboAuthController@current')
             ->name('api.weibo.current');
         $api->put('/authenticate/current', 'WeiboAuthController@refresh')

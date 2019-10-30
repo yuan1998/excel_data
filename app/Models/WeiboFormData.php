@@ -29,4 +29,22 @@ class WeiboFormData extends Model
         return $this->belongsTo(WeiboUser::class, 'weibo_user_id', 'id');
 
     }
+
+    public static function myCreate($condition , $attributes)
+    {
+        $query = static::query();
+        foreach ($condition as $key => $value) {
+            $query->where($key , $value);
+        }
+    }
+
+    public static function unallocated()
+    {
+        $data = static::query()
+            ->whereNull('weibo_user_id' )
+            ->get();
+
+
+
+    }
 }

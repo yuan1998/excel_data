@@ -38,14 +38,38 @@ class WeiboUser extends Authenticatable implements JWTSubject
         if ($redisUser && $user = collect(json_decode($redisUser))) {
             if ($user->isNotEmpty()) {
                 $id = $user->shift();
-                Log::info('dispatch id:', [$id, '$user' => $user->toArray()]);
-                $user->push($id);
-                Redis::set('weibo_user_list', $user->toJson());
 
-                return $id;
+                if (static::userIsLimit($id)) {
+                    $id = null;
+                } else {
+                    $user->push($id);
+                }
+
+                static::setUserList($user);
+
+                return $id ? $id : static::dispatchFormData();
             }
         }
         return null;
+    }
+
+    public static function userIsLimit($id)
+    {
+        $count = WeiboFormData::query()
+            ->where('weibo_user_id', $id)
+            ->whereNull('recall_date')
+            ->count();
+
+        if ($count && $user = static::find($id)) {
+            if ((int)$user->limit >= $count) {
+                $user->pause = true;
+                $user->save();
+                
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function userListInit()
