@@ -27,6 +27,7 @@ Admin::js('/js/app.js');
 Admin::css('//cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/theme-chalk/index.css');
 Admin::css('/css/app.css');
 // Admin::css('https://cdn.jsdelivr.net/npm/v-charts/lib/style.min.css');
+app('view')->prependNamespace('admin', resource_path('views/admin/views'));
 
 Form::extend('mySelect', MySelect::class);
 Form::forget(['map', 'editor']);
