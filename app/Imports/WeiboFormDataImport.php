@@ -34,7 +34,10 @@ class WeiboFormDataImport implements ToCollection
             }
             $item['post_date']   = Carbon::parse($item['post_date'])->toDateString();
             $item['upload_date'] = $date;
-            
+            if ($item['comment']) {
+                $item['recall_date'] = $date;
+            }
+
             WeiboFormData::firstOrCreate([
                 'phone'     => $item['phone'],
                 'post_date' => $item['post_date'],

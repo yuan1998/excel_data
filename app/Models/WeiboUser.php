@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -29,6 +30,36 @@ class WeiboUser extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password'
     ];
+
+
+    public function weiboFormData()
+    {
+        return $this->hasOne(WeiboFormData::class, 'weibo_user_id', 'id');
+    }
+
+    public function weiboFormDataNull()
+    {
+        return $this->hasOne(WeiboFormData::class, 'weibo_user_id', 'id')
+            ->whereNull('recall_date');
+    }
+
+
+    public static function newDispatchData()
+    {
+        $data = static::query()->withCount([
+            'weiboFormDataNull'
+        ])
+            ->where('pause', false)
+            ->get();
+
+        $data = $data->filter(function ($item) {
+            return $item->weibo_form_data_null_count < $item->limit;
+        });
+
+        $data = $data->sortBy('weibo_form_data_null_count')->first();
+
+        return $data->id;
+    }
 
     public static function dispatchFormData()
     {

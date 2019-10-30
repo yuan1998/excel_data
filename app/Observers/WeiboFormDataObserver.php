@@ -16,7 +16,7 @@ class WeiboFormDataObserver
      */
     public function created(WeiboFormData $weiboFormData)
     {
-        $id = WeiboUser::dispatchFormData();
+        $id = WeiboUser::newDispatchData();
 
         Log::info('dispatcher', [$id]);
         if ($id) {
