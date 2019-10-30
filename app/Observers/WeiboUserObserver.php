@@ -29,24 +29,11 @@ class WeiboUserObserver
     {
         $changes = $weiboUser->getChanges();
         if (isset($changes['pause'])) {
-            $redisUser = Redis::get('weibo_user_list');
-
-            $user = collect($redisUser ? json_decode($redisUser) : []);
-            Log::info('weibo user start', $user->toArray());
-
-
-            $weiboId = $weiboUser->id; // 1
-            $has     = $user->contains($weiboId);
-
             if ($changes['pause']) {
-                $has && $user = $user->filter(function ($id) use ($weiboId) {
-                    return $id != $weiboId;
-                });
+                $weiboUser->userRemoveToDispatchList();
             } else {
-                !$has && $user->push($weiboId);
+                $weiboUser->userAddToDispatchList();
             }
-            Log::info('weibo user end', $user->toArray());
-            Redis::set('weibo_user_list', $user->values()->toJson());
         }
     }
 
@@ -58,7 +45,7 @@ class WeiboUserObserver
      */
     public function deleted(WeiboUser $weiboUser)
     {
-        //
+        $weiboUser->userRemoveToDispatchList();
     }
 
     /**
