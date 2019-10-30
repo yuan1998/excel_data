@@ -41,7 +41,7 @@ class WeiboFormDataController extends AdminController
 
         $grid->disableCreateButton();
 
-        $data = array_merge([null => '未分配'], WeiboUser::all()->pluck('username', 'id')->toArray());
+        $data = WeiboUser::all()->pluck('username', 'id');
         $grid->column('weibo_user_id', '所属')->editable('select', $data);
         $grid->column('recall_date', '状态')->display(function ($val) {
             return $this->weibo_user_id ? ($val ? '已回访' : '未回访') : '未分配';
