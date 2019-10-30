@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\Auth;
 class WeiboUserController extends Controller
 {
 
+    public function userPause(Request $request)
+    {
+        $user = $this->weiboUser();
+
+        if (!$user) {
+            $this->response->errorUnauthorized();
+        }
+
+        $pause       = $request->get('pause');
+        $user->pause = !!$pause;
+        $user->save();
+
+        return $user;
+    }
+
+
     public function updatePause(Request $request)
     {
         $pause = $request->get('pause');

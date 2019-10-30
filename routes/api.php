@@ -106,6 +106,10 @@ $api->version('v1', [
         $api->delete('/authenticate/current', 'WeiboAuthController@destroyToken')
             ->name('api.weibo.authenticate.destroyToken');
 
+        $api->put('/user/pause', 'WeiboUserController@userPause')
+            ->name('api.weibo.user.userPause');
+
+
         $api->get('/formData/', 'WeiboFormDataController@userIndex')
             ->name('api.weiboFormData.index');
         $api->get('/formData/hasNew', 'WeiboFormDataController@userHasNew')
