@@ -38,16 +38,16 @@ class WeiboUser extends Authenticatable implements JWTSubject
         if ($redisUser && $user = collect(json_decode($redisUser))) {
             if ($user->isNotEmpty()) {
                 $id = $user->shift();
-
-                if (static::userIsLimit($id)) {
-                    $id = null;
-                } else {
-                    $user->push($id);
-                }
+//
+//                if (static::userIsLimit($id)) {
+//                    $id = null;
+//                } else {
+//                }
+                $user->push($id);
 
                 static::setUserList($user);
-
-                return $id ? $id : static::dispatchFormData();
+                return $id;
+//                return $id ? $id : static::dispatchFormData();
             }
         }
         return null;
@@ -64,7 +64,7 @@ class WeiboUser extends Authenticatable implements JWTSubject
             if ((int)$user->limit >= $count) {
                 $user->pause = true;
                 $user->save();
-                
+
                 return true;
             }
         }
