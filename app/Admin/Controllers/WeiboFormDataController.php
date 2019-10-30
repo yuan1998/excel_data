@@ -38,17 +38,19 @@ class WeiboFormDataController extends AdminController
             });
             $tools->append(new WeiboUpload());
         });
+
         $grid->disableCreateButton();
 
-        $data = WeiboUser::all()->pluck('username', 'id');
+        $data = array_merge([null => '未分配'], WeiboUser::all()->pluck('username', 'id')->toArray());
         $grid->column('weibo_user_id', '所属')->editable('select', $data);
         $grid->column('recall_date', '状态')->display(function ($val) {
-            return $val ? '已回访' : '未回访';
+            return $this->weibo_user_id ? ($val ? '已回访' : '未回访') : '未分配';
         })->label();
         $grid->column('phone', __('Phone'));
         $grid->column('is_back', '反应时间')->display(function () {
             return $this->recall_date ? Carbon::parse($this->upload_date)->diffForHumans($this->recall_date) : '-';
         });
+        $grid->column('comment', '回访记录');
         $grid->column('upload_date', __('上传时间'));
 
         return $grid;
