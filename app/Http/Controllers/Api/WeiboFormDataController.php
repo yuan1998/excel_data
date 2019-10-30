@@ -73,9 +73,12 @@ class WeiboFormDataController extends Controller
         }
         $data = $request->all();
 
-        if (isset($data['comment'])) {
-            $data['recall_date'] = Carbon::now()->toDateTimeString();
+        if (!$formData->recall_date) {
+            if (isset($data['comment']) || isset($data['tags'])) {
+                $data['recall_date'] = Carbon::now()->toDateTimeString();
+            }
         }
+
         $formData->fill($data);
         $formData->save();
         return $this->response->array([

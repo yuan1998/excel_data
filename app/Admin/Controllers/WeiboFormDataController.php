@@ -46,6 +46,9 @@ class WeiboFormDataController extends AdminController
         $grid->column('recall_date', '状态')->display(function ($val) {
             return $this->weibo_user_id ? ($val ? '已回访' : '未回访') : '未分配';
         })->label();
+        $grid->column('tags', '标签')
+            ->using(WeiboFormData::$TagList)
+            ->label();
         $grid->column('phone', __('Phone'));
         $grid->column('is_back', '反应时间')->display(function () {
             return $this->recall_date ? Carbon::parse($this->upload_date)->diffForHumans($this->recall_date) : '-';

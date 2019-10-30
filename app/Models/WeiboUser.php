@@ -16,10 +16,10 @@ class WeiboUser extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $fillable = [
+        'test_pass',
         'username',
         'password',
         'pause',
-        'test_pass',
         'limit',
     ];
 
@@ -31,7 +31,6 @@ class WeiboUser extends Authenticatable implements JWTSubject
         'password'
     ];
 
-
     public function weiboFormData()
     {
         return $this->hasOne(WeiboFormData::class, 'weibo_user_id', 'id');
@@ -42,7 +41,6 @@ class WeiboUser extends Authenticatable implements JWTSubject
         return $this->hasOne(WeiboFormData::class, 'weibo_user_id', 'id')
             ->whereNull('recall_date');
     }
-
 
     public static function newDispatchData()
     {
@@ -59,97 +57,6 @@ class WeiboUser extends Authenticatable implements JWTSubject
         $data = $data->sortBy('weibo_form_data_null_count')->first();
 
         return $data ? $data->id : null;
-    }
-
-    public static function dispatchFormData()
-    {
-        $redisUser = Redis::get('weibo_user_list');
-        Log::info('$redisUser', [$redisUser]);
-
-        if ($redisUser && $user = collect(json_decode($redisUser))) {
-            if ($user->isNotEmpty()) {
-                $id = $user->shift();
-//
-//                if (static::userIsLimit($id)) {
-//                    $id = null;
-//                } else {
-//                }
-                $user->push($id);
-
-                static::setUserList($user);
-                return $id;
-//                return $id ? $id : static::dispatchFormData();
-            }
-        }
-        return null;
-    }
-
-    public static function userIsLimit($id)
-    {
-        $count = WeiboFormData::query()
-            ->where('weibo_user_id', $id)
-            ->whereNull('recall_date')
-            ->count();
-
-        if ($count && $user = static::find($id)) {
-            if ((int)$user->limit >= $count) {
-                $user->pause = true;
-                $user->save();
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static function userListInit()
-    {
-        static::query()
-            ->update([
-                'pause' => 1
-            ]);
-        static::setUserList(collect());
-
-    }
-
-
-    public static function getUserList()
-    {
-        $redisUser = Redis::get('weibo_user_list');
-        $result    = collect($redisUser ? json_decode($redisUser) : []);
-        Log::info("user dispatch list :", $result->toArray());
-        return $result;
-    }
-
-    public function userAddToDispatchList()
-    {
-        $list = static::getUserList();
-        if (!$list->contains($this->id)) {
-            $list->push($this->id);
-            static::setUserList($list);
-        }
-    }
-
-    public function userRemoveToDispatchList()
-    {
-        $list = static::getUserList();
-
-        if ($list->contains($this->id)) {
-            $list = $list->filter(function ($id) {
-                return $id != $this->id;
-            });
-            static::setUserList($list);
-        }
-    }
-
-    /**
-     * @param Collection $list
-     */
-    public static function setUserList($list)
-    {
-        Log::info("user dispatch list :", $list->toArray());
-        Redis::set('weibo_user_list', $list->values()->toJson());
     }
 
 
