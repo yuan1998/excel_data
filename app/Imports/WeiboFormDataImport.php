@@ -30,7 +30,7 @@ class WeiboFormDataImport implements ToCollection
                 && isset($item['post_date']);
         })->each(function ($item) use ($date) {
             WeiboFormData::updateOrCreate([
-                'weibo_id'    => $item['weibo_id'],
+                'phone'    => $item['phone'],
                 'upload_date' => $date,
             ], $item);
         });
