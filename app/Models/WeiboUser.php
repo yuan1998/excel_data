@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,23 +43,35 @@ class WeiboUser extends Authenticatable implements JWTSubject
             ->whereNull('recall_date');
     }
 
+    public function weiboFormDataToday()
+    {
+        $date = Carbon::today()->toDateString();
+        return $this->hasOne(WeiboFormData::class, 'weibo_user_id', 'id')
+            ->whereDate('dispatch_date', $date);
+    }
+
+    public function weiboFormDataAll()
+    {
+        return $this->hasOne(WeiboFormData::class, 'weibo_user_id', 'id');
+    }
+
+
     public static function newDispatchData()
     {
         $data = static::query()->withCount([
-            'weiboFormDataNull'
+            'weiboFormDataToday'
         ])
             ->where('pause', false)
             ->get();
 
         $data = $data->filter(function ($item) {
-            return $item->weibo_form_data_null_count < $item->limit;
+            return $item->weibo_form_data_today_count < $item->limit;
         });
 
-        $data = $data->sortBy('weibo_form_data_null_count')->first();
+        $data = $data->sortBy('weibo_form_data_today_count')->first();
 
         return $data ? $data->id : null;
     }
-
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

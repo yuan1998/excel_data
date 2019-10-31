@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class WeiboFormData extends Model
 {
@@ -53,11 +54,9 @@ class WeiboFormData extends Model
 
     public function dispatchItem()
     {
-        $id = WeiboUser::newDispatchData();
-        if ($id) {
-            $this->weibo_user_id = $id;
-            $this->dispatch_date = Carbon::now()->toDateTimeString();
-            $this->save();
+        if ($id = WeiboUser::newDispatchData()) {
+            Log::info('dispatch user id.', ['id' => $id]);
+            WeiboFormData::find($this->id)->update(['weibo_user_id' => $id]);
         }
     }
 

@@ -45,7 +45,7 @@ class WeiboUserController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new WeiboUser);
-        $grid->model()->withCount(['weiboFormDataNull']);
+        $grid->model()->withCount(['weiboFormDataNull', 'weiboFormDataAll', 'weiboFormDataToday']);
         $grid->column('username', __('Username'));
 
         // 设置text、color、和存储值
@@ -54,8 +54,10 @@ class WeiboUserController extends AdminController
             'on'  => ['text' => '关闭', 'color' => 'default'],
         ];
         $grid->column('pause', '推送')->switch($states);
-        $grid->column('weibo_form_data_null_count', __('目前表单数'));
-        $grid->column('limit', __('限制'));
+        $grid->column('weibo_form_data_null_count', __('未回访表单数'));
+        $grid->column('weibo_form_data_today_count', __('今天已分配'));
+        $grid->column('weibo_form_data_all_count', __('总表单数'));
+        $grid->column('limit', __('每日表单限制'));
         $grid->column('created_at', __('Created at'));
         return $grid;
     }

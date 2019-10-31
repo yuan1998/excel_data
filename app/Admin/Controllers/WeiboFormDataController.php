@@ -70,7 +70,10 @@ class WeiboFormDataController extends AdminController
                     2 => '未回访',
                     3 => '已回访',
                 ]);
-                $filter->between('post_date' , '表单日期')
+                $filter->between('post_date', '表单日期')
+                    ->date();
+
+                $filter->between('upload_date', '上传日期')
                     ->date();
             });
             // 去掉默认的id过滤器
@@ -105,7 +108,7 @@ class WeiboFormDataController extends AdminController
 
         $grid->column('phone', __('Phone'));
         $grid->column('is_back', '反应时间')->display(function () {
-            return $this->recall_date ? Carbon::parse($this->upload_date)->diffForHumans($this->recall_date) : '-';
+            return $this->recall_date ? Carbon::parse($this->dispatch_date)->diffForHumans($this->recall_date) : '-';
         });
         $grid->column('comment', '回访记录');
         $grid->column('post_date', __('表单日期'));
@@ -137,10 +140,7 @@ class WeiboFormDataController extends AdminController
         $show->field('weixin', __('Weixin'));
         $show->field('remark', __('Remark'));
         $show->field('weibo_user_id', __('Weibo user id'));
-        $show->field('update_date', __('Update date'));
-        $show->field('recall_date', __('Recall date'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+
 
         return $show;
     }
