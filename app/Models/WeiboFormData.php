@@ -35,6 +35,7 @@ class WeiboFormData extends Model
         4 => '无需求',
         5 => '重复建档',
         6 => '已到院',
+        7 => '有需求',
     ];
 
     public function weiboUser()

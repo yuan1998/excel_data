@@ -27,7 +27,6 @@ class WeiboFormDataObserver
      */
     public function updated(WeiboFormData $weiboFormData)
     {
-        //
     }
 
     /**

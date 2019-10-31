@@ -21,8 +21,9 @@ class WeiboFormDataController extends Controller
         $date = $request->get('date');
 
         $count = WeiboFormData::query()
-            ->where('weibo_user_id', $date)
-            ->whereDate('upload_date', '>', $date)
+            ->where('weibo_user_id', $user->id)
+            ->where('dispatch_date', '>', $date)
+            ->whereNull('recall_date')
             ->count();
 
         return $this->response->array([
@@ -48,10 +49,10 @@ class WeiboFormDataController extends Controller
 
         $item = WeiboFormData::query()
             ->where('weibo_user_id', $user->id)
-            ->orderBy('upload_date', 'desc')
+            ->orderBy('dispatch_date', 'desc')
             ->first();
 
-        $last_date = $item ? $item->upload_date : Carbon::now()->toDateTimeString();
+        $last_date = $item ? (string) $item->dispatch_date : Carbon::now()->toDateTimeString();
 
         return $this->response->array([
             'data'             => $data,
