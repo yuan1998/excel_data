@@ -152,22 +152,16 @@ class WeiboFormDataController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new WeiboFormData);
+        $form    = new Form(new WeiboFormData);
+        $options = WeiboUser::all()->pluck('username', 'id');
 
-        $form->text('weibo_id', __('Weibo id'));
-        $form->text('project_id', __('Project id'));
-        $form->text('project_name', __('Project name'));
-        $form->text('post_date', __('Post date'));
-        $form->text('name', __('Name'));
-        $form->mobile('phone', __('Phone'));
-        $form->text('category_type', __('Category type'));
-        $form->text('feedback', __('Feedback'));
-        $form->text('comment', __('Comment'));
-        $form->text('weixin', __('Weixin'));
-        $form->text('remark', __('Remark'));
-        $form->number('weibo_user_id', __('Weibo user id'));
-        $form->datetime('update_date', __('Update date'))->default(date('Y-m-d H:i:s'));
-        $form->datetime('recall_date', __('Recall date'))->default(date('Y-m-d H:i:s'));
+        $form->select('tags', '标签')->options( WeiboFormData::$TagList);
+        $form->select('weibo_user_id', __('Weibo user id'))->options($options);
+        $form->saving(function (Form $form) {
+            if ($form->tags == 0) {
+                $form->tags = null;
+            }
+        });
 
         return $form;
     }
