@@ -73,7 +73,7 @@ class WeiboFormDataController extends AdminController
                 $filter->between('post_date', '表单日期')
                     ->date();
 
-                $filter->between('upload_date', '上传日期')
+                $filter->betweenDate('upload_date', '上传日期')
                     ->date();
             });
             // 去掉默认的id过滤器
