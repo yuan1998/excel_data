@@ -70,7 +70,7 @@ class WeiboFormDataController extends AdminController
                     2 => '未回访',
                     3 => '已回访',
                 ]);
-                $filter->between('post_date', '表单日期')
+                $filter->betweenDate('real_post_date', '表单日期')
                     ->date();
 
                 $filter->betweenDate('upload_date', '上传日期')
