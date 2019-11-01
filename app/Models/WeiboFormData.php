@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers;
+use App\Jobs\PullWeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -70,5 +72,59 @@ class WeiboFormData extends Model
                     $item->dispatchItem();
                 });
         }
+    }
+
+    public static function apiDataParse($item)
+    {
+        return [
+            'weibo_id'     => $item['id'],
+            'project_id'   => $item['pageId'],
+            'project_name' => $item['pageName'],
+            'post_date'    => Carbon::parse($item['timeAdd'])->toDateString(),
+            'name'         => $item['userName'],
+            'phone'        => $item['userPhone'],
+            'comment'      => $item['desc'],
+        ];
+    }
+
+    public static function generateWeiboFormData($data)
+    {
+        $now = Carbon::now()->toDateTimeString();
+        collect($data)->each(function ($item) use ($now) {
+            $parserItem                = static::apiDataParse($item);
+            $parserItem['upload_date'] = $now;
+
+            $model = WeiboFormData::firstOrCreate([
+                'phone'     => $parserItem['phone'],
+                'post_date' => $parserItem['post_date'],
+            ], $parserItem);
+            if (!$model->comment && $parserItem['comment']) {
+                $model->comment     = $parserItem['comment'];
+                $model->recall_date = $now;
+                $model->save();
+            }
+        });
+        return count($data);
+    }
+
+    public static function pullWeiboData($startDate, $endDate, $count = 2000)
+    {
+        $data = Helpers::getWeiboData($startDate, $endDate, $count);
+        if (!$data) {
+            throw new \Exception('拉取微博数据出错.');
+        }
+        return static::generateWeiboFormData($data);
+    }
+
+    public static function pullToday()
+    {
+        $today = Carbon::today()->toDateString();
+        PullWeiboFormData::dispatch($today, $today)->onQueue('pull_weibo_data');
+    }
+
+    public static function pullYesterday()
+    {
+        $yesterday = Carbon::yesterday()->toDateString();
+        PullWeiboFormData::dispatch($yesterday, $yesterday)->onQueue('pull_weibo_data');
     }
 }

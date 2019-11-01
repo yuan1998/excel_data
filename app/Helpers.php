@@ -23,6 +23,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class Helpers
 {
@@ -588,6 +590,30 @@ class Helpers
         if ($type === 'tempCustomerData') {
             return TempCustomerData::class;
         }
+    }
+
+    public static function getWeiboData($startDate, $endDate, $count = 2000)
+    {
+        $cmd     = base_path('PythonScript/weibo_test.py');
+        $process = new Process(['python3', $cmd, $startDate, $endDate, $count]);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        try {
+            $test  = json_decode($process->getOutput(), true);
+            $total = $test['result']['total'];
+            if ($total > $count) {
+                return static::getWeiboData($startDate, $endDate, $total);
+            }
+            $data = $test['result']['data'];
+            return $data;
+        } catch (\Exception $exception) {
+            Log::info('getWeiboData Exception', [$exception->getMessage()]);
+        }
+        return null;
     }
 
 }

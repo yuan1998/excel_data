@@ -7,6 +7,7 @@ use App\Jobs\BillAccountDataYesterday;
 use App\Models\ArrivingData;
 use App\Models\BillAccountData;
 use App\Models\TempCustomerData;
+use App\Models\WeiboFormData;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
@@ -43,7 +44,6 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             ArrivingData::getToday('kq');
         })->dailyAt('22:50');
-
 
         $schedule->call(function () {
             TempCustomerData::getToday('zx');
@@ -87,6 +87,14 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             BillAccountData::monthBillAccountData('kq');
         })->monthlyOn(date('t'), '23:45');
+
+        $schedule->call(function () {
+            WeiboFormData::pullToday();
+        })->everyThirtyMinutes();
+        $schedule->call(function () {
+            WeiboFormData::pullYesterday();
+        })->daily();
+
 
     }
 

@@ -30,10 +30,11 @@ class WeiboFormDataObserver
     {
         $changes = $weiboFormData->getChanges();
         Log::info('weibo form data change', $changes);
-        if (isset($changes['weibo_user_id'])) {
-            WeiboFormData::find($weiboFormData->id)->update([
-                'dispatch_date' =>  Carbon::now()->toDateTimeString()
-            ]);
+        if (isset($changes['weibo_user_id']) && $changes['weibo_user_id']) {
+            WeiboFormData::find($weiboFormData->id)
+                ->update([
+                    'dispatch_date' => Carbon::now()->toDateTimeString()
+                ]);
         }
     }
 

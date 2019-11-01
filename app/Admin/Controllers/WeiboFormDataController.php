@@ -31,7 +31,7 @@ class WeiboFormDataController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new WeiboFormData);
-        $grid->model()->orderBy('upload_date', 'desc');
+        $grid->model()->orderBy('weibo_user_id')->orderBy('upload_date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
@@ -155,7 +155,7 @@ class WeiboFormDataController extends AdminController
         $form    = new Form(new WeiboFormData);
         $options = WeiboUser::all()->pluck('username', 'id');
 
-        $form->select('tags', '标签')->options( WeiboFormData::$TagList);
+        $form->select('tags', '标签')->options(WeiboFormData::$TagList);
         $form->select('weibo_user_id', __('Weibo user id'))->options($options);
         $form->saving(function (Form $form) {
             if ($form->tags == 0) {
