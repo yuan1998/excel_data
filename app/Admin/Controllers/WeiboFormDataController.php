@@ -112,7 +112,7 @@ class WeiboFormDataController extends AdminController
             return $this->recall_date ? Carbon::parse($this->dispatch_date)->diffForHumans($this->recall_date) : '-';
         });
         $grid->column('comment', '回访记录');
-        $grid->column('post_date', __('表单日期'));
+        $grid->column('real_post_date', __('表单日期'));
         $grid->column('upload_date', __('上传时间'));
 
         return $grid;
