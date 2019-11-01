@@ -42,8 +42,11 @@ class WeiboConfigAction extends Action
 
     public static function getFormConfig()
     {
-        $data = Redis::get('weibo_form_data_config');
-        return array_merge(static::$defaultFormData, $data ? json_decode($data, true) : []);
+        $data                       = Redis::get('weibo_form_data_config');
+        $formData                   = array_merge(static::$defaultFormData, $data ? json_decode($data, true) : []);
+        $formData['stop_open']      = $formData['stop_open'] === 'true' || $formData['stop_open'] === true;
+        $formData['dispatch_start'] = $formData['dispatch_start'] === 'true' || $formData['dispatch_start'] === true;
+        return $formData;
     }
 
     public static function setFormConfig($data = [])
@@ -54,9 +57,8 @@ class WeiboConfigAction extends Action
 
     public function render()
     {
-        $formData                   = static::getFormConfig();
-        $formData['stop_open']      = $formData['stop_open'] === 'true' || $formData['stop_open'] === true;
-        $formData['dispatch_start'] = $formData['dispatch_start'] === 'true' || $formData['dispatch_start'] === true;
+        $formData = static::getFormConfig();
+
 
         return view('admin.actions.weiboConfigAction', [
             'formData' => $formData
