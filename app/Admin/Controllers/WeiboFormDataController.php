@@ -31,7 +31,7 @@ class WeiboFormDataController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new WeiboFormData);
-        $grid->model()->orderBy('weibo_user_id')->orderBy('upload_date', 'desc');
+        $grid->model()->orderBy('upload_date', 'desc')->orderBy('weibo_user_id');
 
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
