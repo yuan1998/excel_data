@@ -10,7 +10,6 @@ use App\Models\WeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\ToModel;
 
 class WeiboFormDataImport implements ToCollection
 {
@@ -33,8 +32,9 @@ class WeiboFormDataImport implements ToCollection
                 $item['recall_date'] = $date;
             }
 
-            $item['post_date']   = Carbon::parse($item['post_date'])->toDateString();
-            $item['upload_date'] = $date;
+            $item['post_date']      = Carbon::parse($item['post_date'])->toDateString();
+            $item['upload_date']    = $date;
+            $item['real_post_date'] = $item['post_date'];
             if ($item['comment']) {
                 $item['recall_date'] = $date;
             }

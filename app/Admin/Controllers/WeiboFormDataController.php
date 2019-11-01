@@ -4,11 +4,11 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\Weibo\BatchDispatch;
+use App\Admin\Actions\WeiboConfigAction;
 use App\Admin\Actions\WeiboUpload;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use Carbon\Carbon;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
@@ -32,7 +32,7 @@ class WeiboFormDataController extends AdminController
     {
         $grid = new Grid(new WeiboFormData);
         $grid->model()->orderBy('upload_date', 'desc')->orderBy('weibo_user_id');
-
+        $this->initVue();
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->like('phone', '电话');
@@ -86,6 +86,7 @@ class WeiboFormDataController extends AdminController
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
             });
+            $tools->append(new WeiboConfigAction());
             $tools->append(new WeiboUpload());
         });
 

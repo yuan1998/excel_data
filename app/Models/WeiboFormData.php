@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Admin\Actions\WeiboConfigAction;
 use App\Helpers;
 use App\Jobs\PullWeiboFormData;
 use Carbon\Carbon;
@@ -24,6 +25,7 @@ class WeiboFormData extends Model
 
         'tags',
         'remark',
+        'real_post_date',
         'weibo_user_id',
         'dispatch_date',
         'upload_date',
@@ -54,12 +56,47 @@ class WeiboFormData extends Model
         }
     }
 
+    public static function setRealPostDate()
+    {
+        WeiboFormData::all()->each(function ($weiboFormData) {
+            if (!$weiboFormData->real_post_date) {
+                $weiboFormData->real_post_date = $weiboFormData->post_date;
+                $weiboFormData->save();
+            }
+        });
+    }
+
+    public static function stopCheck($config, $testTime = null)
+    {
+        if ($config['stop_open']) {
+            if ($config['stop_open_start'] && $config['stop_open_start']) {
+                $now        = $testTime ? Carbon::parse($testTime) : Carbon::now();
+                $start      = Carbon::parse($config['stop_open_start']);
+                $end        = Carbon::parse($config['stop_open_end']);
+                $startHours = (int)$start->format('His');
+                $endHours   = (int)$end->format('His');
+                $nowHours   = (int)$now->format('His');
+
+                $endHours < $startHours && ($endHours += 240000);
+                $nowHours < $startHours && ($nowHours += 240000);
+                return $nowHours >= $startHours && $endHours >= $nowHours;
+            }
+        }
+        return false;
+    }
+
     public function dispatchItem()
     {
-        if ($id = WeiboUser::newDispatchData()) {
-            Log::info('dispatch user id.', ['id' => $id]);
-            WeiboFormData::find($this->id)->update(['weibo_user_id' => $id]);
+        $config = WeiboConfigAction::getFormConfig();
+        if ($config['dispatch_start']) {
+            if (!static::stopCheck($config)) {
+                if ($id = WeiboUser::newDispatchData()) {
+                    Log::info('dispatch user id.', ['id' => $id]);
+                    WeiboFormData::find($this->id)->update(['weibo_user_id' => $id]);
+                }
+            }
         }
+
     }
 
     public static function unallocated()
@@ -77,13 +114,14 @@ class WeiboFormData extends Model
     public static function apiDataParse($item)
     {
         return [
-            'weibo_id'     => $item['id'],
-            'project_id'   => $item['pageId'],
-            'project_name' => $item['pageName'],
-            'post_date'    => Carbon::parse($item['timeAdd'])->toDateString(),
-            'name'         => $item['userName'],
-            'phone'        => $item['userPhone'],
-            'comment'      => $item['desc'],
+            'weibo_id'       => $item['id'],
+            'project_id'     => $item['pageId'],
+            'project_name'   => $item['pageName'],
+            'post_date'      => Carbon::parse($item['timeAdd'])->toDateString(),
+            'real_post_date' => $item['timeAdd'],
+            'name'           => $item['userName'],
+            'phone'          => $item['userPhone'],
+            'comment'        => $item['desc'],
         ];
     }
 

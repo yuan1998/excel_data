@@ -7,12 +7,14 @@ import Vue              from 'vue';
 import ElementUI        from 'element-ui'
 import ExampleComponent from "./components/ExampleComponent";
 import ExportDataForm   from "./components/exportDataForm";
-import GrabDataForm     from "./components/GrabDataForm";
+import WeiConfigAction  from "./components/WeiboConfigAction";
+import GrabDataForm  from "./components/GrabDataForm";
 
 Vue.use(ElementUI);
 Vue.component('example-component', ExampleComponent);
 Vue.component('export-data-form', ExportDataForm);
 Vue.component('grab-data-form', GrabDataForm);
+Vue.component('weibo-config-action', WeiConfigAction);
 
 // const app = new Vue({
 //     el: '#app'

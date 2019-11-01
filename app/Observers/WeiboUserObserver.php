@@ -28,7 +28,7 @@ class WeiboUserObserver
      */
     public function updated(WeiboUser $weiboUser)
     {
-        WeiboFormData::unallocated();
+//        WeiboFormData::unallocated();
     }
 
     /**
