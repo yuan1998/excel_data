@@ -90,7 +90,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             WeiboFormData::pullToday();
-        })->everyThirtyMinutes();
+        })->everyFifteenMinutes();
         $schedule->call(function () {
             WeiboFormData::pullYesterday();
         })->daily();
