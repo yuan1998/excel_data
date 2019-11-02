@@ -17,7 +17,9 @@ class WeiboFormDataObserver
      */
     public function created(WeiboFormData $weiboFormData)
     {
+        Log::info('微博分配开始');
         $weiboFormData->dispatchItem();
+        Log::info('微博分配结束');
     }
 
     /**

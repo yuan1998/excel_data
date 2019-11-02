@@ -59,7 +59,6 @@ class WeiboConfigAction extends Action
     {
         $formData = static::getFormConfig();
 
-
         return view('admin.actions.weiboConfigAction', [
             'formData' => $formData
         ]);

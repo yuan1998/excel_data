@@ -88,9 +88,16 @@ class WeiboFormData extends Model
     public function dispatchItem()
     {
         $config = WeiboConfigAction::getFormConfig();
+        Log::info('微博分配 配置', $config);
+
         if ($config['dispatch_start']) {
-            if (!static::stopCheck($config)) {
-                if ($id = WeiboUser::newDispatchData()) {
+            $stopDispatch = static::stopCheck($config);
+            Log::info('微博分配 是否停止分配', [$stopDispatch]);
+            if (!$stopDispatch) {
+                $id = WeiboUser::newDispatchData();
+                Log::info('微博分配 分配ID', [$id]);
+
+                if ($id) {
                     Log::info('dispatch user id.', ['id' => $id]);
                     WeiboFormData::find($this->id)->update(['weibo_user_id' => $id]);
                 }
