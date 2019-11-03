@@ -74,7 +74,7 @@ class ArrivingDataController extends AdminController
 
         $grid->column('projects', __("Project"))->pluck('title')->label();
 
-        $grid->column('customerPhone.phone', __('Phone'))
+        $grid->column('phone', __('Phone'))
             ->display(function ($value) {
                 return $value ?? $this->phone;
             })

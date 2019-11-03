@@ -62,7 +62,7 @@ class BillAccountDataController extends AdminController
         $grid->column('customer', __('Customer'));
         $grid->column('customer_status', __('Customer status'));
         $grid->column('again_arriving', __('Again arriving'));
-        $grid->column('customerPhone.phone', __('Phone'))
+        $grid->column('phone', __('Phone'))
             ->display(function ($value) {
                 return $value ?? $this->phone;
             })

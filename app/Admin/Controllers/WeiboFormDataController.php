@@ -13,6 +13,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\DB;
 
 class WeiboFormDataController extends AdminController
 {
@@ -33,6 +34,33 @@ class WeiboFormDataController extends AdminController
         $grid = new Grid(new WeiboFormData);
         $grid->model()->orderBy('upload_date', 'desc')->orderBy('weibo_user_id');
         $this->initVue();
+
+        $grid->header(function ($query) {
+            $today              = Carbon::today();
+            $todayUnRecallCount = $query->whereDate('upload_date', $today->toDateString())
+                ->whereNotNull('weibo_user_id')
+                ->whereNull('recall_date')
+                ->count();
+            $allUnRecallCount   = $query->whereNotNull('weibo_user_id')
+                ->whereNull('recall_date')
+                ->count();
+            $todayUnDispatch    = $query->whereDate('upload_date', $today->toDateString())
+                ->whereNull('weibo_user_id')
+                ->count();
+            $allUnDispatch      = $query->whereNull('weibo_user_id')
+                ->count();
+            $todayCount         = $query->whereDate('upload_date', $today->toDateString())->count();
+
+            return view('admin.headers.WeiboFormDataHeader', [
+                'todayUnRecallCount'   => $todayUnRecallCount,
+                'allUnRecallCount'     => $allUnRecallCount,
+                'todayUnDispatchCount' => $todayUnDispatch,
+                'allUnDispatchCount'   => $allUnDispatch,
+                'todayCount'           => $todayCount,
+            ]);
+        });
+
+        // day name
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->like('phone', '电话');
@@ -51,7 +79,6 @@ class WeiboFormDataController extends AdminController
                         }
                     }
                 }, '标签')->select(WeiboFormData::$TagList);
-
             });
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->where(function ($query) {
@@ -142,7 +169,6 @@ class WeiboFormDataController extends AdminController
         $show->field('remark', __('Remark'));
         $show->field('weibo_user_id', __('Weibo user id'));
 
-
         return $show;
     }
 
@@ -162,6 +188,7 @@ class WeiboFormDataController extends AdminController
             if ($form->tags == 0) {
                 $form->tags = null;
             }
+
         });
 
         return $form;

@@ -93,11 +93,16 @@ class WeiboUserController extends AdminController
         $form = new Form(new WeiboUser);
 
         $form->text('username', __('Username'));
-        $form->password('password', __('Password'));
+        $form->password('password', __('Password'))
+            ->default(function ($form) {
+                return $form->model()->password;
+            });
         $form->number('limit', __('Limit'))->default(20);
 
         $form->saving(function (Form $form) {
-            $form->password = bcrypt($form->password);
+            if ($form->password && $form->model()->password != $form->password) {
+                $form->password = bcrypt($form->password);
+            }
         });
 
         return $form;
