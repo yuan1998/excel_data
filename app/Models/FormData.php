@@ -107,7 +107,7 @@ class FormData extends Model
     public static function updateOrCreateItem($data, $field, $delay = null)
     {
         // 获取id字段
-        $id = $data[$field];
+        $id = $data['id'];
         // 判断所属科室,如果存在则写入ID
         $departmentType        = Helpers::checkDepartment($data['data_type']);
         $data['department_id'] = $departmentType ? $departmentType->id : null;

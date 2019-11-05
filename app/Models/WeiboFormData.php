@@ -242,7 +242,7 @@ class WeiboFormData extends Model
     public function makeFormData($delay = null)
     {
         // 调用 FormData 的方法创建 FormData 和 FormDataPhone.
-        FormData::updateOrCreateItem($this->toFormCreateData(), $delay);
+        FormData::updateOrCreateItem($this->toFormCreateData(), 'weibo_id', $delay);
     }
 
     /**
