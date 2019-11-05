@@ -2,48 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Admin/Extensions/Tools/ChannelTypeFilter.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Clients/WeiboClient.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/WeiboDispatchSettings.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/tools/ChannelType.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/weibo/dispatchSettings.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonScript/weibo_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonScript/weibo_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/AccountDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/AccountDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/AccountReturnPointController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/WeiboFormDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/WeiboFormDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/WeiboUserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/WeiboUserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/bootstrap.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/bootstrap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/routes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboFormDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboFormDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/BaiduImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/BaiduImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/WeiboFormDataImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/WeiboFormDataImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/WeiboImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/WeiboImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/AccountData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/AccountData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/AccountReturnPoint.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ArchiveType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ArchiveType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/BaiduData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BaiduData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FeiyuData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FeiyuData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormDataPhone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormDataPhone.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/WeiboData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboData.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/WeiboFormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboFormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/WeiboUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboUser.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Observers/FormDataPhoneObserver.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Observers/FormDataPhoneObserver.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Observers/WeiboFormDataObserver.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Observers/WeiboFormDataObserver.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/GrabDataForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/GrabDataForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/WeiboFormData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3122">
-              <caret line="149" selection-start-line="149" selection-end-line="149" />
+            <state relative-caret-position="256">
+              <caret line="263" lean-forward="true" selection-start-line="263" selection-end-line="263" />
               <folding>
                 <element signature="e#30#70#0#PHP" expanded="true" />
               </folding>
@@ -92,15 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/js/components/WeiboDispatchSettings.vue">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="517">
-              <caret line="162" column="81" selection-start-line="162" selection-start-column="81" selection-end-line="162" selection-end-column="81" />
-              <folding>
-                <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#el-drawer#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="-18">
+              <caret line="39" column="17" lean-forward="true" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -157,7 +112,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>WeiboFormDataController</find>
       <find>$weiboFormData-&gt;dispatch_date =</find>
       <find>$weiboFormData-&gt;dispatch_date</find>
       <find>Log::info('test</find>
@@ -187,6 +141,7 @@
       <find>newDis</find>
       <find>dispatch_time</find>
       <find>newDispatchData</find>
+      <find>拉取微博数据出错</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -243,9 +198,9 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboDispatchSettingController.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
-        <option value="$PROJECT_DIR$/app/Models/WeiboFormData.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/WeiboFormDataController.php" />
         <option value="$PROJECT_DIR$/resources/js/components/WeiboDispatchSettings.vue" />
+        <option value="$PROJECT_DIR$/app/Models/WeiboFormData.php" />
       </list>
     </option>
   </component>
@@ -496,6 +451,11 @@
               <item name="admin" type="462c0819:PsiDirectoryNode" />
               <item name="weibo" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="excelData" type="b2602c69:ProjectViewProjectNode" />
+              <item name="excelData" type="462c0819:PsiDirectoryNode" />
+              <item name="storage" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -563,12 +523,12 @@
       <workItem from="1571923365340" duration="53001000" />
       <workItem from="1572353544202" duration="103446000" />
       <workItem from="1572922088551" duration="853000" />
-      <workItem from="1572926023888" duration="20152000" />
+      <workItem from="1572926023888" duration="21056000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="544639000" />
+    <option name="totallyTimeSpent" value="545543000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -602,13 +562,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/database/migrations/2019_11_04_194214_change_account_data_table_add_is_default.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/DepartmentTypeController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="725">
@@ -813,13 +766,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonScript/weibo_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -930,13 +876,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/WeiboFormData.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/WeiboDispatchSetting.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3122">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
+        <state relative-caret-position="620">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
           <folding>
-            <element signature="e#30#70#0#PHP" expanded="true" />
+            <element signature="e#30#69#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="7" column="4" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/WeiboDispatchSettings.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
+          <folding>
+            <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#el-drawer#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-18">
+          <caret line="39" column="17" lean-forward="true" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -950,23 +921,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/WeiboDispatchSetting.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/WeiboFormData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="256">
+          <caret line="263" lean-forward="true" selection-start-line="263" selection-end-line="263" />
           <folding>
-            <element signature="e#30#69#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/WeiboDispatchSettings.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="517">
-          <caret line="162" column="81" selection-start-line="162" selection-start-column="81" selection-end-line="162" selection-end-column="81" />
-          <folding>
-            <element signature="n#style#0;n#el-button#0;n#div#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#el-drawer#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#30#70#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

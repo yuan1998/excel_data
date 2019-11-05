@@ -267,7 +267,7 @@ class WeiboFormData extends Model
 
         // 没有数据报错.
         if (!$data) {
-            throw new \Exception('拉取微博数据出错.');
+            Log::info('拉取微博数据出错 , 数据为空', ['result' => $data, 'account' => $account]);
         }
 
         // 将拉取到的数据保存到服务器
