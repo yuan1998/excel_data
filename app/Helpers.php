@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Admin\Extensions\Tools\DepartmentDataType;
 use App\Clients\BaseClient;
 use App\Clients\KqClient;
 use App\Clients\ZxClient;
@@ -18,11 +19,13 @@ use App\Models\TempCustomerData;
 use App\Models\WeiboData;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Callable_;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -327,20 +330,21 @@ class Helpers
 
 
     /**
-     * 查询Model 到院状态
+     * 查询并写入 Model数据 的到院状态
      * @param BaiduClue|WeiboData|FeiyuData $model
      */
     public static function checkArriving($model)
     {
-        $client = static::typeClient($model->type);
-        if (!$client) {
+        // 获取 Crm客户端
+        if (!$client = static::typeClient($model->type)) {
             return;
         }
-        $date = Carbon::parse($model->getDate());
-
+        // 获取 模型日期月份 的第一天 和 最后一天
+        $date      = Carbon::parse($model->getDate());
         $firstDate = $date->firstOfMonth()->toDateString();
         $lastDate  = $date->lastOfMonth()->toDateString();
 
+        //
         $data = $client::toHospitalSearchArriving([
             'phone'            => $model->phone,
             'DatetimeRegStart' => $firstDate,
@@ -352,15 +356,16 @@ class Helpers
     }
 
     /**
-     * 查询 Model 数据的意向度
+     * 查询并写入 Model数据 的意向度
      * @param $model
      */
     public static function checkIntention($model)
     {
-        $client = static::typeClient($model->type);
-        if (!$client) {
+        // 获取 Crm客户端
+        if (!$client = static::typeClient($model->type)) {
             return;
         }
+        // 获取并保存 意向度和其他结果
         $data = $client::reservationSearchIntention([
             'phone' => $model->phone
         ]);
@@ -369,7 +374,7 @@ class Helpers
     }
 
     /**
-     * 查看Model 数据是否已建档
+     * 查询并写入 Model数据 的建档状态
      * @param $model
      */
     public static function checkIsArchive($model)
@@ -378,12 +383,18 @@ class Helpers
         if (!$client) {
             return;
         }
+        // 获取 建档状态 结果,并保存
         $model->is_archive = $client::tempSearchExists([
             'phone' => $model->phone
         ]);
         $model->save();
     }
 
+    /**
+     * 获取 Crm 客户端类型.
+     * @param string $type 类型名称
+     * @return string|bool
+     */
     public static function typeClient($type)
     {
         if (!in_array($type, ['zx', 'kq'])) {
@@ -393,17 +404,12 @@ class Helpers
         return $type === 'zx' ? ZxClient::class : KqClient::class;
     }
 
-    public static function generateDateRange(Carbon $start_date, Carbon $end_date)
-    {
-        $dates = [];
 
-        for ($date = $start_date->copy(); $date->lte($end_date); $date->addDay()) {
-            $dates[] = $date->toDateString();
-        }
-
-        return $dates;
-    }
-
+    /**
+     * 将带有 | 的字符串装换成 正则
+     * @param string $str
+     * @return string
+     */
     public static function explodeKeywordToRegex($str)
     {
         $regex = preg_replace('/(\,)/', '|', $str);
@@ -411,33 +417,37 @@ class Helpers
         return "/({$regex})/";
     }
 
+    /**
+     *  查看传参中的 病种类型 是否匹配 关键词字符串.
+     * @param array  $types 病种类型
+     * @param string $key   关键词字符串
+     * @param string $field
+     * @return Collection|null
+     */
     public static function projectTypeCheck($types, $key, $field = 'keyword')
     {
+        // 定义 结果
         $result = [];
-
         foreach ($types as $type) {
+            // 获取 匹配词
             $value = $type[$field];
-            $id    = $type->id;
-
+            // 将匹配词转换成 正则
             $regex = static::explodeKeywordToRegex($value);
+
+            // 使用正则匹配 关键词字符串
             if (preg_match($regex, $key)) {
-                array_push($result, $id);
+                array_push($result, $type);
             }
         }
-        return $result;
+        return count($result) ? collect($result) : null;
     }
 
-    public static function archiveTypeCheck($types, $key)
-    {
-        $result = [];
-        foreach ($types as $id => $value) {
-            if ($key == $value) {
-                array_push($result, $id);
-            }
-        }
-        return $result;
-    }
 
+    /**
+     * 获取 媒介类型ID , 如果没有则创建,然后再缓存到redis中
+     * @param $name
+     * @return mixed
+     */
     public static function getMediumTypeId($name)
     {
         $val = Redis::get($name);
@@ -454,7 +464,11 @@ class Helpers
 
     }
 
-
+    /**
+     * 获取 建档类型ID , 如果没有则创建,然后再缓存到redis中
+     * @param $name
+     * @return mixed
+     */
     public static function getArchiveTypeId($name)
     {
         $val = Redis::get($name);
@@ -470,19 +484,25 @@ class Helpers
         return $val;
     }
 
-
+    /**
+     * 验证 电话号码 是否正确
+     * @param string|int $value 电话号
+     * @return bool
+     */
     public static function validatePhone($value)
     {
         return $value && preg_match("/^1[34578]\d{9}$/", $value);
     }
 
     /**
-     * @param null $id
+     * 获取 账户模型 ,如果平台ID 为空则返回所有 账户模型,否则返回对应平台的 账户数据
+     * @param string|int|null $id 平台ID
      * @return Helpers[]|\Illuminate\Database\Eloquent\Collection
      */
     public static function getAccountRebate($id = null)
     {
         if (!static::$AccountRebate) {
+            // 缓存 所有账户数据
             static::$AccountRebate = AccountReturnPoint::all();
         }
         return $id ? static::$AccountRebate->filter(function ($data) use ($id) {
@@ -491,25 +511,39 @@ class Helpers
     }
 
     /**
+     * 获取 所有 科室模型
      * @return  \Illuminate\Database\Eloquent\Collection|static[]
      */
     public static function getDepartmentTypes()
     {
         if (!static::$DepartmentTypes) {
+            // 缓存 所有科室
             static::$DepartmentTypes = DepartmentType::all();
         }
         return static::$DepartmentTypes;
     }
 
+    /**
+     * 获取 科室ID 下所有的病种模型
+     * @param string|int $id 科室ID
+     * @return mixed
+     */
     public static function getProjectOfDepartmentId($id)
     {
         if (!static::$ProjectTypes) {
+            // 缓存 所有病种, 并用科室ID 进行分类
             static::$ProjectTypes = ProjectType::all()->groupBy('department_id');
         }
 
         return static::$ProjectTypes->get($id);
     }
 
+    /**
+     * 判断 平台的回扣
+     * @param string|integer $id     平台ID
+     * @param string         $search 关键词字符串
+     * @return float|int
+     */
     public static function checkFormTypeRebate($id, $search)
     {
         $data = static::getAccountRebate($id);
@@ -532,7 +566,12 @@ class Helpers
         return $result ? (float)$result->rebate : 0;
     }
 
-    public static function dateRangeForEach($dates, $callBack)
+    /**
+     * 迭代 日期范围, 在回调中传入当前日期
+     * @param array   $dates    日期范围
+     * @param Closure $callBack 回调
+     */
+    public static function dateRangeForEach($dates, Closure $callBack)
     {
         $date = CarbonPeriod::create($dates[0], $dates[1]);
 
@@ -542,30 +581,50 @@ class Helpers
     }
 
 
+    /**
+     * 获取所有科室,判断 关键词字符串 是否有匹配的科室
+     * @param string $str 关键词字符串
+     * @return mixed
+     */
     public static function checkDepartment($str)
     {
+        // 获取所有科室
         $types = static::getDepartmentTypes();
-        $res   = $types->first(function ($item) use ($str) {
+
+        // 找到并返回第一个匹配的科室
+        return $types->first(function ($item) use ($str) {
+            // 使用 科室的keyword 匹配 关键词字符串
             $keywords = preg_replace('/(\,)/', '|', $item->keyword);
             return !!preg_match("/{$keywords}/", $str);
         });
-
-
-        return $res;
     }
 
 
+    /**
+     * 获取科室下的所有病种,判断 关键词字符串 是否有匹配的病种
+     * @param DepartmentDataType $department 科室模型
+     * @param string             $str        关键词字符串
+     * @param string             $field      关键词字段
+     * @return Collection|null
+     */
     public static function checkDepartmentProject($department, $str, $field = 'keyword')
     {
+        // 获取 科室ID, 使用ID来获取科室下的病种
         $id           = $department->id;
         $projectTypes = static::getProjectOfDepartmentId($id);
 
-        if (!$projectTypes) return [];
+        // 如果没有病种,返回null
+        if (!$projectTypes) return null;
 
+        // 判断并返回与 关键词字符串 匹配的病种,没有则返回null
         return static::projectTypeCheck($projectTypes, $str, $field);
     }
 
-
+    /**
+     * 将 数字序号 转换成 Excel的序号
+     * @param integer $num 数字序号
+     * @return string Excel的序号
+     */
     public static function getNameFromNumber($num)
     {
         $numeric = ($num - 1) % 26;
@@ -578,7 +637,11 @@ class Helpers
         }
     }
 
-
+    /**
+     * 判断Crm数据的类型,并返回对应的Class
+     * @param $type
+     * @return string
+     */
     public static function getDataModel($type)
     {
         if ($type === 'billAccountData') {
@@ -590,30 +653,6 @@ class Helpers
         if ($type === 'tempCustomerData') {
             return TempCustomerData::class;
         }
-    }
-
-    public static function getWeiboData($startDate, $endDate, $count = 2000)
-    {
-        $cmd     = base_path('PythonScript/weibo_test.py');
-        $process = new Process(['python3', $cmd, $startDate, $endDate, $count]);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        try {
-            $test  = json_decode($process->getOutput(), true);
-            $total = $test['result']['total'];
-            if ($total > $count) {
-                return static::getWeiboData($startDate, $endDate, $total);
-            }
-            $data = $test['result']['data'];
-            return $data;
-        } catch (\Exception $exception) {
-            Log::info('getWeiboData Exception', [$exception->getMessage()]);
-        }
-        return null;
     }
 
 }

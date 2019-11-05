@@ -24,15 +24,19 @@ class FormDataPhone extends Model
     /**
      * @param FormData   $model
      * @param Collection $phone
+     * @param null       $delay
      */
-    public static function createOrUpdateItem($model, $phone)
+    public static function createOrUpdateItem($model, $phone, $delay = null)
     {
         $id = $model->id;
-        $phone->each(function ($phone) use ($id) {
-            FormDataPhone::updateOrCreate([
+        $phone->each(function ($phone) use ($id, $delay) {
+            $item = FormDataPhone::updateOrCreate([
                 'phone'        => $phone,
                 'form_data_id' => $id
             ]);
+            if (!$item->is_archive) {
+                ClueDataCheck::dispatch($item)->onQueue('form_data_phone')->delay($delay);
+            }
         });
     }
 

@@ -27,7 +27,7 @@ class FormDataController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new FormData);
-        $grid->model()->with(['phones', 'projects', 'department'])->orderBy('date', 'desc');
+        $grid->model()->with(['phones', 'projects'])->orderBy('date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
@@ -38,7 +38,6 @@ class FormDataController extends AdminController
             });
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->where(function ($query) {
-
                     if (is_numeric($this->input)) {
                         $query->has('projects', '=', $this->input);
                     }
@@ -64,10 +63,14 @@ class FormDataController extends AdminController
         $grid->disableCreateButton();
         $this->appendFormType($grid);
 
-        $grid->column('department.title', __('科室'));
+        $grid->column('department_info', __('科室'))->display(function () {
+            return $this->department_info->title;
+        });
         $grid->column('form_type', __('Form type'))->using(FormData::$FormTypeList);
         $grid->column('phones', __('Phone'))->pluck('phone')->label();
-        $grid->column('projects', __('Project'))->pluck('title')->label();
+        $grid->column('project_info', __('Project'))->display(function () {
+            return $this->project_info;
+        })->pluck('title')->label();
         $grid->column('date', __('Date'));
         $grid->column('data_type', __('表单自带类型'));
 

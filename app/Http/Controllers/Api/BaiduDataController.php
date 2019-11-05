@@ -14,6 +14,7 @@ use App\Models\ArrivingData;
 use App\Models\BaiduClue;
 use App\Models\BaiduData;
 use App\Models\BillAccountData;
+use App\Models\CrmUser;
 use App\Models\FormDataPhone;
 use App\Models\ProjectType;
 use App\Models\TempCustomerData;
@@ -47,33 +48,6 @@ class BaiduDataController extends Controller
 
     /*
 
-"""
-HTTP/1.1 200 OK
-Cache-Control: private
-Content-Type: application/json; charset=utf-8
-Server: Microsoft-IIS/8.5
-X-AspNetMvc-Version: 4.0
-X-AspNet-Version: 4.0.30319
-X-Powered-By: ASP.NET
-Date: Tue, 29 Oct 2019 07:23:33 GMT
-Content-Length: 243
-
-{"statusCode":"200","message":"添加成功","closeCurrent":true,"tabid":"ReservationTempCustInfoIndex","forward":"/Reservation/TempCustInfo/CreateTempNote?phone=13192567990E\u0026\u0026id=EC6616FA31CB4269B661AAF500FDAB12","forwardConfirm":""}
-"""
-
-"""
-HTTP/1.1 200 OK
-Cache-Control: private
-Transfer-Encoding: chunked
-Content-Type: application/json; charset=utf-8
-Server: Microsoft-IIS/8.5
-X-AspNetMvc-Version: 4.0
-X-AspNet-Version: 4.0.30319
-X-Powered-By: ASP.NET
-Date: Tue, 29 Oct 2019 07:25:08 GMT
-
-{"statusCode":"300","message":"\u003cb\u003e系统发生异常，请联系系统管理员。\u003c/b\u003e\u003c/p\u003e\u003cb\u003e异常消息:  \u003c/b\u003eORA-00001: 违反唯一约束条件 (BMSKQ.UQ_TEMP_CUST_INFO_ID_PHONE)\u003c/p\u003e\u003cb\u003e触发Action:  \u003c/b\u003eCreate\u003c/p\u003e\u003cb\u003e异常类型:  \u003c/b\u003eOracle.ManagedDataAccess.Client.OracleException"}
-"""
 
      */
 
@@ -89,6 +63,10 @@ Date: Tue, 29 Oct 2019 07:25:08 GMT
      */
     public function test(Request $request)
     {
+
+        $item = WeiboFormData::find(195);
+
+        dd($item->dispatchItem());
 
         Excel::import(new WeiboFormDataImport(), $request->file('excel'));
         dd();

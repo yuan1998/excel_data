@@ -219,5 +219,7 @@
 </script>
 
 <style scoped lang="less">
-
+    .swal-container {
+        z-index: 2500
+    }
 </style>

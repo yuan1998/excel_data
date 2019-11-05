@@ -11,6 +11,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('admin.home');
+    $router->get('/weibo_user/settings', 'WeiboUserController@settings')->name('admin.weiboUser.settings');
 
     $router->resource('baidu_data', 'BaiduDataController');
     $router->resource('weibo_data', 'WeiboDataController');
@@ -29,7 +30,6 @@ Route::group([
     $router->resource('crm_grab_logs', "CrmGrabLogController");
     $router->resource('export_data_logs', "ExportDataLogController");
     $router->resource('account_data', "AccountDataController");
-    $router->resource('account_return_point', "AccountReturnPointController");
     $router->resource('weibo_user', 'WeiboUserController');
     $router->resource('weibo_form_data', "WeiboFormDataController");
 });

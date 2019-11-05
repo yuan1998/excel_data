@@ -2,10 +2,12 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\WeiboDispatchSetting;
 use App\Models\WeiboUser;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
+use Encore\Admin\Layout\Row;
 use Encore\Admin\Show;
 use Illuminate\Http\Request;
 
@@ -37,6 +39,28 @@ class WeiboUserController extends AdminController
         ];
     }
 
+    public function settings(Content $content)
+    {
+        $this->initVue();
+
+        $settings = [
+            'zx' => WeiboDispatchSetting::getBaseSettings('zx'),
+            'kq' => WeiboDispatchSetting::getBaseSettings('kq'),
+        ];
+
+        $users = WeiboUser::all();
+        $rules = WeiboDispatchSetting::all();
+
+        return $content
+            ->title($this->title())
+            ->description('分配配置')
+            ->view('admin.weibo.dispatchSettings', [
+                'settings' => $settings,
+                'users'    => $users,
+                'rules'    => $rules,
+            ]);
+    }
+
     /**
      * Make a grid builder.
      *
@@ -46,6 +70,9 @@ class WeiboUserController extends AdminController
     {
         $grid = new Grid(new WeiboUser);
         $grid->model()->withCount(['weiboFormDataNull', 'weiboFormDataAll', 'weiboFormDataToday']);
+
+        $type = $this->appendDataType($grid);
+
         $grid->column('username', __('Username'));
 
         // 设置text、color、和存储值
@@ -59,6 +86,13 @@ class WeiboUserController extends AdminController
         $grid->column('weibo_form_data_all_count', __('总表单数'));
         $grid->column('limit', __('每日表单限制'));
         $grid->column('created_at', __('Created at'));
+        if (!$type) {
+            $grid->column('type', __('类型'))
+                ->using([
+                    'zx'  => '整形',
+                    'kq'  => '口腔',
+                ])->label();
+        }
         return $grid;
     }
 
@@ -92,6 +126,13 @@ class WeiboUserController extends AdminController
     {
         $form = new Form(new WeiboUser);
 
+        $form->select('type', __('Type'))
+            ->options([
+                'zx' => '整形',
+                'kq' => '口腔',
+            ])
+            ->default('kq')
+            ->required();
         $form->text('username', __('Username'));
         $form->password('password', __('Password'))
             ->default(function ($form) {

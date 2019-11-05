@@ -16,7 +16,6 @@ class FormDataPhoneObserver
      */
     public function created(FormDataPhone $formDataPhone)
     {
-        Redis::set($formDataPhone->getTable() . '_' . $formDataPhone->id . '_queue_clue_loading', 1);
         ClueDataCheck::dispatch($formDataPhone)->onQueue('form_data_phone');
     }
 
@@ -30,7 +29,6 @@ class FormDataPhoneObserver
     {
         $change = $formDataPhone->getChanges();
         if (isset($change['phone'])) {
-            Redis::set($formDataPhone->getTable() . '_' . $formDataPhone->id . '_queue_clue_loading', 1);
             ClueDataCheck::dispatch($formDataPhone)->onQueue('form_data_phone');
         }
     }

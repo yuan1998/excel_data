@@ -80,14 +80,10 @@ $api->version('v1', [
      */
     $api->post('/baiduSpend/upload', "BaiduSpendController@uploadExcel")
         ->name('api.baiduSpend.uploadExcel');
-
     $api->post('/feiyuSpend/upload', "FeiyuSpendController@uploadExcel")
         ->name('api.feiyuSpend.uploadExcel');
-
     $api->post('/weiboSpend/upload', "WeiboSpendController@uploadExcel")
         ->name('api.weiboSpend.uploadExcel');
-
-
     $api->get('/department/archives', "DepartmentController@departmentArchives")
         ->name('api.department.archives');
 
@@ -119,6 +115,16 @@ $api->version('v1', [
 
         $api->get('/user/pause', "WeiboUserController@updatePause")
             ->name('api.weiboUser.updatePause');
+
+        $api->post('/setting', "WeiboDispatchSettingController@ruleStore")
+            ->name('api.WeiboDispatchSetting.ruleStore');
+        $api->post('/setting/base', "WeiboDispatchSettingController@saveSetting")
+            ->name('api.WeiboDispatchSetting.saveSetting');
+        $api->put('/setting/{dispatchSetting}', "WeiboDispatchSettingController@ruleUpdate")
+            ->name('api.WeiboDispatchSetting.ruleUpdate');
+        $api->delete('/setting/{ids}', "WeiboDispatchSettingController@destroy")
+            ->name('api.WeiboDispatchSetting.destroy');
+
 
     });
 

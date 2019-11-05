@@ -6,6 +6,7 @@ use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\Weibo\BatchDispatch;
 use App\Admin\Actions\WeiboConfigAction;
 use App\Admin\Actions\WeiboUpload;
+use App\Models\FormData;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use Carbon\Carbon;
@@ -113,9 +114,10 @@ class WeiboFormDataController extends AdminController
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
             });
-            $tools->append(new WeiboConfigAction());
             $tools->append(new WeiboUpload());
         });
+
+        $type = $this->appendDataType($grid);
 
         $grid->disableCreateButton();
 
@@ -134,6 +136,7 @@ class WeiboFormDataController extends AdminController
             ->using(WeiboFormData::$TagList)
             ->label();
 
+        $grid->column('project_name', __('项目名称'));
         $grid->column('phone', __('Phone'));
         $grid->column('is_back', '反应时间')->display(function () {
             return $this->recall_date ? Carbon::parse($this->dispatch_date)->diffForHumans($this->recall_date) : '-';
@@ -141,6 +144,13 @@ class WeiboFormDataController extends AdminController
         $grid->column('comment', '回访记录');
         $grid->column('real_post_date', __('表单日期'));
         $grid->column('upload_date', __('上传时间'));
+        if (!$type) {
+            $grid->column('type', __('类型'))
+            ->using([
+                'zx'  => '整形',
+                'kq'  => '口腔',
+            ])->label();
+        }
 
         return $grid;
     }

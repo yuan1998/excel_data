@@ -52,7 +52,7 @@ class WeiboFormDataController extends Controller
             ->orderBy('dispatch_date', 'desc')
             ->first();
 
-        $last_date = $item ? (string) $item->dispatch_date : Carbon::now()->toDateTimeString();
+        $last_date = $item ? (string)$item->dispatch_date : Carbon::now()->toDateTimeString();
 
         return $this->response->array([
             'data'             => $data,
@@ -72,18 +72,9 @@ class WeiboFormDataController extends Controller
         if ($formData->weibo_user_id != $user->id) {
             $this->response->errorBadRequest('不属于该用户的表单');
         }
-        $data = $request->all();
-
-        if (!$formData->recall_date) {
-            if (isset($data['comment']) || isset($data['tags'])) {
-                $data['recall_date'] = Carbon::now()->toDateTimeString();
-            }
-        }
-
-        $formData->fill($data);
-        $formData->save();
+        $result = $formData->update($request->all());
         return $this->response->array([
-            'data'   => $formData,
+            'data'   => $result,
             'status' => true
         ]);
     }

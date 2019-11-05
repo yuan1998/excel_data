@@ -292,22 +292,23 @@ class BaseClient
 
     /**
      * 临客查询 Api
-     * @param $data
+     * @param      $data
+     * @param bool $toDom
      * @return Dom
-     * @throws GuzzleException
      * @throws ChildNotFoundException
      * @throws CircularException
      * @throws CurlException
+     * @throws GuzzleException
      * @throws StrictException
      */
-    public static function tempSearchApi($data)
+    public static function tempSearchApi($data, $toDom = true)
     {
         $data = array_merge([
             'DatetimeRegStart' => '',
             'DatetimeRegEnd'   => '',
         ], $data ?? []);
 
-        return static::postUriGetDom(static::$temp_search_url, $data);
+        return static::postUriGetDom(static::$temp_search_url, $data, $toDom);
     }
 
     public static function tempSearchOfDate($start, $end, $count = 10000)

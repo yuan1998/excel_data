@@ -100,7 +100,6 @@ class BaiduImport implements ToCollection
                 && isset($item['visitor_name'])
                 && isset($item['visitor_id']);
         })->each(function ($item) {
-
             $item['url']             = substr($item['url'] ?? '', 0, Builder::$defaultStringLength);
             $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
 
@@ -109,7 +108,6 @@ class BaiduImport implements ToCollection
             $code = isset($match[0]) ? $match[0] : null;
 
             if ($code) {
-
                 $channel = BaiduData::checkCodeIs($code);
                 if ($channel == 1) {
                     $this->saveForm($item, $channel);

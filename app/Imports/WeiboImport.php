@@ -41,7 +41,6 @@ class WeiboImport implements ToCollection
                 throw new \Exception('识别为多个病种:' . $item['project_name']);
             }
 
-
             $type         = $departmentType->type;
             $item['type'] = $type;
 

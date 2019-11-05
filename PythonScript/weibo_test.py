@@ -204,7 +204,7 @@ class WeiboLogin(object):
             "feed_type": "",
             "group_id": "",
             "page_name": "",
-            "customer_id": "6660030357",
+            "customer_id": arguments[6],
             "time_start": startDate,
             "time_end": endDate,
         }
@@ -215,8 +215,8 @@ class WeiboLogin(object):
 
 
 if __name__ == '__main__':
-    username = "17392448796"  # 用户名
-    password = "huamei2019"  # 密码
+    username = arguments[4]  # 用户名
+    password = arguments[5]  # 密码
     cookie_path = "./cookie_weibo_" + username +".txt"  # 保存cookie 的文件名称
     weibo = WeiboLogin(username, password, cookie_path)
     weibo.login()

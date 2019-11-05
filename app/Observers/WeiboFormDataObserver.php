@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 class WeiboFormDataObserver
 {
     /**
+     * 在 微博数据 创建完成之后的事件
      * Handle the weibo form data "created" event.
      *
      * @param WeiboFormData $weiboFormData
@@ -23,6 +24,7 @@ class WeiboFormDataObserver
     }
 
     /**
+     * 在 微博数据 修改完成之后的事件
      * Handle the weibo form data "updated" event.
      *
      * @param WeiboFormData $weiboFormData
@@ -30,13 +32,34 @@ class WeiboFormDataObserver
      */
     public function updated(WeiboFormData $weiboFormData)
     {
+        // 获取被修改的字段
         $changes = $weiboFormData->getChanges();
         Log::info('weibo form data change', $changes);
+
+        // 判断是否是分配操作
         if (isset($changes['weibo_user_id']) && $changes['weibo_user_id']) {
+
+            // 写入分配时间
             WeiboFormData::find($weiboFormData->id)
                 ->update([
                     'dispatch_date' => Carbon::now()->toDateTimeString()
                 ]);
+        }
+
+        // 判断是否希尔 回访时间
+        if (!$weiboFormData->recall_date &&
+            (isset($changes['comment']) || isset($changes['tags']))
+        ) {
+            // 写入 回访时间
+            WeiboFormData::find($weiboFormData->id)
+                ->update([
+                    'recall_date' => Carbon::now()->toDateTimeString()
+                ]);
+        }
+
+        // 如果 微博表单 已经成功回访,调用方法创建 FormData, 在30分钟后查询是否已建档
+        if (isset($changes['recall_date']) && $changes['recall_date']) {
+            $weiboFormData->makeFormData(Carbon::now()->addMinutes(30));
         }
     }
 

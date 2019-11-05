@@ -58,12 +58,4 @@ class WeiboData extends Model
         return $this->morphToMany(ProjectType::class, 'model', 'project_list', 'model_id', 'project_id');
     }
 
-    public static function recheckProjects()
-    {
-        $projectTypes = ProjectType::all()->pluck('keyword', 'id');
-
-        static::all()->each(function ($item) use ($projectTypes) {
-            $item->projects()->sync(Helpers::projectTypeCheck($projectTypes, $item->project_name));
-        });
-    }
 }

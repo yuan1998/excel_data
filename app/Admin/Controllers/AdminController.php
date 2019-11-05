@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\Tools\ChannelTypeFilter;
 use App\Admin\Extensions\Tools\DataType;
 use App\Admin\Extensions\Tools\DepartmentDataType;
 use App\Admin\Extensions\Tools\FormTypeFilter;
@@ -73,5 +74,28 @@ EOF
         return $type;
 
     }
+
+    /**
+     * 将 筛选 渠道按钮加入页面
+     * @param Grid   $grid
+     * @param string $field
+     * @return mixed|null
+     */
+    public function appendChannelType(Grid $grid, $field = 'channel_id')
+    {
+        $type = request()->get($field);
+
+        if ($type && $type != 'all') {
+            $grid->model()->where($field, $type);
+        }
+
+        $grid->tools(function (Grid\Tools $tools) {
+            $tools->append(new ChannelTypeFilter());
+        });
+
+        return $type;
+
+    }
+
 
 }

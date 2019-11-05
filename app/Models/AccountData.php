@@ -12,7 +12,14 @@ class AccountData extends Model
         'channel_id',
         'keyword',
         'crm_keyword',
+        'is_default',
+        'type',
     ];
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id', 'id');
+    }
 
 
 }

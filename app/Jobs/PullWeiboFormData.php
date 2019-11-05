@@ -18,15 +18,18 @@ class PullWeiboFormData implements ShouldQueue
     public $startDate;
     public $endDate;
     public $count;
+    public $type;
 
     /**
      * PullWeiboFormData constructor.
-     * @param $startDate
-     * @param $endDate
-     * @param $count
+     * @param     $type
+     * @param     $startDate
+     * @param     $endDate
+     * @param int $count
      */
-    public function __construct($startDate, $endDate, $count = 2000)
+    public function __construct($type, $startDate, $endDate, $count = 2000)
     {
+        $this->type      = $type;
         $this->startDate = $startDate;
         $this->endDate   = $endDate;
         $this->count     = $count;
@@ -41,7 +44,7 @@ class PullWeiboFormData implements ShouldQueue
      */
     public function handle()
     {
-        $count = WeiboFormData::pullWeiboData($this->startDate, $this->endDate, $this->count);
+        $count = WeiboFormData::pullWeiboData($this->type, $this->startDate, $this->endDate, $this->count);
         $time  = Carbon::now()->toTimeString();
         Log::info($time . ' pull weibo form data count', [$count]);
     }

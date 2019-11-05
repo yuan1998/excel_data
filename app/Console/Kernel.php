@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Clients\WeiboClient;
 use App\Jobs\ArrivingDataYesterday;
 use App\Jobs\BillAccountDataYesterday;
 use App\Models\ArrivingData;
@@ -89,10 +90,14 @@ class Kernel extends ConsoleKernel
         })->monthlyOn(date('t'), '23:45');
 
         $schedule->call(function () {
-            WeiboFormData::pullToday();
+            foreach (WeiboClient::$Account as $accountName => $value) {
+                WeiboFormData::pullToday($accountName);
+            }
         })->everyFifteenMinutes();
         $schedule->call(function () {
-            WeiboFormData::pullYesterday();
+            foreach (WeiboClient::$Account as $accountName => $value) {
+                WeiboFormData::pullYesterday($accountName);
+            }
         })->daily();
 
 
