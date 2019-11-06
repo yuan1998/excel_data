@@ -22,6 +22,8 @@ use App\Observers\FormDataPhoneObserver;
 use App\Observers\WeiboDataObserver;
 use App\Observers\WeiboFormDataObserver;
 use App\Observers\WeiboUserObserver;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -43,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         ini_set("max_execution_time", "3000");
+//        Log::useDailyFiles(storage_path() . '/logs/laravel-' . get_current_user() . '-' . php_sapi_name() . '-' . Carbon::now()->format('Y-m-d') . '.log');
 
         FormDataPhone::observe(FormDataPhoneObserver::class);
         CrmGrabLog::observe(CrmGrabLogObserver::class);
