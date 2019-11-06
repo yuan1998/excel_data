@@ -121,7 +121,7 @@ class FormData extends Model
         if ($departmentType) {
             // 判断 是否所属 科室下的病种,有则写入
             $projectType = Helpers::checkDepartmentProject($departmentType, $data['data_type']);
-            $form->projects()->sync($projectType ? $projectType->pluck('title') : []);
+            $form->projects()->sync($projectType ? $projectType->pluck('id') : []);
             FormDataPhone::createOrUpdateItem($form, collect($data['phone']), $delay);
         }
 
