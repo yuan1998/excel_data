@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class FormData extends Model
 {
     protected $fillable = [
-        'phone',
         'weibo_id',
         'baidu_id',
         'feiyu_id',
