@@ -70,6 +70,7 @@ class WeiboFormData extends Model
             'data_type' => $this->project_name,
             'form_type' => 2,
             'type'      => $this->type,
+            'phone'     => $this->phone,
             'date'      => $this->post_date,
         ];
     }
