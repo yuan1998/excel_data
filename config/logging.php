@@ -54,6 +54,7 @@ return [
                     ? 'logs/laravel'
                     . '-' . php_sapi_name()
                     . '-' . posix_getpwuid(posix_geteuid())['name']
+                    . '-' .get_current_user()
                     . '.log'
                     : 'logs/laravel.log'),
             'level'      => 'debug',

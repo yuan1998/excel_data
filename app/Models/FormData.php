@@ -22,7 +22,6 @@ class FormData extends Model
         'data_type',
         'department_id',
         'type',
-        'project_id',
     ];
 
     // 平台类型列表
