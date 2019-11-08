@@ -48,15 +48,8 @@ return [
 
         'daily' => [
             'driver'     => 'daily',
-            'path'       => storage_path(
-                function_exists('posix_getpwuid')
-                && function_exists('posix_geteuid')
-                    ? 'logs/laravel'
-                    . '-' . php_sapi_name()
-                    . '-' . posix_getpwuid(posix_geteuid())['name']
-                    . '-' . get_current_user()
-                    . '.log'
-                    : 'logs/laravel.log'),
+            'tap' => [App\Logging\CustomFilenames::class],
+            'path' => storage_path('logs/laravel.log'),
             'level'      => 'debug',
             'days'       => 14,
             "permission" => "0664",
