@@ -25,7 +25,8 @@
     "paquettg/php-html-parser": "^2.1",
     "predis/predis": "^1.1",
     "symfony/process": "^4.3",
-    "tymon/jwt-auth": "1.0.*"
+    "tymon/jwt-auth": "1.0.*",
+    "ext-posix": "*"
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.0",
