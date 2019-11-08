@@ -9,7 +9,7 @@ class CustomFilenames
     /**
      * Customize the given logger instance.
      *
-     * @param  \Illuminate\Log\Logger  $logger
+     * @param \Illuminate\Log\Logger $logger
      * @return void
      */
     public function __invoke($logger)
@@ -18,8 +18,7 @@ class CustomFilenames
             if ($handler instanceof RotatingFileHandler) {
                 $fix = function_exists('posix_getpwuid')
                 && function_exists('posix_geteuid')
-                    ? 'logs/laravel'
-                    . '-' . php_sapi_name()
+                    ? php_sapi_name()
                     . '-' . posix_getpwuid(posix_geteuid())['name']
                     . '-' . get_current_user()
                     : '';
