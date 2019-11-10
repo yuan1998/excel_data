@@ -48,7 +48,7 @@ class WeiboFormDataController extends Controller
                     $query->orderBy('created_at', 'desc');
                 }, 'recallLog.changeBy'
             ])
-            ->where('weibo_user_id', $user->id)
+            ->userIndex($user)
             ->orderBy('upload_date', 'desc')
             ->paginate();
 

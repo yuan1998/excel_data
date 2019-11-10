@@ -7,6 +7,7 @@ use App\Clients\WeiboClient;
 use App\Helpers;
 use App\Jobs\PullWeiboFormData;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Log;
@@ -62,6 +63,41 @@ class WeiboFormData extends Model
     public function weiboUser()
     {
         return $this->belongsTo(WeiboUser::class, 'weibo_user_id', 'id');
+    }
+
+
+    /**
+     * @param Builder   $query
+     * @param WeiboUser $user
+     * @return mixed
+     */
+    public function scopeUserIndex($query, $user)
+    {
+        $data = request()->only(['tags', 'phone', 'is_recall', 'dispatch_dates']);
+
+        if (isset($data['tags'])) {
+            $tags = $data['tags'];
+            if ($tags == 0) {
+                $query->whereNull('tags');
+            } else {
+                $query->where('tags', $tags);
+            }
+        }
+        if (isset($data['phone'])) {
+            $query->where('phone', $data['phone']);
+        }
+        if (isset($data['is_recall'])) {
+            if ($data['is_recall']) {
+                $query->whereNotNull('recall_date');
+            } else {
+                $query->whereNull('recall_date');
+            }
+        }
+        if (isset($data['dispatch_dates'])) {
+            $dates = $data['dispatch_dates'];
+            $query->whereBetween('dispatch_date', $dates);
+        }
+        return $query->where('weibo_user_id', $user->id);
     }
 
     /**
