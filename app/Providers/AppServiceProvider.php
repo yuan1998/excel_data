@@ -45,7 +45,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         ini_set("max_execution_time", "3000");
-//        Log::useDailyFiles(storage_path() . '/logs/laravel-' . get_current_user() . '-' . php_sapi_name() . '-' . Carbon::now()->format('Y-m-d') . '.log');
 
         FormDataPhone::observe(FormDataPhoneObserver::class);
         CrmGrabLog::observe(CrmGrabLogObserver::class);

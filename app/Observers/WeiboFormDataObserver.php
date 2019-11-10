@@ -2,9 +2,12 @@
 
 namespace App\Observers;
 
+use App\Models\RecallLog;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use Carbon\Carbon;
+use Dingo\Api\Auth\Auth;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class WeiboFormDataObserver
@@ -47,15 +50,25 @@ class WeiboFormDataObserver
         }
 
         // 判断是否希尔 回访时间
-        if (!$weiboFormData->recall_date &&
-            (isset($changes['comment']) || isset($changes['tags']))
-        ) {
-            // 写入 回访时间
-            WeiboFormData::find($weiboFormData->id)
-                ->update([
-                    'recall_date' => Carbon::now()->toDateTimeString()
-                ]);
+        $comment = Arr::get($changes, 'comment', null);
+        $tags    = Arr::get($changes, 'tags', null);
+        if ($comment || $tags) {
+            if (!$weiboFormData->recall_date) {
+                WeiboFormData::find($weiboFormData->id)
+                    ->update([
+                        'recall_date' => Carbon::now()->toDateTimeString()
+                    ]);
+            }
+
+            $user = auth()->guard('weibo')->user();
+            RecallLog::create([
+                'comment'       => $comment ?? $weiboFormData->comment,
+                'tags'          => $tags ?? $weiboFormData->tags,
+                'weibo_user_id' => $user ? $user->id : null,
+                'weibo_form_id' => $weiboFormData->id,
+            ]);
         }
+
 
         // 如果 微博表单 已经成功回访,调用方法创建 FormData, 在30分钟后查询是否已建档
         if (isset($changes['recall_date']) && $changes['recall_date']) {

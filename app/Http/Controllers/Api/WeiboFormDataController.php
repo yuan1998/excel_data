@@ -43,6 +43,11 @@ class WeiboFormDataController extends Controller
         }
 
         $data = WeiboFormData::query()
+            ->with([
+                'recallLog' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }, 'recallLog.changeBy'
+            ])
             ->where('weibo_user_id', $user->id)
             ->orderBy('upload_date', 'desc')
             ->paginate();
@@ -72,9 +77,13 @@ class WeiboFormDataController extends Controller
         if ($formData->weibo_user_id != $user->id) {
             $this->response->errorBadRequest('不属于该用户的表单');
         }
-        $result = $formData->update($request->all());
+        $formData->update($request->all());
         return $this->response->array([
-            'data'   => $result,
+            'data'   => WeiboFormData::query()->with([
+                'recallLog' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }, 'recallLog.changeBy'
+            ])->find($id),
             'status' => true
         ]);
     }

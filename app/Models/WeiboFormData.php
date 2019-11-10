@@ -50,6 +50,11 @@ class WeiboFormData extends Model
         7 => '有需求',
     ];
 
+    public function recallLog()
+    {
+        return $this->hasMany(RecallLog::class, 'weibo_form_id', 'id');
+    }
+
     /**
      * 关联分配的 客服
      * @return BelongsTo

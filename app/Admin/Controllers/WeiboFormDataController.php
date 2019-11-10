@@ -6,6 +6,7 @@ use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\Weibo\BatchDispatch;
 use App\Admin\Actions\WeiboConfigAction;
 use App\Admin\Actions\WeiboUpload;
+use App\Admin\Extensions\Exporter\WeiboFormDataExporter;
 use App\Models\FormData;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
@@ -33,7 +34,7 @@ class WeiboFormDataController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new WeiboFormData);
-        $grid->model()->orderBy('upload_date', 'desc')->orderBy('weibo_user_id');
+        $grid->model()->with(['weiboUser'])->withCount(['recallLog'])->orderBy('upload_date', 'desc')->orderBy('weibo_user_id');
         $this->initVue();
 
         $grid->header(function ($query) {
@@ -109,6 +110,7 @@ class WeiboFormDataController extends AdminController
 
             $filter->expand();
         });
+        $grid->exporter(new WeiboFormDataExporter());
 
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function ($batch) {
@@ -129,12 +131,14 @@ class WeiboFormDataController extends AdminController
         $grid->column('recall_date', '状态')->display(function ($val) {
             return $this->weibo_user_id ? ($val ? '已回访' : '未回访') : '未分配';
         })->label();
+
         $grid->column('tags', '标签')
             ->display(function ($val) {
                 return $val ?? 0;
             })
             ->using(WeiboFormData::$TagList)
             ->label();
+        $grid->column('recall_log_count', '回访次数');
 
         $grid->column('project_name', __('项目名称'));
         $grid->column('phone', __('Phone'));
@@ -146,38 +150,53 @@ class WeiboFormDataController extends AdminController
         $grid->column('upload_date', __('上传时间'));
         if (!$type) {
             $grid->column('type', __('类型'))
-            ->using([
-                'zx'  => '整形',
-                'kq'  => '口腔',
-            ])->label();
+                ->using([
+                    'zx' => '整形',
+                    'kq' => '口腔',
+                ])->label();
         }
 
         return $grid;
     }
 
+
+    public function show($id, Content $content)
+    {
+        $model = WeiboFormData::query()
+            ->with([
+                'recallLog' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                },
+                'recallLog.changeBy'
+            ])
+            ->find($id);
+
+        $this->initVue();
+        return $content
+            ->title($this->title())
+            ->description($this->description['show'] ?? trans('admin.show'))
+            ->row($this->detail($model))
+            ->row(view('admin.show.weiboFormDataRecallLog', [
+                'recallLog' => $model->recallLog->toArray()
+            ]));
+    }
+
     /**
      * Make a show builder.
      *
-     * @param mixed $id
+     * @param mixed $model
      * @return Show
      */
-    protected function detail($id)
+    protected function detail($model)
     {
-        $show = new Show(WeiboFormData::findOrFail($id));
+        $show = new Show($model);
 
-        $show->field('id', __('Id'));
-        $show->field('weibo_id', __('Weibo id'));
-        $show->field('project_id', __('Project id'));
         $show->field('project_name', __('Project name'));
         $show->field('post_date', __('Post date'));
+        $show->field('dispatch_date', __('分配时间'));
+        $show->field('recall_date', __('回访时间'));
         $show->field('name', __('Name'));
         $show->field('phone', __('Phone'));
-        $show->field('category_type', __('Category type'));
-        $show->field('feedback', __('Feedback'));
-        $show->field('comment', __('Comment'));
-        $show->field('weixin', __('Weixin'));
-        $show->field('remark', __('Remark'));
-        $show->field('weibo_user_id', __('Weibo user id'));
 
         return $show;
     }

@@ -11,9 +11,11 @@ import ExportDataForm        from "./components/exportDataForm";
 import WeiConfigAction       from "./components/WeiboConfigAction";
 import GrabDataForm          from "./components/GrabDataForm";
 import WeiboDispatchSettings from "./components/WeiboDispatchSettings";
+import RecallLog             from "./components/RecallLog";
 
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
+Vue.component('recall-log', RecallLog);
 Vue.component('example-component', ExampleComponent);
 Vue.component('export-data-form', ExportDataForm);
 Vue.component('grab-data-form', GrabDataForm);
