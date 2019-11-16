@@ -230,7 +230,7 @@ class FormData extends Model
                 ];
                 $item->update($data);
 
-                if (!$item->phones && $item->formModel) {
+                if ($item->phones->isEmpty() && $item->formModel) {
                     $phone = $item->formModel->phone;
                     FormDataPhone::createOrUpdateItem($item, $phone);
                 }
