@@ -220,6 +220,30 @@ class FormData extends Model
         return $form;
     }
 
+    public static function recheckFormData()
+    {
+        static::all()
+            ->each(function ($item) {
+                $departmentType = Helpers::checkDepartment($item['data_type']);
+                $data           = [
+                    'department_id' => $departmentType ? $departmentType->id : null,
+                ];
+                $item->update($data);
+
+                if (!$item->phones && $item->formModel) {
+                    $phone = $item->formModel->phone;
+                    FormDataPhone::createOrUpdateItem($item, $phone);
+                }
+
+                if ($departmentType) {
+                    $projectType = Helpers::checkDepartmentProject($departmentType, $item['data_type']);
+                    $item->projects()->sync($projectType);
+                }
+
+            });
+
+    }
+
     /**
      * @param $model
      * @return string|null
