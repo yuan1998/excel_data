@@ -120,7 +120,7 @@ class FormData extends Model
                     $id    = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
                 } elseif ($item->weibo_id) {
                     $model = WeiboFormData::class;
-                    $weibo = WeiboFormData::query()->where('weibo_id', $item->weibo_id)->first();
+                    $weibo = WeiboData::query()->where('weibo_id', $item->weibo_id)->first();
                     $id    = $weibo ? $weibo->id : $item->weibo_id;
                 } elseif ($item->feiyu_id) {
                     $model = FeiyuData::class;
