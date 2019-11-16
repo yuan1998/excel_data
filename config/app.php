@@ -169,6 +169,7 @@ return [
         Overtrue\LaravelLang\TranslationServiceProvider::class,
         Orangehill\Iseed\IseedServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Orangehill\Iseed\IseedServiceProvider::class,
 
         /*
          * Application Service Providers...

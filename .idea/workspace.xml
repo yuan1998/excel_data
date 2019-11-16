@@ -2,61 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Exports/AccountSheet.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Exports/BaseSheet.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Exports/WeiboSheet.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/js/components/ActionExcelUpload.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/actions/actionExcelUpload.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/liuyun.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/liuyun.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Actions/ExcelUpload.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Actions/ExcelUpload.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/ArrivingDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/ArrivingDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/BillAccountDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/BillAccountDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/ChannelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/ChannelController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/DepartmentTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/DepartmentTypeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/ProjectTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/ProjectTypeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/TestExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/TestExport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/TestSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/TestSheet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ExcelViewController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ExcelViewController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/BaiduImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/BaiduImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/BaiduSpendImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/BaiduSpendImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/FeiyuImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/FeiyuImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/FeiyuSpendImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/FeiyuSpendImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/WeiboFormDataImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/WeiboFormDataImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/WeiboImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/WeiboImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/WeiboSpendImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/WeiboSpendImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/ClueDataCheck.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/ClueDataCheck.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/ExportJob.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/ExportJob.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/FindCustomerPhone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/FindCustomerPhone.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ArrivingData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ArrivingData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/BillAccountData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BillAccountData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Channel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Channel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormDataPhone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormDataPhone.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ProjectType.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ProjectType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/SpendData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SpendData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/TempCustomerData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/TempCustomerData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/WeiboFormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboFormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/WeiboSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboSpend.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Parsers/ParserBase.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ParserBase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Parsers/ParserStart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ParserStart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/exportDataForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/exportDataForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/less/app.less" beforeDir="false" afterPath="$PROJECT_DIR$/resources/less/app.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/less/app.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/less/app.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -95,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="264">
-              <caret line="160" column="27" lean-forward="true" selection-start-line="160" selection-start-column="27" selection-end-line="160" selection-end-column="27" />
+              <caret line="160" column="27" selection-start-line="160" selection-start-column="27" selection-end-line="160" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -136,11 +86,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Jobs/FindCustomerPhone.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="558">
+              <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/app.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="278">
+              <caret line="161" column="56" selection-start-line="161" selection-start-column="56" selection-end-line="161" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -149,7 +108,7 @@
         <entry file="file://$PROJECT_DIR$/app/Observers/WeiboFormDataObserver.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="389">
-              <caret line="74" column="72" lean-forward="true" selection-start-line="74" selection-start-column="26" selection-end-line="74" selection-end-column="72" />
+              <caret line="74" column="72" selection-start-line="74" selection-start-column="26" selection-end-line="74" selection-end-column="72" />
             </state>
           </provider>
         </entry>
@@ -167,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/app/Jobs/ExportJob.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="341">
-              <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+              <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -214,7 +173,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Models/Channel.php" />
         <option value="$PROJECT_DIR$/app/Parsers/ParserChannel.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_12_164723_change_spend_data_table_add_interactive_field.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_12_173149_change_form_data_table_add_repeat_field.php" />
@@ -265,6 +223,7 @@
         <option value="$PROJECT_DIR$/app/Jobs/ClueDataCheck.php" />
         <option value="$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php" />
         <option value="$PROJECT_DIR$/app/Jobs/FindCustomerPhone.php" />
+        <option value="$PROJECT_DIR$/config/app.php" />
       </list>
     </option>
   </component>
@@ -573,12 +532,12 @@
       <workItem from="1572353544202" duration="103446000" />
       <workItem from="1572922088551" duration="853000" />
       <workItem from="1572926023888" duration="146212000" />
-      <workItem from="1573806742175" duration="17419000" />
+      <workItem from="1573806742175" duration="18351000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="688118000" />
+    <option name="totallyTimeSpent" value="689050000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -612,13 +571,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10943">
-          <caret line="370" column="47" selection-start-line="370" selection-start-column="41" selection-end-line="370" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-vagrant-vagrant-2019-11-15.log">
       <provider selected="true" editor-type-id="LogFileEditorProvider">
         <state relative-caret-position="591">
@@ -866,7 +818,7 @@
     <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
-          <caret line="160" column="27" lean-forward="true" selection-start-line="160" selection-start-column="27" selection-end-line="160" selection-end-column="27" />
+          <caret line="160" column="27" selection-start-line="160" selection-start-column="27" selection-end-line="160" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -926,7 +878,7 @@
     <entry file="file://$PROJECT_DIR$/app/Observers/WeiboFormDataObserver.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="389">
-          <caret line="74" column="72" lean-forward="true" selection-start-line="74" selection-start-column="26" selection-end-line="74" selection-end-column="72" />
+          <caret line="74" column="72" selection-start-line="74" selection-start-column="26" selection-end-line="74" selection-end-column="72" />
         </state>
       </provider>
     </entry>
@@ -961,7 +913,7 @@
     <entry file="file://$PROJECT_DIR$/app/Jobs/ExportJob.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="341">
-          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -981,8 +933,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Jobs/FindCustomerPhone.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="558">
+          <caret line="22" column="7" selection-start-line="22" selection-start-column="7" selection-end-line="22" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="161" column="56" selection-start-line="161" selection-start-column="56" selection-end-line="161" selection-end-column="56" />
         </state>
       </provider>
     </entry>
