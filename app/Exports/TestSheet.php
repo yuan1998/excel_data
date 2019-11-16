@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-
 use App\Helpers;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +31,6 @@ class TestSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
         $this->data  = $data;
         $this->title = $title;
     }
-
 
     public function headings(): array
     {
@@ -88,7 +86,7 @@ class TestSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
     {
         $count = ($this->days * $this->projectsCount) + 2;
 
-        for ($i = $count; $i > 2; $i -=$this->projectsCount) {
+        for ($i = $count; $i > 2; $i -= $this->projectsCount) {
             $start = $i - $this->projectsCount + 1;
             if ($start < 0) {
                 break;

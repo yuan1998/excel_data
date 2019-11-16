@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Clients\KqClient;
 use App\Clients\ZxClient;
+use App\Exports\TestExport;
 use App\Helpers;
 use App\Http\Requests\UploadRequest;
 use App\Imports\BaiduImport;
@@ -46,45 +47,17 @@ class BaiduDataController extends Controller
         return $this->response->noContent();
     }
 
-    /*
-
-
-     */
-
-    /**
-     * @param Request $request
-     * @return \Dingo\Api\Http\Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \PHPHtmlParser\Exceptions\ChildNotFoundException
-     * @throws \PHPHtmlParser\Exceptions\CircularException
-     * @throws \PHPHtmlParser\Exceptions\CurlException
-     * @throws \PHPHtmlParser\Exceptions\NotLoadedException
-     * @throws \PHPHtmlParser\Exceptions\StrictException
-     */
     public function test(Request $request)
     {
+        $model = FormDataPhone::query()->first();
+        Helpers::checkIntentionAndArchive($model, $model->isBaidu);
 
-        $item = WeiboFormData::find(195);
+        dd($model);
 
-        dd($item->dispatchItem());
 
-        Excel::import(new WeiboFormDataImport(), $request->file('excel'));
-        dd();
+        $headers = Helpers::makeHeaders(TestExport::$AccountHeaders);
+        dd($headers);
 
-//        $result = TempCustomerData::getToday('kq' , false);
-//        dd($result);
-//        $count = BillAccountData::generateBillAccountOfDate('kq', '2019-10-01', '2019-10-10');
-//        $count = ArrivingData::arrivingDataGenerateOfDate('kq', '2019-10-01', '2019-10-10');
-//        return $this->response->array([$count]);
-//        return $this->response->array([$count]);
-        KqClient::getArchiveTypes();
         return $this->response->noContent();
-
-        $dom = KqClient::toHospitalSearchData([
-            'DatetimeRegStart' => '2019-10-07',
-            'DatetimeRegEnd'   => '2019-10-07',
-            'pageSize'         => 2
-        ]);
-        return $this->response->array($dom->toArray());
     }
 }

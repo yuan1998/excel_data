@@ -69,6 +69,7 @@ class BillAccountData extends Model
         'uuid',
         'customer_id',
         'medium_id',
+        'account_id',
     ];
 
     public static $BillAccountCountDataFormat = [
@@ -81,7 +82,24 @@ class BillAccountData extends Model
         'new_again_count'   => 0,
         'new_count'         => 0,
         'old_count'         => 0,
+        // 微博字段
+        'comment_account'   => 0,
+        'form_account'      => 0,
+        'message_account'   => 0,
+        'follow_account'    => 0,
+        'other_account'     => 0,
     ];
+
+    public function medium()
+    {
+        return $this->belongsTo(MediumType::class, 'medium_id', 'id');
+    }
+
+
+    public function account()
+    {
+        return $this->belongsTo(AccountData::class, 'account_id', 'id');
+    }
 
     public function projects()
     {
@@ -150,13 +168,14 @@ class BillAccountData extends Model
 
             $item['type']       = $type;
             $item['pay_date']   = Carbon::parse($item['pay_date'])->toDateString();
-            $item['medium_id']  = Helpers::getMediumTypeId($item['medium_source']);
+            $item['medium_id']  = Helpers::getMediumTypeId($item['medium']);
             $item['visitor_id'] = mb_substr(
                 $item['visitor_id'] ?? '',
                 0,
                 Builder::$defaultStringLength
             );
             $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
+            $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
 
             $uuid->push($item['uuid']);
             static::updateOrCreate([
@@ -192,10 +211,14 @@ class BillAccountData extends Model
     }
 
 
-    public static function todayBillAccountData($type)
+    public static function todayBillAccountData($type, $queue = true)
     {
         $today = Carbon::now()->toDateString();
-        return CrmGrabLog::generate($type, 'billAccountData', $today, $today);
+        if ($queue) {
+            return CrmGrabLog::generate($type, 'billAccountData', $today, $today);
+        } else {
+            return static::getDataOfDate($type, $today, $today);
+        }
     }
 
     public static function yesterdayBillAccountData($type)

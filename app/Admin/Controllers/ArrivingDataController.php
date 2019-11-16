@@ -42,6 +42,11 @@ class ArrivingDataController extends AdminController
                 $mediumOptions  = MediumType::all()->pluck('title', 'id');
                 $archiveOptions = ArchiveType::all()->pluck('title', 'id');
 
+                $filter->equal('type', '数据类型')
+                    ->select([
+                        'zx' => '整形',
+                        'kq' => '口腔'
+                    ]);
                 $filter->in('medium_id', '媒介类型')
                     ->multipleSelect($mediumOptions);
                 $filter->in('archive_id', '建档类型')

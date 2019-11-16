@@ -6,6 +6,7 @@ use App\Helpers;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\CustomerPhone;
+use App\Models\FormDataPhone;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -355,7 +356,7 @@ class BaseClient
     }
 
 
-    public static function baiduTempSearch(array $data)
+    public static function baiduTempSearch(array $data, $model)
     {
         $item = static::tempSearchData($data)->filter(function ($item) {
             return !!$item['phone'];
@@ -367,6 +368,8 @@ class BaseClient
             'has_visitor_id' => !!$item['qq'],
             'has_url'        => !!$item['visitor_id'],
             'archive_type'   => $item['archive_type'],
+            'is_repeat'      => Helpers::checkIsRepeat($model->date, $item['archive_date']),
+            'turn_weixin'    => Helpers::checkTurnWeixin($item['comment']),
         ];
     }
 
@@ -429,16 +432,17 @@ class BaseClient
 
     /**
      * 预约表单查询, 获取 意向度 1 - 6
-     * @param $data
-     * @return int
-     * @throws GuzzleException
+     * @param               $data
+     * @param FormDataPhone $model
+     * @return array
      * @throws ChildNotFoundException
      * @throws CircularException
      * @throws CurlException
+     * @throws GuzzleException
      * @throws NotLoadedException
      * @throws StrictException
      */
-    public static function reservationSearchIntention($data): array
+    public static function reservationSearchIntention($data, $model): array
     {
         $result = static::reservationSearchData($data)
             ->filter(function ($item) {
@@ -449,12 +453,15 @@ class BaseClient
         ];
 
         if ($result->isNotEmpty()) {
-            $item                = $result->first();
+            $item = $result->first();
+
             $intention           = Helpers::intentionCheck($item['intention']);
             $res['archive_type'] = $item['archive_type'];
             $res['intention']    = $intention;
             if ($intention > 1) {
-                $res['is_archive'] = 1;
+                $res['is_archive']  = 1;
+                $res['is_repeat']   = Helpers::checkIsRepeat($model->date, $item['archive_date']);
+                $res['turn_weixin'] = Helpers::checkTurnWeixin($item['visitor_remarks']);
             }
         }
         return $res;
@@ -656,6 +663,18 @@ class BaseClient
     {
         $dom = static::tempCustomerInfoCheckApi($phone);
         return static::parserDomTableData($dom, 'table.table-hover')->isNotEmpty();
+    }
+
+    public static function tempCustomerInfoArchiveCheck($model)
+    {
+        $item = static::tempCustomerInfoCheckData($model->phone)->first();
+        if (!$item) return [];
+
+        return [
+            'is_archive' => 1,
+            'intention'  => Helpers::intentionCheck($item['intention']),
+            'is_repeat'  => 2,
+        ];
     }
 
 

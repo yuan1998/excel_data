@@ -107,12 +107,13 @@ class WeiboFormData extends Model
     public function toFormCreateData()
     {
         return [
-            'weibo_id'  => $this->id,
-            'data_type' => $this->project_name,
-            'form_type' => 2,
-            'type'      => $this->type,
-            'phone'     => $this->phone,
-            'date'      => $this->post_date,
+            'model_id'   => $this->id,
+            'model_type' => static::class,
+            'data_type'  => $this->project_name,
+            'form_type'  => 2,
+            'type'       => $this->type,
+            'phone'      => $this->phone,
+            'date'       => $this->post_date,
         ];
     }
 
@@ -225,6 +226,18 @@ class WeiboFormData extends Model
             });
     }
 
+    public static function fixFormDataOfWeibo()
+    {
+        FormData::query()
+            ->whereNotNull('weibo_id')
+            ->delete();
+
+        static::all()
+            ->each(function ($weibo) {
+                $weibo->makeFormData();
+            });
+    }
+
     /**
      * 将拉取回来的后台数据转换成服务器可以存储的字段
      * @param $item
@@ -233,7 +246,8 @@ class WeiboFormData extends Model
     public static function apiDataParse($item)
     {
         return [
-            'weibo_id'       => $item['id'],
+            'model_id'       => $item['id'],
+            'model_type'     => static::class,
             'project_id'     => $item['pageId'],
             'project_name'   => $item['pageName'],
             'post_date'      => Carbon::parse($item['timeAdd'])->toDateString(),
@@ -258,12 +272,12 @@ class WeiboFormData extends Model
             // 获取转换基础数据
             $parserItem                = static::apiDataParse($item);
             $parserItem['upload_date'] = $now;
-            $parserItem['type']        = $type;
 
             //使用 phone 和 post_date 判断是否需要创建新的数据
             $model = WeiboFormData::firstOrCreate([
                 'phone'     => $parserItem['phone'],
                 'post_date' => $parserItem['post_date'],
+                'type'      => $type,
             ], $parserItem);
 
             // 如果源数据中 回访记录 为空,但更新数据中存在,则写入 回访记录
@@ -284,7 +298,7 @@ class WeiboFormData extends Model
     public function makeFormData($delay = null)
     {
         // 调用 FormData 的方法创建 FormData 和 FormDataPhone.
-        FormData::updateOrCreateItem($this->toFormCreateData(), 'weibo_id', $delay);
+        FormData::updateOrCreateItem($this->toFormCreateData(), static::class, $delay);
     }
 
     /**
@@ -299,7 +313,8 @@ class WeiboFormData extends Model
     public static function pullWeiboData($accountName, $startDate, $endDate, $count = 2000)
     {
         if (!isset(WeiboClient::$Account[$accountName])) {
-            throw new \Exception('错误的账户');
+            Log::error('错误的账户.', ['accountName' => $accountName]);
+            return null;
         }
         $account = WeiboClient::$Account[$accountName];
         $type    = $account['type'];
@@ -314,6 +329,13 @@ class WeiboFormData extends Model
 
         // 将拉取到的数据保存到服务器
         return static::generateWeiboFormData($type, $data);
+    }
+
+    public static function pullTodayAllType()
+    {
+        foreach (WeiboClient::$Account as $accountName => $value) {
+            WeiboFormData::pullToday($accountName);
+        }
     }
 
     /**
@@ -338,5 +360,13 @@ class WeiboFormData extends Model
         $yesterday = Carbon::yesterday()->toDateString();
         // 加入查询队列,后台自动查询微博后台数据
         PullWeiboFormData::dispatch($type, $yesterday, $yesterday)->onQueue('pull_weibo_data');
+    }
+
+    public static function testDataMake()
+    {
+        static::all()
+            ->each(function ($data) {
+                $data->makeFormData();
+            });
     }
 }

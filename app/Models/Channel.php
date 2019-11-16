@@ -24,6 +24,10 @@ class Channel extends Model
         return $this->belongsToMany(MediumType::class, 'channel_has_medium', 'channel_id', 'medium_id');
     }
 
+    public function accounts()
+    {
+        return $this->hasMany(AccountData::class, 'channel_id', 'id');
+    }
 
     public function setFormTypeAttribute($formType)
     {

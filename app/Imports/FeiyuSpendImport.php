@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class FeiyuSpendImport implements ToCollection
 {
+    public $count = 0;
 
     /**
      * FeiyuSpendImport constructor.
@@ -48,30 +49,27 @@ class FeiyuSpendImport implements ToCollection
             return isset($item['date'])
                 && isset($item['advertiser_id']);
         })->each(function ($item) {
+            // 判断 所属科室 是否存在 , 如果不存在,则报错
             $departmentType = Helpers::checkDepartment($item['advertiser_name']);
-
             if (!$departmentType) {
                 throw new \Exception('无法判断科室:' . $item['advertiser_name'] . '。请手动删除或者修改为可识别的科室.');
             }
 
+            // 判断 所属科室 下的病种.如果不存在或者匹配了多个,判断为其他
             $projectType = Helpers::checkDepartmentProject($departmentType, $item['advertiser_name'], 'spend_keyword');
 
-            if (count($projectType) > 1) {
-                throw new \Exception('识别为多个病种:' . $item['advertiser_name']);
-            }
-
-
+            // 去除 id 两端的空格
             $item['advertiser_id'] = trim($item['advertiser_id']);
-            $spendType             = $this->checkType($item['advertiser_name']);
+            $item['type']          = $departmentType->type;
 
-            if (!$spendType)
+            // 确认平台类型, 如果不在预测范围内,报错.
+            $item['spend_type'] = $this->checkType($item['advertiser_name']);
+            if (!$item['spend_type'])
                 throw new \Exception('错误的数据,无法分辨数据类型. ' . $item['advertiser_name']);
-            $item['date'] = Carbon::parse($item['date'])->toDateString();
 
-            $rebate = Helpers::checkFormTypeRebate($spendType, $item['advertiser_name']);
-            if (!$rebate) {
-                throw new \Exception('错误的数据,无法获取返点信息. ' . $item['advertiser_name']);
-            }
+            // 简化时间
+            $item['date']       = Carbon::parse($item['date'])->toDateString();
+            $item['account_id'] = Helpers::formDataCheckAccount($item, 'advertiser_name', 'spend_type');
 
             $feiyu = FeiyuSpend::updateOrCreate([
                 'date'          => $item['date'],
@@ -79,19 +77,21 @@ class FeiyuSpendImport implements ToCollection
             ], $item);
 
             $spend = SpendData::updateOrCreate([
-                'feiyu_id' => $feiyu->id,
+                'model_id'   => $feiyu->id,
+                'model_type' => FeiyuSpend::class
             ], [
                 'department_id' => $departmentType->id,
                 'date'          => $item['date'],
                 'spend_name'    => $item['advertiser_name'],
                 'click'         => $item['click'],
                 'show'          => $item['show'],
-                'spend'         => (float)$item['spend'] / $rebate,
-                'spend_type'    => $spendType,
-                'project_id'    => 0,
+                'spend'         => $item['spend'],
+                'account_id'    => $item['account_id'],
+                'spend_type'    => $item['spend_type'],
             ]);
 
             $spend->projects()->sync($projectType);
+            $this->count++;
         });
     }
 }

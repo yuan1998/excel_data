@@ -9,10 +9,22 @@ use Illuminate\Support\Collection;
 class FormDataPhone extends Model
 {
 
+    public static $InteractiveList = [
+
+    ];
+
+    public static $IsRepeatList = [
+        0 => '未查询',
+        1 => '不重复',
+        2 => '重复'
+    ];
+
     public $timestamps = false;
 
     protected $fillable = [
         'phone',
+        'turn_weixin',
+        'is_repeat',
         'is_archive',
         'has_visitor_id',
         'has_url',
@@ -43,19 +55,24 @@ class FormDataPhone extends Model
     public function formData()
     {
         return $this->belongsTo(FormData::class, 'form_data_id', 'id');
-
     }
 
     public function getTypeAttribute()
     {
-        return $this->formData->type;
+        $form = $this->formData;
+        return $form ? $form->type : null;
     }
 
     public function getIsBaiduAttribute()
     {
-        return !!$this->formData->baidu_id;
+        $form = $this->formData;
+        return $form ? $this->formData->model_type === BaiduData::class : false;
     }
 
+    public function getDateAttribute()
+    {
+        return $this->formData->date;
+    }
 
     public static function recheckArchive()
     {
@@ -64,6 +81,16 @@ class FormDataPhone extends Model
         $data->each(function ($phone) {
             ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
         });
+        return $data->count();
+    }
+
+    public static function recheckAllCrmData()
+    {
+        $data = FormDataPhone::all();
+        $data->each(function ($phone) {
+            ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
+        });
+
         return $data->count();
     }
 

@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 
 class WeiboFormDataImport implements ToCollection
 {
+    public $count = 0;
 
     /**
      * @param Collection $collection
@@ -42,6 +43,7 @@ class WeiboFormDataImport implements ToCollection
                 'phone'     => $item['phone'],
                 'post_date' => $item['post_date'],
             ], $item);
+            $this->count++;
 
             // 如果源数据中 回访记录 为空,但更新数据中存在,则写入 回访记录
             if (!$model->comment && $item['comment']) {

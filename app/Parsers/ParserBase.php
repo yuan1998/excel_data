@@ -10,9 +10,20 @@ use App\Models\DepartmentType;
 use App\Models\FormData;
 use App\Models\SpendData;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
+/**
+ * Class ParserBase
+ * @property ParserBase[]|Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null                               departments
+ * @property ParserBase[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null billAccountData
+ * @property ParserBase[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null spendData
+ * @property ParserBase[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null formData
+ * @property ParserBase[]|Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null                               channels
+ * @property ParserBase[]|Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null                               arrivingData
+ * @package App\Parsers
+ */
 class ParserBase
 {
     /**
@@ -100,7 +111,7 @@ class ParserBase
     {
         if (!$this->_formData) {
             $this->_formData = FormData::query()
-                ->with(['projects', 'department', 'phones'])
+                ->with(['projects', 'department', 'phones', 'account'])
                 ->whereBetween('date', $this->dates)
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('form_type', $this->getFormType())
@@ -117,7 +128,7 @@ class ParserBase
     {
         if (!$this->_spendData) {
             $this->_spendData = SpendData::query()
-                ->with(['projects', 'department'])
+                ->with(['projects', 'department', 'account'])
                 ->whereBetween('date', $this->dates)
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('spend_type', $this->getFormType())
@@ -134,6 +145,7 @@ class ParserBase
     {
         if (!$this->_arrivingData) {
             $this->_arrivingData = ArrivingData::query()
+                ->with(['account'])
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->whereBetween('reception_date', $this->dates)
                 ->get();
@@ -149,6 +161,7 @@ class ParserBase
     {
         if (!$this->_billAccountData) {
             $this->_billAccountData = BillAccountData::query()
+                ->with(['account'])
                 ->whereBetween('pay_date', $this->dates)
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->get();
@@ -179,7 +192,7 @@ class ParserBase
     {
         if (!$this->_channels) {
             $this->_channels = Channel::query()
-                ->with('mediums')
+                ->with(['mediums', 'accounts'])
                 ->whereIn('id', $this->channels_id)
                 ->get();
         }
@@ -374,6 +387,110 @@ class ParserBase
         ];
     }
 
+    public function filterAllDepartmentData($data)
+    {
+        $departmentId = $this->departments->pluck('id');
+        $archiveId    = collect();
+        foreach ($this->departments as $department) {
+            $archiveId = $archiveId->merge($department->archives->pluck('id'));
+        }
+        $archiveId = $archiveId->unique();
+
+        return [
+            'formData'        => $this->filterInDepartmentId($data['formData'], $departmentId),
+            'spendData'       => $this->filterInDepartmentId($data['spendData'], $departmentId),
+            'billAccountData' => $this->filterArchiveId($data['billAccountData'], $archiveId),
+            'arrivingData'    => $this->filterArchiveId($data['arrivingData'], $archiveId),
+        ];
+    }
+
+    public function filterInDepartmentId($data, $ids, $d = true)
+    {
+        return $data->filter(function ($item) use ($ids, $d) {
+            if ($d) {
+                return $ids->contains($item['department_id']);
+            } else {
+                return !$ids->contains($item['department_id']);
+            }
+        });
+    }
+
+    public function filterChannelData($data, $channel)
+    {
+        $mediumsId = $channel->mediums->pluck('id');
+        $formTypes = collect(explode(',', $channel->form_type ?? ''));
+        return [
+            'formData'        => $this->filterFormType($data['formData'], $formTypes, 'form_type'),
+            'spendData'       => $this->filterFormType($data['spendData'], $formTypes, 'spend_type'),
+            'billAccountData' => $this->filterMediums($data['billAccountData'], $mediumsId),
+            'arrivingData'    => $this->filterMediums($data['arrivingData'], $mediumsId),
+        ];
+    }
+
+    public function filterAccountData($data, $account)
+    {
+        $id = $account->id;
+
+        return [
+            'formData'        => $this->filterAccountId($data['formData'], $id),
+            'spendData'       => $this->filterAccountId($data['spendData'], $id),
+            'billAccountData' => $this->filterAccountId($data['billAccountData'], $id),
+            'arrivingData'    => $this->filterAccountId($data['arrivingData'], $id),
+        ];
+    }
+
+    public function filterOtherAccountData($data, $accounts)
+    {
+        $id = $accounts->pluck('id');
+
+        return [
+            'formData'        => $this->filterOtherAccountId($data['formData'], $id),
+            'spendData'       => $this->filterOtherAccountId($data['spendData'], $id),
+            'billAccountData' => $this->filterOtherAccountId($data['billAccountData'], $id),
+            'arrivingData'    => $this->filterOtherAccountId($data['arrivingData'], $id),
+        ];
+    }
+
+
+    public function filterAccountId($data, $id)
+    {
+        return $data->filter(function ($item) use ($id) {
+            return $id === $item['account_id'];
+        });
+    }
+
+    public function filterOtherAccountId($data, $id)
+    {
+        return $data->filter(function ($item) use ($id) {
+            return !$id->contains($item['account_id']);
+        });
+    }
+
+
+    public function filterFormType($data, $typeId, $filed = 'form_type', $d = true)
+    {
+        return $data->filter(function ($data) use ($typeId, $filed, $d) {
+            if ($d) {
+                return $typeId->contains($data[$filed]);
+            } else {
+                return !$typeId->contains($data[$filed]);
+            }
+        });
+    }
+
+    public function filterMediums($data, $mediumsId, $d = true)
+    {
+        return $data->filter(function ($data) use ($mediumsId, $d) {
+            if ($d) {
+                return $mediumsId->contains($data->medium_id);
+
+            } else {
+                return !$mediumsId->contains($data->medium_id);
+            }
+        });
+
+    }
+
     public function filterOtherData($dayData, $projectId, $archives)
     {
         return [
@@ -402,251 +519,6 @@ class ParserBase
             return $this->excelDataToCount($item);
         });
 
-    }
-
-    public function toCountData($data)
-    {
-        return [
-            'formData'        => $this->parserFormDataToCount($data['formData']),
-            'spendData'       => $this->parserSpendDataToCount($data['spendData']),
-            'billAccountData' => $this->parserBillAccountDataToCount($data['billAccountData']),
-            'arrivingData'    => $this->parserArrivingDataToCount($data['arrivingData']),
-        ];
-    }
-
-    public function toExcelCountData($data)
-    {
-        $countData = $this->toCountData($data);
-
-        // dd($countData);
-        $formData        = $countData['formData'];
-        $spendData       = $countData['spendData'];
-        $billAccountData = $countData['billAccountData'];
-        $arrivingData    = $countData['arrivingData'];
-
-        $result = Helpers::$ExcelFields;
-
-        // 总点击
-        $result['click'] = $spendData['click'];
-        // 点击率 = 总点击 / 总展现
-        $result['click_rate'] = $this->toRate($this->divisionOfSelf($spendData['click'], $spendData['show']));
-        // 留表率 = 总表单 / 总点击
-        $result['form_rate'] = $this->toRate($this->divisionOfSelf($formData['form_count'], $spendData['click']));
-//        $result['spend_rate']          = $formData['form_count'] / $spendData['click'];
-        // 展现
-        $result['show'] = $spendData['show'];
-
-        // 消费
-        $result['spend'] = $spendData['spend'];
-
-        // 总表单数
-        $result['form_count'] = $formData['form_count'];
-        // 有效对话 = 意向1 + 意向2 + 意向3 +意向4
-        $result['effective_form'] = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
-        // 无效对话 = 查不到 + 意向5
-        $result['uneffective_form'] = $formData['intention-1'] + $formData['intention-6'];
-        // 有效对话占比 = 有效表单 / 总表单
-        $result['effective_form_rate'] = $this->toRate($this->divisionOfSelf($result['effective_form'], $result['form_count']));
-        // 点击成本 = 总消费 / 总点击
-        $result['click_spend'] = round($this->divisionOfSelf($spendData['spend'], $spendData['click']),2);
-        // 表单成本 = 总消费 / 总表单数
-        $result['form_spend'] = round($this->divisionOfSelf($spendData['spend'], $formData['form_count']),2);
-        // 到院成本 = 总消费 / 总到院
-        $result['arriving_spend'] = round($this->divisionOfSelf($spendData['spend'], $arrivingData['arriving_count']),2);
-        // 总建档
-        $result['archive_count'] = $formData['is_archive-1'];
-        // 未建档
-        $result['un_archive_count'] = $formData['is_archive-0'];
-        //总到院
-        $result['arriving_count'] = $arrivingData['arriving_count'];
-        // 新客首次
-        $result['new_first_arriving'] = $arrivingData['new_first'];
-        // 新客二次
-        $result['new_again_arriving'] = $arrivingData['new_again'];
-        // 老客
-        $result['old_arriving'] = $arrivingData['old'];
-        // 新客首次占比 = 新客首次 / 总到院
-        $result['new_first_rate'] = $this->toRate($this->divisionOfSelf($result['new_first_arriving'], $result['arriving_count']));
-        // 到院率 = 新客首次 / 总表单
-        $result['arriving_rate'] = $this->toRate($this->divisionOfSelf($result['new_first_arriving'], $result['form_count']));
-        // 新客首次成交数
-        $result['new_first_transaction'] = $arrivingData['new_first_transaction'];
-        // 新客二次成交数
-        $result['new_again_transaction'] = $arrivingData['new_again_transaction'];
-        // 老客成交数
-        $result['old_transaction'] = $arrivingData['old_transaction'];
-        // 总成交
-        $result['total_transaction'] = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
-        // 新客首次业绩
-        $result['new_first_account'] = $billAccountData['new_first_account'];
-        // 新客二次业绩
-        $result['new_again_account'] = $billAccountData['new_again_account'];
-        // 老客业绩
-        $result['old_account'] = $billAccountData['old_account'];
-        // 总业绩
-        $result['total_account'] = $billAccountData['total_account'];
-
-        // 业绩占比 = 病种业绩 / 科室业绩
-        // -- 开发中 --
-
-        // 新客首次成交率 = 新客首次数 / 总成交
-        $result['new_first_transaction_rate'] = $this->toRate($this->divisionOfSelf($result['new_first_transaction'], $result['total_transaction']));
-        // 新客二次成交率 = 新客二次数 / 总成交
-        $result['new_again_transaction_rate'] = $this->toRate($this->divisionOfSelf($result['new_again_transaction'], $result['total_transaction']));
-        // 老客成交率 = 老客数 / 总成交
-        $result['old_transaction_rate'] = $this->toRate($this->divisionOfSelf($result['old_transaction'], $result['total_transaction']));
-        // 总成交率 = 到院数 / 成交数
-        $result['total_transaction_rate'] = $this->toRate($this->divisionOfSelf($result['total_transaction'], $result['arriving_count']));
-        // 总单体 = 总业绩  / 总成交数
-        $result['total_average'] = round($this->divisionOfSelf($result['total_account'], $result['total_transaction']), 2);
-        // 新客首次单体 = 新客首次业绩  / 新客首次成交数
-        $result['new_first_average'] = round($this->divisionOfSelf($result['new_first_account'], $result['new_first_transaction']),2);
-
-        // 新客二次单体 = 新客二次业绩  / 新客二次成交数
-        $result['new_again_average'] = round($this->divisionOfSelf($result['new_again_account'], $result['new_again_transaction']),2);
-        // 老客单体 = 老客业绩  / 老客成交数
-        $result['old_average'] =round($this->divisionOfSelf($result['old_account'], $result['old_transaction']),2);
-
-
-        // 总投产比 =  1: 总业绩 / 总消费
-        $result['proportion_total'] = $this->toRatio($result['spend'], $result['total_account']);
-        // 新客投产比 = 1: 总业绩 / 总消费
-        $result['proportion_new'] = $this->toRatio($result['spend'], $billAccountData['new_account']);
-        return $result;
-    }
-
-
-    /**
-     * @param Collection $data
-     * @return array
-     */
-    public function parserFormDataToCount($data)
-    {
-        $result               = FormData::$FormCountDataFormat;
-        $result['form_count'] = $data->count();
-
-        foreach ($data as $item) {
-            $phone = $item->phones->first();
-            $result["is_archive-{$phone['is_archive']}"]++;
-            $result["intention-{$phone['intention']}"]++;
-        }
-        return $result;
-    }
-
-    /**
-     * @param $data
-     * @return array
-     */
-    public function parserSpendDataToCount($data)
-    {
-        $result = SpendData::$SpendCountDataFormat;
-
-        foreach ($data as $item) {
-            $result['spend'] += $item['spend'] ?? 0;
-            $result['click'] += $item['click'] ?? 0;
-            $result['show']  += $item['show'] ?? 0;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param Collection $data
-     * @return array
-     */
-    public function parserArrivingDataToCount($data)
-    {
-        $result                   = ArrivingData::$ArrivingCountDataFormat;
-        $result['arriving_count'] = $data->count();
-
-        foreach ($data as $value) {
-            $transaction = $value['is_transaction'] == ' 是 ';
-
-            if ($value['customer_status'] == ' 新客户 ') {
-                if ($value['arriving_again'] == '二次') {
-                    $result['new_again']++;
-                    $transaction && $result['new_again_transaction']++;
-                } else {
-                    $result['new_first']++;
-                    $transaction && $result['new_first_transaction']++;
-                }
-            } else {
-                $result['old']++;
-                $transaction && $result['old_transaction']++;
-            }
-        }
-
-        $result['new_total']       = $result['new_first'] + $result['new_again'];
-        $result['new_transaction'] = $result['new_again_transaction'] + $result['new_first_transaction'];
-        return $result;
-    }
-
-    /**
-     * @param $data
-     * @return array
-     */
-    public function parserBillAccountDataToCount($data)
-    {
-        $result = BillAccountData::$BillAccountCountDataFormat;
-
-        foreach ($data as $value) {
-            $customerStatus          = $value['customer_status'];
-            $account                 = (float)($value['order_account'] ?? 0);
-            $result['total_account'] += $account;
-
-            if ($customerStatus) {
-                if ($customerStatus == ' 新客户 ') {
-                    if ($value['arriving_again'] == '二次') {
-                        $result['new_again_count']++;
-                        $result['new_again_account'] += $account;
-                    } else {
-                        $result['new_first_count']++;
-                        $result['new_first_account'] += $account;
-                    }
-                } else {
-                    $result['old_count']++;
-                    $result['old_account'] += $account;
-                }
-            }
-        }
-
-        $result['new_account'] = $result['new_first_account'] + $result['new_again_account'];
-        $result['new_count']   = $result['new_first_count'] + $result['new_again_count'];
-
-        return $result;
-    }
-
-    public function divisionOfSelf($val, $div)
-    {
-        return !$div
-            ? $val
-            : $val / $div;
-    }
-
-    public function toRate($value)
-    {
-        if (!$value) return '0%';
-        return round($value * 100, 2) . '%';
-    }
-
-
-    public function toRatio($num1, $num2)
-    {
-        if (!$num1) {
-            return $num1 . ":" . $num2;
-        }
-        return "1:" . round($num2 / $num1, 2);
-    }
-
-    public function gcd($a, $b)
-    {
-        if ($a == 0 || $b == 0)
-            return abs(max(abs($a), abs($b)));
-
-        $r = $a % $b;
-        return ($r != 0) ?
-            $this->gcd($b, $r) :
-            abs($b);
     }
 
 }

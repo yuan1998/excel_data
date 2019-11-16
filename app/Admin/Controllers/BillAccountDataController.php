@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Extensions\Tools\DepartmentDataType;
 use App\Models\ArchiveType;
 use App\Models\BillAccountData;
 use App\Models\Channel;
@@ -29,20 +30,46 @@ class BillAccountDataController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new BillAccountData);
+        $grid->model()->with(['medium']);
 
         $grid->disableCreateButton();
 
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
-                $mediumOptions  = MediumType::all()->pluck('title', 'id');
-                $archiveOptions = ArchiveType::all()->pluck('title', 'id');
+                $mediumOptions     = MediumType::all()->pluck('title', 'id');
+                $archiveOptions    = ArchiveType::all()->pluck('title', 'id');
+                $channelOptions    = Channel::all()->pluck('title', 'id');
+                $departmentOptions = DepartmentType::all()->pluck('title', 'id');
+                $filter->equal('type', '数据类型')
+                    ->select([
+                        'zx' => '整形',
+                        'kq' => '口腔'
+                    ]);
+                $filter->where(function ($query) {
+                    $val = $this->input;
+                    if ($val && $item = Channel::find($val)) {
+                        $ids = $item->mediums->pluck('id');
+                        $query->whereIn('medium_id', $ids);
+                    }
+                }, '渠道')
+                    ->select($channelOptions);
+                $filter->where(function ($query) {
+                    $val = $this->input;
+
+                    if ($val && $item = DepartmentType::find($val)) {
+                        $ids = $item->archives->pluck('id');
+                        $query->whereIn('archive_id', $ids);
+                    }
+                }, '科室')
+                    ->select($departmentOptions);
+
 
                 $filter->in('medium_id', '媒介类型')
                     ->multipleSelect($mediumOptions);
                 $filter->in('archive_id', '建档类型')
                     ->multipleSelect($archiveOptions);
 
-                $filter->between('reception_date', '日期')->date();
+                $filter->between('pay_date', '日期')->date();
             });
 
             // 去掉默认的id过滤器
@@ -50,42 +77,72 @@ class BillAccountDataController extends AdminController
             $filter->expand();
         });
 
-        $grid->column('online_customer', __('Online customer'));
-        $grid->column('archive_by', __('Archive by'));
-        $grid->column('archive_type', __('Archive type'));
-        $grid->column('online_return_visit_by', __('Online return visit by'));
-        $grid->column('medium_type', __('Medium type'));
-        $grid->column('medium_source', __('Medium source'));
-        $grid->column('account_by', __('Account by'));
-        $grid->column('order_form_number', __('Order form number'));
-        $grid->column('order_type', __('Order type'));
-        $grid->column('customer', __('Customer'));
-        $grid->column('customer_status', __('Customer status'));
-        $grid->column('again_arriving', __('Again arriving'));
+
+        $grid->column('type', __('Type'))
+            ->using(['zx' => '整形', 'kq' => '口腔'])
+            ->style("white-space: nowrap;")
+            ->label();
+
+        $grid->column('medium.title', __('媒介'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('archive_type', __('Archive type'))
+            ->label()
+            ->style("white-space: nowrap;");
+
+        $grid->column('online_customer', __('Online customer'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('archive_by', __('Archive by'))
+            ->style("white-space: nowrap;");
+
+
+        $grid->column('online_return_visit_by', __('Online return visit by'))
+            ->style("white-space: nowrap;");
+
+
+        $grid->column('account_by', __('开单人'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('order_type', __('Order type'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('customer', __('Customer'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('customer_status', __('Customer status'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('again_arriving', __('Again arriving'))
+            ->style("white-space: nowrap;");
+
         $grid->column('phone', __('Phone'))
             ->display(function ($value) {
                 return $value ?? $this->phone;
             })
             ->label();
-        $grid->column('customer_card_number', __('Customer card number'));
-        $grid->column('pay_date', __('Pay date'));
-        $grid->column('total', __('Total'));
-        $grid->column('payable', __('Payable'));
-        $grid->column('real_payment', __('Real payment'));
-        $grid->column('order_account', __('Order account'));
-        $grid->column('beauty_salon_type', __('Beauty salon type'));
-        $grid->column('beauty_salon_name', __('Beauty salon name'));
-        $grid->column('total_pay', __('Total pay'));
-        $grid->column('total_account', __('Total account'));
+
+        $grid->column('pay_date', __('Pay date'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('total', __('总金额'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('payable', __('Payable'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('real_payment', __('Real payment'))
+            ->style("white-space: nowrap;");
+
+        $grid->column('order_account', __('开单业绩'))
+            ->style("white-space: nowrap;");
+
+
         $grid->column('visitor_id', __('Visitor id'));
-        $grid->column('archive_date', __('Archive date'));
-        $grid->column('type', __('Type'));
-        $grid->column('uuid', __('Uuid'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('customer_id', __('Customer id'));
-        $grid->column('medium_id', __('Medium id'));
-        $grid->column('archive_id', __('Archive id'));
+
+        $grid->column('archive_date', __('Archive date'))
+            ->style("white-space: nowrap;");
+
 
         return $grid;
     }

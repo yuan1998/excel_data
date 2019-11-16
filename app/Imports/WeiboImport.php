@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class WeiboImport implements ToCollection
 {
+    public $count = 0;
 
     /**
      * @param Collection $collection
@@ -37,21 +38,17 @@ class WeiboImport implements ToCollection
 
             $projectType = Helpers::checkDepartmentProject($departmentType, $item['project_name']);
 
-            if (count($projectType) > 1) {
-                throw new \Exception('识别为多个病种:' . $item['project_name']);
-            }
-
             $type         = $departmentType->type;
             $item['type'] = $type;
-
             $item['post_date'] = Carbon::parse($item['post_date'])->toDateString();
 
-            WeiboData::updateOrCreate([
+            $weibo = WeiboData::updateOrCreate([
                 'weibo_id' => $item['weibo_id']
             ], $item);
 
             $form = FormData::updateOrCreate([
-                'weibo_id' => $item['weibo_id'],
+                'model_id'   => $weibo->id,
+                'model_type' => WeiboData::class,
             ], [
                 'data_type'     => $item['project_name'],
                 'form_type'     => 2,
@@ -62,6 +59,7 @@ class WeiboImport implements ToCollection
             FormDataPhone::createOrUpdateItem($form, collect($item['phone']));
 
             $form->projects()->sync($projectType);
+            $this->count++;
         });
 
     }

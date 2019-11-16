@@ -12,6 +12,7 @@ import WeiConfigAction       from "./components/WeiboConfigAction";
 import GrabDataForm          from "./components/GrabDataForm";
 import WeiboDispatchSettings from "./components/WeiboDispatchSettings";
 import RecallLog             from "./components/RecallLog";
+import ActionExcelUpload     from "./components/ActionExcelUpload";
 
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
@@ -21,6 +22,7 @@ Vue.component('export-data-form', ExportDataForm);
 Vue.component('grab-data-form', GrabDataForm);
 Vue.component('weibo-config-action', WeiConfigAction);
 Vue.component('weibo-dispatch-settings', WeiboDispatchSettings);
+Vue.component('action-excel-upload', ActionExcelUpload);
 
 // const app = new Vue({
 //     el: '#app'

@@ -50,8 +50,11 @@
 </template>
 
 <script>
-    import Swal   from 'sweetalert2';
-    import moment from 'moment';
+    import Swal        from 'sweetalert2';
+    import moment      from 'moment';
+    import { cloneOf } from "../utils/parse";
+    import axios       from 'axios';
+
 
     export default {
         name   : 'ExportDataForm',
@@ -114,20 +117,7 @@
             handleOpen() {
                 this.dialogFormVisible = true;
             },
-            actionThen(then) {
-                if (then.action === 'refresh') {
-                    $.admin.reload();
-                }
-                if (then.action === 'download') {
-                    window.open(then.value, '_blank');
-                }
-                if (then.action === 'redirect') {
-                    $.admin.redirect(then.value);
-                }
-                if (then.action === 'location') {
-                    window.location = then.value;
-                }
-            },
+
             handleClose(done) {
                 this.$confirm('确认关闭？')
                     .then(_ => {
@@ -142,82 +132,53 @@
             closeDialog() {
                 this.resetForm();
                 this.dialogFormVisible = false;
+                this.loading           = false;
             },
-            responseResolver(res) {
-                if (typeof res !== 'object') {
-                    this.$alert('这个错误', '错误', {
-                        confirmButtonText: '确定',
-                    });
-                    return;
-                }
-                this.loading = false;
-                this.closeDialog();
-
-                if (typeof res.toastr === 'object') {
-                    let content = res.toastr.content;
-                    Swal.fire({
-                        title            : content,
-                        type             : 'success',
-                        timer            : 2000,
-                        showConfirmButton: false
-                    })
-                }
-
-                this.actionThen(res.then);
-            },
-
             handleSubmit() {
-                this.$refs.form.validate((valid) => {
+                this.$refs.form.validate(async (valid) => {
                     if (valid) {
-                        let data     = Object.assign({}, this.form, {
-                            _token : $.admin.token,
-                            _action: 'App_Admin_Actions_ExportDataAction',
-                        });
+                        let data     = cloneOf(this.form);
                         data.dates   = [
                             moment(data.dates[ 0 ]).format('YYYY-MM-DD'),
                             moment(data.dates[ 1 ]).format('YYYY-MM-DD'),
                         ];
                         this.loading = true;
-                        new Promise((resolve, reject) => {
-                            $.ajax({
-                                method : 'POST',
-                                url    : '/admin/_handle_action_',
-                                data   : data,
-                                success: function (data) {
-                                    resolve(data);
-                                },
-                                error  : function (request) {
-                                    reject(request);
-                                }
+
+                        try {
+                            let res = await axios.request({
+                                url   : '/api/export/excel',
+                                method: 'post',
+                                data  : data,
                             });
-                        }).then((res) => {
-                            this.responseResolver(res);
-                        }).catch((err) => {
-                            this.actionCatcher(err);
-                        });
+                            console.log('res :', res);
+                            if (res.status === 200) {
+                                Swal.fire({
+                                    title            : "提交成功,请等待生成...",
+                                    type             : 'success',
+                                    timer            : 2000,
+                                    showConfirmButton: false,
+                                    onClose(modalElement) {
+                                        $.admin.reload();
+                                    }
+                                });
+                                this.closeDialog();
+                            }
+                        } catch (e) {
+                            this.loading = false;
+                            if (e.response) {
+                                Swal.fire({
+                                    title            : e.response.data.message,
+                                    type             : 'error',
+                                    timer            : 0,
+                                    showConfirmButton: false
+                                })
+
+                            }
+                        }
+                        this.loading = false;
+
                     }
                 });
-            },
-
-            actionCatcher(res) {
-                if (res && typeof res.responseJSON === 'object') {
-                    let content = res.responseJSON.message;
-                    Swal.fire({
-                        title            : content,
-                        type             : 'error',
-                        timer            : 2000,
-                        showConfirmButton: false
-                    })
-                }
-            },
-
-            showLoading(text) {
-                Swal.fire({
-                    title            : text || 'Loading cars from data base',
-                    allowOutsideClick: false,
-                    allowEscapeKey   : false,
-                });
-                Swal.showLoading();
             },
         },
 

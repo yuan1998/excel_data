@@ -6,11 +6,13 @@ use App\Admin\Extensions\Tools\DepartmentDataType;
 use App\Clients\BaseClient;
 use App\Clients\KqClient;
 use App\Clients\ZxClient;
+use App\Models\AccountData;
 use App\Models\AccountReturnPoint;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\BaiduClue;
 use App\Models\BillAccountData;
+use App\Models\Channel;
 use App\Models\DepartmentType;
 use App\Models\FeiyuData;
 use App\Models\MediumType;
@@ -33,17 +35,34 @@ class Helpers
 {
 
     public static $ExcelFields = [
+        // 互动
+        'interactive'                => 0,
+        // 评论
+        'comment'                    => 0,
+        // 私信
+        'message'                    => 0,
+        // 评论转出
+        'comment_turn'               => 0,
+        // 展现
         'show'                       => 0,
+        // 点击
         'click'                      => 0,
+        // 点击率
+        'click_rate'                 => 0,
+        // 点击成本
+        'click_spend'                => 0,
+        // 消费(虚)
+        'off_spend'                  => 0,
+        // 消费(实)
         'spend'                      => 0,
+        // 总表单
         'form_count'                 => 0,
+        //
         'effective_form'             => 0,
         'turn_weixin'                => 0,
-        'click_rate'                 => 0,
         'form_rate'                  => 0,
         'spend_rate'                 => 0,
         'effective_form_rate'        => 0,
-        'click_spend'                => 0,
         'form_spend'                 => 0,
         'turn_spend'                 => 0,
         'arriving_spend'             => 0,
@@ -307,9 +326,21 @@ class Helpers
         static::checkIntention($model);
         if ($model->intention <= 1 || $isBaidu) {
             static::baiduCheckArchive($model);
+            if ($model->is_archive == 0) {
+                static::tempCustInfoArchive($model);
+            }
         }
     }
 
+    public static function tempCustInfoArchive($model)
+    {
+        if (!$model->type || !$client = static::typeClient($model->type)) {
+            return;
+        }
+        $data = $client::tempCustomerInfoArchiveCheck($model);
+        $model->fill($data);
+        $model->save();
+    }
 
     /**
      * baiduClue 查询是否已建档 , 是否有会话ID , 是否有url
@@ -317,13 +348,12 @@ class Helpers
      */
     public static function baiduCheckArchive($model)
     {
-        $client = static::typeClient($model->type);
-        if (!$client) {
+        if (!$model->type || !$client = static::typeClient($model->type)) {
             return;
         }
         $data = $client::baiduTempSearch([
             'phone' => $model->phone
-        ]);
+        ], $model);
         $model->fill($data);
         $model->save();
     }
@@ -362,13 +392,13 @@ class Helpers
     public static function checkIntention($model)
     {
         // 获取 Crm客户端
-        if (!$client = static::typeClient($model->type)) {
+        if (!$model->type || !$client = static::typeClient($model->type)) {
             return;
         }
         // 获取并保存 意向度和其他结果
         $data = $client::reservationSearchIntention([
             'phone' => $model->phone
-        ]);
+        ], $model);
         $model->fill($data);
         $model->save();
     }
@@ -442,6 +472,27 @@ class Helpers
         return count($result) ? collect($result) : null;
     }
 
+    /**
+     * @param $date
+     * @param $archive_date
+     * @return int
+     */
+    public static function checkIsRepeat($date, $archive_date)
+    {
+        $startDate = Carbon::parse($date);
+        $endDate   = Carbon::parse($date)->addDays(2);
+        $result    = Carbon::parse($archive_date)->between($startDate, $endDate) ? 1 : 2;
+        if ($result === 2) {
+            Log::info('重复表单', [$archive_date, $startDate, $endDate]);
+        }
+
+        return $result;
+    }
+
+    public static function checkTurnWeixin($comment)
+    {
+        return preg_match('/转微/', $comment) ? 1 : 2;
+    }
 
     /**
      * 获取 媒介类型ID , 如果没有则创建,然后再缓存到redis中
@@ -605,7 +656,7 @@ class Helpers
      * @param DepartmentDataType $department 科室模型
      * @param string             $str        关键词字符串
      * @param string             $field      关键词字段
-     * @return Collection|null
+     * @return Collection|array
      */
     public static function checkDepartmentProject($department, $str, $field = 'keyword')
     {
@@ -617,7 +668,9 @@ class Helpers
         if (!$projectTypes) return null;
 
         // 判断并返回与 关键词字符串 匹配的病种,没有则返回null
-        return static::projectTypeCheck($projectTypes, $str, $field);
+        $result = static::projectTypeCheck($projectTypes, $str, $field);
+
+        return $result ? ($result->count() > 1 ? [] : $result->pluck('id')) : [];
     }
 
     /**
@@ -654,6 +707,138 @@ class Helpers
             return TempCustomerData::class;
         }
     }
+
+    public static function accountValidationString($accounts, $str, $field = 'keyword')
+    {
+        $default = null;
+        foreach ($accounts as $account) {
+            if (!$default && $account['is_default']) $default = $account;
+            $keyword = $account[$field];
+            if ($keyword && preg_match(static::explodeKeywordToRegex($keyword), $str)) {
+                return $account['id'];
+            }
+        }
+        return $default ? $default['id'] : null;
+    }
+
+    public static function crmDataCheckAccount($data, $type)
+    {
+        $mediumId = $data['medium_id'];
+        $item     = Channel::query()
+            ->whereHas('mediums', function ($query) use ($mediumId) {
+                $query->where('id', $mediumId);
+            })
+            ->first();
+
+        if ($item) {
+            $accounts = AccountData::query()
+                ->where('channel_id', $item->id)
+                ->where('type', $type)
+                ->get();
+            if ($accounts) {
+                return static::accountValidationString($accounts, $data['visitor_id'], 'crm_keyword');
+            }
+        }
+        return null;
+    }
+
+    public static function formDataCheckAccount($item, $field, $typeField = 'form_type')
+    {
+        $type    = $item['type'];
+        $typeId  = $item[$typeField];
+        $channel = Channel::query()
+            ->where('form_type', 'like', "%{$typeId}%")
+            ->first();
+
+        if ($channel) {
+            $accounts = AccountData::query()
+                ->where('channel_id', $channel->id)
+                ->where('type', $type)
+                ->get();
+            if ($accounts) {
+                return static::accountValidationString($accounts, $item[$field], 'keyword');
+            }
+        }
+        return null;
+    }
+
+    public static function array_depth(array $array)
+    {
+        $max_depth = 1;
+
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $depth = static::array_depth($value) + 1;
+
+                if ($depth > $max_depth) {
+                    $max_depth = $depth;
+                }
+            }
+        }
+
+        return $max_depth;
+    }
+
+    public static function makeHeaders($headers)
+    {
+        $rows = [
+            [], []
+        ];
+        foreach ($headers as $key => $value) {
+
+            array_push($rows[0], $key);
+            if ($value) {
+                foreach ($value as $item) {
+                    array_push($rows[1], $item);
+                }
+                if (($count = count($value)) > 1) {
+                    for ($i = 1; $i < $count; $i++) {
+                        array_push($rows[0], '');
+                    }
+                }
+            } else {
+                array_push($rows[1], '');
+            }
+
+        }
+        return $rows;
+
+    }
+
+
+    public static function divisionOfSelf($val, $div)
+    {
+        return !$div
+            ? $val
+            : $val / $div;
+    }
+
+    public static function toRate($value)
+    {
+        if (!$value) return '0%';
+        return round($value * 100, 2) . '%';
+    }
+
+
+    public static function toRatio($num1, $num2)
+    {
+        if (!$num1) {
+            return $num1 . ":" . $num2;
+        }
+        return "1:" . round($num2 / $num1, 2);
+    }
+
+    public static function gcd($a, $b)
+    {
+        if ($a == 0 || $b == 0)
+            return abs(max(abs($a), abs($b)));
+
+        $r = $a % $b;
+        return ($r != 0) ?
+            static::gcd($b, $r) :
+            abs($b);
+    }
+
 
 }
 

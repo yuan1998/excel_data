@@ -17,6 +17,8 @@ class CustomerPhoneCheckJob implements ShouldQueue
 
     public $model;
 
+    public $timeout = 600;
+
     /**
      * Create a new job instance.
      *

@@ -41,12 +41,6 @@ use Illuminate\Support\Collection;
  *  - `总消费数据` = `渠道消费数据` 相加
  *
  * Class ParserStart
- * @property ParserBase[]|Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null                               departments
- * @property ParserBase[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null billAccountData
- * @property ParserBase[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null spendData
- * @property ParserBase[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null formData
- * @property ParserBase[]|Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null                               channels
- * @property ParserBase[]|Builder[]|\Illuminate\Database\Eloquent\Collection|Collection|null                               arrivingData
  * @package App\Parsers
  */
 class ParserStart extends ParserBase
@@ -83,7 +77,7 @@ class ParserStart extends ParserBase
         return "[{$channelName}]_[{$departmentName}]_{$dateName}.xlsx";
     }
 
-    public function allDataExcelData($toCount = false)
+    public function toArray($name)
     {
         $data = [
             'formData'        => $this->formData,
@@ -91,79 +85,19 @@ class ParserStart extends ParserBase
             'billAccountData' => $this->billAccountData,
             'arrivingData'    => $this->arrivingData,
         ];
-        return [
-            'total'            => $this->generateDateToDepartment($data, $toCount),
-            'total_department' => $this->generateDateToDepartmentProject($data, $toCount),
-        ];
-    }
 
-    public function channelDataExcelData($toCount = false)
-    {
-        $result = collect();
-        $this->getChannelsModel()
-            ->each(function (ParserChannel $channel) use ($result, $toCount) {
-                $data = $channel->dataGroup();
-                $result->put($channel->getTitle(), [
-                    'total'            => $this->generateDateToDepartment($data, $toCount),
-                    'total_department' => $this->generateDateToDepartmentProject($data, $toCount),
-                ]);
-            });
+        switch ($name) {
+            case "channel" :
+                return $this->generateDateToChannel($data);
+            case "account" :
+                return $this->generateDateToAccount($data);
+            case "department" :
+                return $this->generateDateToDepartment($data);
+            case "channel-department":
+                return $this->generateChannelToDepartment($data);
 
-        return $result;
-    }
+        }
 
-
-    public function generateExcelDataToCount()
-    {
-        $excelData = $this->generateExcelDataChannel();
-        return $this->excelDataToCount($excelData);
-    }
-
-    public function testGenerate()
-    {
-        $data = $this->generateExcelDataToCount();
-
-        $result = collect();
-        $data->each(function ($channel, $channelKey) use ($result) {
-            if (isset($channel['proportion_total'])) {
-                $channel['channel_name']    = '合计';
-                $channel['department_name'] = '-';
-                $channel['date_name']       = '-';
-                $channel['project_name']    = '-';
-
-                $result->push($channel);
-            } else {
-                $channel->each(function ($department, $departmentKey) use ($result, $channelKey) {
-                    if (isset($department['proportion_total'])) {
-                        $department['department_name'] = '合计';
-                        $department['channel_name']    = $channelKey;
-                        $department['date_name']       = '-';
-                        $department['project_name']    = '-';
-                        $result->push($department);
-                    } else {
-                        $department->each(function ($date, $dateKey) use ($departmentKey, $channelKey, $result) {
-
-                            if (isset($date['proportion_total'])) {
-                                $date['channel_name']    = $channelKey;
-                                $date['department_name'] = $departmentKey;
-                                $date['date_name']       = '合计';
-                                $date['project_name']    = '-';
-                                $result->push($date);
-                            } else {
-                                $date->each(function ($project, $projectKey) use ($dateKey, $departmentKey, $channelKey, $result) {
-                                    $project['date_name']       = $dateKey;
-                                    $project['project_name']    = $projectKey;
-                                    $project['department_name'] = $departmentKey;
-                                    $project['channel_name']    = $channelKey;
-                                    $result->push($project);
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        return $result;
     }
 
     public function getChannelsModel()
@@ -176,147 +110,137 @@ class ParserStart extends ParserBase
         return $this->channelsModel;
     }
 
-    public function generateExcelDataChannel()
+    public function generateChannelToDepartment($data)
     {
-        $result = collect();
-        $this->getChannelsModel()
-            ->each(function (ParserChannel $channelModel) use (&$result) {
-                $data = [
-                    'arrivingData'    => $channelModel->getArrivingData(),
-                    'formData'        => $channelModel->getFormData(),
-                    'spendData'       => $channelModel->getSpendData(),
-                    'billAccountData' => $channelModel->getBillAccountData(),
-                ];
+        $channelResult = collect();
+        foreach ($this->channels as $channel) {
+            $channelData = $this->filterChannelData($data, $channel);
+            $channelResult->put($channel->title, $this->generateDateToDepartment($channelData));
+        }
 
-                $result->put($channelModel->getTitle(), $this->generateExcelDataDepartment($data));
-            });
-        $result->put('all-total', [
-            'arrivingData'    => $this->arrivingData,
-            'formData'        => $this->formData,
-            'spendData'       => $this->spendData,
-            'billAccountData' => $this->billAccountData,
-        ]);
+        return $channelResult;
+    }
+
+    public function generateDateToAccount($data)
+    {
+        $groupData = $this->groupDataOfDate($data);
+        $result    = collect();
+
+        $totalName = Carbon::parse($this->dates[0])->format("Y-m");
+        $result->put($totalName, $this->generateAccountItem($data));
+        Helpers::dateRangeForEach($this->dates, function (Carbon $date)
+        use ($groupData, $result) {
+            $dateString = $date->toDateString();
+            $dayData    = $this->filterDateStringData($groupData, $date);
+
+            $channelData = $this->generateAccountItem($dayData);
+            $result->put($dateString, $channelData);
+        });
+
         return $result;
     }
 
-    public function generateDateToDepartment($data, $toCount = false)
+    public function generateAccountItem($data)
+    {
+        $channelResult = collect();
+        $data          = $this->filterAllDepartmentData($data);
+        foreach ($this->channels as $channel) {
+            $channelData = $this->filterChannelData($data, $channel);
+            $accounts    = $channel->accounts;
+
+            $accountResult = collect();
+            foreach ($accounts as $account) {
+                $accountData = $this->filterAccountData($channelData, $account);
+                $accountResult->put($account->name, new ExcelFieldsCount($accountData));
+            }
+            $otherAccountData = $this->filterOtherAccountData($channelData, $accounts);
+            $accountResult->put('其他', new ExcelFieldsCount($otherAccountData));
+            $accountResult->put('汇总', new ExcelFieldsCount($channelData));
+
+            $channelResult->put($channel->title, $accountResult);
+        }
+        return $channelResult;
+    }
+
+    public function generateDateToChannel($data)
+    {
+        $groupData = $this->groupDataOfDate($data);
+        $result    = collect();
+
+        $totalName = Carbon::parse($this->dates[0])->format("Y-m");
+        $result->put($totalName, $this->generateChannelItem($data));
+        Helpers::dateRangeForEach($this->dates, function (Carbon $date)
+        use ($groupData, $result) {
+            $dateString = $date->toDateString();
+            $dayData    = $this->filterDateStringData($groupData, $date);
+
+            $channelData = $this->generateChannelItem($dayData);
+            $result->put($dateString, $channelData);
+        });
+
+        return $result;
+    }
+
+    public function generateChannelItem($data)
+    {
+        $channelResult = collect();
+        $this->channels->each(function ($channel)
+        use ($channelResult, $data) {
+            $channelData = $this->filterChannelData($data, $channel);
+            $channelData          = $this->filterAllDepartmentData($channelData);
+            $test        = new ExcelFieldsCount($channelData);
+            $channelResult->put($channel->title, $test);
+        });
+        if ($this->channels->count() > 1) {
+            $channelResult->put('汇总', new ExcelFieldsCount($data));
+        }
+        return $channelResult;
+    }
+
+    public function generateDateToDepartment($data)
     {
         $groupData        = $this->groupDataOfDate($data);
         $resultDepartment = collect();
 
-        $resultDepartment->put('合计', $this->generateDepartmentItem($data));
+        $totalName = Carbon::parse($this->dates[0])->format("Y-m");
+        $resultDepartment->put($totalName, $this->generateDepartmentItem($data));
         Helpers::dateRangeForEach($this->dates, function (Carbon $date)
         use ($groupData, $resultDepartment) {
             $dateString = $date->toDateString();
             $dayData    = $this->filterDateStringData($groupData, $date);
 
             $departmentData = $this->generateDepartmentItem($dayData);
-            $departmentData->put('合计', $dayData);
             $resultDepartment->put($dateString, $departmentData);
         });
 
-        return !$toCount ? $resultDepartment : $this->excelDataToCount($resultDepartment);
+        return $resultDepartment;
     }
 
     public function generateDepartmentItem($data)
     {
-        $departmentData = collect();
+        $departmentResult = collect();
 
-        $this->departments->each(function ($department)
-        use ($departmentData, $data) {
-            $data = $this->filterDepartmentData($data, $department);
-
-            $departmentData->put($department->title, $data);
-        });
-        $departmentData->put('合计', $data);
-        return $departmentData;
-    }
-
-    public function generateDateToDepartmentProject($data, $toCount = false)
-    {
-        $groupData        = $this->groupDataOfDate($data);
-        $resultDepartment = collect();
-        $this->departments->each(function ($department)
-        use ($groupData, $resultDepartment, $data) {
-            $dateResult = collect();
-            $projectId  = $department->projects->pluck('id');
-            $archivesId = $this->filterProjectArchives($department);
-
-
-            $dateResult->put('合计', $this->generateProjectItem($data, $department, $projectId, $archivesId));
-
-            Helpers::dateRangeForEach($this->dates, function (Carbon $date)
-            use ($groupData, $department, $dateResult, $projectId, $archivesId) {
-                $dayData       = $this->filterDateStringData($groupData, $date);
-                $projectResult = $this->generateProjectItem($dayData, $department, $projectId, $archivesId);
-
-                $dateString = $date->toDateString();
-                $dateResult->put($dateString, $projectResult);
-            });
-            $resultDepartment->put($department->title, $dateResult);
-        });
-
-        return !$toCount ? $resultDepartment : $this->excelDataToCount($resultDepartment);
-    }
-
-    public function generateProjectItem($data, $department, $projectId, $archivesId)
-    {
-        $projectResult  = collect();
-        $departmentData = $this->filterDepartmentData($data, $department);
-
-        $department->projects->each(function ($project) use ($departmentData, $projectResult) {
-            $projectData = $this->filterProjectData($departmentData, $project);
-            $projectResult->put($project->title, $projectData);
-        });
-        $projectResult->put('其他',
-            $this->filterOtherData($departmentData, $projectId, $archivesId)
-        );
-        $projectResult->put('合计', $departmentData);
-        return $projectResult;
-    }
-
-    public function generateExcelDataDate($data, $department)
-    {
-        $groupData = $this->groupDataOfDate($data);
-
-        $projectId  = $department->projects->pluck('id');
-        $archivesId = $this->filterProjectArchives($department);
-        $result     = collect();
-        Helpers::dateRangeForEach($this->dates, function (Carbon $date)
-        use ($groupData, $result, $department, $projectId, $archivesId) {
-
-            $dayData = $this->filterDateStringData($groupData, $date);
+        foreach ($this->departments as $department) {
+            $departmentData = $this->filterDepartmentData($data, $department);
+            $projects       = $department->projects;
+            $projectId      = $projects->pluck('id');
+            $archivesId     = $this->filterProjectArchives($department);
 
             $projectResult = collect();
-            $department->projects->map(function ($project) use ($dayData, $projectResult) {
-                $projectData = $this->filterProjectData($dayData, $project);
-                $projectResult->put($project->title, $projectData);
-            });
-            $projectResult->put('other', $this->filterOtherData($dayData, $projectId, $archivesId));
-            $projectResult->put('project-total', $dayData);
-            $result->put($date->toDateString(), $projectResult);
-        });
-        $result->put('date-total', $data);
+            foreach ($projects as $project) {
+                $projectData = $this->filterProjectData($departmentData, $project);
 
-        return $result;
-    }
+                $projectResult->put($project->title, new ExcelFieldsCount($projectData));
+            }
+            $otherProjectData = $this->filterOtherData($departmentData, $projectId, $archivesId);
+            $projectResult->put('其他', new ExcelFieldsCount($otherProjectData));
+            $projectResult->put('汇总', new ExcelFieldsCount($departmentData));
 
-    public function generateExcelDataDepartment($data)
-    {
-        $result = collect();
+            $departmentResult->put($department->title, $projectResult);
+        }
+        $departmentResult->put('总汇总', new ExcelFieldsCount($data));
 
-        $this->departments->each(function ($department) use ($data, $result) {
-            $departmentData = $this->filterDepartmentData($data, $department);
-            $result->put($department->title, $this->generateExcelDataDate($departmentData, $department));
-        });
-        $result->put('channel-total', $data);
-
-        return $result;
-    }
-
-    public function generateExcelDataProject($data)
-    {
-
+        return $departmentResult;
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Admin\Actions;
 use App\Imports\BaiduImport;
 use App\Imports\FeiyuImport;
 use App\Imports\WeiboImport;
+use App\Models\FormData;
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -15,41 +16,24 @@ class ExcelUpload extends Action
 
     protected $selector = '.excel-upload';
 
+    public $models;
+
+
     /**
      * ExcelUpload constructor.
+     * @param $models
      */
-    public function __construct()
+    public function __construct($models)
     {
         parent::__construct();
+        $this->models = $models;
     }
 
-
-    public function handle(Request $request)
+    public function render()
     {
-        $model  = ucfirst($request->get('model'));
-        $model  = "\\App\\Imports\\{$model}Import";
-        $excel  = $request->file('excel');
-        $klass  = new $model();
-        $result = Excel::import($klass, $excel);
-        return $this->response()->success('Success message...')->refresh();
+        return view('admin.actions.actionExcelUpload', [
+            'models' => $this->models
+        ]);
     }
 
-
-    public function form()
-    {
-        $this->radio('model', __('Model'))->options([
-            'feiyu' => '飞鱼表单',
-            'weibo' => '微博表单',
-            'baidu' => '百度表单'
-        ])->required();
-        $this->file('excel', '请选择文件')->required();
-    }
-
-
-    public function html()
-    {
-        return <<<HTML
-        <a class="btn btn-sm btn-primary excel-upload">导入数据</a>
-HTML;
-    }
 }

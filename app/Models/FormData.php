@@ -3,7 +3,17 @@
 namespace App\Models;
 
 use App\Helpers;
+use App\Imports\BaiduImport;
+use App\Imports\BaiduSpendImport;
+use App\Imports\FeiyuImport;
+use App\Imports\FeiyuSpendImport;
+use App\Imports\WeiboFormDataImport;
+use App\Imports\WeiboSpendImport;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use stringEncode\Exception;
 
 /**
  * @property mixed data_type
@@ -21,6 +31,9 @@ class FormData extends Model
         'date',
         'data_type',
         'department_id',
+        'account_id',
+        'model_id',
+        'model_type',
         'type',
     ];
 
@@ -37,21 +50,32 @@ class FormData extends Model
 
     // 表单数量基础格式
     public static $FormCountDataFormat = [
-        'form_count'   => 0,
-        'is_archive-0' => 0,
-        'is_archive-1' => 0,
-        'intention-0'  => 0,
-        'intention-1'  => 0,
-        'intention-2'  => 0,
-        'intention-3'  => 0,
-        'intention-4'  => 0,
-        'intention-5'  => 0,
-        'intention-6'  => 0,
+        'form_count'    => 0,
+        'is_repeat-0'   => 0,
+        'is_repeat-1'   => 0,
+        'is_repeat-2'   => 0,
+        'turn_weixin-0' => 0,
+        'turn_weixin-1' => 0,
+        'turn_weixin-2' => 0,
+        'is_archive-0'  => 0,
+        'is_archive-1'  => 0,
+        'intention-0'   => 0,
+        'intention-1'   => 0,
+        'intention-2'   => 0,
+        'intention-3'   => 0,
+        'intention-4'   => 0,
+        'intention-5'   => 0,
+        'intention-6'   => 0,
     ];
+
+    public function formModel()
+    {
+        return $this->morphTo('model');
+    }
 
     /**
      * 关联手机号码
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function phones()
     {
@@ -60,7 +84,7 @@ class FormData extends Model
 
     /**
      * 关联 项目
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function projects()
     {
@@ -69,11 +93,51 @@ class FormData extends Model
 
     /**
      * 关联 科室
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function department()
     {
         return $this->belongsTo(DepartmentType::class, 'department_id', 'id');
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(AccountData::class, 'account_id', 'id');
+    }
+
+
+    public static function fixMorph()
+    {
+        $data = static::query()
+            ->whereNull('model_type')
+            ->get();
+        $data->each(function ($item) {
+            $id    = null;
+            $model = null;
+            try {
+                if ($item->baidu_id) {
+                    $model = BaiduData::class;
+                    $id    = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
+                } elseif ($item->weibo_id) {
+                    $model = WeiboFormData::class;
+                    $id    = $item->weibo_id;
+                } elseif ($item->feiyu_id) {
+                    $model = FeiyuData::class;
+                    $id    = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
+                }
+
+                if ($id && $model) {
+                    $item->update([
+                        'model_type' => $model,
+                        'model_id'   => $id,
+                    ]);
+                }
+
+            } catch (Exception $exception) {
+                dd($model, $item);
+            }
+        });
+
     }
 
     /**
@@ -86,45 +150,57 @@ class FormData extends Model
     }
 
     /**
-     * 获取已关联科室 下面的 病种类型.
-     * @return \Illuminate\Support\Collection|null
-     */
-    public function getProjectInfoAttribute()
-    {
-        $department = $this->department_info;
-        return $department ? Helpers::checkDepartmentProject($department, $this->data_type) : null;
-    }
-
-    /**
      * 创建 FormData 数据,同时生成 FormDataPhone
-     * @param array  $data  数据
-     * @param string $field ID字段
-     * @param null   $delay 电话号码创建延迟
+     * @param array  $data      数据
+     * @param string $modelType Model
+     * @param null   $delay     电话号码创建延迟
      * @return mixed
      */
-    public static function updateOrCreateItem($data, $field, $delay = null)
+    public static function updateOrCreateItem($data, $modelType, $delay = null)
     {
-        // 获取id字段
-        $id = $data[$field];
         // 判断所属科室,如果存在则写入ID
         $departmentType        = Helpers::checkDepartment($data['data_type']);
         $data['department_id'] = $departmentType ? $departmentType->id : null;
 
         // 创建 FormData Model
         $form = FormData::updateOrCreate([
-            $field => $id,
+            'model_id'   => $data['model_id'],
+            'model_type' => $modelType,
         ], $data);
 
         // 如果科室存在 , 再判断病种
         if ($departmentType) {
             // 判断 是否所属 科室下的病种,有则写入
             $projectType = Helpers::checkDepartmentProject($departmentType, $data['data_type']);
-            $form->projects()->sync($projectType ? $projectType->pluck('id') : []);
+            $form->projects()->sync($projectType);
             FormDataPhone::createOrUpdateItem($form, collect($data['phone']), $delay);
         }
 
         // 返回Model
         return $form;
+    }
+
+    /**
+     * @param $model
+     * @return string|null
+     */
+    public static function checkImportModel($model)
+    {
+        switch ($model) {
+            case "weibo" :
+                return WeiboFormDataImport::class;
+            case "baidu" :
+                return BaiduImport::class;
+            case "feiyu":
+                return FeiyuImport::class;
+            case "weibo_spend" :
+                return WeiboSpendImport::class;
+            case "baidu_spend" :
+                return BaiduSpendImport::class;
+            case "feiyu_spend" :
+                return FeiyuSpendImport::class;
+        }
+        return null;
     }
 
 }

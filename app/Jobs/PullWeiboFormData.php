@@ -20,6 +20,8 @@ class PullWeiboFormData implements ShouldQueue
     public $count;
     public $type;
 
+    public $timeout = 600;
+
     /**
      * PullWeiboFormData constructor.
      * @param     $type

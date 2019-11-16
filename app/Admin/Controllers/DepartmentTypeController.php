@@ -27,8 +27,13 @@ class DepartmentTypeController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new DepartmentType);
+        $grid->model()->with(['archives']);
 
         $grid->column('title', __('Title'));
+        $grid->column('archives', __('关联建档类型'))->style('width:400px')->pluck('title')->label();
+        $grid->column('keyword', __('匹配词'))->display(function ($val) {
+            return $val ? explode(',', $val) : [];
+        })->style('width:400px')->label();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         return $grid;
@@ -46,7 +51,7 @@ class DepartmentTypeController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('title', __('Title'));
-        $show->field('projects', '关联项目')->pluck('title')->label();
+//        $show->field('projects', '关联项目')->pluck('title')->label();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 

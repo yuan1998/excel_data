@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\SpendExcelUpload;
 use App\Models\DepartmentType;
 use App\Models\FormData;
@@ -27,47 +28,67 @@ class SpendDataController extends AdminController
      */
     protected function grid()
     {
+        $this->initVue();
         $grid = new Grid(new SpendData);
-        $grid->model()->with(['projects', 'department'])->orderBy('date', 'desc');
+        $grid->model()->with(['projects', 'department', 'account'])->orderBy('date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
+            $departmentOptions = DepartmentType::all()->pluck('title', 'id')->toArray();
+            $departmentOptions = array_merge(["0" => '没有科室'], $departmentOptions);
 
-            $departmentOptions = DepartmentType::all()->pluck('title', 'id');
-            $filter->equal('department_id', '科室')->radio($departmentOptions);
+            $filter->where(function ($query) {
+                if ($this->input) {
+                    $query->where('department_id', $this->input);
+                } else {
+                    $query->whereNull('department_id');
+                }
+            }, '科室')->select($departmentOptions);
+
             // 设置datetime类型
             $filter->between('date', '日期')->date();
-            $filter->where(function ($query) {
+            $filter->equal('spend_type', '消费类型')->select(FormData::$FormTypeList);
 
-                if (is_numeric($this->input)) {
-                    $query->has('projects', '=', $this->input);
+            $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
+            $projectOption = array_merge(["0" => '其他'], $projectOption);
+            $filter->where(function ($query) {
+                $id = $this->input;
+                if ($id) {
+                    $query->whereHas('projects', function ($query) use ($id) {
+                        $query->where('id', $id);
+                    });
+                } else {
+                    $query->doesntHave('projects');
                 }
-            }, '病种数')->select([
-                0 => '没有',
-                1 => '一个',
-                2 => '二个',
-            ]);
+            }, '病种')->select($projectOption);
 
             // 去掉默认的id过滤器
             $filter->disableIdFilter();
             $filter->expand();
         });
 
-
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
             });
 
-            $tools->append(new SpendExcelUpload());
+            $tools->append(new ExcelUpload([
+                'weibo_spend' => '微博消费',
+                'feiyu_spend' => '飞鱼消费',
+                'baidu_spend' => '百度消费',
+            ]));
         });
         $grid->disableCreateButton();
-        $this->appendFormType($grid, 'spend_type');
 
-        $grid->column('department.title', __('科室'))->label();
+        $grid->column('department_info', __('科室'))->display(function () {
+            return $this->department ? $this->department->title : '-';
+        });
         $grid->column('date', __('Date'));
         $grid->column('spend_type', __('消费类型'))->using(FormData::$FormTypeList)->label();
-        $grid->column('projects', __('Project'))->pluck('title')->label();
-
+        $grid->column('project_info', __('Project'))->display(function () {
+            $project = $this->projects->first();
+            return $project ? $project->title : '其他';
+        })->label();
+        $grid->column('account.name', __('账户名称'));
         $grid->column('spend_name', __('Spend name'));
         $grid->column('spend', __('Spend'));
         $grid->column('show', __('Show'));

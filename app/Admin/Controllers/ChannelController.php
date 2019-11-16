@@ -29,15 +29,17 @@ class ChannelController extends AdminController
         $grid = new Grid(new Channel);
 
         $grid->column('title', __('Title'));
-        $grid->column('mediums', '关联媒介')->pluck('title')->label();
-        $grid->column('form_type', '关联数据类型')->display(function ($value) {
-            return collect(explode(',', $value))->map(function ($value) {
-                if (!$value) {
-                    return '-无-';
-                }
-                return isset(Channel::$FormTypeList[$value]) ? Channel::$FormTypeList[$value] : '-未知-';
-            })->toArray();
-        })->label();
+        $grid->column('mediums', '关联媒介')->style("width:300px;")->pluck('title')->label();
+        $grid->column('form_type', '关联数据类型')
+            ->display(function ($value) {
+                return collect(explode(',', $value))->map(function ($value) {
+                    if (!$value) {
+                        return '-无-';
+                    }
+                    return isset(Channel::$FormTypeList[$value]) ? Channel::$FormTypeList[$value] : '-未知-';
+                })->toArray();
+            })
+            ->label();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 

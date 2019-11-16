@@ -18,6 +18,8 @@ use Maatwebsite\Excel\Concerns\ToModel;
 class BaiduImport implements ToCollection
 {
 
+    public $count = 0;
+
     /**
      * 拆解和过滤 Clues.
      * @param string $clue
@@ -56,21 +58,17 @@ class BaiduImport implements ToCollection
 
         $projectType = Helpers::checkDepartmentProject($departmentType, $item['visitor_type']);
 
-        if (count($projectType) > 1) {
-            throw new \Exception('识别为多个病种:' . $item['visitor_type']);
-        }
-
-
         $type         = $departmentType->type;
         $item['type'] = $type;
 
 
-        BaiduData::updateOrCreate([
+        $baidu = BaiduData::updateOrCreate([
             'visitor_id' => $item['visitor_id']
         ], $item);
 
         $form = FormData::updateOrCreate([
-            'baidu_id' => $item['visitor_id'],
+            'model_id'   => $baidu->id,
+            'model_type' => BaiduData::class,
         ], [
             'data_type'     => $item['visitor_type'],
             'form_type'     => $channel,
@@ -82,7 +80,7 @@ class BaiduImport implements ToCollection
         FormDataPhone::createOrUpdateItem($form, $clue);
 
         $form->projects()->sync($projectType);
-
+        $this->count++;
     }
 
 

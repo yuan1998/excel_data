@@ -89,6 +89,24 @@ $api->version('v1', [
 
 
     $api->group([
+        'prefix' => 'import',
+    ], function ($api) {
+        $api->post('/formExcel', "ImportExcelController@uploadFormDataExcel")
+            ->name('api.import.formExcel');
+        $api->post('/excel/make', "ImportExcelController@exportExcelStore")
+            ->name('api.import.excelMake');
+
+    });
+    $api->group([
+        'prefix' => 'export',
+    ], function ($api) {
+        $api->post('/excel', "ImportExcelController@exportExcelStore")
+            ->name('api.import.excelMake');
+
+    });
+
+
+    $api->group([
         'prefix' => 'weibo',
     ], function ($api) {
         $api->post('/authenticate', 'WeiboAuthController@authenticate')

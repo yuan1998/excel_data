@@ -16,17 +16,17 @@ class ExcelViewController extends Controller
 
     public function index(string $type)
     {
-        $data = [
+        $data   = [
             'department_id' => [2],
-            'channel_id' => [4],
-            'dates' => ['2019-10-23','2019-10-23']
+            'channel_id'    => [4,3,1,2],
+            'dates'         => ['2019-10-10', '2019-10-20']
         ];
         $parser = new ParserStart($data);
 
-//        $count = $parser->allDataExcelData(true);
-//        dd($count);
         return Excel::download(new TestExport($parser), 'tests.xlsx');
-        $data = Redis::get($type);
+        $count = $parser->testChannelExcelData(true);
+        dd($count);
+//        $data = Redis::get($type);
 
         if (!$data) {
             return view('welcome');
@@ -38,10 +38,10 @@ class ExcelViewController extends Controller
     protected function renderExcelView($data)
     {
         $data   = json_decode($data, true);
-        $data = [
+        $data   = [
             'department_id' => [2],
-            'channel_id' => [4],
-            'dates' => ['2019-10-23','2019-10-23']
+            'channel_id'    => [4],
+            'dates'         => ['2019-10-23', '2019-10-23']
         ];
         $parser = new ParserStart($data);
 

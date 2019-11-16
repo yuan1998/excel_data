@@ -31,11 +31,15 @@ class ProjectTypeController extends AdminController
         $grid->model()->with(['archives', 'department']);
         $this->appendDepartmentType($grid);
 
-        $grid->column('department.title', __('Type'));
-        $grid->column('title', __('Title'));
-        $grid->column('keyword', __('表单数据匹配词'));
-        $grid->column('spend_keyword', __('消费数据匹配词'));
-        $grid->column('archives', __('建档类型匹配'))->pluck('title')->label();
+        $grid->column('department.title', __('所属科室'))->style("width:88px;");
+        $grid->column('title', __('Title'))->style("width:88px;");
+        $grid->column('keyword', __('表单数据匹配词'))->style('width:250px;')->display(function ($val) {
+            return $val ? explode(',', $val) : [];
+        })->label();
+        $grid->column('spend_keyword', __('消费数据匹配词'))->style('width:250px;')->display(function ($val) {
+            return $val ? explode(',', $val) : [];
+        })->label();
+        $grid->column('archives', __('建档类型匹配'))->style('width:350px;')->pluck('title')->label();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 

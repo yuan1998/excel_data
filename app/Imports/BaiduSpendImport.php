@@ -17,6 +17,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class BaiduSpendImport implements ToCollection
 {
+    public $count = 0;
 
     /**
      * BaiduSpendImport constructor.
@@ -33,29 +34,23 @@ class BaiduSpendImport implements ToCollection
     {
         $data = Helpers::excelToKeyArray($collection, BaiduSpend::$excelFields);
 
-        $defaultRebate = AccountReturnPoint::query()->where('form_type', 1)->where('is_default', true)->first();
-
-        $defaultRebate = $defaultRebate ? (float)$defaultRebate->rebate : 1;
-
         collect($data)->filter(function ($item) {
             return isset($item['date'])
                 && isset($item['promotion_plan_id']);
-        })->each(function ($item) use ($defaultRebate) {
+        })->each(function ($item) {
             $departmentType = Helpers::checkDepartment($item['promotion_plan']);
-
             if (!$departmentType)
                 throw new \Exception('无法判断科室:' . $item['promotion_plan'] . '。请手动删除或者修改为可识别的科室.');
 
             $projectType = Helpers::checkDepartmentProject($departmentType, $item['promotion_plan'], 'spend_keyword');
 
-            if (count($projectType) > 1) {
-                throw new \Exception('识别为多个病种:' . $item['promotion_plan']);
-            }
             if (is_numeric($item['date'])) {
                 $item['date'] = Date::excelToDateTimeObject($item['date']);
             }
-
-            $item['date'] = Carbon::parse($item['date'])->toDateString();
+            $item['date']       = Carbon::parse($item['date'])->toDateString();
+            $item['spend_type'] = 1;
+            $item['account_id'] = Helpers::formDataCheckAccount($item, 'promotion_plan', 'spend_type');
+            $item['type']       = $departmentType->type;
 
             $baidu = BaiduSpend::updateOrCreate([
                 'date'              => $item['date'],
@@ -63,19 +58,21 @@ class BaiduSpendImport implements ToCollection
             ], $item);
 
             $spend = SpendData::updateOrCreate([
-                'baidu_id' => $baidu->id,
+                'model_id'   => $baidu->id,
+                'model_type' => BaiduSpend::class
             ], [
                 'department_id' => $departmentType->id,
                 'date'          => $item['date'],
                 'spend_name'    => $item['promotion_plan'],
                 'show'          => $item['show'],
                 'click'         => $item['click'],
-                'spend'         => (float)$item['spend'] / $defaultRebate,
-                'project_id'    => 0,
-                'spend_type'    => 1,
+                'spend'         => $item['spend'],
+                'spend_type'    => $item['spend_type'],
+                'account_id'    => $item['account_id'],
             ]);
 
             $spend->projects()->sync($projectType);
+            $this->count++;
         });
 
     }

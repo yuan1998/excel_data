@@ -17,15 +17,18 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class FeiyuImport implements ToCollection
 {
+    public $count = 0;
 
-    public function parserFormType(string $str)
+    public function parserFormType($str)
     {
-        if (preg_match("/抖音/", $str)) {
+        if (preg_match("/B/", $str)) {
+            return 3;
+        }
+        if (preg_match("/D/", $str)) {
             return 4;
         }
-        return 3;
+        return 0;
     }
-
 
     /**
      * 将Excel数据写入 FeiyuData 数据库中.
@@ -45,41 +48,35 @@ class FeiyuImport implements ToCollection
                 && !!$item['activity_name'];
         })->each(function ($item) {
             $departmentType = Helpers::checkDepartment($item['activity_name']);
-
             if (!$departmentType)
                 throw new \Exception('无法判断科室:' . $item['activity_name']);
 
             $projectType = Helpers::checkDepartmentProject($departmentType, $item['activity_name']);
 
-            if (count($projectType) > 1) {
-                throw new \Exception('识别为多个病种:' . $item['activity_name']);
-            }
-
-
-            $type                   = $departmentType->type;
-            $item['type']           = $type;
+            $item['type']           = $departmentType->type;
             $item['sponsored_link'] = substr($item['sponsored_link'] ?? '', 0, Builder::$defaultStringLength);
-
-            $item['post_date'] = Carbon::parse($item['post_date'])->toDateString();
-
-            FeiyuData::updateOrCreate([
+            $item['post_date']      = Carbon::parse($item['post_date'])->toDateString();
+            $item['form_type']      = $this->parserFormType($item['activity_name']);
+            $item['account_id']     = Helpers::formDataCheckAccount($item, 'activity_name');
+            $feiyu                  = FeiyuData::updateOrCreate([
                 'clue_id' => $item['clue_id']
             ], $item);
 
             $form = FormData::updateOrCreate([
-                'feiyu_id' => $item['clue_id'],
+                'model_id'   => $feiyu->id,
+                'model_type' => FeiyuData::class,
             ], [
                 'data_type'     => $item['activity_name'],
                 'department_id' => $departmentType->id,
-                'form_type'     => $this->parserFormType($item['source']),
+                'form_type'     => $item['form_type'],
                 'date'          => $item['post_date'],
                 'type'          => $item['type'],
-                'project_id' => 0,
             ]);
 
             FormDataPhone::createOrUpdateItem($form, collect($item['phone']));
 
             $form->projects()->sync($projectType);
+            $this->count++;
         });
 
     }

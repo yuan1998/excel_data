@@ -22,6 +22,8 @@ class CrmGrabLogJob implements ShouldQueue
      */
     public $model;
 
+    public $timeout = 600;
+
     /**
      * Create a new job instance.
      *
@@ -41,21 +43,23 @@ class CrmGrabLogJob implements ShouldQueue
     public function handle()
     {
         $model = $this->model;
-        Log::info('model' , [$model]);
+        Log::info('model', [$model]);
         if ($model && $dataModel = Helpers::getDataModel($model->model_type)) {
             $model->status = 1;
             $model->save();
 
-            $data = $dataModel::getDataOfDate($model->type, $model->start_date, $model->end_date);
-            Log::info($model->name , $data);
-
-            $model->status = 2;
-            $model->save();
+            try {
+                $data = $dataModel::getDataOfDate($model->type, $model->start_date, $model->end_date);
+                Log::info($model->name, $data);
+                $model->status = 2;
+            } catch (\Exception $exception) {
+                Log::error('抓取数据时错误', [$model->model_type, $exception]);
+                $model->status = 3;
+            }
 
         } else {
-
             $model->status = 1;
-            $model->save();
         }
+        $model->save();
     }
 }

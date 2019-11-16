@@ -101,6 +101,7 @@ class ArrivingData extends Model
         "staff_referrer",
         "comment",
         "medium_id",
+        "account_id",
     ];
 
     public static $ArrivingCountDataFormat = [
@@ -114,8 +115,30 @@ class ArrivingData extends Model
         'new_first_transaction' => 0,
         'new_again_transaction' => 0,
         'old_transaction'       => 0,
+        // 微博字段
+        'first_arriving_comment' => 0,
+        'first_arriving_form' => 0,
+        'first_arriving_message' => 0,
+        'first_arriving_follow' => 0,
+        'first_arriving_other' => 0,
+        'again_arriving_comment' => 0,
+        'again_arriving_form' => 0,
+        'again_arriving_message' => 0,
+        'again_arriving_follow' => 0,
+        'again_arriving_other' => 0,
+        'old_arriving_comment' => 0,
+        'old_arriving_form' => 0,
+        'old_arriving_message' => 0,
+        'old_arriving_follow' => 0,
+        'old_arriving_other' => 0,
+
+
     ];
 
+    public function account()
+    {
+        return $this->belongsTo(AccountData::class, 'account_id', 'id');
+    }
 
     public function projects()
     {
@@ -125,6 +148,11 @@ class ArrivingData extends Model
     public function archive()
     {
         return $this->belongsTo(ArchiveType::class, 'archive_id', 'id');
+    }
+
+    public function medium()
+    {
+        return $this->belongsTo(MediumType::class, 'medium_id', 'id');
     }
 
     public function customerPhone()
@@ -176,29 +204,30 @@ class ArrivingData extends Model
     {
 
         $uuid = collect();
-        collect($array)->filter(function ($data) {
-            return isset($data['reception_date']) && isset($data['customer_id']);
-        })->each(function ($item) use ($type, $uuid) {
-            $key = $item['reception_date'] . $item['customer_id'] . $item['order_type'] . $item['payable'] . $item['real_payment'];
+        collect($array)
+            ->filter(function ($data) {
+                return isset($data['reception_date']) && isset($data['customer_id']);
+            })
+            ->each(function ($item) use ($type, $uuid) {
+                $key = $item['reception_date'] . $item['customer_id'] . $item['order_type'] . $item['payable'] . $item['real_payment'];
 
-            $item['uuid']      = md5($key);
-            $item['type']      = $type;
-            $item['medium_id'] = Helpers::getMediumTypeId($item['medium']);
+                $item['uuid']       = md5($key);
+                $item['type']       = $type;
+                $item['medium_id']  = Helpers::getMediumTypeId($item['medium']);
+                $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
+                $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
+                $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
 
-            $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
+                $uuid->push($item['uuid']);
+                static::updateOrCreate([
+                    'uuid' => $item['uuid'],
+                ], $item);
 
-            $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
-
-
-            $uuid->push($item['uuid']);
-            static::updateOrCreate([
-                'uuid' => $item['uuid'],
-            ], $item);
-            CustomerPhone::firstOrCreate([
-                'customer_id' => $item['customer_id'],
-                'type'        => $type,
-            ]);
-        });
+                CustomerPhone::firstOrCreate([
+                    'customer_id' => $item['customer_id'],
+                    'type'        => $type,
+                ]);
+            });
         return $uuid;
     }
 
@@ -261,81 +290,6 @@ class ArrivingData extends Model
     public function scopeDateBetween($query, $start, $end)
     {
         return $query->whereBetween('reception_date', [$start, $end]);
-    }
-
-    public static function parserArrivingData($query, $type)
-    {
-        $data = $query->select(
-            DB::raw('CASE WHEN is_transaction = " 是 " THEN 1 ELSE 0 END AS is_transaction'),
-            'customer_id',
-            'reception_date',
-            DB::raw('CASE 
-            WHEN customer_status = " 新客户 " AND again_arriving = "首次" THEN 1 
-            WHEN customer_status = " 新客户 " AND again_arriving = "二次" THEN 2 
-            ELSE 0 END AS customer_type'),
-            'intention'
-        )
-            ->where('type', $type)
-            ->get();
-        $data = $data->groupBy('reception_date');
-        dd($data->toArray());
-
-        $data = $data->map(function ($item) {
-            $item           = $item->unique('customer_id');
-            $arriving_count = $item->count();
-
-            $old_count             = 0;
-            $old_transaction       = 0;
-            $new_first_count       = 0;
-            $new_first_transaction = 0;
-            $new_again_count       = 0;
-            $new_again_transaction = 0;
-
-            $untransaction_intention = [
-                'unknown_intention' => 0,
-                'one_intention'     => 0,
-                'two_intention'     => 0,
-                'three_intention'   => 0,
-                'five_intention'    => 0,
-            ];
-            $transaction_intention   = [
-                'unknown_intention' => 0,
-                'one_intention'     => 0,
-                'two_intention'     => 0,
-                'three_intention'   => 0,
-                'five_intention'    => 0,
-            ];
-
-
-            foreach ($item as $value) {
-                $is_transaction = $value['is_transaction'] === ' 是 ';
-
-                if ($value['customer_status'] === '新客户') {
-                    if ($value['again_arriving'] === '首次') {
-                        $new_first_count++;
-                        $is_transaction && ($new_first_transaction++);
-                    } else {
-                        $new_again_count++;
-                        $is_transaction && ($new_again_transaction++);
-                    }
-                } else {
-                    $old_count++;
-                    $is_transaction && ($old_transaction++);
-                }
-
-                if ($value['intention']) {
-
-                } else {
-
-                }
-
-
-            }
-
-
-        });
-
-
     }
 
 }

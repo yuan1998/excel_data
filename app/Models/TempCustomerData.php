@@ -86,6 +86,7 @@ class TempCustomerData extends Model
         'archive_id',
         'customer_id',
         'medium_id',
+        'account_id',
         'type',
     ];
 
@@ -115,12 +116,12 @@ class TempCustomerData extends Model
         })->each(function ($item) use ($type, $uuid) {
             $key = $item['customer_id'] . $item['archive_type'] . $item['archive_date'];
 
-            $item['uuid']      = md5($key);
-            $item['type']      = $type;
-            $item['medium_id'] = Helpers::getMediumTypeId($item['medium_source']);
-
+            $item['uuid']       = md5($key);
+            $item['type']       = $type;
+            $item['medium_id']  = Helpers::getMediumTypeId($item['medium']);
             $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
             $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
+            $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
             $uuid->push($item['uuid']);
 
             static::updateOrCreate([
