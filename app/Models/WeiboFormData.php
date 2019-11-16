@@ -338,6 +338,15 @@ class WeiboFormData extends Model
         }
     }
 
+
+    public static function pullAllTypeOfDate($startDate, $endDate)
+    {
+        foreach (WeiboClient::$Account as $accountName => $value) {
+            PullWeiboFormData::dispatch($accountName, $startDate, $endDate)->onQueue('pull_weibo_data');
+        }
+    }
+
+
     /**
      * 使用客户端拉取当天的数据
      * @param $type
