@@ -232,7 +232,7 @@ class FormData extends Model
 
                 if ($item->phones->isEmpty() && $item->formModel) {
                     $phone = $item->formModel->phone;
-                    FormDataPhone::createOrUpdateItem($item, $phone);
+                    FormDataPhone::createOrUpdateItem($item, collect($phone));
                 }
 
                 if ($departmentType) {
