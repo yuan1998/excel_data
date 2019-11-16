@@ -105,6 +105,41 @@ class FormData extends Model
         return $this->belongsTo(AccountData::class, 'account_id', 'id');
     }
 
+    public static function fixWeiboMorph()
+    {
+        $data = static::query()
+            ->whereNull('model_type')
+            ->orWhereNotNull('weibo_id')
+            ->get();
+        $data->each(function ($item) {
+            $id    = null;
+            $model = null;
+            try {
+                if ($item->baidu_id) {
+                    $model = BaiduData::class;
+                    $id    = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
+                } elseif ($item->weibo_id) {
+                    $model = WeiboFormData::class;
+                    $weibo = WeiboFormData::query()->where('weibo_id', $item->weibo_id)->first();
+                    $id    = $weibo ? $weibo->id : $item->weibo_id;
+                } elseif ($item->feiyu_id) {
+                    $model = FeiyuData::class;
+                    $id    = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
+                }
+
+                if ($id && $model) {
+                    $item->update([
+                        'model_type' => $model,
+                        'model_id'   => $id,
+                    ]);
+                }
+
+            } catch (Exception $exception) {
+                dd($model, $item);
+            }
+        });
+
+    }
 
     public static function fixMorph()
     {
@@ -120,8 +155,7 @@ class FormData extends Model
                     $id    = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
                 } elseif ($item->weibo_id) {
                     $model = WeiboFormData::class;
-                    $weibo = WeiboFormData::query()->where('weibo_id', $item->weibo_id)->first();
-                    $id    = $weibo ? $weibo->id : $item->weibo_id;
+                    $id    = $item->weibo_id;
                 } elseif ($item->feiyu_id) {
                     $model = FeiyuData::class;
                     $id    = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
