@@ -32,6 +32,7 @@ class FormData extends Model
         'data_type',
         'department_id',
         'account_id',
+        'account_keyword',
         'model_id',
         'model_type',
         'type',
@@ -199,7 +200,9 @@ class FormData extends Model
     public static function updateOrCreateItem($data, $modelType, $delay = null)
     {
         // 判断所属科室,如果存在则写入ID
-        $departmentType        = Helpers::checkDepartment($data['data_type']);
+        $departmentType     = Helpers::checkDepartment($data['data_type']);
+        $data['account_id'] = Helpers::formDataCheckAccount($data, 'data_type');
+
         $data['department_id'] = $departmentType ? $departmentType->id : null;
 
         // 创建 FormData Model
@@ -227,6 +230,7 @@ class FormData extends Model
                 $departmentType = Helpers::checkDepartment($item['data_type']);
                 $data           = [
                     'department_id' => $departmentType ? $departmentType->id : null,
+                    'account_id'    => Helpers::formDataCheckAccount($item, 'data_type')
                 ];
                 $item->update($data);
 

@@ -39,7 +39,7 @@ class BaiduImport implements ToCollection
 
     public function saveForm($item, $channel)
     {
-        if (preg_match("/\A/", $item['visitor_name'])) {
+        if (preg_match("/\@/", $item['visitor_type'])) {
             return;
         }
 
@@ -56,8 +56,7 @@ class BaiduImport implements ToCollection
             throw new \Exception('无法判断科室:' . $item['visitor_type']);
         }
 
-        $projectType = Helpers::checkDepartmentProject($departmentType, $item['visitor_type']);
-
+        $projectType  = Helpers::checkDepartmentProject($departmentType, $item['visitor_type']);
         $type         = $departmentType->type;
         $item['type'] = $type;
 
@@ -70,11 +69,13 @@ class BaiduImport implements ToCollection
             'model_id'   => $baidu->id,
             'model_type' => BaiduData::class,
         ], [
-            'data_type'     => $item['visitor_type'],
-            'form_type'     => $channel,
-            'type'          => $item['type'],
-            'department_id' => $departmentType->id,
-            'date'          => $item['cur_access_time'],
+            'data_type'       => $item['visitor_type'],
+            'form_type'       => $channel,
+            'type'            => $item['type'],
+            'department_id'   => $departmentType->id,
+            'date'            => $item['cur_access_time'],
+            'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
+            'account_keyword' => $item['code'],
         ]);
 
         FormDataPhone::createOrUpdateItem($form, $clue);
@@ -103,7 +104,7 @@ class BaiduImport implements ToCollection
 
             $url = urldecode($item['dialog_url']);
             preg_match("/\?A(.{10})/", $url, $match);
-            $code = isset($match[0]) ? $match[0] : null;
+            $item['code'] = $code = isset($match[0]) ? $match[0] : null;
 
             if ($code) {
                 $channel = BaiduData::checkCodeIs($code);

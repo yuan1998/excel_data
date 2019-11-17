@@ -38,8 +38,8 @@ class WeiboImport implements ToCollection
 
             $projectType = Helpers::checkDepartmentProject($departmentType, $item['project_name']);
 
-            $type         = $departmentType->type;
-            $item['type'] = $type;
+            $type              = $departmentType->type;
+            $item['type']      = $type;
             $item['post_date'] = Carbon::parse($item['post_date'])->toDateString();
 
             $weibo = WeiboData::updateOrCreate([
@@ -55,6 +55,7 @@ class WeiboImport implements ToCollection
                 'department_id' => $departmentType->id,
                 'type'          => $item['type'],
                 'date'          => $item['post_date'],
+                'account_id'    => Helpers::formDataCheckAccount($item, 'project_name'),
             ]);
             FormDataPhone::createOrUpdateItem($form, collect($item['phone']));
 

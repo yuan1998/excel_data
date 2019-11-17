@@ -47,30 +47,34 @@ class FeiyuImport implements ToCollection
                 && isset($item['sponsored_link'])
                 && !!$item['activity_name'];
         })->each(function ($item) {
-            $departmentType = Helpers::checkDepartment($item['activity_name']);
-            if (!$departmentType)
-                throw new \Exception('无法判断科室:' . $item['activity_name']);
+            $name = $item['activity_name'];
 
-            $projectType = Helpers::checkDepartmentProject($departmentType, $item['activity_name']);
+            $departmentType = Helpers::checkDepartment($name);
+            if (!$departmentType)
+                throw new \Exception('无法判断科室:' . $name);
+
+            $projectType = Helpers::checkDepartmentProject($departmentType, $name);
 
             $item['type']           = $departmentType->type;
             $item['sponsored_link'] = substr($item['sponsored_link'] ?? '', 0, Builder::$defaultStringLength);
             $item['post_date']      = Carbon::parse($item['post_date'])->toDateString();
-            $item['form_type']      = $this->parserFormType($item['activity_name']);
-            $item['account_id']     = Helpers::formDataCheckAccount($item, 'activity_name');
+            $item['form_type']      = $this->parserFormType($name);
             $feiyu                  = FeiyuData::updateOrCreate([
                 'clue_id' => $item['clue_id']
             ], $item);
+
 
             $form = FormData::updateOrCreate([
                 'model_id'   => $feiyu->id,
                 'model_type' => FeiyuData::class,
             ], [
-                'data_type'     => $item['activity_name'],
-                'department_id' => $departmentType->id,
-                'form_type'     => $item['form_type'],
-                'date'          => $item['post_date'],
-                'type'          => $item['type'],
+                'data_type'       => $name,
+                'department_id'   => $departmentType->id,
+                'form_type'       => $item['form_type'],
+                'date'            => $item['post_date'],
+                'type'            => $item['type'],
+                'account_id'      => Helpers::formDataCheckAccount($item, 'activity_name'),
+                'account_keyword' => $name,
             ]);
 
             FormDataPhone::createOrUpdateItem($form, collect($item['phone']));

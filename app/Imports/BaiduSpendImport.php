@@ -49,7 +49,6 @@ class BaiduSpendImport implements ToCollection
             }
             $item['date']       = Carbon::parse($item['date'])->toDateString();
             $item['spend_type'] = 1;
-            $item['account_id'] = Helpers::formDataCheckAccount($item, 'promotion_plan', 'spend_type');
             $item['type']       = $departmentType->type;
 
             $baidu = BaiduSpend::updateOrCreate([
@@ -61,14 +60,15 @@ class BaiduSpendImport implements ToCollection
                 'model_id'   => $baidu->id,
                 'model_type' => BaiduSpend::class
             ], [
-                'department_id' => $departmentType->id,
-                'date'          => $item['date'],
-                'spend_name'    => $item['promotion_plan'],
-                'show'          => $item['show'],
-                'click'         => $item['click'],
-                'spend'         => $item['spend'],
-                'spend_type'    => $item['spend_type'],
-                'account_id'    => $item['account_id'],
+                'department_id'   => $departmentType->id,
+                'date'            => $item['date'],
+                'spend_name'      => $item['promotion_plan'],
+                'show'            => $item['show'],
+                'click'           => $item['click'],
+                'spend'           => $item['spend'],
+                'spend_type'      => $item['spend_type'],
+                'account_id'      => Helpers::formDataCheckAccount($item, 'promotion_plan', 'spend_type'),
+                'account_keyword' => $item['promotion_plan']
             ]);
 
             $spend->projects()->sync($projectType);

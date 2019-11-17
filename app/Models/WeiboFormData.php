@@ -107,13 +107,14 @@ class WeiboFormData extends Model
     public function toFormCreateData()
     {
         return [
-            'model_id'   => $this->id,
-            'model_type' => static::class,
-            'data_type'  => $this->project_name,
-            'form_type'  => 2,
-            'type'       => $this->type,
-            'phone'      => $this->phone,
-            'date'       => $this->post_date,
+            'model_id'        => $this->id,
+            'model_type'      => static::class,
+            'data_type'       => $this->project_name,
+            'account_keyword' => $this->project_name,
+            'form_type'       => 2,
+            'type'            => $this->type,
+            'phone'           => $this->phone,
+            'date'            => $this->post_date,
         ];
     }
 

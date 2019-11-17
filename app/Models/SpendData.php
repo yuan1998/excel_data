@@ -20,6 +20,7 @@ class SpendData extends Model
         'feiyu_id',
         'spend_name',
         'account_id',
+        'account_keyword',
         'department_id',
         'model_id',
         'model_type',
@@ -91,7 +92,24 @@ class SpendData extends Model
                 dd($model, $item);
             }
         });
+    }
 
+    public static function recheckSpendData()
+    {
+        static::all()
+            ->each(function ($item) {
+                $departmentType = Helpers::checkDepartment($item['spend_name']);
+
+                $item->update([
+                    'department_id' => $departmentType ? $departmentType->id : null,
+                    'account_id'    => Helpers::formDataCheckAccount($item, 'spend_name', 'spend_type')
+                ]);
+
+                if ($departmentType) {
+                    $projectType = Helpers::checkDepartmentProject($departmentType, $item['spend_name'], 'spend_keyword');
+                    $item->projects()->sync($projectType);
+                }
+            });
     }
 
     public static function fixAccountId()

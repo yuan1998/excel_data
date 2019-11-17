@@ -746,6 +746,9 @@ class Helpers
     {
         $type    = $item['type'];
         $typeId  = $item[$typeField];
+        $keyword = $item[$field];
+        if (!$keyword || !$typeId || !$type) return null;
+
         $channel = Channel::query()
             ->where('form_type', 'like', "%{$typeId}%")
             ->first();
@@ -756,7 +759,7 @@ class Helpers
                 ->where('type', $type)
                 ->get();
             if ($accounts) {
-                return static::accountValidationString($accounts, $item[$field], 'keyword');
+                return static::accountValidationString($accounts, $keyword, 'keyword');
             }
         }
         return null;
