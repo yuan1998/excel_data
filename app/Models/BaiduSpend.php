@@ -8,6 +8,7 @@ class BaiduSpend extends Model
 {
     public static $excelFields = [
         '日期'     => 'date',
+        '账户'     => 'account_name',
         '推广计划'   => 'promotion_plan',
         '推广计划ID' => 'promotion_plan_id',
         '展现'     => 'show',
@@ -17,6 +18,7 @@ class BaiduSpend extends Model
 
     protected $fillable = [
         'date',
+        'account_name',
         'promotion_plan',
         'promotion_plan_id',
         'show',

@@ -6,6 +6,7 @@ use App\Helpers;
 use App\Models\ArrivingData;
 use App\Models\BillAccountData;
 use App\models\CrmGrabLog;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -52,7 +53,7 @@ class CrmGrabLogJob implements ShouldQueue
                 $data = $dataModel::getDataOfDate($model->type, $model->start_date, $model->end_date);
                 Log::info($model->name, $data);
                 $model->status = 2;
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 Log::error('抓取数据时错误', [$model->model_type, $exception]);
                 $model->status = 3;
             }
@@ -61,5 +62,21 @@ class CrmGrabLogJob implements ShouldQueue
             $model->status = 1;
         }
         $model->save();
+    }
+
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        $model         = $this->model;
+        $model->status = 3;
+        Log::error('抓取数据时错误', [$model->model_type, $exception]);
+        $model->save();
+        // Send user notification of failure, etc...
     }
 }

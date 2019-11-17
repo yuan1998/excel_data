@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Exports\TestExport;
 use App\Models\ExportDataLog;
 use App\Parsers\ParserStart;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -58,4 +59,21 @@ class ExportJob implements ShouldQueue
         $model->status = 3;
         $model->save();
     }
+
+    /**
+     * The job failed to process.
+     *
+     * @param Exception $exception
+     * @return void
+     */
+    public function failed(Exception $exception)
+    {
+        $model         = $this->model;
+        $model->status = 3;
+        $model->save();
+        Log::error('抓取数据时错误', [$model->file_name, $exception]);
+        // Send user notification of failure, etc...
+    }
+
+
 }

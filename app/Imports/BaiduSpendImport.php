@@ -67,8 +67,8 @@ class BaiduSpendImport implements ToCollection
                 'click'           => $item['click'],
                 'spend'           => $item['spend'],
                 'spend_type'      => $item['spend_type'],
-                'account_id'      => Helpers::formDataCheckAccount($item, 'promotion_plan', 'spend_type'),
-                'account_keyword' => $item['promotion_plan']
+                'account_id'      => Helpers::formDataCheckAccount($item, 'account_name', 'spend_type'),
+                'account_keyword' => $item['account_name']
             ]);
 
             $spend->projects()->sync($projectType);
