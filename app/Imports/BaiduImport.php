@@ -39,7 +39,7 @@ class BaiduImport implements ToCollection
 
     public function saveForm($item, $channel)
     {
-        if (preg_match("/\@/", $item['visitor_type'])) {
+        if (preg_match("/\@|重复/", $item['visitor_type'])) {
             return;
         }
 
@@ -56,9 +56,10 @@ class BaiduImport implements ToCollection
             throw new \Exception('无法判断科室:' . $item['visitor_type']);
         }
 
-        $projectType  = Helpers::checkDepartmentProject($departmentType, $item['visitor_type']);
-        $type         = $departmentType->type;
-        $item['type'] = $type;
+        $projectType       = Helpers::checkDepartmentProject($departmentType, $item['visitor_type']);
+        $type              = $departmentType->type;
+        $item['form_type'] = $channel;
+        $item['type']      = $type;
 
 
         $baidu = BaiduData::updateOrCreate([
@@ -100,6 +101,8 @@ class BaiduImport implements ToCollection
                 && isset($item['visitor_id']);
         })->each(function ($item) {
             $item['url']             = substr($item['url'] ?? '', 0, Builder::$defaultStringLength);
+            $item['first_url']       = substr($item['first_url'] ?? '', 0, Builder::$defaultStringLength);
+            $item['dialog_url']       = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
             $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
 
             $url = urldecode($item['dialog_url']);
