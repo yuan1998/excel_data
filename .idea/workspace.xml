@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,8 +54,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Exports/ChannelSheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="134" column="123" lean-forward="true" selection-start-line="134" selection-start-column="123" selection-end-line="134" selection-end-column="123" />
+            <state relative-caret-position="325">
+              <caret line="234" column="33" lean-forward="true" selection-start-line="234" selection-start-column="33" selection-end-line="234" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -512,12 +511,12 @@
       <workItem from="1572353544202" duration="103446000" />
       <workItem from="1572922088551" duration="853000" />
       <workItem from="1572926023888" duration="146212000" />
-      <workItem from="1573806742175" duration="28767000" />
+      <workItem from="1573806742175" duration="28841000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="699466000" />
+    <option name="totallyTimeSpent" value="699540000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -915,8 +914,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/ChannelSheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="134" column="123" lean-forward="true" selection-start-line="134" selection-start-column="123" selection-end-line="134" selection-end-column="123" />
+        <state relative-caret-position="325">
+          <caret line="234" column="33" lean-forward="true" selection-start-line="234" selection-start-column="33" selection-end-line="234" selection-end-column="33" />
         </state>
       </provider>
     </entry>

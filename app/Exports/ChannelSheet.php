@@ -23,6 +23,8 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     public $days;
     public $departmentCount;
     public $headers;
+    public $rows = 2;
+
 
 
     public $colorList = [
@@ -206,6 +208,8 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
                 }
 
                 if ($departmentData instanceof ExcelFieldsCount) {
+                    $this->rows++;
+
                     $baseData = array_values($departmentData->toBaseExcel());
                     $values   = array_merge([
                         $dateString,
@@ -215,6 +219,8 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
                     $result->push($values);
                 } else {
                     foreach ($departmentData as $projectName => $projectData) {
+                        $this->rows++;
+
                         $baseData = array_values($projectData->toBaseExcel());
                         $values   = array_merge([
                             $dateString,
@@ -226,6 +232,8 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
                 }
             }
             if ($first) {
+                $this->rows += 3;
+
                 $result->push(['']);
                 $result = $result->merge(Helpers::makeHeaders($this->headers));
                 $first  = false;
