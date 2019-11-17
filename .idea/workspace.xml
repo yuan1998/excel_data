@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Exports/AccountSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/AccountSheet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/BaseSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/BaseSheet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/WeiboSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/WeiboSheet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Exports/ChannelSheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="70" selection-start-line="70" selection-end-line="70" />
+            <state relative-caret-position="309">
+              <caret line="134" column="123" lean-forward="true" selection-start-line="134" selection-start-column="123" selection-end-line="134" selection-end-column="123" />
             </state>
           </provider>
         </entry>
@@ -97,11 +96,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Exports/WeiboSheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
+            <state relative-caret-position="433">
+              <caret line="70" column="32" lean-forward="true" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -195,10 +194,10 @@
         <option value="$PROJECT_DIR$/resources/views/admin/headers/ExportDataLogHeader.blade.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" />
         <option value="$PROJECT_DIR$/app/Imports/BaiduImport.php" />
-        <option value="$PROJECT_DIR$/app/Exports/ChannelSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/AccountSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/BaseSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/WeiboSheet.php" />
+        <option value="$PROJECT_DIR$/app/Exports/ChannelSheet.php" />
       </list>
     </option>
   </component>
@@ -513,12 +512,12 @@
       <workItem from="1572353544202" duration="103446000" />
       <workItem from="1572922088551" duration="853000" />
       <workItem from="1572926023888" duration="146212000" />
-      <workItem from="1573806742175" duration="28617000" />
+      <workItem from="1573806742175" duration="28767000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="699316000" />
+    <option name="totallyTimeSpent" value="699466000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -871,13 +870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/ChannelSheet.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="70" selection-start-line="70" selection-end-line="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/TestSheet.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
@@ -916,8 +908,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/WeiboSheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
+        <state relative-caret-position="433">
+          <caret line="70" column="32" lean-forward="true" selection-start-line="70" selection-start-column="32" selection-end-line="70" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Exports/ChannelSheet.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="134" column="123" lean-forward="true" selection-start-line="134" selection-start-column="123" selection-end-line="134" selection-end-column="123" />
         </state>
       </provider>
     </entry>

@@ -63,11 +63,9 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setVertical('center');
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setHorizontal('center');
-//                for ($i = 0; $i <= 1265; $i++) {
-//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-//                }
+                for ($i = 0; $i <= $this->rows; $i++) {
+                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+                }
 
 
                 $index      = 1;
@@ -132,11 +130,10 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
 
                     $index++;
                 }
-//                $delegate->mergeCells('B1:B2');
-//                $delegate->mergeCells('C1:P1');
-//                $delegate->mergeCells('Q1:W1');
-//                $delegate->mergeCells('X1:AN1');
-//                $delegate->mergeCells('AO1:AP1');
+                $name   = Helpers::getNameFromNumber($index);
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
+
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
                 $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 6 + $this->projectCount);
