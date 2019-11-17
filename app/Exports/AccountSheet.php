@@ -22,7 +22,7 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     public $days;
     public $channelCount;
     public $headers;
-
+    public $rows = 2;
 
     public $colorList = [
         'f8cbad',
@@ -62,11 +62,9 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setVertical('center');
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setHorizontal('center');
-//                for ($i = 0; $i <= 1265; $i++) {
-//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-//                }
+                for ($i = 0; $i <= $this->rows; $i++) {
+                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+                }
 
                 $index      = 1;
                 $colorIndex = 0;
@@ -130,9 +128,13 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
 
                     $index++;
                 }
+                $name   = Helpers::getNameFromNumber($index);
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
+
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
-                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4 ,6 + $this->accountCount);
+                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 6 + $this->accountCount);
 
             },
         ];
@@ -195,6 +197,7 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
                 }
 
                 foreach ($channelData as $accountName => $accountData) {
+                    $this->rows++;
                     $baseData = array_values($accountData->toBaseExcel());
                     $values   = array_merge([
                         $dateString,
@@ -205,6 +208,7 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
                 }
             }
             if ($first) {
+                $this->rows += 3;
                 $result->push(['']);
                 $result = $result->merge(Helpers::makeHeaders($this->headers));
                 $first  = false;

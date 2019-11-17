@@ -4,7 +4,6 @@
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/app/Exports/AccountSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/AccountSheet.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Exports/BaseSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/BaseSheet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/ChannelSheet.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Exports/WeiboSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/WeiboSheet.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,8 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="75" column="44" lean-forward="true" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+            <state relative-caret-position="-7">
+              <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
               <folding>
                 <element signature="e#31#59#0#PHP" expanded="true" />
                 <element signature="e#532#1265#0#PHP" />
@@ -77,37 +76,32 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Exports/BaseSheet.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="560">
-              <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+            <state relative-caret-position="505">
+              <caret line="64" column="12" selection-start-line="64" selection-start-column="12" selection-end-line="67" />
+              <folding>
+                <element signature="e#2672#3055#1#PHP" />
+                <element signature="e#3210#3593#1#PHP" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Exports/WeiboSheet.php">
+        <entry file="file://$PROJECT_DIR$/app/Exports/BaseSheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
+            <state relative-caret-position="607">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Exports/TestSheet.php">
+        <entry file="file://$PROJECT_DIR$/app/Exports/WeiboSheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+            <state relative-caret-position="371">
+              <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -202,8 +196,8 @@
         <option value="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" />
         <option value="$PROJECT_DIR$/app/Imports/BaiduImport.php" />
         <option value="$PROJECT_DIR$/app/Exports/ChannelSheet.php" />
-        <option value="$PROJECT_DIR$/app/Exports/BaseSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/AccountSheet.php" />
+        <option value="$PROJECT_DIR$/app/Exports/BaseSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/WeiboSheet.php" />
       </list>
     </option>
@@ -519,12 +513,12 @@
       <workItem from="1572353544202" duration="103446000" />
       <workItem from="1572922088551" duration="853000" />
       <workItem from="1572926023888" duration="146212000" />
-      <workItem from="1573806742175" duration="28093000" />
+      <workItem from="1573806742175" duration="28617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="698792000" />
+    <option name="totallyTimeSpent" value="699316000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -884,10 +878,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Exports/TestSheet.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="75" column="44" lean-forward="true" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+        <state relative-caret-position="-7">
+          <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
           <folding>
             <element signature="e#31#59#0#PHP" expanded="true" />
             <element signature="e#532#1265#0#PHP" />
@@ -895,31 +896,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/BaseSheet.php">
+    <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+        <state relative-caret-position="505">
+          <caret line="64" column="12" selection-start-line="64" selection-start-column="12" selection-end-line="67" />
+          <folding>
+            <element signature="e#2672#3055#1#PHP" />
+            <element signature="e#3210#3593#1#PHP" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
+    <entry file="file://$PROJECT_DIR$/app/Exports/BaseSheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+        <state relative-caret-position="607">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/WeiboSheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/TestSheet.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        <state relative-caret-position="371">
+          <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
         </state>
       </provider>
     </entry>

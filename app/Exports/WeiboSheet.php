@@ -23,6 +23,7 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
     public $days;
     public $departmentCount;
     public $headers;
+    public $rows = 2;
 
 
     public $colorList = [
@@ -63,12 +64,9 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setVertical('center');
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setHorizontal('center');
-//                for ($i = 0; $i <= 1265; $i++) {
-//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-//                }
-
+                for ($i = 0; $i <= $this->rows; $i++) {
+                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+                }
 
                 $index      = 1;
                 $colorIndex = 0;
@@ -132,11 +130,11 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
 
                     $index++;
                 }
-//                $delegate->mergeCells('B1:B2');
-//                $delegate->mergeCells('C1:P1');
-//                $delegate->mergeCells('Q1:W1');
-//                $delegate->mergeCells('X1:AN1');
-//                $delegate->mergeCells('AO1:AP1');
+                $name = Helpers::getNameFromNumber($index);
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
+
+
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
                 $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 6 + $this->projectCount);
@@ -209,6 +207,7 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
                 }
 
                 if ($departmentData instanceof ExcelFieldsCount) {
+                    $this->rows++;
                     $baseData = array_values($departmentData->toWeiboExcel());
                     $values   = array_merge([
                         $dateString,
@@ -218,6 +217,7 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
                     $result->push($values);
                 } else {
                     foreach ($departmentData as $projectName => $projectData) {
+                        $this->rows++;
                         $baseData = array_values($projectData->toWeiboExcel());
                         $values   = array_merge([
                             $dateString,
@@ -230,8 +230,9 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
             }
             if ($first) {
                 $result->push(['']);
-                $result = $result->merge(Helpers::makeHeaders($this->headers));
-                $first  = false;
+                $result     = $result->merge(Helpers::makeHeaders($this->headers));
+                $this->rows += 3;
+                $first      = false;
             }
         }
         return $result;

@@ -22,6 +22,7 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
     public $days;
     public $projectsCount;
     public $headers;
+    public $rows = 2;
 
 
     public $colorList = [
@@ -60,11 +61,10 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setVertical('center');
-//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setHorizontal('center');
-//                for ($i = 0; $i <= 1265; $i++) {
-//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-//                }
+                for ($i = 0; $i <= $this->rows; $i++) {
+                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+                }
+
 
                 $index      = 1;
                 $colorIndex = 0;
@@ -129,11 +129,10 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
                     $index++;
                 }
 
-//                $delegate->mergeCells('B1:B2');
-//                $delegate->mergeCells('C1:P1');
-//                $delegate->mergeCells('Q1:W1');
-//                $delegate->mergeCells('X1:AN1');
-//                $delegate->mergeCells('AO1:AP1');
+                $name   = Helpers::getNameFromNumber($index);
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
+                $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
+
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
                 $event->sheet->getDelegate()->freezePaneByColumnAndRow(3, 6 + $this->projectsCount);
@@ -183,6 +182,7 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
                 $this->projectsCount = $dateData->count();
             }
             foreach ($dateData as $key => $excel) {
+                $this->rows++;
                 $baseData = array_values($excel->toBaseExcel());
                 $values   = array_merge([
                     $dateString,
@@ -191,6 +191,7 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
                 $result->push($values);
             }
             if ($first) {
+                $this->rows += 3;
                 $result->push(['']);
                 $result = $result->merge(Helpers::makeHeaders($this->headers));
                 $first  = false;
