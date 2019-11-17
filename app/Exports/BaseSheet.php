@@ -60,11 +60,11 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setVertical('center');
-                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setHorizontal('center');
-                for ($i = 0; $i <= 1265; $i++) {
-                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-                }
+//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setVertical('center');
+//                $event->sheet->getDelegate()->getStyle("A1:BJ1234")->getAlignment()->setHorizontal('center');
+//                for ($i = 0; $i <= 1265; $i++) {
+//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+//                }
 
                 $index      = 1;
                 $colorIndex = 0;
