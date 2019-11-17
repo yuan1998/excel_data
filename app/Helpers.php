@@ -480,7 +480,7 @@ class Helpers
     public static function checkIsRepeat($date, $archive_date)
     {
         $startDate = Carbon::parse($date);
-        $endDate   = Carbon::parse($date)->addDays(2);
+        $endDate   = Carbon::parse($date)->addDays(3);
         $result    = Carbon::parse($archive_date)->between($startDate, $endDate) ? 1 : 2;
         if ($result === 2) {
             Log::info('重复表单', [$archive_date, $startDate, $endDate]);
