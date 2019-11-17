@@ -10,6 +10,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Tools\BatchActions;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ExportDataLogController extends AdminController
@@ -41,7 +42,7 @@ class ExportDataLogController extends AdminController
             $tools->append(new ExportDataAction());
         });
 
-        $grid->actions(function ( $actions) {
+        $grid->actions(function ($actions) {
             // 去掉编辑
             $actions->disableEdit();
 
@@ -51,8 +52,28 @@ class ExportDataLogController extends AdminController
 
         $grid->disableCreateButton();
 
+        $grid->header(function ($header) {
+            $queueName = [
+                'form_data_phone'    => '表单电话',
+                'crm_grab_log_queue' => 'crm 数据',
+                'data_exports'       => '导出数据',
+            ];
+
+            $data = DB::table('jobs')
+                ->select([
+                    DB::raw('count(queue) as count'),
+                    'queue'
+                ])->whereIn('queue', array_keys($queueName))->groupBy('queue')->get()->pluck('count', 'queue');
+
+
+            return view('admin.headers.ExportDataLogHeader', [
+                'queueName' => $queueName,
+                'data'      => $data,
+            ]);
+        });
+
         $grid->column('created_at', __('Created at'));
-        $grid->column('full_path' , '文件名称')->display(function () {
+        $grid->column('full_path', '文件名称')->display(function () {
             return Storage::disk('public')->url($this->path . $this->file_name);
         })->downloadable();
         $grid->column('status', __('Status'))->using(ExportDataLog::$staticList)->label();
