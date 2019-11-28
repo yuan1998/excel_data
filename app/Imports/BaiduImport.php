@@ -39,24 +39,25 @@ class BaiduImport implements ToCollection
 
     public function saveForm($item, $channel)
     {
-        if (preg_match("/\@|重复/", $item['visitor_type'])) {
-            return;
-        }
-
         $clue = $this->parseClue($item['clue']);
 
         if ($clue->isEmpty()) return;
 
-        $departmentType = Helpers::checkDepartment($item['visitor_type']);
+        $name           = 'code';
+        $departmentType = Helpers::checkDepartment($item[$name]);
+        if (!$departmentType) {
+            $name           = 'visitor_type';
+            $departmentType = Helpers::checkDepartment($item[$name]);
+        }
 
         if (!$departmentType) {
             Log::info('无法判断科室', [
                 'name' => $item['visitor_type'],
             ]);
-            throw new \Exception('无法判断科室:' . $item['visitor_type']);
+            throw new \Exception('无法判断科室: "' . $item['visitor_type'] . '" ' . $item['code']);
         }
 
-        $projectType       = Helpers::checkDepartmentProject($departmentType, $item['visitor_type']);
+        $projectType       = Helpers::checkDepartmentProject($departmentType, $item[$name]);
         $type              = $departmentType->type;
         $item['form_type'] = $channel;
         $item['type']      = $type;
@@ -75,8 +76,8 @@ class BaiduImport implements ToCollection
             'type'            => $item['type'],
             'department_id'   => $departmentType->id,
             'date'            => $item['cur_access_time'],
-            'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
-            'account_keyword' => $item['code'],
+            'account_id'      => Helpers::formDataCheckAccount($item, $name),
+            'account_keyword' => $item[$name],
         ]);
 
         FormDataPhone::createOrUpdateItem($form, $clue);
@@ -102,11 +103,11 @@ class BaiduImport implements ToCollection
         })->each(function ($item) {
             $item['url']             = substr($item['url'] ?? '', 0, Builder::$defaultStringLength);
             $item['first_url']       = substr($item['first_url'] ?? '', 0, Builder::$defaultStringLength);
-            $item['dialog_url']       = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
+            $item['dialog_url']      = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
             $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
 
-            $url = urldecode($item['dialog_url']);
-            preg_match("/\?A(.{10})/", $url, $match);
+            $url = urldecode($item['first_url']);
+            preg_match("/A[0-9]0(.{12,20})/", $url, $match);
             $item['code'] = $code = isset($match[0]) ? $match[0] : null;
 
             if ($code) {

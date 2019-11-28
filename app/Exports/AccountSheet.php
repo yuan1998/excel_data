@@ -62,9 +62,9 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                for ($i = 0; $i <= $this->rows; $i++) {
-                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-                }
+//                for ($i = 0; $i <= $this->rows; $i++) {
+//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+//                }
 
                 $index      = 1;
                 $colorIndex = 0;
@@ -128,7 +128,7 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
 
                     $index++;
                 }
-                $name   = Helpers::getNameFromNumber($index);
+                $name = Helpers::getNameFromNumber($index);
                 $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
                 $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
 

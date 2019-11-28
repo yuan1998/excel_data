@@ -65,9 +65,9 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                for ($i = 0; $i <= $this->rows; $i++) {
-                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-                }
+//                for ($i = 0; $i <= $this->rows; $i++) {
+//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+//                }
 
 
                 $index      = 1;

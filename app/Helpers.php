@@ -482,9 +482,6 @@ class Helpers
         $startDate = Carbon::parse($date);
         $endDate   = Carbon::parse($date)->addDays(3);
         $result    = Carbon::parse($archive_date)->between($startDate, $endDate) ? 1 : 2;
-        if ($result === 2) {
-            Log::info('重复表单', [$archive_date, $startDate, $endDate]);
-        }
 
         return $result;
     }
@@ -493,6 +490,10 @@ class Helpers
     {
         return preg_match('/转微/', $comment) ? 1 : 2;
     }
+
+    // 13192567990
+    //
+    // 441702199806013818
 
     /**
      * 获取 媒介类型ID , 如果没有则创建,然后再缓存到redis中
