@@ -480,10 +480,7 @@ class Helpers
     public static function checkIsRepeat($date, $archive_date)
     {
         $startDate = Carbon::parse($date);
-        $endDate   = Carbon::parse($date)->addDays(3);
-        $result    = Carbon::parse($archive_date)->between($startDate, $endDate) ? 1 : 2;
-
-        return $result;
+        return Carbon::parse($archive_date)->gte($startDate) ? 1 : 2;
     }
 
     public static function checkTurnWeixin($comment)
