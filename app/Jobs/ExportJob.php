@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Exports\TestExport;
 use App\Models\ExportDataLog;
 use App\Parsers\ParserStart;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -43,20 +44,18 @@ class ExportJob implements ShouldQueue
     {
         $model = $this->model;
 
-        if ($model) {
-            $requestData = json_decode($model->request_data, true);
-//            dd($requestData);
-            Log::info('生成 Excel 参数', [$requestData]);
-            $parser        = new ParserStart($requestData);
-            $pathName      = $model->path . $model->file_name;
-            $model->status = 1;
-            $model->save();
-            Excel::store(new TestExport($parser), $pathName, 'public');
-            $model->status = 2;
-            $model->save();
-            return;
-        }
-        $model->status = 3;
+        if (!$model) return;
+
+        $time        = Carbon::now();
+        $requestData = json_decode($model->request_data, true);
+        Log::info('生成 Excel 参数', [$requestData]);
+        $parser        = new ParserStart($requestData);
+        $pathName      = $model->path . $model->file_name;
+        $model->status = 1;
+        $model->save();
+        Excel::store(new TestExport($parser), $pathName, 'public');
+        $model->status   = 2;
+        $model->run_time = Carbon::now()->diffInSeconds($time) ?? 0;
         $model->save();
     }
 
