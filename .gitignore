@@ -5,7 +5,7 @@
 /public/js/*
 /storage/*.key
 /vendor
-excelData.sql
+*.sql
 .env
 .env.backup
 .phpunit.result.cache
