@@ -69,8 +69,11 @@ class ExcelFieldsCount
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
 
+        Log::info('导出Excel Debug:', [$arrivingData]);
+
         $effectiveForm   = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
+
         return [
             // 总互动
             'interactive'                      => Arr::get($spendData, 'interactive', 0),
@@ -178,8 +181,10 @@ class ExcelFieldsCount
             'turn_weixin_spend'                => round(Helpers::divisionOfSelf($spendData['spend'], $formData['turn_weixin-1']), 2),
             // 预约成本 = 消费 / 预约
             'reservation_spend'                => round(Helpers::divisionOfSelf($spendData['spend'], $formData['intention-2']), 2),
-            // 到院成本 = 消费 / 到院
+            // 到诊成本 = 消费 / 到院
             'arriving_spend'                   => round(Helpers::divisionOfSelf($spendData['spend'], $arrivingData['arriving_count']), 2),
+            // 到诊(首次)成本 = 消费 / 新客到院
+            'arriving_new_spend'                   => round(Helpers::divisionOfSelf($spendData['spend'], $arrivingData['new_first']), 2),
             // 新客投产比 = 1 : (总消费 / 新客业绩)
             'proportion_new'                   => Helpers::toRatio($spendData['spend'], $billAccountData['new_account']),
             // 总投产比 = 1 : ( 总消费 / 总业绩)
@@ -318,7 +323,7 @@ class ExcelFieldsCount
             'account_complete'                 => 0,
             // 业绩目标差
             'account_less'                     => 0,
-            
+
             // 新客投产比 = 1 : (总消费 / 新客业绩)
             'proportion_new'                   => Helpers::toRatio($spendData['spend'], $billAccountData['new_account']),
             // 投产比
@@ -435,7 +440,7 @@ class ExcelFieldsCount
             $transaction = $value['is_transaction'] == ' 是 ';
 
             if ($value['customer_status'] == ' 新客户 ') {
-                if ($value['arriving_again'] == '二次') {
+                if ($value['again_arriving'] == '二次') {
                     $result['new_again']++;
                     $transaction && $result['new_again_transaction']++;
 
@@ -475,7 +480,7 @@ class ExcelFieldsCount
 
             if ($customerStatus) {
                 if ($customerStatus == ' 新客户 ') {
-                    if ($value['arriving_again'] == '二次') {
+                    if ($value['again_arriving'] == ' 是 ') {
                         $result['new_again_count']++;
                         $result['new_again_account'] += $account;
                     } else {

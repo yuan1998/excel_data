@@ -64,9 +64,6 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-//                for ($i = 0; $i <= $this->rows; $i++) {
-//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-//                }
 
                 $index      = 1;
                 $colorIndex = 0;
@@ -146,9 +143,11 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
     {
         $count = count($this->headings()[0]);
 
-//        Log::info('test Count', [Helpers::getNameFromNumber($count)]);
         for ($i = 1; $i <= $count; $i++) {
             $event->sheet->getDelegate()->getColumnDimension(Helpers::getNameFromNumber($i))->setWidth(15);
+        }
+        for ($i = 0; $i <= $this->rows; $i++) {
+            $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
         }
     }
 

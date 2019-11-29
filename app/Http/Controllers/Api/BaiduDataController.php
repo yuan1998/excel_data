@@ -20,6 +20,7 @@ use App\Models\FormDataPhone;
 use App\Models\ProjectType;
 use App\Models\TempCustomerData;
 use App\Models\WeiboFormData;
+use App\Parsers\ParserStart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Maatwebsite\Excel\Facades\Excel;
@@ -49,14 +50,24 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
-        $model = FormDataPhone::query()->first();
-        Helpers::checkIntentionAndArchive($model, $model->isBaidu);
 
-        dd($model);
+        $requestData = [
+            'channel_id'    => [
+                1, 2, 3, 4
+            ],
+            'department_id' => [
+                2,
+            ],
+            'dates'         => [
+                '2019-11-01',
+                '2019-11-29'
+            ]
+        ];
 
 
-        $headers = Helpers::makeHeaders(TestExport::$AccountHeaders);
-        dd($headers);
+        $parser   = new ParserStart($requestData);
+        $pathName = 'test_excel/test.xlsx';
+        Excel::store(new TestExport($parser), $pathName, 'public');
 
         return $this->response->noContent();
     }

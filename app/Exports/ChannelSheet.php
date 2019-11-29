@@ -65,11 +65,6 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-//                for ($i = 0; $i <= $this->rows; $i++) {
-//                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
-//                }
-
-
                 $index      = 1;
                 $colorIndex = 0;
                 foreach ($this->headers as $header => $value) {
@@ -147,7 +142,9 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     {
         $count = count($this->headings()[0]);
 
-//        Log::info('test Count', [Helpers::getNameFromNumber($count)]);
+        for ($i = 0; $i <= $this->rows; $i++) {
+            $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
+        }
         for ($i = 1; $i <= $count; $i++) {
             $event->sheet->getDelegate()->getColumnDimension(Helpers::getNameFromNumber($i))->setWidth(15);
         }

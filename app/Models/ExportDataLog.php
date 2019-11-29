@@ -12,6 +12,7 @@ class ExportDataLog extends Model
         'file_name',
         'path',
         'request_data',
+        'run_time',
         'log',
     ];
 
