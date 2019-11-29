@@ -196,7 +196,7 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
 
                 foreach ($channelData as $accountName => $accountData) {
                     $this->rows++;
-                    $baseData = array_values($accountData->toBaseExcel());
+                    $baseData = array_values($accountData->toAccountExcel());
                     $values   = array_merge([
                         $dateString,
                         $channelName,

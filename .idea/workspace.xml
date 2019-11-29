@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/AccountSheet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/AccountSheet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Exports/TestExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/TestExport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,14 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="81" column="26" lean-forward="true" selection-start-line="81" selection-start-column="26" selection-end-line="81" selection-end-column="26" />
-              <folding>
-                <element signature="e#1245#1885#2#PHP" />
-              </folding>
+            <state relative-caret-position="1364">
+              <caret line="53" selection-start-line="53" selection-end-line="53" />
             </state>
           </provider>
         </entry>
@@ -30,7 +30,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
+            <state relative-caret-position="2542">
               <caret line="84" column="5" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="5" />
             </state>
           </provider>
@@ -39,8 +39,63 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Jobs/ExportJob.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
+            <state relative-caret-position="372">
               <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Console/Kernel.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="806">
+              <caret line="35" column="44" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/BillAccountData.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="334">
+              <caret line="168" column="24" selection-start-line="168" selection-start-column="24" selection-end-line="168" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="486">
+              <caret line="198" column="73" selection-start-line="198" selection-start-column="59" selection-end-line="198" selection-end-column="73" />
+              <folding>
+                <element signature="e#1389#5119#0#PHP" />
+                <element signature="e#1598#4586#0#PHP" />
+                <element signature="e#5529#6331#0#PHP" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Helpers.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="473" selection-start-line="473" selection-end-line="473" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="221" column="49" selection-start-line="221" selection-start-column="49" selection-end-line="221" selection-end-column="49" />
+              <folding>
+                <element signature="e#32#48#0#PHP" expanded="true" />
+                <element signature="e#1332#9590#0#PHP" />
+                <element signature="e#18103#25400#0#PHP" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,7 +113,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>$this-&gt;departments</find>
       <find>预约单</find>
       <find>$customer_info_check_url</find>
       <find>建档</find>
@@ -88,6 +142,7 @@
       <find>repea</find>
       <find>ini_set</find>
       <find>toBaseExcel</find>
+      <find>toAccountExcel</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -137,16 +192,16 @@
         <option value="$PROJECT_DIR$/app/Helpers.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" />
-        <option value="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" />
-        <option value="$PROJECT_DIR$/app/Exports/TestExport.php" />
         <option value="$PROJECT_DIR$/app/Exports/WeiboSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/ChannelSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/BaseSheet.php" />
-        <option value="$PROJECT_DIR$/app/Exports/AccountSheet.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_29_151223_change_export_data_log_table_add_time_field.php" />
         <option value="$PROJECT_DIR$/app/Jobs/ExportJob.php" />
         <option value="$PROJECT_DIR$/app/Models/ExportDataLog.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" />
+        <option value="$PROJECT_DIR$/app/Exports/TestExport.php" />
+        <option value="$PROJECT_DIR$/app/Exports/AccountSheet.php" />
+        <option value="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" />
       </list>
     </option>
   </component>
@@ -278,7 +333,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -407,6 +461,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -474,18 +529,19 @@
       <workItem from="1572926023888" duration="146212000" />
       <workItem from="1573806742175" duration="36678000" />
       <workItem from="1574407384006" duration="2470000" />
-      <workItem from="1574575920935" duration="12358000" />
+      <workItem from="1574575920935" duration="14037000" />
+      <workItem from="1575035181326" duration="2184000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="722205000" />
+    <option name="totallyTimeSpent" value="726068000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1177" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18249734" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18463181" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -513,13 +569,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="48" column="39" lean-forward="true" selection-start-line="48" selection-start-column="39" selection-end-line="48" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
@@ -677,20 +726,8 @@
         <state relative-caret-position="-15159" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-vagrant-vagrant-2019-11-14.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="373">
-          <caret line="541" column="75" lean-forward="true" selection-start-line="541" selection-start-column="75" selection-end-line="541" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-vagrant-vagrant-2019-11-15.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="392">
-          <caret line="3597" column="48" lean-forward="true" selection-start-line="3597" selection-start-column="48" selection-end-line="3597" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-vagrant-vagrant-2019-11-14.log" />
+    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-vagrant-vagrant-2019-11-15.log" />
     <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-vagrant-vagrant-2019-11-18.log">
       <provider selected="true" editor-type-id="LogFileEditorProvider">
         <state relative-caret-position="-16554" />
@@ -701,11 +738,6 @@
         <state relative-caret-position="917">
           <caret line="75" column="21" selection-start-line="75" selection-start-column="21" selection-end-line="75" selection-end-column="21" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Console/Kernel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2493" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Providers/AppServiceProvider.php">
@@ -743,13 +775,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="478" column="7" selection-start-line="478" selection-start-column="7" selection-end-line="478" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Parsers/ParserBase.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="757">
@@ -773,17 +798,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="328">
           <caret line="17" column="11" lean-forward="true" selection-start-line="17" selection-start-column="11" selection-end-line="17" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="183" column="29" selection-start-line="183" selection-start-column="29" selection-end-line="183" selection-end-column="29" />
-          <folding>
-            <element signature="e#32#48#0#PHP" expanded="true" />
-            <element signature="e#9370#16679#0#PHP" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -814,29 +828,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="126" column="44" selection-start-line="126" selection-start-column="44" selection-end-line="126" selection-end-column="44" />
-          <folding>
-            <element signature="e#1762#4750#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="101" column="21" selection-start-line="101" selection-start-column="21" selection-end-line="101" selection-end-column="21" />
-          <folding>
-            <element signature="e#31#59#0#PHP" expanded="true" />
-            <element signature="e#532#1280#0#PHP" />
-            <element signature="e#1316#2082#0#PHP" />
-            <element signature="e#2121#2919#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/BaseSheet.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="512">
@@ -847,17 +838,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Parsers/ParserStart.php">
+    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="66" column="59" selection-start-line="66" selection-start-column="46" selection-end-line="66" selection-end-column="59" />
+        <state relative-caret-position="1364">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2542">
+          <caret line="84" column="5" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Jobs/ExportJob.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
+        <state relative-caret-position="372">
           <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Kernel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="806">
+          <caret line="35" column="44" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/BillAccountData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="168" column="24" selection-start-line="168" selection-start-column="24" selection-end-line="168" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -868,19 +880,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
+    <entry file="file://$PROJECT_DIR$/app/Helpers.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="84" column="5" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="5" />
+        <state relative-caret-position="161">
+          <caret line="473" selection-start-line="473" selection-end-line="473" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php">
+    <entry file="file://$PROJECT_DIR$/app/Parsers/ParserStart.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="81" column="26" lean-forward="true" selection-start-line="81" selection-start-column="26" selection-end-line="81" selection-end-column="26" />
+        <state relative-caret-position="239">
+          <caret line="79" column="20" selection-start-line="79" selection-start-column="20" selection-end-line="79" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="133" column="42" lean-forward="true" selection-start-line="133" selection-start-column="42" selection-end-line="133" selection-end-column="42" />
           <folding>
-            <element signature="e#1245#1885#2#PHP" />
+            <element signature="e#31#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="198" column="73" selection-start-line="198" selection-start-column="59" selection-end-line="198" selection-end-column="73" />
+          <folding>
+            <element signature="e#1389#5119#0#PHP" />
+            <element signature="e#1598#4586#0#PHP" />
+            <element signature="e#5529#6331#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="221" column="49" selection-start-line="221" selection-start-column="49" selection-end-line="221" selection-end-column="49" />
+          <folding>
+            <element signature="e#32#48#0#PHP" expanded="true" />
+            <element signature="e#1332#9590#0#PHP" />
+            <element signature="e#18103#25400#0#PHP" />
           </folding>
         </state>
       </provider>
