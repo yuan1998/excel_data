@@ -46,6 +46,7 @@ class PullWeiboFormData implements ShouldQueue
      */
     public function handle()
     {
+        Log::info("运行微博拉取Job", [$this->type]);
         WeiboFormData::pullWeiboData($this->type, $this->startDate, $this->endDate, $this->count);
     }
 }
