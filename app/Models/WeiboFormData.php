@@ -269,7 +269,7 @@ class WeiboFormData extends Model
     {
         // 获取 当前时间,重复使用.
         $now = Carbon::now()->toDateTimeString();
-        collect($data)->each(function ($item) use ($now, $type) {
+        foreach ($data as $item) {
             // 获取转换基础数据
             $parserItem                = static::apiDataParse($item);
             $parserItem['upload_date'] = $now;
@@ -287,7 +287,7 @@ class WeiboFormData extends Model
                     'comment' => $parserItem['comment'],
                 ]);
             }
-        });
+        }
         // 返回拉取的数量
         return count($data);
     }
@@ -313,8 +313,9 @@ class WeiboFormData extends Model
      */
     public static function pullWeiboData($accountName, $startDate, $endDate, $count = 2000)
     {
+        Log::info('开始拉取微博数据', [$accountName]);
         if (!isset(WeiboClient::$Account[$accountName])) {
-            Log::error('错误的账户.', ['accountName' => $accountName]);
+            Log::error('错误的账户.', [$accountName]);
             return null;
         }
         $account = WeiboClient::$Account[$accountName];
@@ -325,15 +326,17 @@ class WeiboFormData extends Model
 
         // 没有数据报错.
         if (!$data) {
-            Log::info('拉取微博数据出错 , 数据为空', ['result' => $data, 'account' => $account]);
+            Log::info('拉取微博数据出错 , 数据为空', ['result' => $data, 'account' => $accountName]);
         }
 
-        // 将拉取到的数据保存到服务器
-        $count = static::generateWeiboFormData($type, $data);
+        $count = count($data);
         Log::info('pull weibo form data count', [
             'count'   => $count,
             'Account' => $accountName
         ]);
+
+        // 将拉取到的数据保存到服务器
+        static::generateWeiboFormData($type, $data);
         return $count;
     }
 

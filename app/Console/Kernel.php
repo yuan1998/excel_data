@@ -90,9 +90,13 @@ class Kernel extends ConsoleKernel
         })->monthlyOn(date('t'), '23:45');
 
         $schedule->call(function () {
-            foreach (WeiboClient::$Account as $accountName => $value) {WeiboFormData::pullToday($accountName);}
+            foreach (WeiboClient::$Account as $accountName => $value) {
+                WeiboFormData::pullToday($accountName);
+            }
         })->everyFifteenMinutes();
+
         $schedule->call(function () {
+            $index = 0;
             foreach (WeiboClient::$Account as $accountName => $value) {
                 WeiboFormData::pullYesterday($accountName);
             }
