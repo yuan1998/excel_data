@@ -668,7 +668,9 @@ class BaseClient
     public static function tempCustomerInfoArchiveCheck($model)
     {
         $item = static::tempCustomerInfoCheckData($model->phone)->first();
-        if (!$item) return [];
+        if (!$item) return [
+            'is_archive' => 2,
+        ];
 
         return [
             'is_archive' => 1,
