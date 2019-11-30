@@ -308,7 +308,7 @@ class WeiboFormData extends Model
      * @param     $startDate
      * @param     $endDate
      * @param int $count
-     * @return int
+     * @return int |void
      * @throws \Exception
      */
     public static function pullWeiboData($accountName, $startDate, $endDate, $count = 2000)
@@ -327,17 +327,18 @@ class WeiboFormData extends Model
         // 没有数据报错.
         if (!$data) {
             Log::info('拉取微博数据出错 , 数据为空', ['result' => $data, 'account' => $accountName]);
+        } else {
+            $count = count($data);
+            Log::info('pull weibo form data count', [
+                'count'   => $count,
+                'Account' => $accountName
+            ]);
+
+            // 将拉取到的数据保存到服务器
+            static::generateWeiboFormData($type, $data);
+            return $count;
         }
 
-        $count = count($data);
-        Log::info('pull weibo form data count', [
-            'count'   => $count,
-            'Account' => $accountName
-        ]);
-
-        // 将拉取到的数据保存到服务器
-        static::generateWeiboFormData($type, $data);
-        return $count;
     }
 
     public static function pullTodayAllType()
