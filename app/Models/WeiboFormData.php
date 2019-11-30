@@ -359,6 +359,7 @@ class WeiboFormData extends Model
      */
     public static function pullToday($type)
     {
+        Log::info('拉取当天的微博表单', [$type]);
         // 获取今天的日期
         $today = Carbon::today()->toDateString();
         // 加入查询队列,后台自动查询微博后台数据
