@@ -16,6 +16,12 @@ class WeiboClient
             'customer_id' => '6660030357',
             'type'     => 'kq',
         ],
+        '团圆'  => [
+            'username' => '17392449035',
+            'password' => 'huamei2019',
+            'customer_id' => '7165564518',
+            'type'     => 'kq',
+        ],
         '整形'  => [
             'username' => '18092693627',
             'password' => 'huamei123',
@@ -45,6 +51,7 @@ class WeiboClient
             $account['password'],
             $account['customer_id'],
         ]);
+        $process->setTimeout(600);
         $process->run();
 
         if (!$process->isSuccessful()) {
