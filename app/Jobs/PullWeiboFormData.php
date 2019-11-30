@@ -46,8 +46,6 @@ class PullWeiboFormData implements ShouldQueue
      */
     public function handle()
     {
-        $count = WeiboFormData::pullWeiboData($this->type, $this->startDate, $this->endDate, $this->count);
-        $time  = Carbon::now()->toTimeString();
-        Log::info($time . ' pull weibo form data count', [$count]);
+        WeiboFormData::pullWeiboData($this->type, $this->startDate, $this->endDate, $this->count);
     }
 }

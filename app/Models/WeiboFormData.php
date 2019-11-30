@@ -329,7 +329,12 @@ class WeiboFormData extends Model
         }
 
         // 将拉取到的数据保存到服务器
-        return static::generateWeiboFormData($type, $data);
+        $count = static::generateWeiboFormData($type, $data);
+        Log::info('pull weibo form data count', [
+            'count'   => $count,
+            'Account' => $accountName
+        ]);
+        return $count;
     }
 
     public static function pullTodayAllType()
