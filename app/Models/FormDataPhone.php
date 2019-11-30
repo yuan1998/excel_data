@@ -13,10 +13,26 @@ class FormDataPhone extends Model
 
     ];
 
+    public static $IntentionList = [
+        0 => '未查询',
+        1 => '其他部门建档',
+        2 => '一级',
+        3 => '二级',
+        4 => '三级',
+        5 => '四级',
+        6 => '五级',
+    ];
+
     public static $IsRepeatList = [
         0 => '未查询',
         1 => '不重复',
         2 => '重复'
+    ];
+
+    public static $IsArchiveList = [
+        0 => '未查询',
+        1 => '已建档',
+        2 => '未建档',
     ];
 
     public $timestamps = false;
@@ -92,6 +108,19 @@ class FormDataPhone extends Model
         });
 
         return $data->count();
+    }
+
+
+    public static function toString($item)
+    {
+        $result = $item['phone'] . '_' . static::$IsArchiveList[$item['is_archive']];
+        if ($item['intention'] > 1) {
+            $result .= '_' . static::$IntentionList[$item['intention']];
+        }
+        if ($item['is_repeat'] == 2) {
+            $result .= '_' . '重单';
+        }
+        return $result;
     }
 
 

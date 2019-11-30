@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\SpendExcelUpload;
+use App\Models\AccountData;
 use App\Models\DepartmentType;
 use App\Models\FormData;
 use App\Models\ProjectType;
@@ -33,33 +34,50 @@ class SpendDataController extends AdminController
         $grid->model()->with(['projects', 'department', 'account'])->orderBy('date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
-            $departmentOptions = DepartmentType::all()->pluck('title', 'id')->toArray();
-            $departmentOptions = array_merge(["0" => '没有科室'], $departmentOptions);
 
-            $filter->where(function ($query) {
-                if ($this->input) {
-                    $query->where('department_id', $this->input);
-                } else {
-                    $query->whereNull('department_id');
-                }
-            }, '科室')->select($departmentOptions);
+            $filter->column(6, function (Grid\Filter $filter) {
+                $accountOptions = array_merge(
+                    ['0' => '没有账户'],
+                    AccountData::all()->pluck('name', 'id')->toArray()
+                );
+                $filter->where(function ($query) {
+                    if ($this->input) {
+                        $query->where('account_id', $this->input);
+                    } else {
+                        $query->whereNull('account_id');
+                    }
+                }, '账户')->select($accountOptions);
 
-            // 设置datetime类型
-            $filter->between('date', '日期')->date();
-            $filter->equal('spend_type', '消费类型')->select(FormData::$FormTypeList);
+                $departmentOptions = DepartmentType::all()->pluck('title', 'id')->toArray();
+                $departmentOptions = array_merge(["0" => '没有科室'], $departmentOptions);
 
-            $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
-            $projectOption = array_merge(["0" => '其他'], $projectOption);
-            $filter->where(function ($query) {
-                $id = $this->input;
-                if ($id) {
-                    $query->whereHas('projects', function ($query) use ($id) {
-                        $query->where('id', $id);
-                    });
-                } else {
-                    $query->doesntHave('projects');
-                }
-            }, '病种')->select($projectOption);
+                $filter->where(function ($query) {
+                    if ($this->input) {
+                        $query->where('department_id', $this->input);
+                    } else {
+                        $query->whereNull('department_id');
+                    }
+                }, '科室')->select($departmentOptions);
+                $filter->between('date', '日期')->date();
+            });
+
+            $filter->column(6, function (Grid\Filter $filter) {
+                $filter->equal('spend_type', '消费类型')->select(FormData::$FormTypeList);
+
+                $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
+                $projectOption = array_merge(["0" => '其他'], $projectOption);
+                $filter->where(function ($query) {
+                    $id = $this->input;
+                    if ($id) {
+                        $query->whereHas('projects', function ($query) use ($id) {
+                            $query->where('id', $id);
+                        });
+                    } else {
+                        $query->doesntHave('projects');
+                    }
+                }, '病种')->select($projectOption);
+
+            });
 
             // 去掉默认的id过滤器
             $filter->disableIdFilter();
@@ -88,7 +106,7 @@ class SpendDataController extends AdminController
             $project = $this->projects->first();
             return $project ? $project->title : '其他';
         })->label();
-        $grid->column('account.name', __('账户名称'));
+        $grid->column('account.name', __('账户名称'))->label();
         $grid->column('spend_name', __('Spend name'));
         $grid->column('spend', __('Spend'));
         $grid->column('show', __('Show'));

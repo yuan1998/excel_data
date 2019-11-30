@@ -329,7 +329,7 @@ class WeiboFormData extends Model
             Log::info('拉取微博数据出错 , 数据为空', ['result' => $data, 'account' => $accountName]);
         } else {
             $count = count($data);
-            Log::info('pull weibo form data count', [
+            Log::info('拉取微博数据结果', [
                 'count'   => $count,
                 'Account' => $accountName
             ]);

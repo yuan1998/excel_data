@@ -3,8 +3,10 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
+use App\Models\AccountData;
 use App\Models\DepartmentType;
 use App\Models\FormData;
+use App\Models\FormDataPhone;
 use App\Models\ProjectType;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -29,7 +31,7 @@ class FormDataController extends AdminController
         $this->initVue();
 
         $grid = new Grid(new FormData);
-        $grid->model()->with(['phones', 'projects', 'department'])->orderBy('date', 'desc');
+        $grid->model()->with(['phones', 'projects', 'department', 'account'])->orderBy('date', 'desc');
 
 
         $grid->filter(function (Grid\Filter $filter) {
@@ -45,7 +47,43 @@ class FormDataController extends AdminController
                     }
                 }, '科室')->select($departmentOptions);
 
+
+                $accountOptions = array_merge(
+                    ['0' => '没有账户'],
+                    AccountData::all()->pluck('name', 'id')->toArray()
+                );
+                $filter->where(function ($query) {
+                    if ($this->input) {
+                        $query->where('account_id', $this->input);
+                    } else {
+                        $query->whereNull('account_id');
+                    }
+                }, '账户')->select($accountOptions);
+
+
+                $filter->where(function ($query) {
+                    $val = $this->input;
+                    if ($val >= 0) {
+                        if ($val == 3) {
+                            $query->whereHas('phones', function ($query) use ($val) {
+                                $query->where('is_repeat', 2);
+                            });
+                        } else {
+                            $query->whereHas('phones', function ($query) use ($val) {
+                                $query->where('is_archive', $val);
+                            });
+                        }
+                    }
+                }, '建档状态')->select([
+                    0 => '未查询',
+                    1 => '已建档',
+                    2 => '未建档',
+                    3 => '重复建档',
+                ]);
+
+
                 $filter->between('date', '日期')->date();
+
             });
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->equal('form_type', '表单类型')->select(FormData::$FormTypeList);
@@ -87,11 +125,16 @@ class FormDataController extends AdminController
             return $this->department ? $this->department->title : '-';
         });
         $grid->column('form_type', __('Form type'))->using(FormData::$FormTypeList);
-        $grid->column('phones', __('Phone'))->pluck('phone')->label();
+        $grid->column('phones', __('Phone'))->display(function ($val) {
+            return collect($val)->map(function ($item) {
+                return FormDataPhone::toString($item);
+            });
+        })->label();
         $grid->column('project_info', __('Project'))->display(function () {
             $project = $this->projects->first();
             return $project ? $project->title : '其他';
         })->label();
+        $grid->column('account.name', '所属账户')->label();
         $grid->column('date', __('Date'));
         $grid->column('data_type', __('表单自带类型'));
 
