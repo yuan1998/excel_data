@@ -537,12 +537,8 @@ class ExcelFieldsCount
         $result = SpendData::$SpendCountDataFormat;
 
         foreach ($this->spendData as $item) {
-            $account = $item->account;
-            $rebate  = $account ? (float)$account->rebate : 1;
-            $spend   = (float)Arr::get($item, 'spend', 0);
-
-            $result['spend']       += $spend;
-            $result['off_spend']   += round($spend / ($rebate ?? 1), 2);
+            $result['spend']       += (float)Arr::get($item, 'spend', 0);
+            $result['off_spend']   += (float)Arr::get($item, 'off_spend', 0);
             $result['interactive'] += (int)Arr::get($item, 'interactive', 0);
             $result['click']       += (int)Arr::get($item, 'click', 0);
             $result['show']        += (int)Arr::get($item, 'show', 0);
