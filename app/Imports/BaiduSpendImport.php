@@ -56,18 +56,27 @@ class BaiduSpendImport implements ToCollection
                 'promotion_plan_id' => $item['promotion_plan_id'],
             ], $item);
 
+
+            $account  = Helpers::formDataCheckAccount($item, 'account_name', 'spend_type', true);
+            $offSpend = (float)$item['spend'];
+            if ($account) {
+                $offSpend = $offSpend * (float)$account['rebate'];
+            }
+
             $spend = SpendData::updateOrCreate([
                 'model_id'   => $baidu->id,
                 'model_type' => BaiduSpend::class
             ], [
-                'department_id'   => $departmentType->id,
+                'type' => $item['type'],
+                'department_id'   =>  $departmentType->id ,
                 'date'            => $item['date'],
                 'spend_name'      => $item['promotion_plan'],
                 'show'            => $item['show'],
                 'click'           => $item['click'],
                 'spend'           => $item['spend'],
+                'off_spend'       => $offSpend,
                 'spend_type'      => $item['spend_type'],
-                'account_id'      => Helpers::formDataCheckAccount($item, 'account_name', 'spend_type'),
+                'account_id'      => $account ? $account['id'] : null,
                 'account_keyword' => $item['account_name']
             ]);
 

@@ -36,40 +36,42 @@ class BillAccountDataController extends AdminController
 
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
-                $mediumOptions     = MediumType::all()->pluck('title', 'id');
-                $archiveOptions    = ArchiveType::all()->pluck('title', 'id');
                 $channelOptions    = Channel::all()->pluck('title', 'id');
                 $departmentOptions = DepartmentType::all()->pluck('title', 'id');
+
+                $filter->where(function ($query) {
+                    $val = $this->input;
+                    if ($val && $channel = Channel::with(['mediums'])->find($val)) {
+                        $mediumId = $channel->mediums->pluck('id');
+                        $query->whereIn('medium_id', $mediumId);
+                    }
+                }, '渠道')->select($channelOptions);
+
+                $filter->where(function ($query) {
+                    $val = $this->input;
+
+                    if ($val && $department = DepartmentType::with(['archives'])->find($val)) {
+                        $archiveId = $department->archives->pluck('id');
+                        $query->whereIn('archive_id', $archiveId);
+                    }
+                }, '科室')->select($departmentOptions);
+
+                $filter->between('pay_date', '日期')->date();
+            });
+            $filter->column(6, function (Grid\Filter $filter) {
+                $mediumOptions  = MediumType::all()->pluck('title', 'id');
+                $archiveOptions = ArchiveType::all()->pluck('title', 'id');
                 $filter->equal('type', '数据类型')
                     ->select([
                         'zx' => '整形',
                         'kq' => '口腔'
                     ]);
-                $filter->where(function ($query) {
-                    $val = $this->input;
-                    if ($val && $item = Channel::find($val)) {
-                        $ids = $item->mediums->pluck('id');
-                        $query->whereIn('medium_id', $ids);
-                    }
-                }, '渠道')
-                    ->select($channelOptions);
-                $filter->where(function ($query) {
-                    $val = $this->input;
-
-                    if ($val && $item = DepartmentType::find($val)) {
-                        $ids = $item->archives->pluck('id');
-                        $query->whereIn('archive_id', $ids);
-                    }
-                }, '科室')
-                    ->select($departmentOptions);
-
 
                 $filter->in('medium_id', '媒介类型')
                     ->multipleSelect($mediumOptions);
                 $filter->in('archive_id', '建档类型')
                     ->multipleSelect($archiveOptions);
 
-                $filter->between('pay_date', '日期')->date();
             });
 
             // 去掉默认的id过滤器

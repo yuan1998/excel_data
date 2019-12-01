@@ -9,6 +9,7 @@ use App\Imports\FeiyuImport;
 use App\Imports\FeiyuSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\WeiboSpendImport;
+use App\Jobs\ClueDataCheck;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -223,29 +224,41 @@ class FormData extends Model
         return $form;
     }
 
+    public function itemRecheckPhone()
+    {
+        if ($this->phones->isNotEmpty()) {
+            foreach ($this->phones as $phone) {
+                ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
+            }
+        }
+    }
+
+    public function itemRecheck()
+    {
+        $departmentType = Helpers::checkDepartment($this['data_type']);
+        $data           = [
+            'department_id' => $departmentType ? $departmentType->id : null,
+            'account_id'    => Helpers::formDataCheckAccount($this, 'data_type')
+        ];
+        $this->update($data);
+
+        if ($this->phones->isEmpty() && $this->formModel) {
+            $phone = $this->formModel->phone;
+            FormDataPhone::createOrUpdateItem($this, collect($phone));
+        }
+
+        if ($departmentType) {
+            $projectType = Helpers::checkDepartmentProject($departmentType, $this['data_type']);
+            $this->projects()->sync($projectType);
+        }
+    }
+
     public static function recheckFormData()
     {
         static::all()
             ->each(function ($item) {
-                $departmentType = Helpers::checkDepartment($item['data_type']);
-                $data           = [
-                    'department_id' => $departmentType ? $departmentType->id : null,
-                    'account_id'    => Helpers::formDataCheckAccount($item, 'data_type')
-                ];
-                $item->update($data);
-
-                if ($item->phones->isEmpty() && $item->formModel) {
-                    $phone = $item->formModel->phone;
-                    FormDataPhone::createOrUpdateItem($item, collect($phone));
-                }
-
-                if ($departmentType) {
-                    $projectType = Helpers::checkDepartmentProject($departmentType, $item['data_type']);
-                    $item->projects()->sync($projectType);
-                }
-
+                $item->itemRecheck();
             });
-
     }
 
     /**

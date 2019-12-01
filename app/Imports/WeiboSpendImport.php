@@ -49,20 +49,29 @@ class WeiboSpendImport implements ToCollection
                 'advertiser_account' => $name,
             ], $item);
 
+
+            $account  = Helpers::formDataCheckAccount($item, 'advertiser_account', 'spend_type', true);
+            $offSpend = (float)$item['spend'];
+            if ($account) {
+                $offSpend = $offSpend * (float)$account['rebate'];
+            }
+
             $spend = SpendData::updateOrCreate([
                 'model_id'   => $weibo->id,
                 'model_type' => WeiboSpend::class
             ], [
+                'type'            => $item['type'],
                 'department_id'   => $departmentType->id,
                 'date'            => $item['date'],
                 'click'           => $item['interactive'],
                 'spend_name'      => $name,
-                'account_keyword' => $name,
                 'show'            => $item['show'],
+                'off_spend'       => $offSpend,
                 'spend'           => $item['spend'],
                 'interactive'     => $interactive,
                 'spend_type'      => $item['spend_type'],
-                'account_id'      => Helpers::formDataCheckAccount($item, 'advertiser_account', 'spend_type'),
+                'account_id'      => $account ? $account['id'] : null,
+                'account_keyword' => $name,
             ]);
 
             $spend->projects()->sync($projectType);

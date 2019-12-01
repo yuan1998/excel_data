@@ -706,17 +706,17 @@ class Helpers
         }
     }
 
-    public static function accountValidationString($accounts, $str, $field = 'keyword')
+    public static function accountValidationString($accounts, $str, $field = 'keyword', $t = false)
     {
         $default = null;
         foreach ($accounts as $account) {
             if (!$default && $account['is_default']) $default = $account;
             $keyword = $account[$field];
             if ($keyword && preg_match(static::explodeKeywordToRegex($keyword), $str)) {
-                return $account['id'];
+                return $t ? $account : $account['id'];
             }
         }
-        return $default ? $default['id'] : null;
+        return $default ? ($t ? $default : $default['id']) : null;
     }
 
     public static function crmDataCheckAccount($data, $type)
@@ -740,11 +740,12 @@ class Helpers
         return null;
     }
 
-    public static function formDataCheckAccount($item, $field, $typeField = 'form_type')
+    public static function formDataCheckAccount($item, $field, $typeField = 'form_type', $t = false)
     {
         $type    = $item['type'];
         $typeId  = $item[$typeField];
         $keyword = $item[$field];
+//        dd($type , $typeId , $keyword);
         if (!$keyword || !$typeId || !$type) return null;
 
         $channel = Channel::query()
@@ -757,7 +758,7 @@ class Helpers
                 ->where('type', $type)
                 ->get();
             if ($accounts) {
-                return static::accountValidationString($accounts, $keyword, 'keyword');
+                return static::accountValidationString($accounts, $keyword, 'keyword', $t);
             }
         }
         return null;

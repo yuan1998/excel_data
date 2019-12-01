@@ -115,6 +115,7 @@ class ParserStart extends ParserBase
         $channelResult = collect();
         foreach ($this->channels as $channel) {
             $channelData = $this->filterChannelData($data, $channel);
+            $channelData = $this->filterAllDepartmentData($channelData);
             $channelResult->put($channel->title, $this->generateDateToDepartment($channelData));
         }
 
@@ -169,6 +170,7 @@ class ParserStart extends ParserBase
 
         $totalName = Carbon::parse($this->dates[0])->format("Y-m");
         $result->put($totalName, $this->generateChannelItem($data));
+
         Helpers::dateRangeForEach($this->dates, function (Carbon $date)
         use ($groupData, $result) {
             $dateString = $date->toDateString();
@@ -184,15 +186,17 @@ class ParserStart extends ParserBase
     public function generateChannelItem($data)
     {
         $channelResult = collect();
+        $data          = $this->filterAllDepartmentData($data);
         $this->channels->each(function ($channel)
         use ($channelResult, $data) {
             $channelData = $this->filterChannelData($data, $channel);
-            $channelData          = $this->filterAllDepartmentData($channelData);
-            $test        = new ExcelFieldsCount($channelData);
+//            $channelData          = $this->filterAllDepartmentData($channelData);
+            $test = new ExcelFieldsCount($channelData);
             $channelResult->put($channel->title, $test);
         });
         if ($this->channels->count() > 1) {
-            $channelResult->put('汇总', new ExcelFieldsCount($data));
+            $test = new ExcelFieldsCount($data);
+            $channelResult->put('汇总', $test);
         }
         return $channelResult;
     }

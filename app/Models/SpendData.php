@@ -11,6 +11,7 @@ class SpendData extends Model
     protected $fillable = [
         'date',
         'spend',
+        'off_spend',
         'spend_type',
         'show',
         'interactive',
@@ -99,10 +100,20 @@ class SpendData extends Model
         static::all()
             ->each(function ($item) {
                 $departmentType = Helpers::checkDepartment($item['spend_name']);
+                $accountKey     = $item['account_keyword'] ? 'account_keyword' : 'spend_name';
+
+                $item['type'] = $departmentType ? $departmentType->type : null;
+                $account      = Helpers::formDataCheckAccount($item, $accountKey, 'spend_type', true);
+                $offSpend     = (float)$item['spend'];
+                if ($account) {
+                    $offSpend = $offSpend * (float)$account['rebate'];
+                }
 
                 $item->update([
                     'department_id' => $departmentType ? $departmentType->id : null,
-                    'account_id'    => Helpers::formDataCheckAccount($item, 'spend_name', 'spend_type')
+                    'account_id'    => $account ? $account['id'] : null,
+                    'off_spend'     => $offSpend,
+                    'type'          => $item['type'],
                 ]);
 
                 if ($departmentType) {

@@ -77,18 +77,26 @@ class FeiyuSpendImport implements ToCollection
                 'advertiser_id' => $item['advertiser_id'],
             ], $item);
 
+            $account  = Helpers::formDataCheckAccount($item, 'advertiser_name', 'spend_type', true);
+            $offSpend = (float)$item['spend'];
+            if ($account) {
+                $offSpend = $offSpend * (float)$account['rebate'];
+            }
+
             $spend = SpendData::updateOrCreate([
                 'model_id'   => $feiyu->id,
                 'model_type' => FeiyuSpend::class
             ], [
+                'type'            => $item['type'],
                 'department_id'   => $departmentType->id,
                 'date'            => $item['date'],
                 'spend_name'      => $name,
                 'click'           => $item['click'],
                 'show'            => $item['show'],
                 'spend'           => $item['spend'],
+                'off_spend'       => $offSpend,
                 'spend_type'      => $item['spend_type'],
-                'account_id'      => Helpers::formDataCheckAccount($item, 'advertiser_name', 'spend_type'),
+                'account_id'      => $account ? $account['id'] : null,
                 'account_keyword' => $name,
             ]);
 
