@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers;
 use App\Models\WeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -9,6 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class WeiboFormDataController extends Controller
 {
+
+    public function grabWeiboFormData(Request $request)
+    {
+        $dates = $request->get('dates');
+        if (!$dates || !is_array($dates)) $this->response->errorBadRequest('错误的参数,无法识别的日期');
+
+        Helpers::dateRangeForEach($dates, function ($date) {
+            $dateString = $date->toDateString();
+            WeiboFormData::pullAllTypeOfDate($dateString, $dateString);
+        });
+        return $this->response->array([
+            'message' => '提交成功,稍后将会自动抓取,请稍安勿躁.'
+        ]);
+    }
 
     public function userHasNew(Request $request)
     {

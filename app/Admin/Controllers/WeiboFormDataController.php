@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\Weibo\BatchDispatch;
 use App\Admin\Actions\WeiboConfigAction;
+use App\Admin\Actions\WeiboGrab;
 use App\Admin\Actions\WeiboUpload;
 use App\Admin\Extensions\Exporter\WeiboFormDataExporter;
 use App\Models\FormData;
@@ -116,7 +117,8 @@ class WeiboFormDataController extends AdminController
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
             });
-            $tools->append(new WeiboUpload());
+//            $tools->append(new WeiboUpload());
+            $tools->append(new WeiboGrab());
         });
 
         $type = $this->appendDataType($grid);

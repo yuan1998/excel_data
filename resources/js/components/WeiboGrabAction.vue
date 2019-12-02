@@ -1,8 +1,8 @@
 <template>
-    <div id="app-export-data-action" :style="'display: inline-block;'" style="display: none;">
-        <el-button type="primary" size="mini" @click="handleOpen">创建导出数据</el-button>
+    <div style="display: inline-block;">
+        <el-button type="primary" size="mini" @click="handleOpen">手动抓取微博表单</el-button>
 
-        <el-dialog title="创建导出数据"
+        <el-dialog title="手动抓取微博表单"
                    ref="dialog"
                    width="550px"
                    :visible.sync="dialogFormVisible"
@@ -11,22 +11,6 @@
                      :model="form"
                      :rules="rules"
                      :label-width="formLabelWidth">
-                <el-form-item label="渠道" prop="channel_id" required>
-                    <el-checkbox-group v-model="form.channel_id" size="mini">
-                        <el-checkbox-button :label="key"
-                                            :key="key"
-                                            v-for="(value , key) in channelOptions">
-                            {{value}}
-                        </el-checkbox-button>
-                    </el-checkbox-group>
-                </el-form-item>
-                <el-form-item label="科室" prop="department_id" required>
-                    <el-checkbox-group v-model="form.department_id" size="mini">
-                        <el-checkbox-button v-for="(option , key) in departmentOptions" :label="key" :key="key">
-                            {{option}}
-                        </el-checkbox-button>
-                    </el-checkbox-group>
-                </el-form-item>
                 <el-form-item label="时间范围" required prop="dates">
                     <el-col :span="11">
                         <el-date-picker
@@ -55,36 +39,14 @@
     import axios       from 'axios';
     import { cloneOf } from "../utils/parse";
 
-
     export default {
-        name   : 'ExportDataForm',
-        props  : {
-            channelOptions   : {
-                type    : Object,
-                required: true,
-            },
-            departmentOptions: {
-                type    : Object,
-                required: true,
-            },
-        },
+        name   : "weibo-grab-action",
         data() {
             return {
                 loadingInstance  : null,
                 dialogFormVisible: false,
                 loading          : false,
                 formLabelWidth   : '80px',
-                rules            : {
-                    department_id: [
-                        { required: true, message: '请选择需要导出的科室', trigger: 'blur' }
-                    ],
-                    channel_id   : [
-                        { required: true, message: '请选择需要导出的渠道', trigger: 'blur' }
-                    ],
-                    dates        : [
-                        { required: true, message: '请选择日期', trigger: 'change' }
-                    ],
-                },
                 pickerOptions    : {
                     shortcuts: [
                         {
@@ -107,32 +69,26 @@
                     ]
                 },
                 form             : {
-                    department_id: [],
-                    channel_id   : [],
-                    dates        : [],
+                    dates: [],
                 },
-            }
+                rules            : {
+                    dates: [
+                        { required: true, message: '请选择日期', trigger: 'change' }
+                    ],
+                },
+            };
         },
         methods: {
             handleOpen() {
                 this.dialogFormVisible = true;
             },
-
-            handleClose(done) {
-                this.$confirm('确认关闭？')
-                    .then(_ => {
-                        done();
-                    })
-                    .catch(_ => {
-                    });
-            },
-            resetForm() {
-                this.$refs.form.resetFields();
-            },
             closeDialog() {
                 this.resetForm();
                 this.dialogFormVisible = false;
                 this.loading           = false;
+            },
+            resetForm() {
+                this.$refs.form.resetFields();
             },
             handleSubmit() {
                 this.$refs.form.validate(async (valid) => {
@@ -146,14 +102,14 @@
 
                         try {
                             let res = await axios.request({
-                                url   : '/api/export/excel',
+                                url   : '/api/weibo/grabFormData',
                                 method: 'post',
                                 data  : data,
                             });
                             console.log('res :', res);
                             if (res.status === 200) {
                                 Swal.fire({
-                                    title            : "提交成功,请等待生成...",
+                                    title            : res.data.message,
                                     type             : 'success',
                                     timer            : 2000,
                                     showConfirmButton: false,
@@ -179,7 +135,7 @@
 
                     }
                 });
-            },
+            }
         },
 
         watch: {
@@ -195,12 +151,8 @@
             }
         }
     }
-
 </script>
 
-<style lang="less">
-    .swal-container {
-        z-index: 2500
-    }
+<style scoped lang="less">
 
 </style>

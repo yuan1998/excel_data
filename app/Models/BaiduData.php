@@ -69,7 +69,7 @@ class BaiduData extends Model
     public static function checkCodeIs($str)
     {
 
-        if (preg_match('/A60/', $str)) {
+        if (preg_match('/A6/', $str)) {
             return 1;
         }
         if (preg_match('/A30/', $str)) {

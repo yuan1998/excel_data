@@ -129,6 +129,8 @@ $api->version('v1', [
             ->name('api.weiboFormData.userHasNew');
         $api->put('/formData/{formData}', 'WeiboFormDataController@userUpdate')
             ->name('api.weiboFormData.update');
+        $api->post('/grabFormData/', 'WeiboFormDataController@grabWeiboFormData')
+            ->name('api.weiboFormData.grabWeiboFormData');
 
 
         $api->get('/user/pause', "WeiboUserController@updatePause")
