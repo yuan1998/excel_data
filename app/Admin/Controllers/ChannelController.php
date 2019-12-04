@@ -37,7 +37,7 @@ class ChannelController extends AdminController
                     if (!$value) {
                         return '-无-';
                     }
-                    return isset(FormData::$FormTypeList[$value]) ? Channel::$FormTypeList[$value] : '-未知-';
+                    return isset(FormData::$FormTypeList[$value]) ? FormData::$FormTypeList[$value] : '-未知-';
                 })->toArray();
             })
             ->label();
