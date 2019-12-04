@@ -57,7 +57,9 @@ class BaiduImport implements ToCollection
         $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
         $url                     = urldecode($item['dialog_url']);
         preg_match("/\?A[0-9](.{12,20})/", $url, $match);
-        $item['code'] = (isset($match[0]) ? $match[0] : '') . '-' . $item['visitor_type'];
+        $item['code']      = (isset($match[0]) ? $match[0] : '') . '-' . $item['visitor_type'];
+        $item['form_type'] = BaiduData::checkCodeIs($item['code']);
+
         return $item;
     }
 
@@ -89,15 +91,13 @@ class BaiduImport implements ToCollection
                 && isset($item['visitor_name'])
                 && isset($item['visitor_id']);
         })->each(function ($item) {
-            $item           = $this->parserData($item);
-            $departmentType = Helpers::checkDepartment($item['code']);
-            if (!$departmentType) {
+            $item = $this->parserData($item);
+            if (!$item['form_type'] || !$departmentType = Helpers::checkDepartment($item['code'])) {
                 Log::info('无法判断科室', [
                     'name' => $item['code'],
                 ]);
                 throw new \Exception('无法判断科室: ' . $item['code']);
             }
-            $item['form_type']     = BaiduData::checkCodeIs($item['code']);
             $item['type']          = $departmentType->type;
             $item['department_id'] = $departmentType->id;
             $projectType           = Helpers::checkDepartmentProject($departmentType, $item['code']);
