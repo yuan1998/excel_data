@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Channel;
+use App\Models\FormData;
 use App\Models\MediumType;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -36,7 +37,7 @@ class ChannelController extends AdminController
                     if (!$value) {
                         return '-无-';
                     }
-                    return isset(Channel::$FormTypeList[$value]) ? Channel::$FormTypeList[$value] : '-未知-';
+                    return isset(FormData::$FormTypeList[$value]) ? Channel::$FormTypeList[$value] : '-未知-';
                 })->toArray();
             })
             ->label();
@@ -79,12 +80,7 @@ class ChannelController extends AdminController
             ->required();
 
         $form->multipleSelect('form_type', '表单关联')
-            ->options([
-                1 => '百度信息流',
-                2 => '微博',
-                4 => '抖音',
-                3 => '头条',
-            ])
+            ->options(FormData::$FormTypeList)
             ->required();
 
         return $form;

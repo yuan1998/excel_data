@@ -68,6 +68,7 @@ class BaiduData extends Model
         'A20' => '搜狗',
         'A30' => '神马',
         'A60' => '百度信息流',
+        'A8'  => 'oppo',
     ];
 
 
@@ -75,7 +76,7 @@ class BaiduData extends Model
     {
         if (!$str) return null;
 
-        if (preg_match('/A[6|8]/', $str)) {
+        if (preg_match('/A6/', $str)) {
             return 1;
         }
         if (preg_match('/A30/', $str)) {
@@ -87,6 +88,10 @@ class BaiduData extends Model
         if (preg_match('/A10/', $str)) {
             return 5;
         }
+        if (preg_match('/A8/', $str)) {
+            return 8;
+        }
+
     }
 
 

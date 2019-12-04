@@ -27,6 +27,12 @@ class BaiduSpendImport implements ToCollection
     }
 
 
+    public static function parserData($item)
+    {
+        $item['code']            = $item['account_name'] . '-' . $item['promotion_plan'];
+
+    }
+
     /**
      * @param Collection $collection
      */

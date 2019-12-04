@@ -50,6 +50,7 @@ class FormData extends Model
         5 => '百度竞价',
         6 => '搜狗',
         7 => '神马',
+        8 => 'oppo',
     ];
 
     // 表单数量基础格式
