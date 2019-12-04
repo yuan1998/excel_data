@@ -50,8 +50,7 @@ class WeiboDataController extends AdminController
         $grid->column('phone', __('Phone'));
         $grid->column('category_type', __('Category type'));
         $grid->column('weixin', __('Weixin'));
-
-
+        
         return $grid;
     }
 

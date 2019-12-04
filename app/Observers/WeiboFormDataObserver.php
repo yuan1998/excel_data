@@ -72,7 +72,7 @@ class WeiboFormDataObserver
 
         // 如果 微博表单 已经成功回访,调用方法创建 FormData, 在30分钟后查询是否已建档
         if (isset($changes['recall_date']) && $changes['recall_date']) {
-            $weiboFormData->makeFormData(Carbon::now()->addMinutes(30));
+            $weiboFormData->makeFormData(Carbon::now()->addMinutes(90));
         }
     }
 
