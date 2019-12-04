@@ -63,6 +63,7 @@ class SpendDataController extends AdminController
 
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->equal('spend_type', '消费类型')->select(FormData::$FormTypeList);
+                $filter->equal('type', '数据类型')->select(['zx' => '整形', 'kq' => '口腔']);
 
                 $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
                 $projectOption = array_merge(["0" => '其他'], $projectOption);
@@ -147,9 +148,9 @@ class SpendDataController extends AdminController
     protected function form()
     {
         $form = new Form(new SpendData);
-        $form->text('spend_name' , __('消费名称'));
+        $form->text('spend_name', __('消费名称'));
         $form->multipleSelect('projects', __('Project'))->options(ProjectType::all()->pluck('title', 'id'));
-        $form->select('account_id',__('账户'))->options(AccountData::all()->pluck('name' , 'id'));
+        $form->select('account_id', __('账户'))->options(AccountData::all()->pluck('name', 'id'));
 
         return $form;
     }
