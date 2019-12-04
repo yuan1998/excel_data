@@ -201,8 +201,8 @@ class YiliaoData extends Model
 
         $url = urldecode($item['chatUrl']);
         preg_match("/\?A[0-9](.{12,20})/", $url, $match);
-        $item['code']      = $code = isset($match[0]) ? $match[0] : null;
-        $item['form_type'] = BaiduData::checkCodeIs($code);
+        $item['code']      = (isset($match[0]) ? $match[0] : '') . '-' . $item['extCard1'];
+        $item['form_type'] = BaiduData::checkCodeIs($item['code']);
         return $item;
     }
 
