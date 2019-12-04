@@ -24,23 +24,20 @@ from datetime import date
 3. 仅仅在 Python3.4+ 测试通过，低版本没有测试
 4. 代码 PEP8 规范
 """
-
+"""
+http://smart.luming.sina.com.cn/s/formData/list?siteId=7510&formId=7226&start=0&limit=10&customer_id=6660030357
+"""
 todayDateString = str(date.today())
 arguments = sys.argv
-try:
-    startDate = arguments[1]
-except IndexError:
-    startDate = todayDateString
+
+siteId = arguments[1]
+formId = arguments[2]
+customerId = arguments[6]
 
 try:
-    endDate = arguments[2]
+    limit = arguments[3]
 except IndexError:
-    endDate = todayDateString
-
-try:
-    count = arguments[3]
-except IndexError:
-    count = "2000"
+    limit = "2000"
 
 agents = [
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36',
@@ -50,7 +47,7 @@ agents = [
 ]
 agent = random.choice(agents)
 headers = {
-    'User-Agent': agent
+    'User-Agent': agent,
 }
 
 
@@ -195,34 +192,37 @@ class WeiboLogin(object):
         # print(weibo_page.content.decode("utf-8"))
         userID = re.findall(weibo_pa, weibo_page.content.decode("utf-8", 'ignore'), re.S)[0]
 
-
         Mheaders = {
-            "Host": "cpl.biz.weibo.com",
-            "User-Agent": agent
+            "User-Agent": agent,
+            'Accept': 'application/json, text/plain, */*',
+            "Referer": "http://smart.luming.sina.com.cn/",
+            "Host": "smart.luming.sina.com.cn",
         }
 
         # m.weibo.cn 登录的 url 拼接
         _rand = str(time.time())
         mParams = {
-            "page": "1",
-            "page_size": count,
-            "time_order": "",
-            "feed_type": "",
-            "group_id": "",
-            "page_name": "",
-            "customer_id": arguments[6],
-            "time_start": startDate,
-            "time_end": endDate,
+            "limit": limit,
+            "start": 0,
+            'siteId': siteId,
+            'formId': formId,
         }
-        murl = "https://cpl.biz.weibo.com/cpl/lead/list"
+        tokenUrl = "http://smart.luming.sina.com.cn/s/auth/token"
+        tokenResponse = self.session.get(tokenUrl,headers=Mheaders)
+        tokenJson = tokenResponse.json()
+        Mheaders.update({'X-XSRF-TOKEN': tokenJson.get('data').get('token')})
+
+        murl = "http://smart.luming.sina.com.cn/s/formData/list"
+        # print(mParams)
         mhtml = self.session.get(murl, params=mParams, headers=Mheaders)
         test_result = mhtml.json()
-        print(json.dumps(test_result))
+        print(test_result)
+        # print(json.dumps(test_result))
 
 
 if __name__ == '__main__':
     username = arguments[4]  # 用户名
     password = arguments[5]  # 密码
-    cookie_path = "./cookie_weibo_" + username +".txt"  # 保存cookie 的文件名称
+    cookie_path = "./cookie_weibo_" + username + ".txt"  # 保存cookie 的文件名称
     weibo = WeiboLogin(username, password, cookie_path)
     weibo.login()

@@ -32,18 +32,21 @@ class BaiduSpendImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
-        $data = Helpers::excelToKeyArray($collection, BaiduSpend::$excelFields);
+        $collection = $collection->filter(function ($item) {
+            return isset($item[1])
+                && isset($item[2])
+                && $item[2];
+        });
+        $data       = Helpers::excelToKeyArray($collection, BaiduSpend::$excelFields);
 
-        collect($data)->filter(function ($item) {
-            return isset($item['date'])
-                && isset($item['promotion_plan_id']);
-        })->each(function ($item) {
-            $departmentType = Helpers::checkDepartment($item['promotion_plan']);
+        foreach ($data as $item) {
+            $key            = $item['account_name'] . '-' . $item['promotion_plan'];
+            $departmentType = Helpers::checkDepartment($key);
+
             if (!$departmentType)
-                throw new \Exception('无法判断科室:' . $item['promotion_plan'] . '。请手动删除或者修改为可识别的科室.');
+                throw new \Exception('无法判断科室:' . $key . '。请手动删除或者修改为可识别的科室.');
 
-            $projectType = Helpers::checkDepartmentProject($departmentType, $item['promotion_plan'], 'spend_keyword');
-
+            $projectType = Helpers::checkDepartmentProject($departmentType, $key, 'spend_keyword');
             if (is_numeric($item['date'])) {
                 $item['date'] = Date::excelToDateTimeObject($item['date']);
             }
@@ -56,7 +59,6 @@ class BaiduSpendImport implements ToCollection
                 'promotion_plan_id' => $item['promotion_plan_id'],
             ], $item);
 
-
             $account  = Helpers::formDataCheckAccount($item, 'account_name', 'spend_type', true);
             $offSpend = (float)$item['spend'];
             if ($account) {
@@ -67,22 +69,23 @@ class BaiduSpendImport implements ToCollection
                 'model_id'   => $baidu->id,
                 'model_type' => BaiduSpend::class
             ], [
-                'type' => $item['type'],
-                'department_id'   =>  $departmentType->id ,
+                'type'            => $item['type'],
+                'department_id'   => $departmentType->id,
                 'date'            => $item['date'],
-                'spend_name'      => $item['promotion_plan'],
+                'spend_name'      => $key,
                 'show'            => $item['show'],
                 'click'           => $item['click'],
                 'spend'           => $item['spend'],
                 'off_spend'       => $offSpend,
                 'spend_type'      => $item['spend_type'],
                 'account_id'      => $account ? $account['id'] : null,
-                'account_keyword' => $item['account_name']
+                'account_keyword' => $key,
             ]);
 
             $spend->projects()->sync($projectType);
             $this->count++;
-        });
+
+        }
 
     }
 }

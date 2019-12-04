@@ -17,7 +17,7 @@ class DepartmentTypeController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\DepartmentType';
+    protected $title = '科室';
 
     /**
      * Make a grid builder.

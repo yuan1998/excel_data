@@ -9,6 +9,7 @@ use App\Imports\FeiyuImport;
 use App\Imports\FeiyuSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\WeiboSpendImport;
+use App\Imports\YiliaoImport;
 use App\Jobs\ClueDataCheck;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -274,6 +275,8 @@ class FormData extends Model
                 return BaiduImport::class;
             case "feiyu":
                 return FeiyuImport::class;
+            case "yiliao":
+                return YiliaoImport::class;
             case "weibo_spend" :
                 return WeiboSpendImport::class;
             case "baidu_spend" :

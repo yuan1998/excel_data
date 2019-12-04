@@ -1,7 +1,6 @@
 <template>
     <div style="display: inline-block;">
         <el-button type="primary" size="mini" @click="handleOpen">手动抓取微博表单</el-button>
-
         <el-dialog title="手动抓取微博表单"
                    ref="dialog"
                    width="550px"

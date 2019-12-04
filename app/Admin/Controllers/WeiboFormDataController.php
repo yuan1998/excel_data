@@ -25,7 +25,7 @@ class WeiboFormDataController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\WeiboFormData';
+    protected $title = '微博表单';
 
     /**
      * Make a grid builder.

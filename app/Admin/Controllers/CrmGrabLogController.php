@@ -17,7 +17,7 @@ class CrmGrabLogController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\CrmGrabLog';
+    protected $title = 'CRM数据抓取日志';
 
     /**
      * Make a grid builder.

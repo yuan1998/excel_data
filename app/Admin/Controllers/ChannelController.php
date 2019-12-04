@@ -17,7 +17,7 @@ class ChannelController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\Channel';
+    protected $title = '平台渠道';
 
     /**
      * Make a grid builder.

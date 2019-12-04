@@ -20,7 +20,7 @@ class SpendDataController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\SpendData';
+    protected $title = '消费数据';
 
     /**
      * Make a grid builder.
@@ -111,6 +111,7 @@ class SpendDataController extends AdminController
         $grid->column('spend', __('Spend'));
         $grid->column('show', __('Show'));
         $grid->column('click', __('Click'));
+        $grid->column('created_at', __('上传时间'));
 
         return $grid;
     }
@@ -146,7 +147,9 @@ class SpendDataController extends AdminController
     protected function form()
     {
         $form = new Form(new SpendData);
+        $form->text('spend_name' , __('消费名称'));
         $form->multipleSelect('projects', __('Project'))->options(ProjectType::all()->pluck('title', 'id'));
+        $form->select('account_id',__('账户'))->options(AccountData::all()->pluck('name' , 'id'));
 
         return $form;
     }

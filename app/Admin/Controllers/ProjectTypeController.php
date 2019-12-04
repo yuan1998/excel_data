@@ -18,7 +18,7 @@ class ProjectTypeController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\ProjectType';
+    protected $title = '科室-病种';
 
     /**
      * Make a grid builder.

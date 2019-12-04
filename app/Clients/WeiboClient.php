@@ -14,6 +14,8 @@ class WeiboClient
             'username' => '17392448796',
             'password' => 'huamei2019',
             'customer_id' => '6660030357',
+            'site_id' => '7510',
+            'form_id' => '7226',
             'type'     => 'kq',
         ],
         '团圆'  => [

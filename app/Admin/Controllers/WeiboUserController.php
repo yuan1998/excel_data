@@ -18,7 +18,7 @@ class WeiboUserController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\WeiboUser';
+    protected $title = '微博客服';
 
     public function update($id)
     {

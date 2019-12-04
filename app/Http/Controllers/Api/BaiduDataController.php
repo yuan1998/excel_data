@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Clients\KqClient;
+use App\Clients\YiliaoClient;
 use App\Clients\ZxClient;
 use App\Exports\TestExport;
 use App\Helpers;
 use App\Http\Requests\UploadRequest;
 use App\Imports\BaiduImport;
 use App\Imports\WeiboFormDataImport;
+use App\Imports\YiliaoImport;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\BaiduClue;
@@ -51,29 +53,13 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
-        $item = SpendData::find(2817);
-        Helpers::formDataCheckAccount($item, 'account_keyword', 'spend_type', true);
-        return $this->response->noContent();
+        $import = new YiliaoImport();
+        Excel::import($import, $request->file('excel'));
 
-
-        $requestData = [
-            'channel_id'    => [
-                3
-            ],
-            'department_id' => [
-                1, 3, 4
-            ],
-            'dates'         => [
-                '2019-11-01',
-                '2019-11-30'
-            ]
-        ];
-
-
-        $parser = new ParserStart($requestData);
-        $parser->toArray('channel');
-        $pathName = 'test_excel/test.xlsx';
-        Excel::store(new TestExport($parser), $pathName, 'public');
+//        $date1  = "2019-12-1 00:00:00";
+//        $date2  = "2019-12-2 00:00:00";
+//        $result = YiliaoClient::getYiliaoData($date1, $date2);
+        dd();
 
         return $this->response->noContent();
     }

@@ -16,7 +16,7 @@ class AccountDataController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\AccountData';
+    protected $title = '账户';
 
     /**
      * Make a grid builder.

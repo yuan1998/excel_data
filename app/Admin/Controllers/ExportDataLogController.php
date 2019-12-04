@@ -20,7 +20,7 @@ class ExportDataLogController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\ExportDataLog';
+    protected $title = '导出表格';
 
     /**
      * Make a grid builder.
@@ -76,7 +76,7 @@ class ExportDataLogController extends AdminController
         $grid->column('full_path', '文件名称')->display(function () {
             return Storage::disk('public')->url($this->path . $this->file_name);
         })->downloadable();
-        $grid->column('run_time', __('运行时间'))->display(function($value) {
+        $grid->column('run_time', __('运行时间'))->display(function ($value) {
             return $value;
         });
         $grid->column('status', __('Status'))->using(ExportDataLog::$staticList)->label();
