@@ -66,7 +66,7 @@ class BaiduImport implements ToCollection
     public static function parseFormData($item)
     {
         return [
-            'data_type'       => $item['visitor_type'],
+            'data_type'       => $item['code'],
             'form_type'       => $item['form_type'],
             'type'            => $item['type'],
             'department_id'   => $item['department_id'],
@@ -89,10 +89,13 @@ class BaiduImport implements ToCollection
             return isset($item['dialog_url'])
                 && isset($item['cur_access_time'])
                 && isset($item['visitor_name'])
-                && isset($item['visitor_id']);
+                && isset($item['visitor_id'])
+                && $item['dialog_url']
+                && $item['visitor_type'];
         })->each(function ($item) {
             $item = $this->parserData($item);
-            if (!$item['form_type'] || !$departmentType = Helpers::checkDepartment($item['code'])) {
+            if (!$item['form_type']) return;
+            if (!$departmentType = Helpers::checkDepartment($item['code'])) {
                 Log::info('无法判断科室', [
                     'name' => $item['code'],
                 ]);
@@ -106,7 +109,6 @@ class BaiduImport implements ToCollection
                 'visitor_id' => $item['visitor_id']
             ], $item);
             $baidu->projects()->sync($projectType);
-            $this->count++;
 
 
             $clue = $this->parseClue($item['clue']);
@@ -117,6 +119,7 @@ class BaiduImport implements ToCollection
                 ], static::parseFormData($item));
                 FormDataPhone::createOrUpdateItem($form, $clue);
                 $form->projects()->sync($projectType);
+                $this->count++;
             }
         });
     }

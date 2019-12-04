@@ -58,6 +58,9 @@ class BaiduData extends Model
         'bidding_keyword',
         'site',
         'type',
+        'form_type',
+        'department_id',
+        'code',
     ];
 
     public static $ChannelCategory = [
@@ -71,7 +74,7 @@ class BaiduData extends Model
     public static function checkCodeIs($str)
     {
         if (!$str) return null;
-        
+
         if (preg_match('/A[6|8]/', $str)) {
             return 1;
         }

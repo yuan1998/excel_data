@@ -86,6 +86,10 @@ class FormDataController extends AdminController
 
             });
             $filter->column(6, function (Grid\Filter $filter) {
+                $filter->equal('type', '数据类型')->select([
+                    'zx' => '整形',
+                    'kq' => '口腔',
+                ]);
                 $filter->equal('form_type', '表单类型')->select(FormData::$FormTypeList);
 
                 $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
