@@ -11,6 +11,7 @@ use App\Imports\WeiboFormDataImport;
 use App\Imports\WeiboSpendImport;
 use App\Imports\YiliaoImport;
 use App\Jobs\ClueDataCheck;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -223,6 +224,24 @@ class FormData extends Model
 
         // 返回Model
         return $form;
+    }
+
+    public static function recheckMonthPhoneStatus()
+    {
+        $date  = Carbon::today();
+        $start = $date->firstOfMonth()->toDateString();
+        $end   = $date->lastOfMonth()->toDateString();
+        static::recheckPhoneArchiveStatus($start, $end);
+    }
+
+    public static function recheckPhoneArchiveStatus($startDay, $endDay)
+    {
+        static::with(['phones'])
+            ->whereBetween('date', [$startDay, $endDay])
+            ->get()
+            ->each(function ($item) {
+                $item->itemRecheckPhone();
+            });
     }
 
     public function itemRecheckPhone()
