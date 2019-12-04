@@ -117,7 +117,7 @@ class FormDataController extends AdminController
             $tools->append(new ExcelUpload([
                 'weibo'  => '微博表单',
                 'feiyu'  => '飞鱼表单',
-                'baidu'  => '百度表单',
+                'baidu'  => '快商通表单',
                 'yiliao' => '易聊表单(只识别信息流)'
             ]));
         });
