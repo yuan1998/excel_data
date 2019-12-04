@@ -36,56 +36,44 @@ class BaiduImport implements ToCollection
             });
     }
 
-
-    public function saveForm($item, $channel)
+    public function checkDepartment($key)
     {
-        $clue = $this->parseClue($item['clue']);
-
-        if ($clue->isEmpty()) return;
-
-        $name           = 'code';
-        $departmentType = Helpers::checkDepartment($item[$name]);
-        if (!$departmentType) {
-            $name           = 'visitor_type';
-            $departmentType = Helpers::checkDepartment($item[$name]);
-        }
-
+        $departmentType = Helpers::checkDepartment($key);
         if (!$departmentType) {
             Log::info('无法判断科室', [
-                'name' => $item['visitor_type'],
+                'name' => $key,
             ]);
-            throw new \Exception('无法判断科室: "' . $item['visitor_type'] . '" ' . $item['code']);
+            throw new \Exception('无法判断科室: ' . $key);
         }
 
-        $projectType       = Helpers::checkDepartmentProject($departmentType, $item[$name]);
-        $type              = $departmentType->type;
-        $item['form_type'] = $channel;
-        $item['type']      = $type;
-
-
-        $baidu = BaiduData::updateOrCreate([
-            'visitor_id' => $item['visitor_id']
-        ], $item);
-
-        $form = FormData::updateOrCreate([
-            'model_id'   => $baidu->id,
-            'model_type' => BaiduData::class,
-        ], [
-            'data_type'       => $item['visitor_type'],
-            'form_type'       => $channel,
-            'type'            => $item['type'],
-            'department_id'   => $departmentType->id,
-            'date'            => $item['cur_access_time'],
-            'account_id'      => Helpers::formDataCheckAccount($item, $name),
-            'account_keyword' => $item[$name],
-        ]);
-
-        FormDataPhone::createOrUpdateItem($form, $clue);
-
-        $form->projects()->sync($projectType);
-        $this->count++;
+        return $departmentType;
     }
 
+    public function parserData($item)
+    {
+        $item['url']             = substr($item['url'] ?? '', 0, Builder::$defaultStringLength);
+        $item['first_url']       = substr($item['first_url'] ?? '', 0, Builder::$defaultStringLength);
+        $item['dialog_url']      = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
+        $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
+        $url                     = urldecode($item['dialog_url']);
+        preg_match("/\?A[0-9](.{12,20})/", $url, $match);
+        $item['code'] = (isset($match[0]) ? $match[0] : '') . '-' . $item['visitor_type'];
+        return $item;
+    }
+
+    public static function parseFormData($item)
+    {
+        return [
+            'data_type'       => $item['visitor_type'],
+            'form_type'       => $item['form_type'],
+            'type'            => $item['type'],
+            'department_id'   => $item['department_id'],
+            'date'            => $item['cur_access_time'],
+            'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
+            'account_keyword' => $item['code'],
+        ];
+
+    }
 
     /**
      * 将Excel 数据插入到BaiduData中
@@ -101,36 +89,37 @@ class BaiduImport implements ToCollection
                 && isset($item['visitor_name'])
                 && isset($item['visitor_id']);
         })->each(function ($item) {
-            $item['url']             = substr($item['url'] ?? '', 0, Builder::$defaultStringLength);
-            $item['first_url']       = substr($item['first_url'] ?? '', 0, Builder::$defaultStringLength);
-            $item['dialog_url']      = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
-            $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
-
-            $url = urldecode($item['first_url']);
-            preg_match("/A[0-9]0(.{12,20})/", $url, $match);
-            $item['code'] = $code = isset($match[0]) ? $match[0] : null;
-
-            if ($code) {
-                $channel = BaiduData::checkCodeIs($code);
-                if ($channel == 1) {
-                    $this->saveForm($item, $channel);
-                } elseif (in_array($channel, [7, 6, 5])) {
-                    $this->saveChat();
-                }
-            } else {
-                Log::info('无法识别的跟踪码', [
-                    'name' => $item['visitor_name'],
-                    'url'  => $url
+            $item           = $this->parserData($item);
+            $departmentType = Helpers::checkDepartment($item['code']);
+            if (!$departmentType) {
+                Log::info('无法判断科室', [
+                    'name' => $item['code'],
                 ]);
+                throw new \Exception('无法判断科室: ' . $item['code']);
             }
+            $item['form_type']     = BaiduData::checkCodeIs($item['code']);
+            $item['type']          = $departmentType->type;
+            $item['department_id'] = $departmentType->id;
+            $projectType           = Helpers::checkDepartmentProject($departmentType, $item['code']);
+
+            $baidu = BaiduData::updateOrCreate([
+                'visitor_id' => $item['visitor_id']
+            ], $item);
+            $baidu->projects()->sync($projectType);
+            $this->count++;
 
 
+            $clue = $this->parseClue($item['clue']);
+            if ($baidu['form_type'] == 1 && $clue->isNotEmpty()) {
+                $form = FormData::updateOrCreate([
+                    'model_id'   => $baidu->id,
+                    'model_type' => BaiduData::class,
+                ], static::parseFormData($item));
+                FormDataPhone::createOrUpdateItem($form, $clue);
+                $form->projects()->sync($projectType);
+            }
         });
-
     }
 
-    public function saveChat()
-    {
 
-    }
 }

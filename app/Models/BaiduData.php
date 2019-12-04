@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Helpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class BaiduData extends Model
 {
@@ -89,9 +91,22 @@ class BaiduData extends Model
         return $this->hasMany(BaiduClue::class, 'baidu_id', 'id');
     }
 
+    /**
+     * 关联 项目
+     * @return MorphToMany
+     */
     public function projects()
     {
         return $this->morphToMany(ProjectType::class, 'model', 'project_list', 'model_id', 'project_id');
+    }
+
+    /**
+     * 关联 科室
+     * @return BelongsTo
+     */
+    public function department()
+    {
+        return $this->belongsTo(DepartmentType::class, 'department_id', 'id');
     }
 
 }
