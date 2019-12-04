@@ -25,5 +25,7 @@ class BaiduSpend extends Model
         'click',
         'spend',
         'type',
+        'spend_type',
+        'code',
     ];
 }

@@ -30,7 +30,12 @@ class BaiduSpendImport implements ToCollection
     public static function parserData($item)
     {
         $item['code']            = $item['account_name'] . '-' . $item['promotion_plan'];
-
+        if (is_numeric($item['date'])) {
+            $item['date'] = Date::excelToDateTimeObject($item['date']);
+        }
+        $item['date']       = Carbon::parse($item['date'])->toDateString();
+        $item['spend_type'] = 1;
+        return $item;
     }
 
     /**
@@ -46,18 +51,13 @@ class BaiduSpendImport implements ToCollection
         $data       = Helpers::excelToKeyArray($collection, BaiduSpend::$excelFields);
 
         foreach ($data as $item) {
-            $key            = $item['account_name'] . '-' . $item['promotion_plan'];
-            $departmentType = Helpers::checkDepartment($key);
+            $item           = static::parserData($item);
+            $code           = $item['code'];
 
-            if (!$departmentType)
-                throw new \Exception('无法判断科室:' . $key . '。请手动删除或者修改为可识别的科室.');
+            if (!$departmentType = Helpers::checkDepartment($code))
+                throw new \Exception('无法判断科室:' . $code . '。请手动删除或者修改为可识别的科室.');
 
-            $projectType = Helpers::checkDepartmentProject($departmentType, $key, 'spend_keyword');
-            if (is_numeric($item['date'])) {
-                $item['date'] = Date::excelToDateTimeObject($item['date']);
-            }
-            $item['date']       = Carbon::parse($item['date'])->toDateString();
-            $item['spend_type'] = 1;
+            $projectType = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
             $item['type']       = $departmentType->type;
 
             $baidu = BaiduSpend::updateOrCreate([
@@ -78,14 +78,14 @@ class BaiduSpendImport implements ToCollection
                 'type'            => $item['type'],
                 'department_id'   => $departmentType->id,
                 'date'            => $item['date'],
-                'spend_name'      => $key,
+                'spend_name'      => $code,
                 'show'            => $item['show'],
                 'click'           => $item['click'],
                 'spend'           => $item['spend'],
                 'off_spend'       => $offSpend,
                 'spend_type'      => $item['spend_type'],
                 'account_id'      => $account ? $account['id'] : null,
-                'account_keyword' => $key,
+                'account_keyword' => $code,
             ]);
 
             $spend->projects()->sync($projectType);
