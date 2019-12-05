@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Helpers;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
+/**
+ * @method static updateOrCreate(array $array, $item)
+ */
 class FeiyuSpend extends Model
 {
     public static $excelFields = [
@@ -42,4 +48,100 @@ class FeiyuSpend extends Model
         'deep_conversion_price',
         'deep_conversion_rate',
     ];
+
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
+    {
+        $keys  = array_keys(static::$excelFields);
+        $first = $data->get(0);
+        $diff  = $first->diff($keys);
+        $count = $diff->count();
+        return $count <= 2;
+    }
+
+    /**
+     * @param Collection $collection
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($collection)
+    {
+        $data = Helpers::excelToKeyArray($collection, static::$excelFields);
+
+        $data = collect($data)->filter(function ($item) {
+            return isset($item['date'])
+                && isset($item['advertiser_id'])
+                && isset($item['advertiser_name']);
+        });
+
+        return static::handleExcelData($data);
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function handleExcelData($data)
+    {
+        $count = 0;
+        foreach ($data as $item) {
+            $item = static::parseData($item);
+
+            $feiyu = FeiyuSpend::updateOrCreate([
+                'date'          => $item['date'],
+                'advertiser_id' => $item['advertiser_id'],
+            ], $item);
+
+            $spend = SpendData::updateOrCreate([
+                'model_id'   => $feiyu->id,
+                'model_type' => FeiyuSpend::class
+            ], SpendData::parseMakeSpendData($item));
+            $spend->projects()->sync($item['project_type']);
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function parseData($item)
+    {
+        $code = $item['code'] = $item['advertiser_name'];
+
+        if (!$departmentType = Helpers::checkDepartment($code)) {
+            throw new \Exception('无法判断科室:' . $code);
+        }
+        $item['type']          = $departmentType->type;;
+        $item['department_id']   = $departmentType->id;
+        $item['department_type'] = $departmentType;
+        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
+
+        $item['advertiser_id'] = trim($item['advertiser_id']);
+
+        if (!$item['spend_type'] = static::parseCodeType($code))
+            throw new \Exception('无法判断渠道' . $code);
+
+        $item['date'] = Carbon::parse($item['date'])->toDateString();
+
+        return $item;
+    }
+
+    public static function parseCodeType($str)
+    {
+        if (preg_match("/B/", $str)) {
+            return 3;
+        }
+        if (preg_match("/D/", $str)) {
+            return 4;
+        }
+        return 0;
+    }
 }

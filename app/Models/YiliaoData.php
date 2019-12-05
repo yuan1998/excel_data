@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Schema\Builder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * @method static YiliaoData updateOrCreate(array $array, $item)
+ */
 class YiliaoData extends Model
 {
     public static $fields = [
@@ -102,14 +108,14 @@ class YiliaoData extends Model
         "对话结束时间"     => 'chatEndTime',
         "扩展字段1"      => 'extColumn1',
 
-        "总结详细"       => 'summarizeDetail',
-        "标签Id"       => 'tagId',
-        "会话标签"       => 'chatTag',
-        "渠道Id"       => 'channelId',
-        "推广渠道"       => 'promoteChannel',
-        "性别"         => 'sex',
-        "备注"         => 'remark',
-        "名片扩展1"      => 'extCard1',
+        "总结详细"  => 'summarizeDetail',
+        "标签Id"  => 'tagId',
+        "会话标签"  => 'chatTag',
+        "渠道Id"  => 'channelId',
+        "推广渠道"  => 'promoteChannel',
+        "性别"    => 'sex',
+        "备注"    => 'remark',
+        "名片扩展1" => 'extCard1',
     ];
 
 
@@ -204,6 +210,7 @@ class YiliaoData extends Model
         $item['chatUrl']   = substr($item['chatUrl'] ?? '', 0, Builder::$defaultStringLength);
         $item['firstUrl']  = substr($item['firstUrl'] ?? '', 0, Builder::$defaultStringLength);
         $item['referPage'] = substr($item['referUrl'] ?? '', 0, Builder::$defaultStringLength);
+        $item['date']      = $item['startChatTime'];
 
         $url = urldecode($item['chatUrl']);
         preg_match("/\?A[0-9](.{12,20})/", $url, $match);
@@ -212,25 +219,80 @@ class YiliaoData extends Model
         return $item;
     }
 
-
-    public static function generateYiliaoData($data)
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
     {
-        $data = collect($data)->filter(function ($item) {
-            return isset($item['chatId']) &&
-                isset($item['visitorId']);
-        });
+        $first = $data->get(0);
+        if ($first[2] === null && preg_match('/对话查询统计/', $first[0])) {
+            return true;
+        }
+        return $first
+            && $first->contains('名片扩展1')
+            && $first->contains('会话请求ID')
+            && $first->contains('访客静态ID')
+            && $first->contains('手机')
+            && $first->contains('电话')
+            && $first->contains('会话ID');
+    }
 
+    /**
+     * @param Collection $collection
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($collection)
+    {
+        $collection = $collection->filter(function ($item) {
+            return isset($item[2]) && $item[2];
+        });
+        $data       = Helpers::excelToKeyArray($collection, static::$excelFields);
+
+        return static::handleExcelData($data);
+
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function handleExcelData($data)
+    {
+        $count = 0;
         foreach ($data as $item) {
             $item = static::parserData($item);
-            $item = static::create($item);
+            if ($item['form_type'] != 1) continue;
 
-            if ($item == 1) {
-
+            $code = $item['code'];
+            if (!$item['form_type'] || !$departmentType = Helpers::checkDepartment($code)) {
+                Log::info('无法判断科室', [
+                    'code' => $code,
+                ]);
+                throw new \Exception('无法判断科室: ' . $code);
             }
+            $item['type']          = $departmentType->type;
+            $item['department_id'] = $departmentType->id;
+            $projectType           = Helpers::checkDepartmentProject($departmentType, $code);
 
+            $yiliao = YiliaoData::updateOrCreate(['chatId' => $item['chatId']], $item);
+            $yiliao->projects()->sync($projectType);
 
+            if ($item['phone']) {
+                $form  = FormData::updateOrCreate(
+                    [
+                        'model_id'   => $yiliao->id,
+                        'model_type' => static::class,
+                    ], FormData::parseFormData($item));
+                $phone = collect(explode(',', $yiliao['phone']));
+                FormDataPhone::createOrUpdateItem($form, $phone);
+                $form->projects()->sync($projectType);
+                $count++;
+            }
         }
-
+        return $count;
     }
 
 }

@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use App\Helpers;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Schema\Builder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class BaiduData extends Model
 {
@@ -116,6 +120,125 @@ class BaiduData extends Model
     public function department()
     {
         return $this->belongsTo(DepartmentType::class, 'department_id', 'id');
+    }
+
+    /**
+     * @param string $clue
+     * @return Collection
+     */
+    public static function parseClue(string $clue)
+    {
+        return collect(explode(',', $clue))
+            ->filter(function ($value) {
+                return Helpers::validatePhone($value);
+            })
+            ->map(function ($value) {
+                return $value;
+            });
+    }
+
+    /**
+     * @param array $item
+     * @return array|null
+     * @throws \Exception
+     */
+    public static function parserData($item)
+    {
+        $item['url']        = substr($item['url'] ?? '', 0, Builder::$defaultStringLength);
+        $item['first_url']  = substr($item['first_url'] ?? '', 0, Builder::$defaultStringLength);
+        $item['dialog_url'] = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
+        $item['date']       = $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
+
+
+        $url = urldecode($item['dialog_url']);
+        preg_match("/\?A[0-9](.{12,20})/", $url, $match);
+        $code = $item['code'] = (isset($match[0]) ? $match[0] : '') . '-' . $item['visitor_type'];
+
+
+        $item['form_type'] = BaiduData::checkCodeIs($code);
+        if (!$item['form_type']) return null;
+
+
+        if (!$departmentType = Helpers::checkDepartment($code)) {
+            Log::info('无法判断科室', [
+                'name' => $code,
+            ]);
+            throw new \Exception('无法判断科室: ' . $code);
+        }
+        $item['type']            = $departmentType->type;
+        $item['department_id']   = $departmentType->id;
+        $item['department_type'] = $departmentType;
+        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+
+        return $item;
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($data)
+    {
+        $data = Helpers::excelToKeyArray($data, static::$excelFields);
+        $data = collect($data)->filter(function ($item) {
+            return isset($item['dialog_url'])
+                && isset($item['cur_access_time'])
+                && isset($item['visitor_name'])
+                && isset($item['visitor_id'])
+                && $item['dialog_url']
+                && $item['visitor_type'];
+        });
+
+        return static::handleExcelData($data);
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function handleExcelData($data)
+    {
+        $count = 0;
+        foreach ($data as $item) {
+            $item = static::parserData($item);
+            if (!$item) continue;
+
+            $baidu = static::updateOrCreate([
+                'visitor_id' => $item['visitor_id']
+            ], $item);
+            $baidu->projects()->sync($item['project_type']);
+
+
+            $clue = static::parseClue($item['clue']);
+            if (in_array($baidu['form_type'], [1, 8]) && $clue->isNotEmpty()) {
+                $form = FormData::updateOrCreate([
+                    'model_id'   => $baidu->id,
+                    'model_type' => static::class,
+                ], FormData::parseFormData($item));
+
+                FormDataPhone::createOrUpdateItem($form, $clue);
+                $form->projects()->sync($item['project_type']);
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
+    {
+        $first = $data->get(0);
+        return $first
+            && $first->contains('访客ID')
+            && $first->contains('客户类型')
+            && $first->contains('对话网址')
+            && $first->contains('线索');
     }
 
 }

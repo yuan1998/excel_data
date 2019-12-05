@@ -11,14 +11,20 @@ use App\Models\AccountReturnPoint;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\BaiduClue;
+use App\Models\BaiduData;
+use App\Models\BaiduSpend;
 use App\Models\BillAccountData;
 use App\Models\Channel;
 use App\Models\DepartmentType;
 use App\Models\FeiyuData;
+use App\Models\FeiyuSpend;
 use App\Models\MediumType;
 use App\Models\ProjectType;
 use App\Models\TempCustomerData;
 use App\Models\WeiboData;
+use App\Models\WeiboFormData;
+use App\Models\WeiboSpend;
+use App\Models\YiliaoData;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Closure;
@@ -168,7 +174,7 @@ class Helpers
                 $data = [];
                 $value->each(function ($item, $key) use ($keys, &$data, $fields, $value) {
                     $name = $keys[$key];
-                    $name = $fields ? (isset($fields[$name]) ? $fields[$name] : null) : $name;
+                    $name = $fields ? (isset($fields[$name]) ? $fields[$name] : $name) : $name;
                     $name && ($data[$name] = (string)$item);
                 });
                 array_push($result, $data);
@@ -864,6 +870,39 @@ class Helpers
                 $ctx = mb_convert_encoding($ctx, 'UTF-8', 'gb2312');
                 \File::put($path, $ctx);
             }
+        }
+    }
+
+    public static function checkExcelModel($data)
+    {
+        if (FeiyuData::isModel($data)) {
+            return 'feiyu';
+        }
+        if (BaiduData::isModel($data)) {
+            return 'baidu';
+        }
+
+        if (FeiyuSpend::isModel($data)) {
+            return 'feiyu-spend';
+        }
+        if (BaiduSpend::isModel($data)) {
+            return 'baidu-spend';
+        }
+
+        if (YiliaoData::isModel($data)) {
+            return 'yiliao';
+        }
+
+
+        if (OppoSpend::isModel($data)) {
+            return 'oppo-spend';
+        }
+
+        if (WeiboSpend::isModel($data)) {
+            return 'weibo-spend';
+        }
+        if (WeiboFormData::isModel($data)) {
+            return 'weibo';
         }
     }
 

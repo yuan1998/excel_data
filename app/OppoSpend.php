@@ -6,6 +6,7 @@ use App\Models\BaiduSpend;
 use App\Models\SpendData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class OppoSpend extends Model
 {
@@ -23,6 +24,7 @@ class OppoSpend extends Model
         "点击均价" => 'click_spend',
         "ECPM" => 'ecpm',
     ];
+
 
     protected $fillable = [
         'date',
@@ -47,12 +49,13 @@ class OppoSpend extends Model
         $item['date']       = Carbon::parse($item['date'])->toDateString();
         $code               = $item['code'] = $item['plan_name'];
         $item['spend_type'] = 8;
-        if (!$departmentType = Helpers::checkDepartment($code))
-            throw new \Exception('无法判断科室:' . $code . '。请手动删除或者修改为可识别的科室.');
-
-        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
+        if (!$departmentType = Helpers::checkDepartment($code)) {
+            throw new \Exception('无法判断科室:' . $code);
+        }
+        $item['type'] = $departmentType->type;;
+        $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;
-        $item['type']            = $departmentType->type;
+        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
 
         return $item;
     }
@@ -78,6 +81,34 @@ class OppoSpend extends Model
             $count++;
         }
         return $count;
+    }
+
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
+    {
+        $keys = array_keys(static::$excelFields);
+
+        $first = $data->get(0);
+        $diff  = $first->diff($keys);
+        $count = $diff->count();
+        return $count <= 2;
+    }
+
+
+    /**
+     * @param Collection $collection
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($collection)
+    {
+        $data = Helpers::excelToKeyArray($collection, OppoSpend::$excelFields);
+
+        return static::handleExcelData($data);
+
     }
 
 }

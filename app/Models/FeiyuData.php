@@ -3,8 +3,14 @@
 namespace App\Models;
 
 use App\Helpers;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Builder;
+use Illuminate\Support\Collection;
 
+/**
+ * @method static updateOrCreate(array $array, $item)
+ */
 class FeiyuData extends Model
 {
 
@@ -97,5 +103,104 @@ class FeiyuData extends Model
     public function projects()
     {
         return $this->morphToMany(ProjectType::class, 'model', 'project_list', 'model_id', 'project_id');
+    }
+
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
+    {
+        $first = $data->get(0);
+        return $first
+            && $first->contains('线索id')
+            && $first->contains('电话')
+            && $first->contains('市场活动名称')
+            && $first->contains('组件名称')
+            && $first->contains('流量来源');
+    }
+
+    public static function parserFormType($str)
+    {
+        if (preg_match("/B/", $str)) {
+            return 3;
+        }
+        if (preg_match("/D/", $str)) {
+            return 4;
+        }
+        return 0;
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($data)
+    {
+        $data = Helpers::excelToKeyArray($data, static::$excelFields);
+        $data = collect($data)->filter(function ($item) {
+            return isset($item['post_date'])
+                && isset($item['owner'])
+                && isset($item['component_id'])
+                && isset($item['activity_name'])
+                && isset($item['phone'])
+                && isset($item['sponsored_link'])
+                && !!$item['activity_name'];
+        });
+
+        return static::handleExcelData($data);
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function handleExcelData($data)
+    {
+        $count = 0;
+        foreach ($data as $item) {
+            $item  = static::parseData($item);
+            $feiyu = FeiyuData::updateOrCreate([
+                'clue_id' => $item['clue_id']
+            ], $item);
+
+            if ($item['form_type']) {
+                $form = FormData::updateOrCreate([
+                    'model_id'   => $feiyu->id,
+                    'model_type' => static::class,
+                ], FormData::parseFormData($item));
+
+                FormDataPhone::createOrUpdateItem($form, collect($item['phone']));
+                $form->projects()->sync($item['project_type']);
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function parseData($item)
+    {
+        $code = $item['code'] = $item['activity_name'] . '-' . $item['component_name'];
+
+        if (!$departmentType = Helpers::checkDepartment($code))
+            throw new \Exception('无法判断科室:' . $code);
+
+        $item['date']            = $item['post_date'];
+        $item['department_type'] = $departmentType;
+        $item['type']            = $departmentType->type;
+        $item['department_id']   = $departmentType->id;
+        $item['sponsored_link']  = substr($item['sponsored_link'] ?? '', 0, Builder::$defaultStringLength);
+        $item['post_date']       = Carbon::parse($item['post_date'])->toDateString();
+        $item['form_type']       = static::parserFormType($code);
+        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+
+        return $item;
     }
 }

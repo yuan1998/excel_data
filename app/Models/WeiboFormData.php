@@ -10,8 +10,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @method static firstOrCreate(array $array, $item)
+ */
 class WeiboFormData extends Model
 {
     protected $fillable = [
@@ -389,4 +393,107 @@ class WeiboFormData extends Model
                 $data->makeFormData();
             });
     }
+
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
+    {
+        $first = $data->get(0);
+        return $first
+            && $first->contains('序号')
+            && $first->contains('项目ID')
+            && $first->contains('项目名称')
+            && $first->contains('提交时间')
+            && $first->contains('电话')
+            && $first->contains('分组类型');
+    }
+
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($data)
+    {
+        $data = Helpers::excelToKeyArray($data, WeiboData::$excelFields);
+        $data = collect($data)->filter(function ($item) {
+            return isset($item['weibo_id'])
+                && isset($item['phone'])
+                && !!$item['phone']
+                && isset($item['post_date']);
+        });
+
+        return static::handleExcelData($data);
+    }
+
+    /**
+     * @param $data
+     * @return int
+     * @throws \Exception
+     */
+    public static function handleExcelData($data)
+    {
+        $count = 0;
+        foreach ($data as $item) {
+            $item = static::parserData($item);
+
+            $model = WeiboFormData::firstOrCreate([
+                'phone'     => $item['phone'],
+                'post_date' => $item['post_date'],
+                'type'      => $item['type'],
+            ], $item);
+
+            if (!$model->comment && $item['comment']) {
+                WeiboFormData::find($model->id)
+                    ->update([
+                        'comment' => $item['comment'],
+                    ]);
+            }
+            $count++;
+        }
+        return $count;
+    }
+
+    /**
+     * @param $item
+     * @return string
+     */
+    public static function parserDataCode($item)
+    {
+        $result = $item['project_name'];
+        $keys   = array_values(WeiboData::$excelFields);
+        foreach ($item as $key => $value) {
+            if (!in_array($key, $keys)) {
+                $result .= '-' . ($value || '');
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param      $item
+     * @param null $type
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function parserData($item, $type = null)
+    {
+        $item['real_post_date'] = $item['post_date'];
+        $item['post_date']      = Carbon::parse($item['post_date'])->toDateString();
+        $item['upload_date']    = Carbon::now()->toDateTimeString();
+        $item['code']           = static::parserDataCode($item);
+
+        if ($type) {
+            $item['type'] = $type;
+        } elseif (!$departmentType = Helpers::checkDepartment($item['code'])) {
+            throw new \Exception('无法判断科室:' . $item['code']);
+        } else {
+            $item['type'] = $departmentType->type;
+        }
+        return $item;
+    }
+
 }

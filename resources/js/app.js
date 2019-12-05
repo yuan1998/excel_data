@@ -14,6 +14,7 @@ import WeiboDispatchSettings from "./components/WeiboDispatchSettings";
 import RecallLog             from "./components/RecallLog";
 import ActionExcelUpload     from "./components/ActionExcelUpload";
 import WeiboGrabAction       from "./components/WeiboGrabAction";
+import weiboIndex            from "./components/weibo-index";
 
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
@@ -25,6 +26,7 @@ Vue.component('weibo-config-action', WeiConfigAction);
 Vue.component('weibo-dispatch-settings', WeiboDispatchSettings);
 Vue.component('action-excel-upload', ActionExcelUpload);
 Vue.component('weibo-grab-action', WeiboGrabAction);
+Vue.component('weibo-index', weiboIndex);
 
 // const app = new Vue({
 //     el: '#app'

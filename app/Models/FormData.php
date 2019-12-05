@@ -23,6 +23,7 @@ use stringEncode\Exception;
  * @property mixed data_type
  * @property mixed project_info
  * @property mixed department_info
+ * @method  static FormData updateOrCreate(array $array, array $parseFormData)
  */
 class FormData extends Model
 {
@@ -308,6 +309,20 @@ class FormData extends Model
                 return OppoSpendImport::class;
         }
         return null;
+    }
+
+    public static function parseFormData($item)
+    {
+        return [
+            'data_type'       => $item['code'],
+            'form_type'       => $item['form_type'],
+            'type'            => $item['type'],
+            'department_id'   => $item['department_id'],
+            'date'            => $item['date'],
+            'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
+            'account_keyword' => $item['code'],
+        ];
+
     }
 
 }

@@ -10,6 +10,7 @@ use App\Encoding;
 use App\Exports\TestExport;
 use App\Helpers;
 use App\Http\Requests\UploadRequest;
+use App\Imports\AutoImport;
 use App\Imports\BaiduImport;
 use App\Imports\BaiduSpendImport;
 use App\Imports\OppoSpendImport;
@@ -60,13 +61,18 @@ class BaiduDataController extends Controller
         $file = $request->file('excel');
         Helpers::checkUTF8($file);
 
-        $import = new OppoSpendImport();
+        $import = new AutoImport();
         Excel::import($import, $file);
+        dd(
+            $import->model,
+            $import->count,
+            $import
+        );
 
 //        $date1  = "2019-12-1 00:00:00";
 //        $date2  = "2019-12-2 00:00:00";
 //        $result = YiliaoClient::getYiliaoData($date1, $date2);
-        dd($import);
+//        dd($import);
 
         return $this->response->noContent();
     }

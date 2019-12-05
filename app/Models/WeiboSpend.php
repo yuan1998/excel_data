@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Helpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class WeiboSpend extends Model
 {
@@ -96,4 +99,86 @@ class WeiboSpend extends Model
         return null;
     }
 
+    /**
+     * @param Collection $data
+     * @return bool
+     */
+    public static function isModel($data)
+    {
+        $keys  = array_keys(static::$excelFields);
+        $first = $data->get(0);
+        $diff  = $first->diff($keys);
+        $count = $diff->count();
+        return $count <= 2;
+    }
+
+
+    /**
+     * @param Collection $collection
+     * @return int
+     * @throws \Exception
+     */
+    public static function excelCollection($collection)
+    {
+        $data = Helpers::excelToKeyArray($collection, WeiboSpend::$excelFields);
+
+        $data = collect($data)->filter(function ($item) {
+            return isset($item['date'])
+                && isset($item['advertiser_account'])
+                && isset($item['diversions'])
+                && isset($item['follow_count'])
+                && $item['advertiser_account'] != '-';
+        });
+
+        return static::handleExcelData($data);
+    }
+
+    public static function handleExcelData($data)
+    {
+        $count = 0;
+        foreach ($data as $item) {
+            $item  = static::parseData($item);
+            $weibo = WeiboSpend::updateOrCreate([
+                'date'               => $item['date'],
+                'advertiser_account' => $item['advertiser_account'],
+            ], $item);
+
+            $spend = SpendData::updateOrCreate([
+                'model_id'   => $weibo->id,
+                'model_type' => WeiboSpend::class
+            ], SpendData::parseWeiboMakeSpendData($item));
+            $spend->projects()->sync($item['project_type']);
+
+            $count++;
+        }
+
+        return $count;
+    }
+
+
+    /**
+     * @param $item
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function parseData($item)
+    {
+        $code = $item['code'] = $item['advertiser_account'];
+
+        if (!$departmentType = Helpers::checkDepartment($code)) {
+            throw new \Exception('无法判断科室:' . $code);
+        }
+        $item['type'] = $departmentType->type;;
+        $item['department_id']   = $departmentType->id;
+        $item['department_type'] = $departmentType;
+        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
+
+        $item['spend_type']  = 2;
+        $item['click']       = $item['interactive'];
+        $item['interactive'] = (int)Arr::get($item, 'comment_count', 0)
+            + (int)Arr::get($item, 'start_count', 0)
+            + (int)Arr::get($item, 'share_count', 0);
+
+        return $item;
+    }
 }

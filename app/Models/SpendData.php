@@ -6,6 +6,9 @@ use App\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use stringEncode\Exception;
 
+/**
+ * @method static SpendData updateOrCreate(array $array, array $parseMakeSpendData)
+ */
 class SpendData extends Model
 {
     protected $fillable = [
@@ -157,7 +160,7 @@ class SpendData extends Model
 
         return [
             'type'            => $item['type'],
-            'department_id'   => $item['department_type']->id,
+            'department_id'   => $item['department_id'],
             'date'            => $item['date'],
             'spend_name'      => $item['code'],
             'show'            => $item['show'],
@@ -168,6 +171,15 @@ class SpendData extends Model
             'account_id'      => $account ? $account['id'] : null,
             'account_keyword' => $item['code'],
         ];
+    }
+
+    public static function parseWeiboMakeSpendData($item)
+    {
+        $item = static::parseMakeSpendData($item);
+
+        return array_merge($item, [
+            'interactive' => $item['interactive'],
+        ]);
     }
 
 }
