@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -849,13 +850,20 @@ class Helpers
         }
     }
 
+    /**
+     * @param UploadedFile $file
+     */
     public static function checkUTF8($file)
     {
-        $path = $file->path();
-        $ctx  = \File::get($path);
-        if (!static::is_utf8($ctx)) {
-            $ctx = mb_convert_encoding($ctx, 'UTF-8', 'gb2312');
-            \File::put($path, $ctx);
+        $filename = $file->getClientOriginalName();
+        if (!preg_match('/\.(xls)/', $filename)) {
+            $path = $file->path();
+            $ctx  = \File::get($path);
+
+            if (!static::is_utf8($ctx)) {
+                $ctx = mb_convert_encoding($ctx, 'UTF-8', 'gb2312');
+                \File::put($path, $ctx);
+            }
         }
     }
 

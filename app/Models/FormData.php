@@ -7,6 +7,7 @@ use App\Imports\BaiduImport;
 use App\Imports\BaiduSpendImport;
 use App\Imports\FeiyuImport;
 use App\Imports\FeiyuSpendImport;
+use App\Imports\OppoSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\WeiboSpendImport;
 use App\Imports\YiliaoImport;
@@ -303,6 +304,8 @@ class FormData extends Model
                 return BaiduSpendImport::class;
             case "feiyu_spend" :
                 return FeiyuSpendImport::class;
+            case "oppo_spend" :
+                return OppoSpendImport::class;
         }
         return null;
     }

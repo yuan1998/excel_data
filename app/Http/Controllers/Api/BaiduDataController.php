@@ -12,6 +12,7 @@ use App\Helpers;
 use App\Http\Requests\UploadRequest;
 use App\Imports\BaiduImport;
 use App\Imports\BaiduSpendImport;
+use App\Imports\OppoSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\YiliaoImport;
 use App\Models\ArchiveType;
@@ -58,7 +59,8 @@ class BaiduDataController extends Controller
     {
         $file = $request->file('excel');
         Helpers::checkUTF8($file);
-        $import = new BaiduSpendImport();
+
+        $import = new OppoSpendImport();
         Excel::import($import, $file);
 
 //        $date1  = "2019-12-1 00:00:00";

@@ -94,6 +94,7 @@ class SpendDataController extends AdminController
                 'weibo_spend' => '微博消费',
                 'feiyu_spend' => '飞鱼消费',
                 'baidu_spend' => '百度消费',
+                'oppo_spend'  => 'oppo消费',
             ]));
         });
         $grid->disableCreateButton();

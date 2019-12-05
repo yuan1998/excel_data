@@ -147,4 +147,27 @@ class SpendData extends Model
         }
     }
 
+    public static function parseMakeSpendData($item)
+    {
+        $account  = Helpers::formDataCheckAccount($item, 'code', 'spend_type', true);
+        $offSpend = (float)$item['spend'];
+        if ($account) {
+            $offSpend = $offSpend * (float)$account['rebate'];
+        }
+
+        return [
+            'type'            => $item['type'],
+            'department_id'   => $item['department_type']->id,
+            'date'            => $item['date'],
+            'spend_name'      => $item['code'],
+            'show'            => $item['show'],
+            'click'           => $item['click'],
+            'spend'           => $item['spend'],
+            'off_spend'       => $offSpend,
+            'spend_type'      => $item['spend_type'],
+            'account_id'      => $account ? $account['id'] : null,
+            'account_keyword' => $item['code'],
+        ];
+    }
+
 }
