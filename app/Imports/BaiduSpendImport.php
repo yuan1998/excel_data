@@ -29,7 +29,7 @@ class BaiduSpendImport implements ToCollection
 
     public static function parserData($item)
     {
-        $item['code']            = $item['account_name'] . '-' . $item['promotion_plan'];
+        $item['code'] = $item['account_name'] . '-' . $item['promotion_plan'];
         if (is_numeric($item['date'])) {
             $item['date'] = Date::excelToDateTimeObject($item['date']);
         }
@@ -51,14 +51,14 @@ class BaiduSpendImport implements ToCollection
         $data       = Helpers::excelToKeyArray($collection, BaiduSpend::$excelFields);
 
         foreach ($data as $item) {
-            $item           = static::parserData($item);
-            $code           = $item['code'];
+            $item = static::parserData($item);
+            $code = $item['code'];
 
             if (!$departmentType = Helpers::checkDepartment($code))
                 throw new \Exception('无法判断科室:' . $code . '。请手动删除或者修改为可识别的科室.');
 
-            $projectType = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
-            $item['type']       = $departmentType->type;
+            $projectType  = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
+            $item['type'] = $departmentType->type;
 
             $baidu = BaiduSpend::updateOrCreate([
                 'date'              => $item['date'],

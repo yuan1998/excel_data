@@ -842,6 +842,23 @@ class Helpers
     }
 
 
+    public static function is_utf8($str)
+    {
+        if ($str === iconv('UTF-8', 'UTF-8//IGNORE', $str)) {
+            return 'UTF-8';
+        }
+    }
+
+    public static function checkUTF8($file)
+    {
+        $path = $file->path();
+        $ctx  = \File::get($path);
+        if (!static::is_utf8($ctx)) {
+            $ctx = mb_convert_encoding($ctx, 'UTF-8', 'gb2312');
+            \File::put($path, $ctx);
+        }
+    }
+
 }
 
 

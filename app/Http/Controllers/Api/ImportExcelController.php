@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers;
 use App\Http\Requests\ExportExcelRequest;
 use App\Http\Requests\ImportExcelRequest;
 use App\Models\ExportDataLog;
@@ -18,6 +19,7 @@ class ImportExcelController extends Controller
 
         $excel = $request->file('excel');
         if (!$excel) $this->response->errorBadRequest('表单文件不存在.');
+        Helpers::checkUTF8($excel);
 
         $model = new $model();
         Excel::import($model, $excel);

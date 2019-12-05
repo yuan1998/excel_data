@@ -6,10 +6,12 @@ namespace App\Http\Controllers\Api;
 use App\Clients\KqClient;
 use App\Clients\YiliaoClient;
 use App\Clients\ZxClient;
+use App\Encoding;
 use App\Exports\TestExport;
 use App\Helpers;
 use App\Http\Requests\UploadRequest;
 use App\Imports\BaiduImport;
+use App\Imports\BaiduSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\YiliaoImport;
 use App\Models\ArchiveType;
@@ -51,15 +53,18 @@ class BaiduDataController extends Controller
         return $this->response->noContent();
     }
 
+
     public function test(Request $request)
     {
-        $import = new YiliaoImport();
-        Excel::import($import, $request->file('excel'));
+        $file = $request->file('excel');
+        Helpers::checkUTF8($file);
+        $import = new BaiduSpendImport();
+        Excel::import($import, $file);
 
 //        $date1  = "2019-12-1 00:00:00";
 //        $date2  = "2019-12-2 00:00:00";
 //        $result = YiliaoClient::getYiliaoData($date1, $date2);
-        dd();
+        dd($import);
 
         return $this->response->noContent();
     }
