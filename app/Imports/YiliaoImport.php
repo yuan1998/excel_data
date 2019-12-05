@@ -40,15 +40,17 @@ class YiliaoImport implements ToCollection
         foreach ($data as $item) {
             $parserItem = YiliaoData::parserData($item);
             if ($parserItem['form_type'] != 1) continue;
-            if (!$parserItem['form_type'] || !$departmentType = Helpers::checkDepartment($parserItem['code'])) {
+            $code = $parserItem['code'];
+
+            if (!$parserItem['form_type'] || !$departmentType = Helpers::checkDepartment($code)) {
                 Log::info('无法判断科室', [
-                    'code' => $parserItem['code'],
+                    'code' => $code,
                 ]);
-                throw new \Exception('无法判断科室: ' . $parserItem['code']);
+                throw new \Exception('无法判断科室: ' . $code);
             }
             $parserItem['type']          = $departmentType->type;
             $parserItem['department_id'] = $departmentType->id;
-            $projectType                 = Helpers::checkDepartmentProject($departmentType, $item['code']);
+            $projectType                 = Helpers::checkDepartmentProject($departmentType, $code);
 
             $yiliao = YiliaoData::updateOrCreate(['chatId' => $parserItem['chatId']], $parserItem);
             $yiliao->projects()->sync($projectType);
