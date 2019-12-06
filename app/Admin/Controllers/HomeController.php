@@ -36,11 +36,13 @@ class HomeController extends AdminController
             ->row(function (Row $row) {
 
                 if (Admin::user()->isRole('weibo_admin') || Admin::user()->isAdministrator()) {
-                    $now = Carbon::now();
-                    $old = Carbon::parse('-1 months');
-//                    WeiboFormData::
+                    $now  = Carbon::now();
+                    $old  = Carbon::parse('-1 months');
+                    $data = WeiboFormData::query()
+                        ->whereBetween('post_date', [$old, $now])
+                        ->get();
 
-                    $row->column(12, '<weibo-index></weibo-index>');
+                    $row->column(12, "<weibo-index :weibo-form-data='$data'></weibo-index>");
                 }
 
             });
