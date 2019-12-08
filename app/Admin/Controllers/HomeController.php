@@ -47,8 +47,6 @@ class HomeController extends AdminController
                     $row->column(12, "<weibo-index :weibo-form-data='$data'></weibo-index>");
                 }
                 $row->column(12, "<data-index></data-index>");
-
-
             });
     }
 

@@ -31,16 +31,16 @@
             <div class="files-preview">
                 <div v-for="(item,index) in files"
                      :index="index"
-                     class="file-item">
+                     class="file-item" :class="`item-status-${item.status}`">
                     <div class="file-name">
                         {{ item.name }}
-                        <span class="file-type" v-if="item.status === 1">
-                            {{ item.type }}
+                        <span class="file-type">
+                            {{item.status === 2 ? '上传失败!' : (item.status === 1 ? item.type : '正在上传...') }}
                         </span>
                     </div>
                     <div class="file-result" v-if="item.status !== 0">
                         <div class="error-result" v-if="item.status === 2">
-                            {{ item.error }}
+                            上传失败! {{ item.message }}
                         </div>
                         <div class="success-result" v-else>
                             上传成功,一共创建了 {{ item.count }} 条表单.
@@ -70,7 +70,7 @@
                 statusIcon       : {
                     0: 'el-icon-loading',
                     1: 'el-icon-check',
-                    2: 'el-icon-close',
+                    2: 'el-icon-error',
                 }
             };
         },
@@ -85,6 +85,8 @@
                 this.$confirm('确认关闭？')
                     .then(_ => {
                         done();
+                        this.files = [];
+                        $.admin.reload();
                     })
                     .catch(_ => {
                     });
@@ -95,7 +97,6 @@
             },
             handleUpload(res) {
                 //weibo_test.py 2019-12-07 2019-12-07 2000 17392449035 huamei2019 7165564518
-
                 console.log('res :', res);
             },
             handleUploadError(res) {
@@ -126,7 +127,6 @@
                         data  : formData,
                     });
                     let data = res.data;
-                    console.log('data :', data);
                     this.$set(item, 'type', data.type);
                     this.$set(item, 'count', data.count);
                     if (data.message) {
@@ -135,7 +135,6 @@
                     } else {
                         this.$set(item, 'status', 1);
                     }
-                    console.log('res :', res);
                 } catch (e) {
                     // request.onError(e);
                     if (e.response) {
@@ -206,6 +205,24 @@
             line-height: 1.8;
             position: relative;
 
+            &.item-status-1 {
+                border-color: #67c23b;
+
+                .file-label {
+                    background-color: #67c23b;
+                }
+
+            }
+
+            &.item-status-2 {
+                border-color: #f66c6c;
+
+                .file-label {
+                    background-color: #f66c6c;
+                }
+            }
+
+
             .file-name {
                 font-size: 16px;
 
@@ -239,7 +256,7 @@
                 top: -7px;
                 width: 46px;
                 height: 26px;
-                background: #13ce66;
+                background: #909399;
                 text-align: center;
                 transform: rotate(45deg);
                 box-shadow: 0 1px 1px #ccc;
