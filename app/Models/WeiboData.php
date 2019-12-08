@@ -28,6 +28,7 @@ class WeiboData extends Model
         "反馈"   => 'feedback',
         "备注"   => 'comment',
         "微信号"  => 'weixin',
+        "导出时间" => 'export_date',
     ];
 
     protected $fillable = [

@@ -465,10 +465,9 @@ class WeiboFormData extends Model
     public static function parserDataCode($item)
     {
         $result = $item['project_name'];
-        $keys   = array_values(WeiboData::$excelFields);
         foreach ($item as $key => $value) {
-            if (!in_array($key, $keys)) {
-                $result .= '-' . ($value || '');
+            if (preg_match("/\p{Han}+/u", $key) && $value) {
+                $result .= '-' . ($value ?? '');
             }
         }
         return $result;
