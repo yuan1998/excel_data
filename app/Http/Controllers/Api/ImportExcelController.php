@@ -20,19 +20,23 @@ class ImportExcelController extends Controller
         if (!$excel) $this->response->errorBadRequest('表单文件不存在.');
         Helpers::checkUTF8($excel);
 
-        $import = new AutoImport();
+        $import  = new AutoImport();
+        $message = '';
+        $type    = null;
         try {
             Excel::import($import, $excel);
         } catch (\Exception $exception) {
-            return $this->response->array([
-                'type'    => $import->getModelType(),
-                'message' => $exception->getMessage(),
-            ]);
+            $message = $exception->getMessage();
         }
-        
+        $type = $import->getModelType();
+        if (!$type) {
+            $message = '无法匹配该文件';
+        }
+
         return $this->response->array([
-            'type'  => $import->getModelType(),
-            'count' => $import->count,
+            'type'    => $import->getModelType(),
+            'message' => $message,
+            'count'   => $import->count,
         ]);
     }
 

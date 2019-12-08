@@ -51,27 +51,6 @@
                 dialogFormVisible: false,
                 loading          : false,
                 formLabelWidth   : '80px',
-                pickerOptions    : {
-                    shortcuts: [
-                        {
-                            text: '昨天',
-                            onClick(picker) {
-                                const day = new Date();
-                                day.setTime(day.getTime() - 3600 * 1000 * 24);
-                                picker.$emit('pick', [ day, day ]);
-                            }
-                        },
-                        {
-                            text: '最近一周',
-                            onClick(picker) {
-                                const end   = new Date();
-                                const start = new Date();
-                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                                picker.$emit('pick', [ start, end ]);
-                            }
-                        }
-                    ]
-                },
                 form             : {
                     types : [],
                     models: [],

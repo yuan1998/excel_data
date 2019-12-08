@@ -87,6 +87,6 @@ class AutoImport implements ToCollection
     public function getModelType()
     {
         $model = $this->model;
-        return $model && isset(static::$modelType[$model]) ? static::$modelType[$model] : '没有匹配';
+        return $model && isset(static::$modelType[$model]) ? static::$modelType[$model] : null;
     }
 }

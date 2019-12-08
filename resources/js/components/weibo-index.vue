@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="margin-bottom: 20px;">
         <el-card style="margin-bottom: 25px;">
             <div class="today-data">
                 <el-row style="padding-bottom: 15px;">
@@ -303,7 +303,7 @@
                     xAxis  : [
                         {
                             type: 'category',
-                            data: [ '周一', '周二', '周三', '周四', '周五', moment().add(-1, 'days').format(), '今天' ]
+                            data: [ '周一', '周二', '周三', '周四', '周五','', '今天' ]
                         }
                     ],
                     yAxis  : [

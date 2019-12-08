@@ -38,6 +38,7 @@ class WeiboFormData extends Model
         'dispatch_date',
         'upload_date',
         'recall_date',
+        'code',
     ];
 
     /**

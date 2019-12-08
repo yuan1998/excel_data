@@ -48,9 +48,10 @@ agents = [
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36',
     'Chrome/78.0.3904.108 Mobile Safari/537.36',
 ]
-agent = random.choice(agents)
+agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Safari/605.1.15'
 headers = {
-    'User-Agent': agent
+    'User-Agent': agent,
+    'Referer': 'https://weibo.com/',
 }
 
 
@@ -140,6 +141,7 @@ class WeiboLogin(object):
             'gateway': '1',
             'from': '',
             'savestate': '7',
+            'qrcode_flag': 'false',
             'useticket': '1',
             'pagerefer': "https://sina.com.cn/",
             'vsnf': '1',
@@ -150,11 +152,10 @@ class WeiboLogin(object):
             'pwencode': 'rsa2',
             'rsakv': rsakv,
             'sp': password_secret,
-            'sr': '1680*1050',
+            'sr': '2560*1440',
             'encoding': 'UTF-8',
-            'prelt': '33',
-            "cdult": "2",
-            'url': 'http://weibo.com/ajaxlogin.php?framelogin=1&callback=parent.sinaSSOController.feedBackUrlCallBack',
+            'prelt': '32',
+            'url': 'https://weibo.com/ajaxlogin.php?framelogin=1&callback=parent.sinaSSOController.feedBackUrlCallBack',
             'returntype': 'TEXT'  # 这里是 TEXT 和 META 选择，具体含义待探索
         }
         return sever_data
@@ -163,8 +164,10 @@ class WeiboLogin(object):
         # 先不输入验证码登录测试
         sever_data = self.pre_login()
         login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.19)&_'
-        login_url = login_url + str(time.time() * 1000)
+        # login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.19)'
+        # login_url = login_url + str(time.time() * 1000)
         login_page = self.session.post(login_url, data=self.postdata, headers=headers)
+        print(login_page.content.decode('utf-8'))
         ticket_js = login_page.json()
         ticket = ticket_js["ticket"]
 
@@ -195,7 +198,7 @@ class WeiboLogin(object):
         # print(weibo_page.content.decode("utf-8"))
         userID = re.findall(weibo_pa, weibo_page.content.decode("utf-8", 'ignore'), re.S)[0]
 
-
+    def data(self):
         Mheaders = {
             "Host": "cpl.biz.weibo.com",
             "User-Agent": agent
@@ -216,6 +219,7 @@ class WeiboLogin(object):
         }
         murl = "https://cpl.biz.weibo.com/cpl/lead/list"
         mhtml = self.session.get(murl, params=mParams, headers=Mheaders)
+        print(mhtml.content.decode('utf-8'))
         test_result = mhtml.json()
         print(json.dumps(test_result))
 
@@ -223,6 +227,7 @@ class WeiboLogin(object):
 if __name__ == '__main__':
     username = arguments[4]  # 用户名
     password = arguments[5]  # 密码
-    cookie_path = "./cookie_weibo_" + username +".txt"  # 保存cookie 的文件名称
+    cookie_path = "./cookie_weibo_" + username + ".txt"  # 保存cookie 的文件名称
     weibo = WeiboLogin(username, password, cookie_path)
     weibo.login()
+    weibo.data()

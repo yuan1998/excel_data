@@ -93,6 +93,9 @@ $api->version('v1', [
     ], function ($api) {
         $api->post('/formExcel', "ImportExcelController@uploadFormDataExcel")
             ->name('api.import.formExcel');
+        $api->post('/auto', "ImportExcelController@uploadAutoExcel")
+            ->name('api.import.auto');
+
         $api->post('/excel/make', "ImportExcelController@exportExcelStore")
             ->name('api.import.excelMake');
 

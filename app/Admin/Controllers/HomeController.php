@@ -34,6 +34,9 @@ class HomeController extends AdminController
             ->title($this->title)
             ->description($this->description)
             ->row(function (Row $row) {
+                $row->column(12, "<data-index></data-index>");
+//                if (Admin::user()->isRole('data') || Admin::user()->isAdministrator()) {
+//                }
 
                 if (Admin::user()->isRole('weibo_admin') || Admin::user()->isAdministrator()) {
                     $now  = Carbon::now();
@@ -44,6 +47,7 @@ class HomeController extends AdminController
 
                     $row->column(12, "<weibo-index :weibo-form-data='$data'></weibo-index>");
                 }
+
 
             });
     }

@@ -53,6 +53,7 @@
             };
         },
         methods: {
+
             handleUpload(res) {
 
                 console.log('res :', res);
@@ -114,6 +115,9 @@
             closeDialog() {
                 this.resetForm();
                 this.dialogFormVisible = false;
+            },
+            resetForm() {
+                this.$refs.form.resetFields();
             },
             handleSubmit() {
                 this.$refs.form.validate((valid) => {
