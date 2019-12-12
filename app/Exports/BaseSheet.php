@@ -132,7 +132,7 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
 
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
-                $event->sheet->getDelegate()->freezePaneByColumnAndRow(3, 6 + $this->projectsCount);
+                $event->sheet->getDelegate()->freezePaneByColumnAndRow(3, 1);
 
             },
         ];

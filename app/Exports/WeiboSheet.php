@@ -134,7 +134,7 @@ class WeiboSheet implements FromCollection, WithTitle, WithHeadings, WithEvents,
 
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
-                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 6 + $this->projectCount);
+                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 1);
             },
         ];
     }

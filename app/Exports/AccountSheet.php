@@ -130,7 +130,7 @@ class AccountSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
 
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
-                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 6 + $this->accountCount);
+                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 1);
 
             },
         ];

@@ -11,6 +11,19 @@
                      :model="form"
                      :rules="rules"
                      :label-width="formLabelWidth">
+                <el-form-item label="类型" prop="type" required>
+                    <el-radio-group v-model="form.type" size="mini">
+                        <el-radio-button label="zx"
+                        >
+                            整形
+                        </el-radio-button>
+                        <el-radio-button label="kq"
+                        >
+                            口腔
+                        </el-radio-button>
+
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item label="渠道" prop="channel_id" required>
                     <el-checkbox-group v-model="form.channel_id" size="mini">
                         <el-checkbox-button :label="key"
@@ -20,6 +33,8 @@
                         </el-checkbox-button>
                     </el-checkbox-group>
                 </el-form-item>
+
+
                 <el-form-item label="科室" prop="department_id" required>
                     <el-checkbox-group v-model="form.department_id" size="mini">
                         <el-checkbox-button v-for="(option , key) in departmentOptions" :label="key" :key="key">
@@ -81,7 +96,11 @@
                     channel_id   : [
                         { required: true, message: '请选择需要导出的渠道', trigger: 'blur' }
                     ],
-                    dates        : [
+                    type         : [
+                        { required: true, message: '请选择需要导出的类型', trigger: 'blur' }
+                    ],
+
+                    dates: [
                         { required: true, message: '请选择日期', trigger: 'change' }
                     ],
                 },
@@ -109,6 +128,7 @@
                 form             : {
                     department_id: [],
                     channel_id   : [],
+                    type         : '',
                     dates        : [],
                 },
             }
@@ -139,8 +159,8 @@
                     if (valid) {
                         let data     = cloneOf(this.form);
                         data.dates   = [
-                            moment(data.dates[ 0 ]).format('YYYY-MM-DD'),
-                            moment(data.dates[ 1 ]).format('YYYY-MM-DD'),
+                            moment(data.dates[ 0 ]).format('YYYY-MM-DD') + ' 00:00:00',
+                            moment(data.dates[ 1 ]).format('YYYY-MM-DD') + ' 23:59:59',
                         ];
                         this.loading = true;
 

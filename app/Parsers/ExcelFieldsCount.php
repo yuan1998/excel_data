@@ -92,12 +92,12 @@ class ExcelFieldsCount
             // 点击单价
             'click_spend'                      => round(Helpers::divisionOfSelf($spendData['spend'], $spendData['click']), 2),
             // 虚消费
-            'off_spend'                        => $spendData['off_spend'],
+            'off_spend'                        => round($spendData['off_spend'], 2),
             // 实消费
             'spend'                            => $spendData['spend'],
             // 总表单数
             'form_count'                       => $formData['form_count'],
-            // 有效表单数 =   意向1 + 意向2 + 意向3 +意向4
+            // 有效表单数    =   意向1 + 意向2 + 意向3 + 意向4
             'effective_form'                   => $effectiveForm,
             // 空号 = 意向5
             'empty_phone_form'                 => $formData['intention-6'],

@@ -40,8 +40,8 @@
       <file leaf-file-name="weibo_test.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/weibo_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="231" column="17" selection-start-line="231" selection-start-column="17" selection-end-line="231" selection-end-column="17" />
+            <state relative-caret-position="246">
+              <caret line="229" column="50" lean-forward="true" selection-start-line="229" selection-start-column="50" selection-end-line="229" selection-end-column="50" />
               <folding>
                 <element signature="e#115#126#0" expanded="true" />
               </folding>
@@ -175,15 +175,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1575278527259</updated>
-      <workItem from="1575278531852" duration="10272000" />
+      <workItem from="1575278531852" duration="11004000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10272000" />
+    <option name="totallyTimeSpent" value="11004000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1111" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -276,8 +277,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/weibo_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="231" column="17" selection-start-line="231" selection-start-column="17" selection-end-line="231" selection-end-column="17" />
+        <state relative-caret-position="246">
+          <caret line="229" column="50" lean-forward="true" selection-start-line="229" selection-start-column="50" selection-end-line="229" selection-end-column="50" />
           <folding>
             <element signature="e#115#126#0" expanded="true" />
           </folding>

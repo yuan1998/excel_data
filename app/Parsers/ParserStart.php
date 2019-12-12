@@ -66,6 +66,7 @@ class ParserStart extends ParserBase
 
         $this->departments_id = $requestData['department_id'];
         $this->dates          = $requestData['dates'];
+        $this->type           = $requestData['type'];
     }
 
     public function getFileName()
@@ -166,7 +167,8 @@ class ParserStart extends ParserBase
     public function generateDateToChannel($data)
     {
         $groupData = $this->groupDataOfDate($data);
-        $result    = collect();
+//        dd($groupData['spendData']->toArray());
+        $result = collect();
 
         $totalName = Carbon::parse($this->dates[0])->format("Y-m");
         $result->put($totalName, $this->generateChannelItem($data));
@@ -186,12 +188,12 @@ class ParserStart extends ParserBase
     public function generateChannelItem($data)
     {
         $channelResult = collect();
-        $data          = $this->filterAllDepartmentData($data);
+//        $data          = $this->filterAllDepartmentData($data);
         $this->channels->each(function ($channel)
         use ($channelResult, $data) {
             $channelData = $this->filterChannelData($data, $channel);
-//            $channelData          = $this->filterAllDepartmentData($channelData);
-            $test = new ExcelFieldsCount($channelData);
+            $channelData = $this->filterAllDepartmentData($channelData);
+            $test        = new ExcelFieldsCount($channelData);
             $channelResult->put($channel->title, $test);
         });
         if ($this->channels->count() > 1) {

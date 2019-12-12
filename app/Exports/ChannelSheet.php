@@ -26,7 +26,6 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
     public $rows = 2;
 
 
-
     public $colorList = [
         'f8cbad',
         '8497b0',
@@ -127,13 +126,13 @@ class ChannelSheet implements FromCollection, WithTitle, WithHeadings, WithEvent
 
                     $index++;
                 }
-                $name   = Helpers::getNameFromNumber($index);
+                $name = Helpers::getNameFromNumber($index);
                 $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
                 $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
 
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
-                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 6 + $this->projectCount);
+                $event->sheet->getDelegate()->freezePaneByColumnAndRow(4, 1);
             },
         ];
     }

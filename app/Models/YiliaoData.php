@@ -264,7 +264,7 @@ class YiliaoData extends Model
         $count = 0;
         foreach ($data as $item) {
             $item = static::parserData($item);
-            if ($item['form_type'] != 1) continue;
+            if (!in_array($item['form_type'], [1, 8])) continue;
 
             $code = $item['code'];
             if (!$item['form_type'] || !$departmentType = Helpers::checkDepartment($code)) {

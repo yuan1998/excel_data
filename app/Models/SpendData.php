@@ -155,7 +155,7 @@ class SpendData extends Model
         $account  = Helpers::formDataCheckAccount($item, 'code', 'spend_type', true);
         $offSpend = (float)$item['spend'];
         if ($account) {
-            $offSpend = $offSpend * (float)$account['rebate'];
+            $offSpend = $offSpend / (float)$account['rebate'];
         }
 
         return [

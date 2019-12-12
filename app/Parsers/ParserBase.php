@@ -40,6 +40,11 @@ class ParserBase
     public $dates;
 
     /**
+     * @var string
+     */
+    public $type;
+
+    /**
      * @var Collection
      */
     public $_channels;
@@ -112,6 +117,7 @@ class ParserBase
         if (!$this->_formData) {
             $this->_formData = FormData::query()
                 ->with(['projects', 'department', 'phones', 'account'])
+                ->where('type', $this->type)
                 ->whereBetween('date', $this->dates)
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('form_type', $this->getFormType())
@@ -129,6 +135,7 @@ class ParserBase
         if (!$this->_spendData) {
             $this->_spendData = SpendData::query()
                 ->with(['projects', 'department', 'account'])
+                ->where('type', $this->type)
                 ->whereBetween('date', $this->dates)
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('spend_type', $this->getFormType())
@@ -146,6 +153,7 @@ class ParserBase
         if (!$this->_arrivingData) {
             $this->_arrivingData = ArrivingData::query()
                 ->with(['account'])
+                ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->whereBetween('reception_date', $this->dates)
                 ->get();
@@ -162,6 +170,7 @@ class ParserBase
         if (!$this->_billAccountData) {
             $this->_billAccountData = BillAccountData::query()
                 ->with(['account'])
+                ->where('type', $this->type)
                 ->whereBetween('pay_date', $this->dates)
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->get();
@@ -368,10 +377,22 @@ class ParserBase
     public function groupDataOfDate($data)
     {
         return [
-            'formData'        => $data['formData']->groupBy('date'),
-            'spendData'       => $data['spendData']->groupBy('date'),
-            'arrivingData'    => $data['arrivingData']->groupBy('reception_date'),
-            'billAccountData' => $data['billAccountData']->groupBy('pay_date'),
+            'formData'        => $data['formData']->map(function ($item) {
+                $item['group_date'] = Carbon::parse($item['date'])->toDateString();
+                return $item;
+            })->groupBy('group_date'),
+            'spendData'       => $data['spendData']->map(function ($item) {
+                $item['group_date'] = Carbon::parse($item['date'])->toDateString();
+                return $item;
+            })->groupBy('group_date'),
+            'arrivingData'    => $data['arrivingData']->map(function ($item) {
+                $item['group_date'] = Carbon::parse($item['reception_date'])->toDateString();
+                return $item;
+            })->groupBy('group_date'),
+            'billAccountData' => $data['billAccountData']->map(function ($item) {
+                $item['group_date'] = Carbon::parse($item['pay_date'])->toDateString();
+                return $item;
+            })->groupBy('group_date'),
         ];
     }
 

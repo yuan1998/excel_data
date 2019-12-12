@@ -58,16 +58,24 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
-        $file = $request->file('excel');
-        Helpers::checkUTF8($file);
+//        $file = $request->file('excel');
+//        Helpers::checkUTF8($file);
 
-        $import = new AutoImport();
-        Excel::import($import, $file);
-        dd(
-            $import->model,
-            $import->count,
-            $import
-        );
+        $data = [
+            'channel_id'    => [3, 4, 1, 8],
+            'department_id' => [1, 2, 3, 4],
+            'type'          => 'zx',
+            'dates'         => [
+                '2019-12-01 00:00:00',
+                '2019-12-10 23:59:59',
+            ]
+        ];
+
+        $item = new ParserStart($data);
+
+        $export = new TestExport($item);
+        Excel::store($export, 'test_excel/test.xlsx', 'public');
+
 
 //        $date1  = "2019-12-1 00:00:00";
 //        $date2  = "2019-12-2 00:00:00";
