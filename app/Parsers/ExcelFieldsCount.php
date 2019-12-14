@@ -384,7 +384,7 @@ class ExcelFieldsCount
             'effective_chat_spend'             => 0,
             // 微私微评
             'weibo_message_weibo_comment'      => 0,
-            // 私拼转出
+            // 私评转出
             'weibo_message_weibo_comment_turn' => 0,
             // 转出率
             'turn_proportion'                  => 0,

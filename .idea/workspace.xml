@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/liuyun.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/liuyun.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/AutoImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/AutoImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Parsers/ParserBase.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ParserBase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Parsers/ParserStart.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ParserStart.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/SpendData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SpendData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,11 +29,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="165" column="47" lean-forward="true" selection-start-line="165" selection-start-column="47" selection-end-line="165" selection-end-column="47" />
+            <state relative-caret-position="427">
+              <caret line="113" lean-forward="true" selection-start-line="113" selection-end-line="113" />
+              <folding>
+                <element signature="e#4241#5116#0#PHP" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -60,7 +57,7 @@
         <entry file="file://$PROJECT_DIR$/app/OppoSpend.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="475">
-              <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
+              <caret line="72" selection-start-line="72" selection-end-line="72" />
             </state>
           </provider>
         </entry>
@@ -69,7 +66,7 @@
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/VivoController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="343">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="e#44#60#0#PHP" expanded="true" />
               </folding>
@@ -81,7 +78,7 @@
         <entry file="file://$PROJECT_DIR$/app/Imports/AutoImport.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="421">
-              <caret line="116" column="5" lean-forward="true" selection-start-line="116" selection-start-column="5" selection-end-line="116" selection-end-column="5" />
+              <caret line="116" column="5" selection-start-line="116" selection-start-column="5" selection-end-line="116" selection-end-column="5" />
               <folding>
                 <element signature="e#31#47#0#PHP" expanded="true" />
                 <element signature="e#765#1491#0#PHP" />
@@ -94,25 +91,38 @@
         <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/AccountDataController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="271">
-              <caret line="30" column="34" lean-forward="true" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/AdminController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="84" column="5" lean-forward="true" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="5" />
+              <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Parsers/ParserStart.php">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/AdminController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="67" column="50" lean-forward="true" selection-start-line="67" selection-start-column="50" selection-end-line="67" selection-end-column="50" />
+            <state relative-caret-position="438">
+              <caret line="87" column="38" selection-start-line="87" selection-start-column="38" selection-end-line="87" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-101">
+              <caret line="441" selection-start-line="441" selection-end-line="441" />
+              <folding>
+                <element signature="e#1332#9604#0#PHP" />
+                <element signature="e#9611#18201#0#PHP" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/WeiboOtherData.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="434">
+              <caret line="14" column="31" lean-forward="true" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -159,7 +169,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Admin/Controllers/ChannelController.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/WeiboDataController.php" />
         <option value="$PROJECT_DIR$/app/Observers/WeiboFormDataObserver.php" />
         <option value="$PROJECT_DIR$/app/Imports/YiliaoImport.php" />
@@ -187,10 +196,8 @@
         <option value="$PROJECT_DIR$/app/Models/WeiboData.php" />
         <option value="$PROJECT_DIR$/app/Models/WeiboFormData.php" />
         <option value="$PROJECT_DIR$/resources/js/components/exportDataForm.vue" />
-        <option value="$PROJECT_DIR$/app/Models/SpendData.php" />
         <option value="$PROJECT_DIR$/app/Exports/TestExport.php" />
         <option value="$PROJECT_DIR$/app/Models/YiliaoData.php" />
-        <option value="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" />
         <option value="$PROJECT_DIR$/app/Exports/AccountSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/BaseSheet.php" />
         <option value="$PROJECT_DIR$/app/Exports/ChannelSheet.php" />
@@ -210,6 +217,9 @@
         <option value="$PROJECT_DIR$/database/migrations/2019_12_13_145825_create_vivo_spends_table.php" />
         <option value="$PROJECT_DIR$/app/Models/VivoSpend.php" />
         <option value="$PROJECT_DIR$/app/Imports/AutoImport.php" />
+        <option value="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" />
+        <option value="$PROJECT_DIR$/app/Models/WeiboOtherData.php" />
+        <option value="$PROJECT_DIR$/app/Models/SpendData.php" />
       </list>
     </option>
   </component>
@@ -362,8 +372,13 @@
             <path>
               <item name="excelData" type="b2602c69:ProjectViewProjectNode" />
               <item name="excelData" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Models" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="excelData" type="b2602c69:ProjectViewProjectNode" />
+              <item name="excelData" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="excelData" type="b2602c69:ProjectViewProjectNode" />
@@ -402,19 +417,19 @@
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/database/tmp" />
+      <recent name="$PROJECT_DIR$/app/Admin/Actions/Weibo" />
+      <recent name="$PROJECT_DIR$/database/migrations" />
+      <recent name="$PROJECT_DIR$/public/css" />
+      <recent name="$PROJECT_DIR$/database" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/resources/views/admin/actions" />
       <recent name="$PROJECT_DIR$/app/Admin/Actions" />
       <recent name="$PROJECT_DIR$/app/Exports" />
       <recent name="$PROJECT_DIR$/resources/js/components" />
       <recent name="$PROJECT_DIR$/resources/views/admin/tools" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/Admin/Actions/Weibo" />
-      <recent name="$PROJECT_DIR$/database/migrations" />
-      <recent name="$PROJECT_DIR$/database/tmp" />
-      <recent name="$PROJECT_DIR$/public/css" />
-      <recent name="$PROJECT_DIR$/database" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -458,12 +473,12 @@
       <workItem from="1574575920935" duration="14037000" />
       <workItem from="1575035181326" duration="2457000" />
       <workItem from="1575041093710" duration="99078000" />
-      <workItem from="1576118151153" duration="15536000" />
+      <workItem from="1576118151153" duration="18001000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="840955000" />
+    <option name="totallyTimeSpent" value="843420000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1117" extended-state="0" />
@@ -497,18 +512,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/js/components/ActionExcelUpload.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-          <folding>
-            <element signature="e#2059#3638#0" />
-            <element signature="e#4155#5589#0" />
-            <element signature="e#5622#6039#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonScript/yiliao.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
@@ -669,13 +672,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="164" column="149" lean-forward="true" selection-start-line="164" selection-start-column="149" selection-end-line="164" selection-end-column="149" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Exports/AccountSheet.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="700">
@@ -807,7 +803,7 @@
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/VivoController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="e#44#60#0#PHP" expanded="true" />
           </folding>
@@ -851,14 +847,7 @@
     <entry file="file://$PROJECT_DIR$/app/OppoSpend.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="475">
-          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="165" column="47" lean-forward="true" selection-start-line="165" selection-start-column="47" selection-end-line="165" selection-end-column="47" />
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
         </state>
       </provider>
     </entry>
@@ -875,7 +864,7 @@
     <entry file="file://$PROJECT_DIR$/app/Imports/AutoImport.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="421">
-          <caret line="116" column="5" lean-forward="true" selection-start-line="116" selection-start-column="5" selection-end-line="116" selection-end-column="5" />
+          <caret line="116" column="5" selection-start-line="116" selection-start-column="5" selection-end-line="116" selection-end-column="5" />
           <folding>
             <element signature="e#31#47#0#PHP" expanded="true" />
             <element signature="e#765#1491#0#PHP" />
@@ -886,14 +875,42 @@
     <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/AccountDataController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="271">
-          <caret line="30" column="34" lean-forward="true" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
+          <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/AdminController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="84" column="5" lean-forward="true" selection-start-line="84" selection-start-column="5" selection-end-line="84" selection-end-column="5" />
+        <state relative-caret-position="438">
+          <caret line="87" column="38" selection-start-line="87" selection-start-column="38" selection-end-line="87" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-101">
+          <caret line="441" selection-start-line="441" selection-end-line="441" />
+          <folding>
+            <element signature="e#1332#9604#0#PHP" />
+            <element signature="e#9611#18201#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/WeiboOtherData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="14" column="31" lean-forward="true" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="113" lean-forward="true" selection-start-line="113" selection-end-line="113" />
+          <folding>
+            <element signature="e#4241#5116#0#PHP" />
+          </folding>
         </state>
       </provider>
     </entry>
