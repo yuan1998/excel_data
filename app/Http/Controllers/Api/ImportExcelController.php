@@ -56,17 +56,4 @@ class ImportExcelController extends Controller
         ]);
     }
 
-
-    public function exportExcelStore(ExportExcelRequest $request)
-    {
-        $data = $request->only(['department_id', 'channel_id', 'dates', 'type']);
-
-        $exportDataLog = ExportDataLog::generate($data);
-        if (!$exportDataLog) {
-            $this->response->errorBadRequest();
-        }
-
-        return $this->response->array([0]);
-    }
-
 }

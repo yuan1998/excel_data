@@ -100,12 +100,19 @@ $api->version('v1', [
             ->name('api.import.excelMake');
 
     });
+
     $api->group([
         'prefix' => 'export',
     ], function ($api) {
-        $api->post('/excel', "ImportExcelController@exportExcelStore")
+        $api->post('/excel', "ExcelDataLogController@exportExcelStore")
             ->name('api.import.excelMake');
+    });
 
+    $api->group([
+        'prefix' => 'vivo',
+    ], function ($api) {
+        $api->post('/import', "VivoController@import")
+            ->name('api.vivo.import');
     });
 
 
@@ -147,8 +154,6 @@ $api->version('v1', [
             ->name('api.WeiboDispatchSetting.ruleUpdate');
         $api->delete('/setting/{ids}', "WeiboDispatchSettingController@destroy")
             ->name('api.WeiboDispatchSetting.destroy');
-
-
     });
 
 

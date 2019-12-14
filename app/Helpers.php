@@ -873,39 +873,6 @@ class Helpers
         }
     }
 
-    public static function checkExcelModel($data)
-    {
-        if (FeiyuData::isModel($data)) {
-            return 'feiyu';
-        }
-        if (BaiduData::isModel($data)) {
-            return 'baidu';
-        }
-
-        if (FeiyuSpend::isModel($data)) {
-            return 'feiyu-spend';
-        }
-        if (BaiduSpend::isModel($data)) {
-            return 'baidu-spend';
-        }
-
-        if (YiliaoData::isModel($data)) {
-            return 'yiliao';
-        }
-
-
-        if (OppoSpend::isModel($data)) {
-            return 'oppo-spend';
-        }
-
-        if (WeiboSpend::isModel($data)) {
-            return 'weibo-spend';
-        }
-        if (WeiboFormData::isModel($data)) {
-            return 'weibo';
-        }
-    }
-
 }
 
 

@@ -38,6 +38,7 @@ class ParserBase
      * @var array
      */
     public $dates;
+    public $dateTimes;
 
     /**
      * @var string
@@ -118,9 +119,10 @@ class ParserBase
             $this->_formData = FormData::query()
                 ->with(['projects', 'department', 'phones', 'account'])
                 ->where('type', $this->type)
-                ->whereBetween('date', $this->dates)
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('form_type', $this->getFormType())
+                ->whereBetween('date', $this->dates)
+                ->orWhereBetween('date',$this->dateTimes)
                 ->get();
         }
         return $this->_formData;
@@ -136,9 +138,10 @@ class ParserBase
             $this->_spendData = SpendData::query()
                 ->with(['projects', 'department', 'account'])
                 ->where('type', $this->type)
-                ->whereBetween('date', $this->dates)
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('spend_type', $this->getFormType())
+                ->whereBetween('date', $this->dates)
+                ->orWhereBetween('date',$this->dateTimes)
                 ->get();
         }
         return $this->_spendData;
@@ -156,6 +159,7 @@ class ParserBase
                 ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->whereBetween('reception_date', $this->dates)
+                ->orWhereBetween('reception_date',$this->dateTimes)
                 ->get();
         }
         return $this->_arrivingData;
@@ -171,8 +175,9 @@ class ParserBase
             $this->_billAccountData = BillAccountData::query()
                 ->with(['account'])
                 ->where('type', $this->type)
-                ->whereBetween('pay_date', $this->dates)
                 ->whereIn('medium_id', $this->getMediumsId())
+                ->whereBetween('pay_date', $this->dates)
+                ->orWhereBetween('pay_date',$this->dateTimes)
                 ->get();
         }
         return $this->_billAccountData;
@@ -201,7 +206,11 @@ class ParserBase
     {
         if (!$this->_channels) {
             $this->_channels = Channel::query()
-                ->with(['mediums', 'accounts'])
+                ->with([
+                    'mediums', 'accounts' => function ($query) {
+                        $query->where('type', $this->type);
+                    }
+                ])
                 ->whereIn('id', $this->channels_id)
                 ->get();
         }
@@ -542,4 +551,17 @@ class ParserBase
 
     }
 
+    public function parserDates($dates)
+    {
+        $date1           = Carbon::parse($dates[0]);
+        $date2           = Carbon::parse($dates[1]);
+        $this->dates     = [
+            $date1->toDateString(),
+            $date2->toDateString(),
+        ];
+        $this->dateTimes = [
+            $date1->toDateTimeString(),
+            $date2->toDateTimeString(),
+        ];
+    }
 }

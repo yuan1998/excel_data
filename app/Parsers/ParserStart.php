@@ -60,14 +60,14 @@ class ParserStart extends ParserBase
      */
     public function __construct($requestData)
     {
-        $this->requestData = $requestData;
-
-        $this->channels_id = $requestData['channel_id'];
-
+        $this->requestData    = $requestData;
+        $this->channels_id    = $requestData['channel_id'];
         $this->departments_id = $requestData['department_id'];
-        $this->dates          = $requestData['dates'];
         $this->type           = $requestData['type'];
+
+        $this->parserDates($requestData['dates']);
     }
+
 
     public function getFileName()
     {
