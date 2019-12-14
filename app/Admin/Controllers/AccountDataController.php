@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\AccountData;
 use App\Models\Channel;
+use App\models\CrmGrabLog;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
@@ -31,10 +32,7 @@ class AccountDataController extends AdminController
         $type = $this->appendChannelType($grid, 'channel_id');
 
         $grid->column('type', __('分类'))
-            ->using([
-                'zx' => '整形',
-                'kq' => '口腔',
-            ])
+            ->using(CrmGrabLog::$typeList)
             ->label();
 
         if (!$type || $type == 'all') {
@@ -90,10 +88,7 @@ class AccountDataController extends AdminController
 
         $channelOptions = Channel::all()->pluck('title', 'id');
         $form->select('type', __('Type'))
-            ->options([
-                'zx' => '整形',
-                'kq' => '口腔',
-            ])
+            ->options(CrmGrabLog::$typeList)
             ->default('zx')
             ->required();
         $form->select('channel_id', __('所属渠道'))->options($channelOptions)->required();

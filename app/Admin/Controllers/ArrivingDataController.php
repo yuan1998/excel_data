@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\Channel;
+use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\MediumType;
 use Encore\Admin\Form;
@@ -71,10 +72,7 @@ class ArrivingDataController extends AdminController
                 $archiveOptions = ArchiveType::all()->pluck('title', 'id');
 
                 $filter->equal('type', '数据类型')
-                    ->select([
-                        'zx' => '整形',
-                        'kq' => '口腔'
-                    ]);
+                    ->select(CrmGrabLog::$typeList);
                 $filter->in('medium_id', '媒介类型')
                     ->multipleSelect($mediumOptions);
                 $filter->in('archive_id', '建档类型')
@@ -136,7 +134,7 @@ class ArrivingDataController extends AdminController
             ->style("white-space: nowrap;");
 
         $grid->column('type', __('Type'))
-            ->using(['zx' => '整形', 'kq' => '口腔'])
+            ->using(CrmGrabLog::$typeList)
             ->style("white-space: nowrap;");
 
         return $grid;

@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
+use App\models\CrmGrabLog;
 use App\Models\WeiboSpend;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -48,7 +49,7 @@ class WeiboSpendController extends AdminController
         $grid->column('spend', __('Spend'));
         $grid->column('spend_fans', __('Spend fans'));
         $grid->column('type', __('Type'))
-            ->using(['zx' => '整形', 'kq' => '口腔']);
+            ->using(CrmGrabLog::$typeList);
 
         return $grid;
     }

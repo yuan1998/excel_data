@@ -36,7 +36,8 @@ class ExportDataLog extends Model
             ->pluck('title')
             ->implode(',');
         $dateName       = implode('_', $data['dates']);
-        return "[{$channelName}]_[{$departmentName}]_[{$dateName}]";
+        $type           = CrmGrabLog::$typeList[$data['type']];
+        return "[$type]_[{$channelName}]_[{$departmentName}]_[{$dateName}]";
     }
 
     public static function generate($data)

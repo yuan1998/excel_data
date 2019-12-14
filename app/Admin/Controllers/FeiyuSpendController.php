@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
 use App\Models\BaiduSpend;
+use App\models\CrmGrabLog;
 use App\Models\FeiyuSpend;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -48,10 +49,7 @@ class FeiyuSpendController extends AdminController
         $grid->column('spend', __('Spend'));
         $grid->column('conversion', __('Conversion'));
         $grid->column('deep_conversion', __('Deep conversion'));
-        $grid->column('type', __('Type'))->using([
-            'zx' => '整形',
-            'kq' => '口腔'
-        ]);
+        $grid->column('type', __('Type'))->using(CrmGrabLog::$typeList);
 
 
         return $grid;

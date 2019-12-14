@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Models\ArchiveType;
+use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\ProjectType;
 use Encore\Admin\Controllers\AdminController;
@@ -75,10 +76,7 @@ class DepartmentTypeController extends AdminController
 
         $form->text('title', __('Title'));
         $form->select('type', __('Type'))
-            ->options([
-                'zx' => '整形',
-                'kq' => '口腔',
-            ])
+            ->options(CrmGrabLog::$typeList)
             ->required();
         $form->tags('keyword', __('匹配词'))
             ->required();

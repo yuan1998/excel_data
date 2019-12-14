@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\models\CrmGrabLog;
 use App\Models\WeiboDispatchSetting;
 use App\Models\WeiboUser;
 use Encore\Admin\Form;
@@ -127,10 +128,7 @@ class WeiboUserController extends AdminController
         $form = new Form(new WeiboUser);
 
         $form->select('type', __('Type'))
-            ->options([
-                'zx' => '整形',
-                'kq' => '口腔',
-            ])
+            ->options(CrmGrabLog::$typeList)
             ->default('kq')
             ->required();
         $form->text('username', __('Username'));

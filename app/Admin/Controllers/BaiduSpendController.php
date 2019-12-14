@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
 use App\Models\BaiduSpend;
+use App\models\CrmGrabLog;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -45,10 +46,7 @@ class BaiduSpendController extends AdminController
         $grid->column('show', __('Show'));
         $grid->column('click', __('Click'));
         $grid->column('spend', __('Spend'));
-        $grid->column('type', __('Type'))->using([
-            'zx' => '整形',
-            'kq' => '口腔'
-        ]);
+        $grid->column('type', __('Type'))->using(CrmGrabLog::$typeList);
 
         return $grid;
     }

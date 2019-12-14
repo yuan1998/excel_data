@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\SpendExcelUpload;
 use App\Models\AccountData;
+use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\FormData;
 use App\Models\ProjectType;
@@ -63,7 +64,7 @@ class SpendDataController extends AdminController
 
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->equal('spend_type', '消费类型')->select(FormData::$FormTypeList);
-                $filter->equal('type', '数据类型')->select(['zx' => '整形', 'kq' => '口腔']);
+                $filter->equal('type', '数据类型')->select(CrmGrabLog::$typeList);
 
                 $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
                 $projectOption = array_merge(["0" => '其他'], $projectOption);

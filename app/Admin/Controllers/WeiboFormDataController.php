@@ -8,6 +8,7 @@ use App\Admin\Actions\WeiboConfigAction;
 use App\Admin\Actions\WeiboGrab;
 use App\Admin\Actions\WeiboUpload;
 use App\Admin\Extensions\Exporter\WeiboFormDataExporter;
+use App\models\CrmGrabLog;
 use App\Models\FormData;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
@@ -152,10 +153,7 @@ class WeiboFormDataController extends AdminController
         $grid->column('upload_date', __('上传时间'));
         if (!$type) {
             $grid->column('type', __('类型'))
-                ->using([
-                    'zx' => '整形',
-                    'kq' => '口腔',
-                ])->label();
+                ->using(CrmGrabLog::$typeList)->label();
         }
 
         return $grid;
