@@ -312,14 +312,24 @@ class FormData extends Model
         return null;
     }
 
+    public static function parseFormDataDateFormat()
+    {
+        static::all()
+            ->each(function ($item) {
+                $item->date = Carbon::parse($item->date)->toDateString();
+                $item->save();
+            });
+    }
+
     public static function parseFormData($item)
     {
+        $date = Carbon::parse($item['date'])->toDateString();
         return [
             'data_type'       => $item['code'],
             'form_type'       => $item['form_type'],
             'type'            => $item['type'],
             'department_id'   => $item['department_id'],
-            'date'            => $item['date'],
+            'date'            => $date,
             'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
             'account_keyword' => $item['code'],
         ];

@@ -122,7 +122,7 @@ class ParserBase
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('form_type', $this->getFormType())
                 ->whereBetween('date', $this->dates)
-                ->orWhereBetween('date',$this->dateTimes)
+                // ->orWhereBetween('date',$this->dateTimes)
                 ->get();
         }
         return $this->_formData;
@@ -141,7 +141,7 @@ class ParserBase
                 ->whereIn('department_id', $this->departments_id)
                 ->whereIn('spend_type', $this->getFormType())
                 ->whereBetween('date', $this->dates)
-                ->orWhereBetween('date',$this->dateTimes)
+                // ->orWhereBetween('date',$this->dateTimes)
                 ->get();
         }
         return $this->_spendData;
@@ -159,7 +159,7 @@ class ParserBase
                 ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->whereBetween('reception_date', $this->dates)
-                ->orWhereBetween('reception_date',$this->dateTimes)
+                // ->orWhereBetween('reception_date',$this->dateTimes)
                 ->get();
         }
         return $this->_arrivingData;
@@ -177,7 +177,7 @@ class ParserBase
                 ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())
                 ->whereBetween('pay_date', $this->dates)
-                ->orWhereBetween('pay_date',$this->dateTimes)
+                // ->orWhereBetween('pay_date',$this->dateTimes)
                 ->get();
         }
         return $this->_billAccountData;
