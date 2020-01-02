@@ -65,7 +65,7 @@ class ExcelFieldsCount
     public function toBaseExcel()
     {
         $formData        = $this->getCountData('formData');
-        dd($formData);
+//        dd($formData);
         $spendData       = $this->getCountData('spendData');
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
