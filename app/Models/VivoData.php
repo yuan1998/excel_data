@@ -68,12 +68,17 @@ class VivoData extends Model
     {
         $first = $data->get(0);
         return $first
-            && $first->contains('站点ID')
-            && $first->contains('线索ID')
-            && $first->contains('电话')
-            && $first->contains('站点名称')
-            && $first->contains('线索数据')
-            && $first->contains('提交时间');
+            && (
+                (false)
+                || (
+                    $first->contains('站点ID')
+                    && $first->contains('线索ID')
+                    && $first->contains('电话')
+                    && $first->contains('站点名称')
+                    && $first->contains('线索数据')
+                    && $first->contains('提交时间')
+                )
+            );
     }
 
 

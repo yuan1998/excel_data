@@ -74,6 +74,7 @@ class ExcelFieldsCount
         $effectiveForm   = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
 
+        $offSpend = round($spendData['off_spend'], 2);
         return [
             // 总互动
             'interactive'                      => Arr::get($spendData, 'interactive', 0),
@@ -91,9 +92,9 @@ class ExcelFieldsCount
             'click_rate'                       => Helpers::toRate(Helpers::divisionOfSelf($spendData['click'], $spendData['show'])),
             // 点击单价
             'click_spend'                      => round(Helpers::divisionOfSelf($spendData['spend'], $spendData['click']), 2),
-            // 虚消费
-            'off_spend'                        => round($spendData['off_spend'], 2),
-            // 实消费
+            // 实消费  返点钱
+            'off_spend'                        => $offSpend,
+            // 虚消费  充值钱
             'spend'                            => $spendData['spend'],
             // 总表单数
             'form_count'                       => $formData['form_count'],
@@ -101,7 +102,7 @@ class ExcelFieldsCount
             'effective_form'                   => $effectiveForm,
             // 空号 = 意向5
             'empty_phone_form'                 => $formData['intention-6'],
-            // 无效表单
+            // 无效表单 =  意向4
             'invalid_form'                     => $formData['intention-5'],
             // 重复表单
             'repeat_form'                      => $formData['is_repeat-2'],
@@ -174,21 +175,21 @@ class ExcelFieldsCount
             // 老客业绩占比 = 老客业绩 / 总业绩
             'old_account_proportion'           => Helpers::toRate(Helpers::divisionOfSelf($billAccountData['old_account'], $billAccountData['total_account'])),
             // 表单成本 = 消费 / 总表单数
-            'form_spend'                       => round(Helpers::divisionOfSelf($spendData['spend'], $formData['form_count']), 2),
+            'form_spend'                       => round(Helpers::divisionOfSelf($offSpend, $formData['form_count']), 2),
             // 有效表单成本 =  消费 / 有效表单数
-            'effective_form_spend'             => round(Helpers::divisionOfSelf($spendData['spend'], $effectiveForm), 2),
+            'effective_form_spend'             => round(Helpers::divisionOfSelf($offSpend, $effectiveForm), 2),
             // 转微成本 = 消费 / 转微
-            'turn_weixin_spend'                => round(Helpers::divisionOfSelf($spendData['spend'], $formData['turn_weixin-1']), 2),
+            'turn_weixin_spend'                => round(Helpers::divisionOfSelf($offSpend, $formData['turn_weixin-1']), 2),
             // 预约成本 = 消费 / 预约
-            'reservation_spend'                => round(Helpers::divisionOfSelf($spendData['spend'], $formData['intention-2']), 2),
+            'reservation_spend'                => round(Helpers::divisionOfSelf($offSpend, $formData['intention-2']), 2),
             // 到诊成本 = 消费 / 到院
-            'arriving_spend'                   => round(Helpers::divisionOfSelf($spendData['spend'], $arrivingData['arriving_count']), 2),
+            'arriving_spend'                   => round(Helpers::divisionOfSelf($offSpend, $arrivingData['arriving_count']), 2),
             // 到诊(首次)成本 = 消费 / 新客到院
-            'arriving_new_spend'               => round(Helpers::divisionOfSelf($spendData['spend'], $arrivingData['new_first']), 2),
+            'arriving_new_spend'               => round(Helpers::divisionOfSelf($offSpend, $arrivingData['new_first']), 2),
             // 新客投产比 = 1 : (总消费 / 新客业绩)
-            'proportion_new'                   => Helpers::toRatio($spendData['spend'], $billAccountData['new_account']),
+            'proportion_new'                   => Helpers::toRatio($offSpend, $billAccountData['new_account']),
             // 总投产比 = 1 : ( 总消费 / 总业绩)
-            'proportion_total'                 => Helpers::toRatio($spendData['spend'], $billAccountData['total_account']),
+            'proportion_total'                 => Helpers::toRatio($offSpend, $billAccountData['total_account']),
         ];
     }
 
@@ -202,6 +203,8 @@ class ExcelFieldsCount
 
         $effectiveForm   = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
+
+        $offSpend = round($spendData['off_spend'], 2);
 
         return [
             // 总互动
@@ -221,7 +224,7 @@ class ExcelFieldsCount
             // 点击单价
             'click_spend'                      => round(Helpers::divisionOfSelf($spendData['spend'], $spendData['click']), 2),
             // 实消费
-            'off_spend'                        => $spendData['off_spend'],
+            'off_spend'                        => $offSpend,
             // 虚消费
             'spend'                            => $spendData['spend'],
             // 总表单数
@@ -311,21 +314,21 @@ class ExcelFieldsCount
             // 老客业绩占比 = 老客业绩 / 总业绩
             'old_account_proportion'           => Helpers::toRate(Helpers::divisionOfSelf($billAccountData['old_account'], $billAccountData['total_account'])),
             // 表单成本 = 消费 / 总表单数
-            'form_spend'                       => round(Helpers::divisionOfSelf($spendData['spend'], $formData['form_count']), 2),
+            'form_spend'                       => round(Helpers::divisionOfSelf($offSpend, $formData['form_count']), 2),
             // 有效表单成本 =  消费 / 有效表单数
-            'effective_form_spend'             => round(Helpers::divisionOfSelf($spendData['spend'], $effectiveForm), 2),
+            'effective_form_spend'             => round(Helpers::divisionOfSelf($offSpend, $effectiveForm), 2),
             // 转微成本 = 消费 / 转微
-            'turn_weixin_spend'                => round(Helpers::divisionOfSelf($spendData['spend'], $formData['turn_weixin-1']), 2),
+            'turn_weixin_spend'                => round(Helpers::divisionOfSelf($offSpend, $formData['turn_weixin-1']), 2),
             // 预约成本 = 消费 / 预约
-            'reservation_spend'                => round(Helpers::divisionOfSelf($spendData['spend'], $formData['intention-2']), 2),
+            'reservation_spend'                => round(Helpers::divisionOfSelf($offSpend, $formData['intention-2']), 2),
             // 到诊成本 = 消费 / 到院
-            'arriving_spend'                   => round(Helpers::divisionOfSelf($spendData['spend'], $arrivingData['arriving_count']), 2),
+            'arriving_spend'                   => round(Helpers::divisionOfSelf($offSpend, $arrivingData['arriving_count']), 2),
             // 到诊(首次)成本 = 消费 / 新客到院
-            'arriving_new_spend'               => round(Helpers::divisionOfSelf($spendData['spend'], $arrivingData['new_first']), 2),
+            'arriving_new_spend'               => round(Helpers::divisionOfSelf($offSpend, $arrivingData['new_first']), 2),
             // 新客投产比 = 1 : (总消费 / 新客业绩)
-            'proportion_new'                   => Helpers::toRatio($spendData['spend'], $billAccountData['new_account']),
+            'proportion_new'                   => Helpers::toRatio($offSpend, $billAccountData['new_account']),
             // 总投产比 = 1 : ( 总消费 / 总业绩)
-            'proportion_total'                 => Helpers::toRatio($spendData['spend'], $billAccountData['total_account']),
+            'proportion_total'                 => Helpers::toRatio($offSpend, $billAccountData['total_account']),
         ];
     }
 
