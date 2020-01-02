@@ -116,12 +116,12 @@ class FormDataController extends AdminController
                 $batch->disableDelete();
             });
 
-            $tools->append(new ExcelUpload([
-                'weibo'  => '微博数据',
-                'feiyu'  => '飞鱼数据',
-                'baidu'  => '快商通数据',
-                'yiliao' => '易聊数据(只识别信息流)'
-            ]));
+//            $tools->append(new ExcelUpload([
+//                'weibo'  => '微博数据',
+//                'feiyu'  => '飞鱼数据',
+//                'baidu'  => '快商通数据',
+//                'yiliao' => '易聊数据(只识别信息流)'
+//            ]));
         });
 
         $grid->column('department_info', __('科室'))->display(function () {

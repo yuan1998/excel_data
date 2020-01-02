@@ -53,7 +53,7 @@ class WeiboSpendImport implements ToCollection
             $account  = Helpers::formDataCheckAccount($item, 'advertiser_account', 'spend_type', true);
             $offSpend = (float)$item['spend'];
             if ($account) {
-                $offSpend = $offSpend * (float)$account['rebate'];
+                $offSpend = $offSpend / (float)$account['rebate'];
             }
 
             $spend = SpendData::updateOrCreate([

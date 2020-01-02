@@ -80,7 +80,7 @@ class FeiyuSpendImport implements ToCollection
             $account  = Helpers::formDataCheckAccount($item, 'advertiser_name', 'spend_type', true);
             $offSpend = (float)$item['spend'];
             if ($account) {
-                $offSpend = $offSpend * (float)$account['rebate'];
+                $offSpend = $offSpend / (float)$account['rebate'];
             }
 
             $spend = SpendData::updateOrCreate([

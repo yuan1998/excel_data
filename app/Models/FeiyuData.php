@@ -162,6 +162,7 @@ class FeiyuData extends Model
         $count = 0;
         foreach ($data as $item) {
             $item  = static::parseData($item);
+
             $feiyu = FeiyuData::updateOrCreate([
                 'clue_id' => $item['clue_id']
             ], $item);

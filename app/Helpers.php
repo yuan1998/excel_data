@@ -675,6 +675,7 @@ class Helpers
         // 判断并返回与 关键词字符串 匹配的病种,没有则返回null
         $result = static::projectTypeCheck($projectTypes, $str, $field);
 
+
         return $result ? ($result->count() > 1 ? [] : $result->pluck('id')) : [];
     }
 

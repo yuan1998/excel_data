@@ -55,9 +55,11 @@ class FeiyuSpend extends Model
      */
     public static function isModel($data)
     {
-        $keys  = array_keys(static::$excelFields);
+        $keys = array_keys(static::$excelFields);
+
         $first = $data->get(0);
         $diff  = $first->diff($keys);
+
         $count = $diff->count();
         return $count <= 2;
     }
@@ -119,7 +121,7 @@ class FeiyuSpend extends Model
         if (!$departmentType = Helpers::checkDepartment($code)) {
             throw new \Exception('无法判断科室:' . $code);
         }
-        $item['type']          = $departmentType->type;;
+        $item['type'] = $departmentType->type;;
         $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
