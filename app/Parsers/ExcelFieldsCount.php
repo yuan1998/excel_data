@@ -65,11 +65,10 @@ class ExcelFieldsCount
     public function toBaseExcel()
     {
         $formData        = $this->getCountData('formData');
+        dd($formData);
         $spendData       = $this->getCountData('spendData');
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
-
-        Log::info('导出Excel Debug:', [$arrivingData]);
 
         $effectiveForm   = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
@@ -107,7 +106,7 @@ class ExcelFieldsCount
             // 重复表单
             'repeat_form'                      => $formData['is_repeat-2'],
             // 未跟踪
-            'un_follow_count'                  => $formData['is_archive-0'],
+            'un_follow_count'                  => $formData['intention-0'],
             // 有效表单占比
             'effective_form_rate'              => Helpers::toRate(Helpers::divisionOfSelf($effectiveForm, $formData['form_count'])),
             // 空号占比
@@ -123,7 +122,7 @@ class ExcelFieldsCount
             // 建档数
             'archive_count'                    => $formData['is_archive-1'],
             // 未建档
-            'un_archive_count'                 => $formData['is_archive-0'],
+            'un_archive_count'                 => $formData['is_archive-2'] + $formData['is_archive-0'],
             // 新客到院
             'new_first_arriving'               => $arrivingData['new_first'],
             // 二次到院

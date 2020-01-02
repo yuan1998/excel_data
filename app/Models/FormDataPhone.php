@@ -90,22 +90,36 @@ class FormDataPhone extends Model
         return $this->formData->date;
     }
 
-    public static function recheckArchive()
+    public static function recheckHandler($data)
     {
-        $data = FormDataPhone::where('is_archive', 0)
-            ->has('formData')->get();
         $data->each(function ($phone) {
             ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
         });
+    }
+
+    public static function recheckUnArchive()
+    {
+        $data = FormDataPhone::where('is_archive', 0)
+            ->has('formData')->get();
+        static::recheckHandler($data);
         return $data->count();
     }
 
     public static function recheckAllCrmData()
     {
         $data = FormDataPhone::all();
-        $data->each(function ($phone) {
-            ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
-        });
+        static::recheckHandler($data);
+
+        return $data->count();
+    }
+
+    public static function recheckOfDate($dates)
+    {
+        $data = FormDataPhone::query()
+            ->whereHas('formData', function ($query) use ($dates) {
+                $query->whereBetween('date', [$dates]);
+            })->get();
+        static::recheckHandler($data);
 
         return $data->count();
     }

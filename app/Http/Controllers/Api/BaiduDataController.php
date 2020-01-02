@@ -64,10 +64,10 @@ class BaiduDataController extends Controller
         $data = [
             'channel_id'    => [3, 4, 1, 8],
             'department_id' => [1, 2, 3, 4],
-            'type'          => 'zx',
+            'type'          => 'kq',
             'dates'         => [
-                '2019-12-01 00:00:00',
-                '2019-12-10 23:59:59',
+                '2019-12-31 00:00:00',
+                '2020-01-02 23:59:59',
             ]
         ];
 

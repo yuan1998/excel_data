@@ -89,6 +89,13 @@ $api->version('v1', [
 
 
     $api->group([
+        'prefix' => 'formDataPhone',
+    ], function ($api) {
+        $api->post('/recheckOfDate', "FormDataPhoneController@recheckStatusOfDate")
+            ->name('api.formDataPhone.recheckStatusOfDate');
+    });
+
+    $api->group([
         'prefix' => 'import',
     ], function ($api) {
         $api->post('/formExcel', "ImportExcelController@uploadFormDataExcel")
@@ -100,6 +107,7 @@ $api->version('v1', [
             ->name('api.import.excelMake');
 
     });
+
 
     $api->group([
         'prefix' => 'export',
