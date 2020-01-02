@@ -470,12 +470,13 @@ class Helpers
             $value = $type[$field];
             // 将匹配词转换成 正则
             $regex = static::explodeKeywordToRegex($value);
-
+            dump($regex , $key);
             // 使用正则匹配 关键词字符串
             if (preg_match($regex, $key)) {
                 array_push($result, $type);
             }
         }
+        dd($result);
         return count($result) ? collect($result) : null;
     }
 
