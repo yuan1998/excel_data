@@ -65,7 +65,6 @@ class ExcelFieldsCount
     public function toBaseExcel()
     {
         $formData        = $this->getCountData('formData');
-//        dd($formData);
         $spendData       = $this->getCountData('spendData');
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
@@ -122,7 +121,7 @@ class ExcelFieldsCount
             // 建档数
             'archive_count'                    => $formData['is_archive-1'],
             // 未建档
-            'un_archive_count'                 => $formData['is_archive-2'] + $formData['is_archive-0'],
+            'un_archive_count'                 => Arr::get($formData, 'is_archive-2', 0) + Arr::get($formData, 'is_archive', 0),
             // 新客到院
             'new_first_arriving'               => $arrivingData['new_first'],
             // 二次到院
