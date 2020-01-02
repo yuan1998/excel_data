@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @method static updateOrCreate(array $array, $item)
@@ -201,6 +202,10 @@ class FeiyuData extends Model
         $item['post_date']       = Carbon::parse($item['post_date'])->toDateString();
         $item['form_type']       = static::parserFormType($code);
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+        Log::info('飞鱼表单 DEBUG' , [
+            'code' => $code,
+            'project' =>$item['project_type'],
+        ]);
 
         return $item;
     }
