@@ -15,7 +15,7 @@ class FormDataPhone extends Model
 
     public static $IntentionList = [
         0 => '未查询',
-        1 => '其他部门建档',
+        1 => '未下预约单',
         2 => '一级',
         3 => '二级',
         4 => '三级',
@@ -127,12 +127,15 @@ class FormDataPhone extends Model
 
     public static function toString($item)
     {
-        $result = $item['phone'] . '_' . static::$IsArchiveList[$item['is_archive']];
-        if ($item['intention'] > 1) {
-            $result .= '_' . static::$IntentionList[$item['intention']];
-        }
+        $result = $item['phone'];
         if ($item['is_repeat'] == 2) {
             $result .= '_' . '重单';
+        } else {
+            $result .= '_' . static::$IsArchiveList[$item['is_archive']];
+
+            if ($item['is_archive'] == 1 && $item['intention'] > 1) {
+                $result .= '_' . static::$IntentionList[$item['intention']];
+            }
         }
         return $result;
     }
