@@ -98,24 +98,24 @@ class Kernel extends ConsoleKernel
         })->monthlyOn(date('t'), '23:45');
 
 
-        // 每隔15分钟,拉取一次微博表单数据
-        $schedule->call(function () {
-            foreach (WeiboClient::$Account as $accountName => $value) {
-                WeiboFormData::pullToday($accountName);
-            }
-        })->everyFifteenMinutes();
-
-        // 每天拉取一次昨天的微博表单数据,以防错漏
-        $schedule->call(function () {
-            foreach (WeiboClient::$Account as $accountName => $value) {
-                WeiboFormData::pullYesterday($accountName);
-            }
-        })->daily();
-
-        // 每个月月底,重新查询一遍表单的建档情况 (针对微博表单)
-        $schedule->call(function () {
-            FormData::recheckMonthPhoneStatus();
-        })->monthlyOn(date('t'), '23:55');
+//        // 每隔15分钟,拉取一次微博表单数据
+//        $schedule->call(function () {
+//            foreach (WeiboClient::$Account as $accountName => $value) {
+//                WeiboFormData::pullToday($accountName);
+//            }
+//        })->everyFifteenMinutes();
+//
+//        // 每天拉取一次昨天的微博表单数据,以防错漏
+//        $schedule->call(function () {
+//            foreach (WeiboClient::$Account as $accountName => $value) {
+//                WeiboFormData::pullYesterday($accountName);
+//            }
+//        })->daily();
+//
+//        // 每个月月底,重新查询一遍表单的建档情况 (针对微博表单)
+//        $schedule->call(function () {
+//            FormData::recheckMonthPhoneStatus();
+//        })->monthlyOn(date('t'), '23:55');
 
 
     }

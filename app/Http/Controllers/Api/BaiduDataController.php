@@ -66,8 +66,8 @@ class BaiduDataController extends Controller
             'department_id' => [1, 2, 3, 4],
             'type'          => 'kq',
             'dates'         => [
-                '2020-01-01 00:00:00',
-                '2020-01-01 23:59:59',
+                '2020-01-03 00:00:00',
+                '2020-01-04 23:59:59',
             ]
         ];
 

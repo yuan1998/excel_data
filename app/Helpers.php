@@ -273,15 +273,15 @@ class Helpers
     {
         if (!$str) return 1;
 
-        if (preg_match("/[\x{4e00}]/u", $str)) {
+        if (preg_match("/一级/u", $str)) {
             return 2;
-        } else if (preg_match("/[\x{4e8c}]/u", $str)) {
+        } else if (preg_match("/二级/u", $str)) {
             return 3;
-        } else if (preg_match("/[\x{4e09}]/u", $str)) {
+        } else if (preg_match("/三级/u", $str)) {
             return 4;
-        } else if (preg_match("/[\x{56db}]/u", $str)) {
+        } else if (preg_match("/四级/u", $str)) {
             return 5;
-        } else if (preg_match("/[\x{4e94}]/u", $str)) {
+        } else if (preg_match("/五级/u", $str)) {
             return 6;
         }
 

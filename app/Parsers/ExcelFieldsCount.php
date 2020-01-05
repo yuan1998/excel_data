@@ -104,8 +104,8 @@ class ExcelFieldsCount
             'invalid_form'                     => $formData['intention-5'],
             // 重复表单
             'repeat_form'                      => $formData['is_repeat-2'],
-            // 未跟踪
-            'un_follow_count'                  => $formData['intention-0'],
+            // 未下预约单
+            'un_follow_count'                  => $formData['intention-1'],
             // 有效表单占比
             'effective_form_rate'              => Helpers::toRate(Helpers::divisionOfSelf($effectiveForm, $formData['form_count'])),
             // 空号占比
@@ -532,7 +532,7 @@ class ExcelFieldsCount
         foreach ($this->formData as $item) {
             $phone = $item->phones->first();
 
-            if ($phone['is_repeat'] === 2) {
+            if ($phone['is_repeat'] == 2) {
                 $result["is_repeat-{$phone['is_repeat']}"]++;
             } else {
                 $turn_weixin = $phone['turn_weixin'] ?? 0;
