@@ -58,14 +58,16 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
+//        $file = $request->file('excel');
+//        Helpers::checkUTF8($file);
 
         $data = [
             'channel_id'    => [3, 4, 1, 8],
             'department_id' => [1, 2, 3, 4],
             'type'          => 'kq',
             'dates'         => [
-                '2020-01-02 00:00:00',
-                '2020-01-02 23:59:59',
+                '2020-01-01 00:00:00',
+                '2020-01-01 23:59:59',
             ]
         ];
 

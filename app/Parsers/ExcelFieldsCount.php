@@ -64,7 +64,8 @@ class ExcelFieldsCount
 
     public function toBaseExcel()
     {
-        $formData        = $this->getCountData('formData');
+        $formData = $this->getCountData('formData');
+        dd($formData);
         $spendData       = $this->getCountData('spendData');
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
@@ -100,7 +101,7 @@ class ExcelFieldsCount
             'effective_form'                   => $effectiveForm,
             // 空号 = 意向5
             'empty_phone_form'                 => $formData['intention-6'],
-            // 无效表单 =  意向4
+            // 未接通 =  意向4
             'invalid_form'                     => $formData['intention-5'],
             // 重复表单
             'repeat_form'                      => $formData['is_repeat-2'],
@@ -110,7 +111,7 @@ class ExcelFieldsCount
             'effective_form_rate'              => Helpers::toRate(Helpers::divisionOfSelf($effectiveForm, $formData['form_count'])),
             // 空号占比
             'empty_phone_form_rate'            => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-6'], $formData['form_count'])),
-            // 无效表单占比
+            // 未接通占比
             'invalid_form_rate'                => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-5'], $formData['form_count'])),
             // 重复表单占比
             'repeat_form_rate'                 => Helpers::toRate(Helpers::divisionOfSelf($formData['is_repeat-2'], $formData['form_count'])),
@@ -243,7 +244,7 @@ class ExcelFieldsCount
             'effective_form'                   => $effectiveForm,
             // 空号 = 意向5
             'empty_phone_form'                 => $formData['intention-6'],
-            // 无效表单
+            // 未接通
             'invalid_form'                     => $formData['intention-5'],
             // 重复表单
             'repeat_form'                      => $formData['is_repeat-2'],
@@ -251,7 +252,7 @@ class ExcelFieldsCount
             'effective_form_rate'              => Helpers::toRate(Helpers::divisionOfSelf($effectiveForm, $formData['form_count'])),
             // 空号占比
             'empty_phone_form_rate'            => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-6'], $formData['form_count'])),
-            // 无效表单占比
+            // 未接通占比
             'invalid_form_rate'                => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-5'], $formData['form_count'])),
             // 重复表单占比
             'repeat_form_rate'                 => Helpers::toRate(Helpers::divisionOfSelf($formData['is_repeat-2'], $formData['form_count'])),
@@ -531,23 +532,16 @@ class ExcelFieldsCount
 
         foreach ($this->formData as $item) {
             $phone = $item->phones->first();
-            if (!isset($result["is_archive-{$phone['is_archive']}"])) {
-                $result["is_archive-{$phone['is_archive']}"] = 0;
-            }
-            if (!isset($result["intention-{$phone['intention']}"])) {
-                $result["intention-{$phone['intention']}"] = 0;
-            }
-            if (!isset($result["is_repeat-{$phone['is_repeat']}"])) {
-                $result["is_repeat-{$phone['is_repeat']}"] = 0;
-            }
-            if (!isset($result["turn_weixin-{$phone['turn_weixin']}"])) {
-                $result["turn_weixin-{$phone['turn_weixin']}"] = 0;
-            }
 
-            $result["is_archive-{$phone['is_archive']}"]++;
-            $result["intention-{$phone['intention']}"]++;
-            $result["is_repeat-{$phone['is_repeat']}"]++;
-            $result["turn_weixin-{$phone['turn_weixin']}"]++;
+            if ($phone['is_repeat'] === 2) {
+                $result["is_repeat-{$phone['is_repeat']}"]++;
+            } else {
+                $turn_weixin = $phone['turn_weixin'] ?? 0;
+                
+                $result["is_archive-{$phone['is_archive']}"]++;
+                $result["intention-{$phone['intention']}"]++;
+                $result["turn_weixin-{$turn_weixin}"]++;
+            }
         }
         return $result;
     }

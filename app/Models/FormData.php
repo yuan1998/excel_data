@@ -67,6 +67,7 @@ class FormData extends Model
         'turn_weixin-2' => 0,
         'is_archive-0'  => 0,
         'is_archive-1'  => 0,
+        'is_archive-2'  => 0,
         'intention-0'   => 0,
         'intention-1'   => 0,
         'intention-2'   => 0,
@@ -74,6 +75,7 @@ class FormData extends Model
         'intention-4'   => 0,
         'intention-5'   => 0,
         'intention-6'   => 0,
+
     ];
 
     public function formModel()

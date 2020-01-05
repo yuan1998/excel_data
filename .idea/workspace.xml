@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonScript/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/PythonScript/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Exports/TestExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/TestExport.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/FormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormData.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,8 +22,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1550">
-              <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+            <state relative-caret-position="859">
+              <caret line="77" selection-start-line="77" selection-end-line="77" />
             </state>
           </provider>
         </entry>
@@ -31,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="109" selection-start-line="109" selection-end-line="109" />
+            <state relative-caret-position="228">
+              <caret line="110" column="30" lean-forward="true" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -49,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="672">
-              <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+            <state relative-caret-position="703">
+              <caret line="69" column="31" lean-forward="true" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -58,7 +58,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3348">
+            <state relative-caret-position="283">
               <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
             </state>
           </provider>
@@ -67,7 +67,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3565">
+            <state relative-caret-position="820">
               <caret line="115" column="27" selection-start-line="115" selection-start-column="27" selection-end-line="115" selection-end-column="27" />
               <folding>
                 <element signature="e#30#57#0#PHP" expanded="true" />
@@ -88,14 +88,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="100" column="23" lean-forward="true" selection-start-line="100" selection-start-column="23" selection-end-line="100" selection-end-column="23" />
+            <state relative-caret-position="331">
+              <caret line="530" column="56" selection-start-line="530" selection-start-column="56" selection-end-line="530" selection-end-column="56" />
               <folding>
                 <element signature="e#18751#26062#0#PHP" />
-                <element signature="e#26068#27092#0#PHP" />
               </folding>
             </state>
           </provider>
@@ -104,8 +103,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
+            <state relative-caret-position="-306">
+              <caret line="25" column="19" lean-forward="true" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
               <folding>
                 <element signature="e#2946#3827#0#PHP" />
               </folding>
@@ -113,11 +112,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Helpers.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="827" column="35" selection-start-line="827" selection-start-column="35" selection-end-line="827" selection-end-column="35" />
+            <state relative-caret-position="307">
+              <caret line="485" column="60" lean-forward="true" selection-start-line="485" selection-start-column="60" selection-end-line="485" selection-end-column="60" />
               <folding>
                 <element signature="e#61#111#0#PHP" expanded="true" />
               </folding>
@@ -129,7 +128,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>utf</find>
       <find>pre_login</find>
       <find>headers</find>
       <find>get_server_data</find>
@@ -155,10 +153,11 @@
       <find>baidu/test</find>
       <find>recheck</find>
       <find>recheckArchive</find>
-      <find>未跟踪</find>
       <find>dd(</find>
       <find>到院率</find>
       <find>toWeiboExcel</find>
+      <find>未跟踪</find>
+      <find>checkIsRe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -198,7 +197,6 @@
         <option value="$PROJECT_DIR$/app/Admin/Controllers/BillAccountDataController.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/AccountDataController.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/WeiboUserController.php" />
-        <option value="$PROJECT_DIR$/app/Models/FormData.php" />
         <option value="$PROJECT_DIR$/app/Parsers/ParserBase.php" />
         <option value="$PROJECT_DIR$/app/Models/VivoData.php" />
         <option value="$PROJECT_DIR$/app/Imports/BaiduSpendImport.php" />
@@ -215,8 +213,9 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" />
         <option value="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" />
         <option value="$PROJECT_DIR$/app/Exports/TestExport.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" />
+        <option value="$PROJECT_DIR$/app/Models/FormData.php" />
         <option value="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" />
       </list>
     </option>
@@ -469,12 +468,12 @@
       <workItem from="1576394367793" duration="83000" />
       <workItem from="1577499089838" duration="3655000" />
       <workItem from="1577934359074" duration="16598000" />
-      <workItem from="1578101369441" duration="4851000" />
+      <workItem from="1578101369441" duration="6605000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="873270000" />
+    <option name="totallyTimeSpent" value="875024000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -819,13 +818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1550">
-          <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
@@ -833,16 +825,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
+    <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3348">
-          <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
+        <state relative-caret-position="-306">
+          <caret line="25" column="19" lean-forward="true" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
+          <folding>
+            <element signature="e#2946#3827#0#PHP" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3565">
+        <state relative-caret-position="820">
           <caret line="115" column="27" selection-start-line="115" selection-start-column="27" selection-end-line="115" selection-end-column="27" />
           <folding>
             <element signature="e#30#57#0#PHP" expanded="true" />
@@ -860,47 +855,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php">
+    <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+        <state relative-caret-position="283">
+          <caret line="125" column="18" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="109" selection-start-line="109" selection-end-line="109" />
+        <state relative-caret-position="228">
+          <caret line="110" column="30" lean-forward="true" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="827" column="35" selection-start-line="827" selection-start-column="35" selection-end-line="827" selection-end-column="35" />
-          <folding>
-            <element signature="e#61#111#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="703">
+          <caret line="69" column="31" lean-forward="true" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
-          <folding>
-            <element signature="e#2946#3827#0#PHP" />
-          </folding>
+        <state relative-caret-position="859">
+          <caret line="77" selection-start-line="77" selection-end-line="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="100" column="23" lean-forward="true" selection-start-line="100" selection-start-column="23" selection-end-line="100" selection-end-column="23" />
+        <state relative-caret-position="331">
+          <caret line="530" column="56" selection-start-line="530" selection-start-column="56" selection-end-line="530" selection-end-column="56" />
           <folding>
             <element signature="e#18751#26062#0#PHP" />
-            <element signature="e#26068#27092#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helpers.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="485" column="60" lean-forward="true" selection-start-line="485" selection-start-column="60" selection-end-line="485" selection-end-column="60" />
+          <folding>
+            <element signature="e#61#111#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
