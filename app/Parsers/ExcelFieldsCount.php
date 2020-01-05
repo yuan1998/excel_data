@@ -128,12 +128,15 @@ class ExcelFieldsCount
             'new_again_arriving'               => $arrivingData['new_again'],
             // 老客到院
             'old_arriving'                     => $arrivingData['old'],
-            // 新客首次占比
-            'new_first_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first'], $arrivingData['arriving_count'])),
-            // 新客二次占比
-            'new_again_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again'], $arrivingData['arriving_count'])),
-            // 老客占比
-            'old_rate'                         => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old'], $arrivingData['arriving_count'])),
+
+            // 新客首次到院率 = 新客首次 / 总建档
+            'new_first_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first'], $formData['is_archive-1'])),
+            // 新客二次到院率 = 新客二次 / 总建档
+            'new_again_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again'], $formData['is_archive-1'])),
+            // 老客到院率
+            'old_rate'                         => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old'], $formData['is_archive-1'])),
+
+
             // 首次成交
             'new_first_transaction'            => $arrivingData['new_first_transaction'],
             // 二次成交
@@ -164,8 +167,17 @@ class ExcelFieldsCount
             'new_again_transaction_proportion' => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again_transaction'], $totalTransition)),
             // 老客成交占比 = 老客成交 / 总成交
             'old_transaction_proportion'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old_transaction'], $totalTransition)),
+
+
+            // 新客首次成交率 = 新客首次成交数 / 新客首次到院数
+            'new_first_transaction_rate'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first_transaction'], $arrivingData['new_first'])),
+            // 新客二次成交率 = 新客二次成交数 / 新客二次到院数
+            'new_again_transaction_rate'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again_transaction'], $arrivingData['new_again'])),
+            // 老客成交率 = 老客成交数 / 老客到院数
+            'old_transaction_rate'             => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old_transaction'], $arrivingData['old'])),
             // 总成交率 =  总成交 / 总到院
             'total_transaction_proportion'     => Helpers::toRate(Helpers::divisionOfSelf($totalTransition, $arrivingData['arriving_count'])),
+
             // 首次业绩占比 = 首次业绩 / 总业绩
             'new_first_account_proportion'     => Helpers::toRate(Helpers::divisionOfSelf($billAccountData['new_first_account'], $billAccountData['total_account'])),
             // 二次业绩占比 = 二次业绩 / 总业绩
@@ -267,12 +279,14 @@ class ExcelFieldsCount
             'new_again_arriving'               => $arrivingData['new_again'],
             // 老客到院
             'old_arriving'                     => $arrivingData['old'],
-            // 新客首次占比
-            'new_first_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first'], $arrivingData['arriving_count'])),
-            // 新客二次占比
-            'new_again_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again'], $arrivingData['arriving_count'])),
-            // 老客占比
-            'old_rate'                         => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old'], $arrivingData['arriving_count'])),
+
+            // 新客首次到院率 = 新客首次 / 总建档
+            'new_first_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first'], $formData['is_archive-1'])),
+            // 新客二次到院率 = 新客二次 / 总建档
+            'new_again_rate'                   => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again'], $formData['is_archive-1'])),
+            // 老客到院率
+            'old_rate'                         => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old'], $formData['is_archive-1'])),
+
             // 首次成交
             'new_first_transaction'            => $arrivingData['new_first_transaction'],
             // 二次成交
@@ -303,8 +317,18 @@ class ExcelFieldsCount
             'new_again_transaction_proportion' => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again_transaction'], $totalTransition)),
             // 老客成交占比 = 老客成交 / 总成交
             'old_transaction_proportion'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old_transaction'], $totalTransition)),
+
+
+            // 新客首次成交率 = 新客首次成交数 / 新客首次到院数
+            'new_first_transaction_rate'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first_transaction'], $arrivingData['new_first'])),
+            // 新客二次成交率 = 新客二次成交数 / 新客二次到院数
+            'new_again_transaction_rate'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again_transaction'], $arrivingData['new_again'])),
+            // 老客成交率 = 老客成交数 / 老客到院数
+            'old_transaction_rate'             => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old_transaction'], $arrivingData['old'])),
             // 总成交率 =  总成交 / 总到院
             'total_transaction_proportion'     => Helpers::toRate(Helpers::divisionOfSelf($totalTransition, $arrivingData['arriving_count'])),
+
+
             // 首次业绩占比 = 首次业绩 / 总业绩
             'new_first_account_proportion'     => Helpers::toRate(Helpers::divisionOfSelf($billAccountData['new_first_account'], $billAccountData['total_account'])),
             // 二次业绩占比 = 二次业绩 / 总业绩
@@ -438,9 +462,8 @@ class ExcelFieldsCount
             'first_target_less'                => 0,
             // 首次成本
             'first_arriving_spend'             => round(Helpers::divisionOfSelf($spendData['spend'], data_get($arrivingData, 'arriving_count', 0)), 2),
-            // 首次到院率
+            // 首次到院率 = 新客首次到院 / 总表单
             'first_arriving_proportion'        => Helpers::toRate(Helpers::divisionOfSelf(data_get($arrivingData, 'new_first', 0), $formData['form_count'])),
-
             // 评论总业绩
             'comment_account'                  => data_get($billAccountData, 'comment_account', 0),
             // 表单总业绩
