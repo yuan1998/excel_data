@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exports/TestExport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exports/TestExport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormData.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -88,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="530" column="56" selection-start-line="530" selection-start-column="56" selection-end-line="530" selection-end-column="56" />
+            <state relative-caret-position="464">
+              <caret line="91" column="123" selection-start-line="91" selection-start-column="123" selection-end-line="91" selection-end-column="123" />
               <folding>
                 <element signature="e#18751#26062#0#PHP" />
               </folding>
@@ -112,7 +108,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Helpers.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="307">
@@ -468,12 +464,12 @@
       <workItem from="1576394367793" duration="83000" />
       <workItem from="1577499089838" duration="3655000" />
       <workItem from="1577934359074" duration="16598000" />
-      <workItem from="1578101369441" duration="6605000" />
+      <workItem from="1578101369441" duration="6657000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="875024000" />
+    <option name="totallyTimeSpent" value="875076000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -825,16 +821,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-306">
-          <caret line="25" column="19" lean-forward="true" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
-          <folding>
-            <element signature="e#2946#3827#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="820">
@@ -883,22 +869,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="530" column="56" selection-start-line="530" selection-start-column="56" selection-end-line="530" selection-end-column="56" />
-          <folding>
-            <element signature="e#18751#26062#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Helpers.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="307">
           <caret line="485" column="60" lean-forward="true" selection-start-line="485" selection-start-column="60" selection-end-line="485" selection-end-column="60" />
           <folding>
             <element signature="e#61#111#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Exports/TestExport.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-306">
+          <caret line="25" column="19" lean-forward="true" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
+          <folding>
+            <element signature="e#2946#3827#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="464">
+          <caret line="91" column="123" selection-start-line="91" selection-start-column="123" selection-end-line="91" selection-end-column="123" />
+          <folding>
+            <element signature="e#18751#26062#0#PHP" />
           </folding>
         </state>
       </provider>

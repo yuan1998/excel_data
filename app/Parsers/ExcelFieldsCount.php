@@ -65,7 +65,6 @@ class ExcelFieldsCount
     public function toBaseExcel()
     {
         $formData = $this->getCountData('formData');
-        dd($formData);
         $spendData       = $this->getCountData('spendData');
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
@@ -537,7 +536,7 @@ class ExcelFieldsCount
                 $result["is_repeat-{$phone['is_repeat']}"]++;
             } else {
                 $turn_weixin = $phone['turn_weixin'] ?? 0;
-                
+
                 $result["is_archive-{$phone['is_archive']}"]++;
                 $result["intention-{$phone['intention']}"]++;
                 $result["turn_weixin-{$turn_weixin}"]++;
