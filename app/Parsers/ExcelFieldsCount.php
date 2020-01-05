@@ -73,6 +73,7 @@ class ExcelFieldsCount
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
 
         $offSpend = round($spendData['off_spend'], 2);
+        $unArchiveCount      = Arr::get($formData, 'is_archive-2', 0) + Arr::get($formData, 'is_archive', 0);
         return [
             // 总互动
             'interactive'                      => Arr::get($spendData, 'interactive', 0),
@@ -105,7 +106,7 @@ class ExcelFieldsCount
             // 重复表单
             'repeat_form'                      => $formData['is_repeat-2'],
             // 未下预约单
-            'un_follow_count'                  => $formData['intention-1'],
+            'un_follow_count'                  => $formData['intention-1'] - $unArchiveCount,
             // 有效表单占比
             'effective_form_rate'              => Helpers::toRate(Helpers::divisionOfSelf($effectiveForm, $formData['form_count'])),
             // 空号占比
@@ -121,7 +122,7 @@ class ExcelFieldsCount
             // 建档数
             'archive_count'                    => $formData['is_archive-1'],
             // 未建档
-            'un_archive_count'                 => Arr::get($formData, 'is_archive-2', 0) + Arr::get($formData, 'is_archive', 0),
+            'un_archive_count'                 => $unArchiveCount,
             // 新客到院
             'new_first_arriving'               => $arrivingData['new_first'],
             // 二次到院
