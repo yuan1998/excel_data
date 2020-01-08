@@ -42,7 +42,6 @@ class ParserBillAccountData
             }
             return $account;
         });
-        dd($accountData);
     }
 
     public function toCount()

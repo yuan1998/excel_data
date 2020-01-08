@@ -120,7 +120,7 @@ class BaiduData extends Model
     public function department()
     {
         return $this->belongsTo(DepartmentType::class, 'department_id', 'id');
-        
+
     }
 
     /**
@@ -222,8 +222,6 @@ class BaiduData extends Model
                 FormDataPhone::createOrUpdateItem($form, $clue);
                 $form->projects()->sync($item['project_type']);
                 $count++;
-            } else {
-                dump($item);
             }
         }
         return $count;

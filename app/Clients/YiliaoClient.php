@@ -26,7 +26,6 @@ class YiliaoClient
         }
         try {
             $test = json_decode($process->getOutput(), true);
-            dd(123,$test);
             return $test;
         } catch (\Exception $exception) {
             Log::info('抓取易聊数据时出错', [$exception->getMessage()]);
