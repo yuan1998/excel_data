@@ -40,11 +40,11 @@ class ExportDataLog extends Model
         return "[$type]_[{$channelName}]_[{$departmentName}]_[{$dateName}]";
     }
 
-    public static function generate($data)
+
+    public static function baseGenerate($data)
     {
-        $name     = static::makeName($data);
-        $date     = Carbon::today()->toDateString();
-        $dateName = implode('_', $data['dates']);
+        $name = static::makeName($data);
+        $date = Carbon::today()->toDateString();
 
         return static::create([
             'name'         => $name,
@@ -52,5 +52,30 @@ class ExportDataLog extends Model
             'file_name'    => $name . '.xlsx',
             'request_data' => json_encode($data),
         ]);
+    }
+
+    public static function baiduPlanGenerate($data)
+    {
+        $dateName = implode('_', $data['dates']);
+        $name     = '百度计划报告_' . $dateName;
+        $date     = Carbon::today()->toDateString();
+
+        return static::create([
+            'name'         => $name,
+            'path'         => '/exports/' . $date . '/',
+            'file_name'    => $name . '.xlsx',
+            'request_data' => json_encode($data),
+        ]);
+    }
+
+    public static function generate($data)
+    {
+        if (isset($data['data_type'])) {
+            if ($data['data_type'] = 'baidu_plan') {
+                return static::baiduPlanGenerate($data);
+            }
+        } else {
+            return static::baseGenerate($data);
+        }
     }
 }

@@ -1,9 +1,9 @@
 <template>
     <div :style="'display: inline-block;'" style="display: none;">
         <div id="app-export-data-action" class="dib" >
-            <el-button type="primary" size="mini" @click="handleOpen">创建导出数据</el-button>
+            <el-button type="primary" size="mini" @click="handleOpen">创建百度计划报告导出数据</el-button>
 
-            <el-dialog title="创建导出数据"
+            <el-dialog title="创建百度计划报告导出数据"
                        ref="dialog"
                        width="550px"
                        :visible.sync="dialogFormVisible"
@@ -24,24 +24,6 @@
                             </el-radio-button>
 
                         </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="渠道" prop="channel_id" required>
-                        <el-checkbox-group v-model="form.channel_id" size="mini">
-                            <el-checkbox-button :label="key"
-                                                :key="key"
-                                                v-for="(value , key) in channelOptions">
-                                {{value}}
-                            </el-checkbox-button>
-                        </el-checkbox-group>
-                    </el-form-item>
-
-
-                    <el-form-item label="科室" prop="department_id" required>
-                        <el-checkbox-group v-model="form.department_id" size="mini">
-                            <el-checkbox-button v-for="(option , key) in departmentOptions" :label="key" :key="key">
-                                {{option}}
-                            </el-checkbox-button>
-                        </el-checkbox-group>
                     </el-form-item>
                     <el-form-item label="时间范围" required prop="dates">
                         <el-col :span="11">
@@ -75,16 +57,6 @@
 
     export default {
         name   : 'ExportDataForm',
-        props  : {
-            channelOptions   : {
-                type    : Object,
-                required: true,
-            },
-            departmentOptions: {
-                type    : Object,
-                required: true,
-            },
-        },
         data() {
             return {
                 loadingInstance  : null,
@@ -92,16 +64,9 @@
                 loading          : false,
                 formLabelWidth   : '80px',
                 rules            : {
-                    department_id: [
-                        { required: true, message: '请选择需要导出的科室', trigger: 'blur' }
-                    ],
-                    channel_id   : [
-                        { required: true, message: '请选择需要导出的渠道', trigger: 'blur' }
-                    ],
                     type         : [
                         { required: true, message: '请选择需要导出的类型', trigger: 'blur' }
                     ],
-
                     dates: [
                         { required: true, message: '请选择日期', trigger: 'change' }
                     ],
@@ -128,8 +93,6 @@
                     ]
                 },
                 form             : {
-                    department_id: [],
-                    channel_id   : [],
                     type         : '',
                     dates        : [],
                 },
@@ -168,7 +131,7 @@
 
                         try {
                             let res = await axios.request({
-                                url   : '/api/export/excel',
+                                url   : '/api/baidu/export/accountPlan',
                                 method: 'post',
                                 data  : data,
                             });
@@ -207,7 +170,7 @@
         watch: {
             loading(v) {
                 if (v) {
-                    let dialogPanel      = this.$refs.dialog.$refs.dialog // dialog面板的dom节点
+                    let dialogPanel      = this.$refs.dialog.$refs.dialog; // dialog面板的dom节点
                     this.loadingInstance = this.$loading({
                         target: dialogPanel
                     })

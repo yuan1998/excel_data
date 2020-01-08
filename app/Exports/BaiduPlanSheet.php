@@ -29,12 +29,10 @@ class BaiduPlanSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
      */
     public function collection()
     {
-        $result     = collect();
-
-
-
-
-
+        $result = collect();
+        foreach ($this->data['count'] as $item) {
+            $result->push(array_values($item));
+        }
         return $result;
         // TODO: Implement collection() method.
     }
@@ -50,10 +48,8 @@ class BaiduPlanSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
             '计划名',
             '虚消',
             '实消',
-            '数量',
+            '表单数',
         ];
-
-        // TODO: Implement headings() method.
     }
 
     /**
@@ -61,6 +57,6 @@ class BaiduPlanSheet implements FromCollection, WithTitle, WithHeadings, ShouldA
      */
     public function title(): string
     {
-        return '计划报告';
+        return $this->data['accountName'];
     }
 }

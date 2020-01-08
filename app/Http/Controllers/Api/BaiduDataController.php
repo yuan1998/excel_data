@@ -7,6 +7,7 @@ use App\Clients\KqClient;
 use App\Clients\YiliaoClient;
 use App\Clients\ZxClient;
 use App\Encoding;
+use App\Exports\BaiduPlanExport;
 use App\Exports\TestExport;
 use App\Helpers;
 use App\Http\Requests\UploadRequest;
@@ -23,6 +24,7 @@ use App\Models\BaiduClue;
 use App\Models\BaiduData;
 use App\Models\BillAccountData;
 use App\Models\CrmUser;
+use App\Models\ExportDataLog;
 use App\Models\FormDataPhone;
 use App\Models\ProjectType;
 use App\Models\SpendData;
@@ -88,19 +90,20 @@ class BaiduDataController extends Controller
      * 8, 导出数据表
      *
      * @param Request $request
+     * @return \Dingo\Api\Http\Response
      */
     public function accountPlanExcelExport(Request $request)
     {
-        $dates = $request->get('dates');
-        $type  = $request->get('type');
+        $data = $request->only(['dates', 'type']);
 
-        $baiduPlanData = new BaiduPlanData($dates,$type);
+        $data['data_type'] = 'baidu_plan';
 
+        $exportDataLog = ExportDataLog::generate($data);
+        if (!$exportDataLog) {
+            $this->response->errorBadRequest();
+        }
 
-        $newData = $baiduPlanData->mapToExcelFieldArray();
-        dd($newData);
-
-
+        return $this->response->array([0]);
     }
 
 

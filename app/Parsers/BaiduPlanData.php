@@ -14,11 +14,12 @@ class BaiduPlanData
 
     /**
      * BaiduPlanData constructor.
-     * @param $dates
-     * @param $type
+     * @param $data
      */
-    public function __construct($dates, $type)
+    public function __construct($data)
     {
+        $dates             = $data['dates'];
+        $type              = $data['type'];
         $this->accountData = AccountData::query()
             ->with([
                 'spendData'   => function ($query) use ($dates) {
@@ -106,7 +107,7 @@ class BaiduPlanData
 
     public function mapToCountField($data)
     {
-        $result = [];
+        $result = collect();
 
         foreach ($data as $dateString => $dateItem) {
             foreach ($dateItem as $accountItem) {
@@ -118,7 +119,7 @@ class BaiduPlanData
                     '实消费' => $spend['off_spend'],
                     '表单数' => count($accountItem['formData'])
                 ];
-                $result[]  = $parseData;
+                $result->push($parseData);
             }
         }
 

@@ -17,7 +17,6 @@ class BaiduPlanExport implements WithMultipleSheets
     public function __construct($parser)
     {
         $this->parser = $parser;
-
     }
 
 
@@ -26,6 +25,13 @@ class BaiduPlanExport implements WithMultipleSheets
      */
     public function sheets(): array
     {
-        $data = $this->parser->mapToExcelFieldArray();
+        $sheets = [];
+        $data   = $this->parser->mapToExcelFieldArray();
+
+        foreach ($data as $accountData) {
+            $sheets[] = new BaiduPlanSheet($accountData);
+        }
+        
+        return $sheets;
     }
 }

@@ -8,6 +8,7 @@ import ElementUI             from 'element-ui'
 import ElInputTag            from 'el-input-tag'
 import ExampleComponent      from "./components/ExampleComponent";
 import ExportDataForm        from "./components/exportDataForm";
+import ExportBaiduPlanForm   from "./components/exportBaiduPlanExcelBtn";
 import WeiConfigAction       from "./components/WeiboConfigAction";
 import GrabDataForm          from "./components/GrabDataForm";
 import WeiboDispatchSettings from "./components/WeiboDispatchSettings";
@@ -15,13 +16,14 @@ import RecallLog             from "./components/RecallLog";
 import ActionExcelUpload     from "./components/ActionExcelUpload";
 import WeiboGrabAction       from "./components/WeiboGrabAction";
 import weiboIndex            from "./components/weibo-index";
-import dataIndex            from "./components/data-index";
+import dataIndex             from "./components/data-index";
 
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
 Vue.component('recall-log', RecallLog);
 Vue.component('example-component', ExampleComponent);
 Vue.component('export-data-form', ExportDataForm);
+Vue.component('export-baidu-plan-form', ExportBaiduPlanForm);
 Vue.component('grab-data-form', GrabDataForm);
 Vue.component('weibo-config-action', WeiConfigAction);
 Vue.component('weibo-dispatch-settings', WeiboDispatchSettings);

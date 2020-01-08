@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Exports\BaiduPlanExport;
 use App\Exports\TestExport;
 use App\Models\ExportDataLog;
+use App\Parsers\BaiduPlanData;
 use App\Parsers\ParserStart;
 use Carbon\Carbon;
 use Exception;
@@ -35,6 +37,18 @@ class ExportJob implements ShouldQueue
         $this->model = $model;
     }
 
+
+    public function baseExcel($model)
+    {
+
+
+    }
+
+    public function baiduPlanExcel($model)
+    {
+
+    }
+
     /**
      * Execute the job.
      *
@@ -45,15 +59,25 @@ class ExportJob implements ShouldQueue
         $model = $this->model;
 
         if (!$model) return;
-
         $time        = Carbon::now();
         $requestData = json_decode($model->request_data, true);
         Log::info('生成 Excel 参数', [$requestData]);
-        $parser        = new ParserStart($requestData);
-        $pathName      = $model->path . $model->file_name;
+
         $model->status = 1;
         $model->save();
-        Excel::store(new TestExport($parser), $pathName, 'public');
+        $pathName = $model->path . $model->file_name;
+
+        if (isset($requestData['data_type'])) {
+            if ($requestData['data_type'] === 'baidu_plan') {
+                $baiduPlanData = new BaiduPlanData($requestData);
+                $export        = new BaiduPlanExport($baiduPlanData);
+                Excel::store($export, $pathName, 'public');
+            }
+        } else {
+            $parser = new ParserStart($requestData);
+            Excel::store(new TestExport($parser), $pathName, 'public');
+        }
+
         $model->status   = 2;
         $model->run_time = Carbon::now()->diffInSeconds($time) ?? 0;
         $model->save();
