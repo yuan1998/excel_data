@@ -3,6 +3,7 @@
 namespace App\Parsers;
 
 use App\Models\AccountData;
+use Carbon\Carbon;
 
 class BaiduPlanData
 {
@@ -18,14 +19,18 @@ class BaiduPlanData
      */
     public function __construct($data)
     {
-        $dates             = $data['dates'];
-        $type              = $data['type'];
+        $dates = $data['dates'];
+        $type  = $data['type'];
+
+        $startDate = Carbon::parse($dates[0])->toDateString();
+        $endDate   = Carbon::parse($dates[1])->toDateString();
+
         $this->accountData = AccountData::query()
             ->with([
-                'spendData'   => function ($query) use ($dates) {
-                    $query->whereBetween('date', $dates);
-                }, 'formData' => function ($query) use ($dates) {
-                    $query->whereBetween('date', $dates);
+                'spendData'   => function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('date', [$startDate, $endDate]);
+                }, 'formData' => function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('date', [$startDate, $endDate]);
                 },
                 'formData.formModel',
             ])
