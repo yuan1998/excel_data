@@ -120,6 +120,7 @@ class BaiduData extends Model
     public function department()
     {
         return $this->belongsTo(DepartmentType::class, 'department_id', 'id');
+        
     }
 
     /**
