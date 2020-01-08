@@ -21,5 +21,15 @@ class AccountData extends Model
         return $this->belongsTo(Channel::class, 'channel_id', 'id');
     }
 
+    public function spendData()
+    {
+        return $this->hasMany(SpendData::class, 'account_id', 'id');
+    }
+
+    public function formData()
+    {
+        return $this->hasMany(FormData::class, 'account_id', 'id');
+    }
+
 
 }

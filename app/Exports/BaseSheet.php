@@ -61,8 +61,6 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-
-
                 $index      = 1;
                 $colorIndex = 0;
                 foreach ($this->headers as $header => $value) {

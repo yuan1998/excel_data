@@ -16,6 +16,7 @@ use App\Imports\BaiduSpendImport;
 use App\Imports\OppoSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\YiliaoImport;
+use App\Models\AccountData;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\BaiduClue;
@@ -27,6 +28,7 @@ use App\Models\ProjectType;
 use App\Models\SpendData;
 use App\Models\TempCustomerData;
 use App\Models\WeiboFormData;
+use App\Parsers\BaiduPlanData;
 use App\Parsers\ParserStart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -53,6 +55,52 @@ class BaiduDataController extends Controller
         Excel::import(new BaiduImport(), $request->file('excel'));
 
         return $this->response->noContent();
+    }
+
+
+    /**
+     * 导出 百度信息流计划分析表
+     * 参数:  type  , 用于获取所属 type 下所有账户
+     * 参数:  dates , 用于筛选日期范围
+     *
+     * 逻辑总结:
+     * 1, 使用[type] 获取所属 [Account]
+     * 2, 用 [Account] 和 [dates] 来获取关联的 [FormData] 和 [SpendData]
+     * 3, 按照日期将 [FormData] 和 [SpendData] 分组
+     * 4, 分别将每个日期中 的 每个 [SpendData] 进行判断 [计划名(plan_name)] 是否匹配正则 /\-(d{6})/ (横杆开头 带有6位日期数字)
+     * 5, 将匹配中的 [计划名(plan_name)] 匹配与日期对应的 [FormData], 分别将每个数据中的 [dialog_url(对话url进行匹配)]
+     * 6, 最后数据格式
+     *    [
+     *        'account' => [
+     *               'date' => [
+     *                     'plan_name' => [
+     *                         'code' => 'xaaaaa-200101',
+     *                         'account_name'=> 'xaaaaa',
+     *                         'title' => 'xxxxxxxxxx-200101',
+     *                         'spendData' => [....]
+     *                         'formData' => [....]
+     *                     ]
+     *               ]
+     *         ]
+     *
+     *    ]
+     * 7, 转换数据
+     * 8, 导出数据表
+     *
+     * @param Request $request
+     */
+    public function accountPlanExcelExport(Request $request)
+    {
+        $dates = $request->get('dates');
+        $type  = $request->get('type');
+
+        $baiduPlanData = new BaiduPlanData($dates,$type);
+
+
+        $newData = $baiduPlanData->mapToExcelFieldArray();
+        dd($newData);
+
+
     }
 
 

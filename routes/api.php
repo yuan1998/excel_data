@@ -26,42 +26,96 @@ $api->version('v1', [
     /**
      * BaiduData:百度数据 Api
      */
-    $api->get('/baidu', "BaiduDataController@index")
-        ->name('api.baidu.index');
+    $api->group([
+        'prefix' => 'baidu',
+    ], function ($api) {
+        $api->get('/', "BaiduDataController@index")
+            ->name('api.baidu.index');
+        $api->post('/', "BaiduDataController@store")
+            ->name('api.baidu.store');
+        $api->post('/upload', "BaiduDataController@uploadExcel")
+            ->name('api.baidu.uploadExcel');
+        $api->post('/export/accountPlan' , "BaiduDataController@accountPlanExcelExport")
+            ->name('api.baidu.accountPlanExcelExport');
 
-    $api->put('/baidu/{baiduData}', "BaiduDataController@update")
-        ->name('api.baidu.update');
-    $api->post('/baidu', "BaiduDataController@store")
-        ->name('api.baidu.store');
-    $api->post('/saveRequest', "BaiduDataController@saveRequest")
-        ->name('api.baidu.saveRequest');
+        $api->post('/test', "BaiduDataController@test")
+            ->name('api.baidu.test');
 
-    $api->delete('/baidu/{ids}', "BaiduDataController@destroy")
-        ->name('api.baidu.destroy');
-    $api->post('/baidu/upload', "BaiduDataController@uploadExcel")
-        ->name('api.baidu.uploadExcel');
 
-    $api->post('/baidu/test', "BaiduDataController@test")
-        ->name('api.baidu.test');
+        $api->put('/{baiduData}', "BaiduDataController@update")
+            ->name('api.baidu.update');
+        $api->post('/saveRequest', "BaiduDataController@saveRequest")
+            ->name('api.baidu.saveRequest');
+
+        $api->delete('/{ids}', "BaiduDataController@destroy")
+            ->name('api.baidu.destroy');
+    });
+
 
     /**
      *  BaiduClue:百度线索 Api
      */
-    $api->post('/baiduClue/checkArchive/{baiduClue}', "BaiduClueController@checkItemArchive")
-        ->name('api.baiduClue.checkItemArchive');
-    $api->post('/baiduClue/checkIntention/{baiduClue}', "BaiduClueController@checkItemIntention")
-        ->name('api.baiduClue.checkItemIntention');
-    $api->post('/baiduClue/checkItem/{baiduClue}', "BaiduClueController@checkItem")
-        ->name('api.baiduClue.checkItem');
-    $api->post('/baiduClue/checkArriving/{baiduClue}', "BaiduClueController@checkItemArriving")
-        ->name('api.baiduClue.checkItemArriving');
+    $api->group([
+        'prefix' => 'baiduClue',
+    ], function ($api) {
+        $api->post('/checkArchive/{baiduClue}', "BaiduClueController@checkItemArchive")
+            ->name('api.baiduClue.checkItemArchive');
+        $api->post('/checkIntention/{baiduClue}', "BaiduClueController@checkItemIntention")
+            ->name('api.baiduClue.checkItemIntention');
+        $api->post('/checkItem/{baiduClue}', "BaiduClueController@checkItem")
+            ->name('api.baiduClue.checkItem');
+        $api->post('/checkArriving/{baiduClue}', "BaiduClueController@checkItemArriving")
+            ->name('api.baiduClue.checkItemArriving');
+    });
 
 
     /**
      * WeiboData:微博数据 Api
      */
-    $api->post('/weibo/upload', "WeiboController@uploadExcel")
-        ->name('api.weibo.uploadExcel');
+    $api->group([
+        'prefix' => 'weibo',
+    ], function ($api) {
+        $api->post('/upload', "WeiboController@uploadExcel")
+            ->name('api.weibo.uploadExcel');
+
+        $api->post('/authenticate', 'WeiboAuthController@authenticate')
+            ->name('api.weibo.authenticate');
+
+        $api->get('/authenticate', 'WeiboAuthController@current')
+            ->name('api.weibo.current');
+        $api->put('/authenticate/current', 'WeiboAuthController@refresh')
+            ->name('api.weibo.authenticate.refresh');
+        $api->delete('/authenticate/current', 'WeiboAuthController@destroyToken')
+            ->name('api.weibo.authenticate.destroyToken');
+
+        $api->put('/user/pause', 'WeiboUserController@userPause')
+            ->name('api.weibo.user.userPause');
+
+
+        $api->get('/formData/', 'WeiboFormDataController@userIndex')
+            ->name('api.weiboFormData.index');
+        $api->get('/formData/hasNew', 'WeiboFormDataController@userHasNew')
+            ->name('api.weiboFormData.userHasNew');
+        $api->put('/formData/{formData}', 'WeiboFormDataController@userUpdate')
+            ->name('api.weiboFormData.update');
+        $api->post('/grabFormData/', 'WeiboFormDataController@grabWeiboFormData')
+            ->name('api.weiboFormData.grabWeiboFormData');
+
+
+        $api->get('/user/pause', "WeiboUserController@updatePause")
+            ->name('api.weiboUser.updatePause');
+
+        $api->post('/setting', "WeiboDispatchSettingController@ruleStore")
+            ->name('api.WeiboDispatchSetting.ruleStore');
+        $api->post('/setting/base', "WeiboDispatchSettingController@saveSetting")
+            ->name('api.WeiboDispatchSetting.saveSetting');
+        $api->put('/setting/{dispatchSetting}', "WeiboDispatchSettingController@ruleUpdate")
+            ->name('api.WeiboDispatchSetting.ruleUpdate');
+        $api->delete('/setting/{ids}', "WeiboDispatchSettingController@destroy")
+            ->name('api.WeiboDispatchSetting.destroy');
+    });
+
+
 
     /**
      * FeiyuData:飞鱼数据 Api
@@ -123,46 +177,6 @@ $api->version('v1', [
             ->name('api.vivo.import');
     });
 
-
-    $api->group([
-        'prefix' => 'weibo',
-    ], function ($api) {
-        $api->post('/authenticate', 'WeiboAuthController@authenticate')
-            ->name('api.weibo.authenticate');
-
-        $api->get('/authenticate', 'WeiboAuthController@current')
-            ->name('api.weibo.current');
-        $api->put('/authenticate/current', 'WeiboAuthController@refresh')
-            ->name('api.weibo.authenticate.refresh');
-        $api->delete('/authenticate/current', 'WeiboAuthController@destroyToken')
-            ->name('api.weibo.authenticate.destroyToken');
-
-        $api->put('/user/pause', 'WeiboUserController@userPause')
-            ->name('api.weibo.user.userPause');
-
-
-        $api->get('/formData/', 'WeiboFormDataController@userIndex')
-            ->name('api.weiboFormData.index');
-        $api->get('/formData/hasNew', 'WeiboFormDataController@userHasNew')
-            ->name('api.weiboFormData.userHasNew');
-        $api->put('/formData/{formData}', 'WeiboFormDataController@userUpdate')
-            ->name('api.weiboFormData.update');
-        $api->post('/grabFormData/', 'WeiboFormDataController@grabWeiboFormData')
-            ->name('api.weiboFormData.grabWeiboFormData');
-
-
-        $api->get('/user/pause', "WeiboUserController@updatePause")
-            ->name('api.weiboUser.updatePause');
-
-        $api->post('/setting', "WeiboDispatchSettingController@ruleStore")
-            ->name('api.WeiboDispatchSetting.ruleStore');
-        $api->post('/setting/base', "WeiboDispatchSettingController@saveSetting")
-            ->name('api.WeiboDispatchSetting.saveSetting');
-        $api->put('/setting/{dispatchSetting}', "WeiboDispatchSettingController@ruleUpdate")
-            ->name('api.WeiboDispatchSetting.ruleUpdate');
-        $api->delete('/setting/{ids}', "WeiboDispatchSettingController@destroy")
-            ->name('api.WeiboDispatchSetting.destroy');
-    });
 
 
 });

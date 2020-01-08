@@ -180,14 +180,13 @@ class BaiduData extends Model
      */
     public static function excelCollection($data)
     {
-        $data = Helpers::excelToKeyArray($data, static::$excelFields);
-        $data = collect($data)->filter(function ($item) {
+        $originData = Helpers::excelToKeyArray($data, static::$excelFields);
+        $data       = collect($originData)->filter(function ($item) {
             return isset($item['dialog_url'])
                 && isset($item['cur_access_time'])
                 && isset($item['visitor_name'])
                 && isset($item['visitor_id'])
-                && $item['dialog_url']
-                && $item['visitor_type'];
+                && $item['dialog_url'];
         });
 
         return static::handleExcelData($data);
@@ -212,6 +211,7 @@ class BaiduData extends Model
 
 
             $clue = static::parseClue($item['clue']);
+
             if (in_array($baidu['form_type'], [1, 8]) && $clue->isNotEmpty()) {
                 $form = FormData::updateOrCreate([
                     'model_id'   => $baidu->id,
@@ -221,6 +221,8 @@ class BaiduData extends Model
                 FormDataPhone::createOrUpdateItem($form, $clue);
                 $form->projects()->sync($item['project_type']);
                 $count++;
+            } else {
+                dump($item);
             }
         }
         return $count;
