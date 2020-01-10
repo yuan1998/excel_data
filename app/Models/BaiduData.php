@@ -150,11 +150,9 @@ class BaiduData extends Model
         $item['dialog_url'] = substr($item['dialog_url'] ?? '', 0, Builder::$defaultStringLength);
         $item['date']       = $item['cur_access_time'] = Carbon::parse($item['cur_access_time'])->toDateString();
 
-
         $url = urldecode($item['dialog_url']);
         preg_match("/\?A[0-9](.{12,20})/", $url, $match);
         $code = $item['code'] = (isset($match[0]) ? $match[0] : '') . '-' . $item['visitor_type'];
-
 
         $item['form_type'] = BaiduData::checkCodeIs($code);
         if (!$item['form_type']) return null;
@@ -222,6 +220,8 @@ class BaiduData extends Model
                 FormDataPhone::createOrUpdateItem($form, $clue);
                 $form->projects()->sync($item['project_type']);
                 $count++;
+            } else {
+//                dump($item);
             }
         }
         return $count;

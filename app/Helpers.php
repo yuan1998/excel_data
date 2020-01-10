@@ -546,7 +546,7 @@ class Helpers
      */
     public static function validatePhone($value)
     {
-        return $value && preg_match("/^1[34578]\d{9}$/", $value);
+        return $value && preg_match("/^1[345789]\d{9}$/", $value);
     }
 
     /**
