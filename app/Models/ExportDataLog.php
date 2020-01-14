@@ -37,7 +37,7 @@ class ExportDataLog extends Model
             ->implode(',');
         $dateName       = implode('_', $data['dates']);
         $type           = CrmGrabLog::$typeList[$data['type']];
-        return "[$type]_[{$channelName}]_[{$departmentName}]_[{$dateName}]";
+        return time() . "_[$type]_[{$channelName}]_[{$departmentName}]_[{$dateName}]";
     }
 
 
@@ -57,7 +57,7 @@ class ExportDataLog extends Model
     public static function baiduPlanGenerate($data)
     {
         $dateName = implode('_', $data['dates']);
-        $name     = '百度计划报告_' . $dateName;
+        $name     = time() . '_百度计划报告_' . $dateName;
         $date     = Carbon::today()->toDateString();
 
         return static::create([
@@ -71,7 +71,7 @@ class ExportDataLog extends Model
     public static function generate($data)
     {
         if (isset($data['data_type'])) {
-            if ($data['data_type'] = 'baidu_plan') {
+            if ($data['data_type'] === 'baidu_plan') {
                 return static::baiduPlanGenerate($data);
             }
         } else {

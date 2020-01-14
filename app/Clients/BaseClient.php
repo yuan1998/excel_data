@@ -713,7 +713,6 @@ class BaseClient
 
         $jar = CookieJar::fromArray($cookies, static::$domain);
 
-
         $result = $client->request('POST', $uri, [
             'form_params' => $data,
             'cookies'     => $jar, 'timeout' => 0,

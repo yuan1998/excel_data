@@ -361,8 +361,11 @@ class Helpers
         $data = $client::baiduTempSearch([
             'phone' => $model->phone
         ], $model);
-        $model->fill($data);
-        $model->save();
+        
+        if ($data) {
+            $model->fill($data);
+            $model->save();
+        }
     }
 
 

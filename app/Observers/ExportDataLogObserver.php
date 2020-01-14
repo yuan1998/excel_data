@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Jobs\ExportJob;
 use App\Models\ExportDataLog;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ExportDataLogObserver
@@ -16,7 +17,10 @@ class ExportDataLogObserver
      */
     public function created(ExportDataLog $exportDataLog)
     {
-        ExportJob::dispatch($exportDataLog)->onQueue('data_exports');
+        Log::info('生成 导出 Job', [
+            'exportDataLog' => $exportDataLog
+        ]);
+        ExportJob::dispatch($exportDataLog->id)->onQueue('data_exports');
     }
 
     /**

@@ -30,23 +30,12 @@ class ExportJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param $model
+     * @param $modelId
      */
-    public function __construct($model)
+    public function __construct($modelId)
     {
-        $this->model = $model;
-    }
-
-
-    public function baseExcel($model)
-    {
-
-
-    }
-
-    public function baiduPlanExcel($model)
-    {
-
+        Log::info('导出 报表 __construct ', [$modelId]);
+        $this->model = $modelId;
     }
 
     /**
@@ -56,7 +45,11 @@ class ExportJob implements ShouldQueue
      */
     public function handle()
     {
-        $model = $this->model;
+        Log::info('生成 Excel 参数 : 开始', [
+            'model' => $this->model,
+        ]);
+
+        $model = ExportDataLog::find($this->model);
 
         if (!$model) return;
         $time        = Carbon::now();
@@ -66,16 +59,25 @@ class ExportJob implements ShouldQueue
         $model->status = 1;
         $model->save();
         $pathName = $model->path . $model->file_name;
-
+        Log::info(' 导出 文件 Debug  ', [
+            'pathName'    => $pathName,
+            'requestData' => $requestData,
+        ]);
         if (isset($requestData['data_type'])) {
+            Log::info(' 导出 文件 Debug : 抵达 百度  ', []);
             if ($requestData['data_type'] === 'baidu_plan') {
                 $baiduPlanData = new BaiduPlanData($requestData);
                 $export        = new BaiduPlanExport($baiduPlanData);
                 Excel::store($export, $pathName, 'public');
             }
         } else {
+            Log::info(' 导出 文件 Debug : 抵达 报表  ', []);
             $parser = new ParserStart($requestData);
-            Excel::store(new TestExport($parser), $pathName, 'public');
+            $test   = Excel::store(new TestExport($parser), $pathName, 'public');
+            Log::info(' 导出 文件 Debug  ', [
+                'pathName' => $pathName,
+                'result'   => $test,
+            ]);
         }
 
         $model->status   = 2;
@@ -91,7 +93,10 @@ class ExportJob implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $model         = $this->model;
+        Log::info('生成 Excel 参数 : 失败', [
+            'model' => $this->model,
+        ]);
+        $model         = ExportDataLog::find($this->model);
         $model->status = 3;
         $model->save();
         Log::error('抓取数据时错误', [$model->file_name, $exception]);
