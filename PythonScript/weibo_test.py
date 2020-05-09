@@ -167,7 +167,7 @@ class WeiboLogin(object):
         # login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.19)'
         # login_url = login_url + str(time.time() * 1000)
         login_page = self.session.post(login_url, data=self.postdata, headers=headers)
-        print(login_page.content.decode('utf-8'))
+        # print(login_page.content.decode('utf-8'))
         ticket_js = login_page.json()
         ticket = ticket_js["ticket"]
 
@@ -219,7 +219,7 @@ class WeiboLogin(object):
         }
         murl = "https://cpl.biz.weibo.com/cpl/lead/list"
         mhtml = self.session.get(murl, params=mParams, headers=Mheaders)
-        print(mhtml.content.decode('utf-8'))
+        # print(mhtml.content.decode('utf-8'))
         test_result = mhtml.json()
         print(json.dumps(test_result))
 

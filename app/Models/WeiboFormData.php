@@ -332,6 +332,7 @@ class WeiboFormData extends Model
         // 没有数据报错.
         if (!$data) {
             Log::info('拉取微博数据出错 , 数据为空', ['result' => $data, 'account' => $accountName]);
+            return null;
         } else {
             $count = count($data);
             Log::info('拉取微博数据结果', [

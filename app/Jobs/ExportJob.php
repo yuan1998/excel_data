@@ -100,7 +100,7 @@ class ExportJob implements ShouldQueue
         $model->status = 3;
         $model->save();
         Log::error('抓取数据时错误', [$model->file_name, $exception]);
-        // Send user notification of failure, etc...
+
     }
 
 

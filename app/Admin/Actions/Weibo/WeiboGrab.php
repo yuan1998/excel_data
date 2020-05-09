@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions;
 
+use App\Clients\WeiboClient;
 use App\Imports\BaiduImport;
 use App\Imports\FeiyuImport;
 use App\Imports\WeiboFormDataImport;
@@ -27,7 +28,7 @@ class WeiboGrab extends Action
 
     public function render()
     {
-        return view('admin.actions.weiboGrabAction');
+        return view('admin.actions.weiboGrabAction', ['accounts' => WeiboClient::$Account]);
     }
 
 

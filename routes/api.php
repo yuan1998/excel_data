@@ -35,7 +35,7 @@ $api->version('v1', [
             ->name('api.baidu.store');
         $api->post('/upload', "BaiduDataController@uploadExcel")
             ->name('api.baidu.uploadExcel');
-        $api->post('/export/accountPlan' , "BaiduDataController@accountPlanExcelExport")
+        $api->post('/export/accountPlan', "BaiduDataController@accountPlanExcelExport")
             ->name('api.baidu.accountPlanExcelExport');
 
         $api->post('/test', "BaiduDataController@test")
@@ -100,6 +100,8 @@ $api->version('v1', [
             ->name('api.weiboFormData.update');
         $api->post('/grabFormData/', 'WeiboFormDataController@grabWeiboFormData')
             ->name('api.weiboFormData.grabWeiboFormData');
+        $api->post('/pullFormData/', 'WeiboFormDataController@pullWeiboFormData')
+            ->name('api.weiboFormData.pullWeiboFormData');
 
 
         $api->get('/user/pause', "WeiboUserController@updatePause")
@@ -114,7 +116,6 @@ $api->version('v1', [
         $api->delete('/setting/{ids}', "WeiboDispatchSettingController@destroy")
             ->name('api.WeiboDispatchSetting.destroy');
     });
-
 
 
     /**
@@ -176,7 +177,6 @@ $api->version('v1', [
         $api->post('/import', "VivoController@import")
             ->name('api.vivo.import');
     });
-
 
 
 });

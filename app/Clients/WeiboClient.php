@@ -11,30 +11,30 @@ class WeiboClient
 
     public static $Account = [
         '口腔'  => [
-            'username' => '17392448796',
-            'password' => 'huamei2019',
+            'username'    => '17392448796',
+            'password'    => 'huamei2019',
             'customer_id' => '6660030357',
-            'site_id' => '7510',
-            'form_id' => '7226',
-            'type'     => 'kq',
+            'site_id'     => '7510',
+            'form_id'     => '7226',
+            'type'        => 'kq',
         ],
         '团圆'  => [
-            'username' => '17392449035',
-            'password' => 'huamei2019',
+            'username'    => '17392449035',
+            'password'    => 'huamei2019',
             'customer_id' => '7165564518',
-            'type'     => 'kq',
+            'type'        => 'kq',
         ],
         '整形'  => [
-            'username' => '18092693627',
-            'password' => 'huamei123',
+            'username'    => '18092693627',
+            'password'    => 'huamei123',
             'customer_id' => '6216702497',
-            'type'     => 'zx',
+            'type'        => 'zx',
         ],
         '罗金刚' => [
-            'username' => '17391917587',
-            'password' => 'huamei123',
+            'username'    => '17391917587',
+            'password'    => 'huamei123',
             'customer_id' => '1043344731',
-            'type'     => 'zx',
+            'type'        => 'zx',
         ],
     ];
 
@@ -60,7 +60,8 @@ class WeiboClient
             throw new ProcessFailedException($process);
         }
         try {
-            $test  = json_decode($process->getOutput(), true);
+            $data  = $process->getOutput();
+            $test  = json_decode($data, true);
             $total = $test['result']['total'];
             if ($total > $count) {
                 return static::getWeiboData($startDate, $endDate, $total);

@@ -10,6 +10,17 @@
                      :model="form"
                      :rules="rules"
                      :label-width="formLabelWidth">
+                <el-form-item label="账户" required prop="account_name">
+                    <el-radio-group v-model="form.account_name">
+                        <el-radio v-for="(item , key) in accounts"
+                                  :key="key"
+                                  border
+                                  :label="key">
+                            {{ item.username }} ({{ key }})
+                        </el-radio>
+                    </el-radio-group>
+
+                </el-form-item>
                 <el-form-item label="时间范围" required prop="dates">
                     <el-col :span="11">
                         <el-date-picker
@@ -40,6 +51,9 @@
 
     export default {
         name   : "weibo-grab-action",
+        props  : {
+            accounts: Object,
+        },
         data() {
             return {
                 loadingInstance  : null,
@@ -68,18 +82,33 @@
                     ]
                 },
                 form             : {
-                    dates: [],
+                    dates       : [],
+                    account_name: '',
                 },
                 rules            : {
-                    dates: [
+                    dates       : [
                         { required: true, message: '请选择日期', trigger: 'change' }
                     ],
+                    account_name: [
+                        { required: true, message: '请选择账户', trigger: 'change' }
+                    ]
                 },
             };
+        },
+        mounted() {
+            console.log('this.accounts :', this.accounts);
         },
         methods: {
             handleOpen() {
                 this.dialogFormVisible = true;
+            },
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {
+                    });
             },
             closeDialog() {
                 this.resetForm();
@@ -101,14 +130,17 @@
 
                         try {
                             let res = await axios.request({
-                                url   : '/api/weibo/grabFormData',
+                                url   : '/api/weibo/pullFormData',
                                 method: 'post',
                                 data  : data,
                             });
                             console.log('res :', res);
-                            if (res.status === 200) {
+
+                            let responseData = res.data;
+
+                            if (responseData.status) {
                                 Swal.fire({
-                                    title            : res.data.message,
+                                    title            : responseData.msg,
                                     type             : 'success',
                                     timer            : 2000,
                                     showConfirmButton: false,
@@ -117,7 +149,28 @@
                                     }
                                 });
                                 this.closeDialog();
+                            } else {
+                                Swal.fire({
+                                    title            : responseData.msg,
+                                    type             : 'error',
+                                    showConfirmButton: false,
+                                });
                             }
+
+
+                            // if (res.status === 200) {
+                            //     Swal.fire({
+                            //         title            : res.data.message,
+                            //         type             : 'success',
+                            //         timer            : 2000,
+                            //         showConfirmButton: false,
+                            //         onClose(modalElement) {
+                            //             $.admin.reload();
+                            //         }
+                            //     });
+                            //     this.closeDialog();
+                            // }
+
                         } catch (e) {
                             this.loading = false;
                             if (e.response) {

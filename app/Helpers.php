@@ -361,7 +361,7 @@ class Helpers
         $data = $client::baiduTempSearch([
             'phone' => $model->phone
         ], $model);
-        
+
         if ($data) {
             $model->fill($data);
             $model->save();
@@ -384,7 +384,6 @@ class Helpers
         $firstDate = $date->firstOfMonth()->toDateString();
         $lastDate  = $date->lastOfMonth()->toDateString();
 
-        //
         $data = $client::toHospitalSearchArriving([
             'phone'            => $model->phone,
             'DatetimeRegStart' => $firstDate,
