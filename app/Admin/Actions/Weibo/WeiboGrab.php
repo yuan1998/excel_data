@@ -7,6 +7,7 @@ use App\Imports\BaiduImport;
 use App\Imports\FeiyuImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\WeiboImport;
+use App\Models\WeiboAccounts;
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -28,7 +29,8 @@ class WeiboGrab extends Action
 
     public function render()
     {
-        return view('admin.actions.weiboGrabAction', ['accounts' => WeiboClient::$Account]);
+        $accounts =  WeiboAccounts::getAccountData();
+        return view('admin.actions.weiboGrabAction', ['accounts' => $accounts]);
     }
 
 

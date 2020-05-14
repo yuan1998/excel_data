@@ -1,6 +1,16 @@
 <template>
-    <div style="display: inline-block;">
-        <el-button type="primary" size="mini" @click="handleOpen">手动抓取微博表单</el-button>
+    <div style="display: inline-block;margin-left: 15px;">
+        <el-button style="margin-right: 10px;"
+                   type="primary"
+                   size="mini"
+                   @click="handleOpen">
+            手动抓取微博表单
+        </el-button>
+        <el-button @click="handleSyncAccount"
+                   size="mini"
+                   type="success">
+            同步账户信息
+        </el-button>
         <el-dialog title="手动抓取微博表单"
                    ref="dialog"
                    width="550px"
@@ -10,13 +20,13 @@
                      :model="form"
                      :rules="rules"
                      :label-width="formLabelWidth">
-                <el-form-item label="账户" required prop="account_name">
-                    <el-radio-group v-model="form.account_name">
-                        <el-radio v-for="(item , key) in accounts"
-                                  :key="key"
+                <el-form-item label="账户" required prop="account_id">
+                    <el-radio-group v-model="form.account_id">
+                        <el-radio v-for="item  in accounts"
+                                  :key="item.id"
                                   border
-                                  :label="key">
-                            {{ item.username }} ({{ key }})
+                                  :label="item.id">
+                            {{ item.username }} ({{ item.name }})
                         </el-radio>
                     </el-radio-group>
 
@@ -52,7 +62,7 @@
     export default {
         name   : "weibo-grab-action",
         props  : {
-            accounts: Object,
+            accounts: Array,
         },
         data() {
             return {
@@ -82,14 +92,14 @@
                     ]
                 },
                 form             : {
-                    dates       : [],
-                    account_name: '',
+                    dates     : [],
+                    account_id: '',
                 },
                 rules            : {
-                    dates       : [
+                    dates     : [
                         { required: true, message: '请选择日期', trigger: 'change' }
                     ],
-                    account_name: [
+                    account_id: [
                         { required: true, message: '请选择账户', trigger: 'change' }
                     ]
                 },
@@ -187,6 +197,48 @@
 
                     }
                 });
+            },
+            async handleSyncAccount() {
+                swal.fire({
+                    title            : '',
+                    html             : `
+                            <div class="save_loading">
+                                <svg viewBox="0 0 140 140" width="140" height="140"><g class="outline"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></g><g class="circle"><path d="m 70 28 a 1 1 0 0 0 0 84 a 1 1 0 0 0 0 -84" stroke="#71BBFF" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="200" stroke-dasharray="300"></path></g></svg>
+                            </div>
+                            <div>
+                                <h4>请稍等...</h4>
+                            </div>
+                            `,
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                });
+
+                try {
+                    let res = await axios.post('/api/weibo/syncAccount');
+                    if (res.status === 204) {
+                        Swal.fire({
+                            title: '同步成功!',
+                            type : 'success',
+                            onClose(modalElement) {
+                                $.admin.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire(
+                            '错误!',
+                            '发生错误,请联系管理员!',
+                            'error'
+                        );
+                    }
+                } catch (e) {
+                    Swal.fire(
+                        '接口错误!',
+                        '发生错误,请联系管理员!',
+                        'error'
+                    );
+                }
+
+
             }
         },
 

@@ -90,8 +90,8 @@ class WeiboUserController extends AdminController
         if (!$type) {
             $grid->column('type', __('类型'))
                 ->using([
-                    'zx'  => '整形',
-                    'kq'  => '口腔',
+                    'zx' => '整形',
+                    'kq' => '口腔',
                 ])->label();
         }
         return $grid;

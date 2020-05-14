@@ -5,16 +5,16 @@
 import json
 import time
 import sys
-import base64
 import rsa
+import base64
 import binascii
 import requests
 import re
 from PIL import Image
 import random
 from urllib.parse import quote_plus
-import http.cookiejar as cookielib
 from datetime import date
+import redis
 
 """
 整体的思路是，
@@ -24,7 +24,7 @@ from datetime import date
 3. 仅仅在 Python3.4+ 测试通过，低版本没有测试
 4. 代码 PEP8 规范
 """
-
+r = redis.Redis(host='127.0.0.1', port=6379, db=0, decode_responses=True)
 todayDateString = str(date.today())
 arguments = sys.argv
 try:
@@ -40,7 +40,7 @@ except IndexError:
 try:
     count = arguments[3]
 except IndexError:
-    count = "2000"
+    count = "1000"
 
 agents = [
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36',
@@ -48,10 +48,9 @@ agents = [
     'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36',
     'Chrome/78.0.3904.108 Mobile Safari/537.36',
 ]
-agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Safari/605.1.15'
+agent = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36'
 headers = {
     'User-Agent': agent,
-    'Referer': 'https://weibo.com/',
 }
 
 
@@ -61,16 +60,27 @@ class WeiboLogin(object):
     通过登录 weibo.com 然后跳转到 m.weibo.cn
     """
 
-    def __init__(self, user, password, cookie_path):
+    def __init__(self, user, password):
         super(WeiboLogin, self).__init__()
         self.user = user
         self.password = password
         self.session = requests.Session()
-        self.cookie_path = cookie_path
-        self.session.cookies = cookielib.LWPCookieJar(filename=self.cookie_path)
+        self.load_cookie()
         self.index_url = "http://weibo.com/login.php"
-        self.session.get(self.index_url, headers=headers, timeout=2)
         self.postdata = dict()
+
+    def save_cookie(self):
+        cookies = self.session.cookies.get_dict()
+        name = "cookie_dict_1_" + self.user
+        r.hmset(name, cookies)
+
+    def load_cookie(self):
+        name = "cookie_dict_1_" + self.user
+        cookies = r.hgetall(name)
+        if cookies:
+            # cookies = pickle.loads(cookies)
+            cookiejar = requests.cookies.cookiejar_from_dict(cookies)
+            self.session.cookies.update(cookiejar)
 
     def get_su(self):
         """
@@ -193,20 +203,16 @@ class WeiboLogin(object):
         uuid_pa = r'"uniqueid":"(.*?)"'
         uuid_res = re.findall(uuid_pa, uuid, re.S)[0]
         web_weibo_url = "http://weibo.com/%s/profile?topnav=1&wvr=6&is_all=1" % uuid_res
-        weibo_page = self.session.get(web_weibo_url, headers=headers)
-        weibo_pa = r'<title>(.*?)</title>'
-        # print(weibo_page.content.decode("utf-8"))
-        userID = re.findall(weibo_pa, weibo_page.content.decode("utf-8", 'ignore'), re.S)[0]
+        self.session.get(web_weibo_url, headers=headers)
+        self.save_cookie()
 
     def data(self):
-        Mheaders = {
+        m_headers = {
             "Host": "cpl.biz.weibo.com",
             "User-Agent": agent
         }
 
-        # m.weibo.cn 登录的 url 拼接
-        _rand = str(time.time())
-        mParams = {
+        m_params = {
             "page": "1",
             "page_size": count,
             "time_order": "",
@@ -217,17 +223,18 @@ class WeiboLogin(object):
             "time_start": startDate,
             "time_end": endDate,
         }
-        murl = "https://cpl.biz.weibo.com/cpl/lead/list"
-        mhtml = self.session.get(murl, params=mParams, headers=Mheaders)
-        # print(mhtml.content.decode('utf-8'))
-        test_result = mhtml.json()
+        data_url = "https://cpl.biz.weibo.com/cpl/lead/list"
+
+        result = self.session.get(data_url, params=m_params, headers=m_headers)
+        self.save_cookie()
+
+        test_result = result.json()
         print(json.dumps(test_result))
 
 
 if __name__ == '__main__':
     username = arguments[4]  # 用户名
     password = arguments[5]  # 密码
-    cookie_path = "./cookie_weibo_" + username + ".txt"  # 保存cookie 的文件名称
-    weibo = WeiboLogin(username, password, cookie_path)
+    weibo = WeiboLogin(username, password)
     weibo.login()
     weibo.data()

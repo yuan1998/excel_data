@@ -6,3 +6,22 @@ tr .label {
     white-space: normal;
     display: inline-block;
 }
+
+
+.save_loading {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-name: ro;
+    transform-origin: 50% 50%;
+}
+
+
+@keyframes ro {
+    100% {
+        transform: rotate(-360deg) translate(0, 0);
+    }
+}

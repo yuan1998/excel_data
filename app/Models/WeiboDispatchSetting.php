@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Clients\WeiboClient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Redis;
 
@@ -26,6 +27,8 @@ class WeiboDispatchSetting extends Model
     ];
 
     public static $_PREFIX_BASE_SETTINGS_NAME_ = 'weibo_user_settings_name_prefix_test_';
+
+    public static $_GRAB_SETTINGS_NAME_ = "weibo_data_grab_settings_name_prefix_test_";
 
     public static $defaultDispatchSetting = [
         // 分配开关
@@ -61,6 +64,31 @@ class WeiboDispatchSetting extends Model
             return false;
         }
         return Redis::set(static::$_PREFIX_BASE_SETTINGS_NAME_ . $type, json_encode($data));
+    }
+
+
+    public static function makeDefaultGrabSettings()
+    {
+        return collect(WeiboClient::$Account)->map(function ($item, $key) {
+            $item['name']       = $key;
+            $item['grab_open']  = false;
+            $item['all_day']    = false;
+            $item['start_time'] = '9:00:00';
+            $item['end_time']   = '22:00:00';
+
+            return $item;
+        });
+    }
+
+    public static function getGrabSettings()
+    {
+        $data = Redis::get(static::$_GRAB_SETTINGS_NAME_);
+        return $data ? json_decode($data, true) : static::makeDefaultGrabSettings();
+    }
+
+    public static function setGrabSettings($data)
+    {
+        return Redis::set(static::$_GRAB_SETTINGS_NAME_, json_encode($data));
     }
 
 }

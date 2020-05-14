@@ -32,4 +32,5 @@ Route::group([
     $router->resource('account_data', "AccountDataController");
     $router->resource('weibo_user', 'WeiboUserController');
     $router->resource('weibo_form_data', "WeiboFormDataController");
+    $router->resource('weibo_accounts', "WeiboAccountController");
 });

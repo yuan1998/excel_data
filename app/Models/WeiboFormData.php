@@ -149,18 +149,7 @@ class WeiboFormData extends Model
         if (!$config['all_day']) {
             // 如果 开始时间 和 结束时间 都存在,开始判断
             if ($config['start_time'] && $config['end_time']) {
-                // 获取用于对比的时间
-                $now   = $testTime ? Carbon::parse($testTime) : Carbon::now();
-                $start = Carbon::parse($config['start_time']);
-                $end   = Carbon::parse($config['end_time']);
-
-                // 转换时间格式, 例: 09:00:00 => 90000
-                $startTime = (int)$start->format('His');
-                $endTime   = (int)$end->format('His');
-                $nowTime   = (int)$now->format('His');
-
-                // 返回对比结果   start_time <=  now <= $end_time
-                return $startTime <= $nowTime && $nowTime <= $endTime;
+                return Helpers::timeBetween($config['start_time'], $config['end_time'], $testTime);
             }
         }
         return true;
@@ -319,12 +308,11 @@ class WeiboFormData extends Model
     public static function pullWeiboData($accountName, $startDate, $endDate, $count = 2000)
     {
         Log::info('开始拉取微博数据', [$accountName]);
-        if (!isset(WeiboClient::$Account[$accountName])) {
+        if (!$account = WeiboAccounts::find($accountName)) {
             Log::error('错误的账户.', [$accountName]);
             return null;
         }
-        $account = WeiboClient::$Account[$accountName];
-        $type    = $account['type'];
+        $type = $account['type'];
 
         // 传入参数,使用客户端从微博后台拉取数据
         $data = WeiboClient::getWeiboData($account, $startDate, $endDate, $count);
@@ -347,46 +335,6 @@ class WeiboFormData extends Model
 
     }
 
-    public static function pullTodayAllType()
-    {
-        foreach (WeiboClient::$Account as $accountName => $value) {
-            WeiboFormData::pullToday($accountName);
-        }
-    }
-
-
-    public static function pullAllTypeOfDate($startDate, $endDate)
-    {
-        foreach (WeiboClient::$Account as $accountName => $value) {
-            PullWeiboFormData::dispatch($accountName, $startDate, $endDate)->onQueue('pull_weibo_data');
-        }
-    }
-
-
-    /**
-     * 使用客户端拉取当天的数据
-     * @param $type
-     */
-    public static function pullToday($type)
-    {
-        Log::info('拉取当天的微博表单', [$type]);
-        // 获取今天的日期
-        $today = Carbon::today()->toDateString();
-        // 加入查询队列,后台自动查询微博后台数据
-        PullWeiboFormData::dispatch($type, $today, $today)->onQueue('pull_weibo_data');
-    }
-
-    /**
-     * 使用客户端拉取昨天的数据
-     * @param $type
-     */
-    public static function pullYesterday($type)
-    {
-        // 获取昨天的日期
-        $yesterday = Carbon::yesterday()->toDateString();
-        // 加入查询队列,后台自动查询微博后台数据
-        PullWeiboFormData::dispatch($type, $yesterday, $yesterday)->onQueue('pull_weibo_data');
-    }
 
     public static function testDataMake()
     {

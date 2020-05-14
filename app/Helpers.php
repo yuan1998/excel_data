@@ -875,6 +875,25 @@ class Helpers
         }
     }
 
+    public static function timeBetween($start, $end, $testTime = null)
+    {
+        // 获取用于对比的时间
+        $now   = $testTime ? Carbon::parse($testTime) : Carbon::now();
+        $start = Carbon::parse($start);
+        $end   = Carbon::parse($end);
+
+        // 转换时间格式, 例: 09:00:00 => 90000
+        $startTime = (int)$start->format('His');
+        $endTime   = (int)$end->format('His');
+        $nowTime   = (int)$now->format('His');
+
+        // 返回对比结果   start_time <=  now <= $end_time
+        return $startTime <= $nowTime && $nowTime <= $endTime;
+
+    }
+
 }
+
+
 
 

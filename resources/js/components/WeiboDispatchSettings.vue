@@ -120,7 +120,6 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-
         <el-drawer
                 title="创建高级规则"
                 :before-close="handleClose"
@@ -172,6 +171,7 @@
                 </div>
             </div>
         </el-drawer>
+
     </div>
 </template>
 

@@ -11,34 +11,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="weibo_luming.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/weibo_luming.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6076">
-              <caret line="208" selection-start-line="208" selection-end-line="208" />
-              <folding>
-                <element signature="e#115#126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="yiliao.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yiliao.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2542">
-              <caret line="91" selection-start-line="91" selection-end-line="91" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="weibo_test.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/weibo_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="220" column="70" selection-start-line="220" selection-start-column="70" selection-end-line="220" selection-end-column="70" />
+            <state relative-caret-position="375">
+              <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
               <folding>
-                <element signature="e#115#126#0" expanded="true" />
+                <element signature="e#2379#2981#0" />
+                <element signature="e#4115#5290#0" />
+                <element signature="e#4508#5264#0" />
               </folding>
             </state>
           </provider>
@@ -49,6 +30,10 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>html</find>
+      <find>sso</find>
+      <find>path</find>
+      <find>path.</find>
+      <find>print</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -71,11 +56,10 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="259" />
-    <option name="y" value="-1369" />
-    <option name="width" value="1920" />
-    <option name="height" value="1111" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="969" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -93,8 +77,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -182,14 +166,16 @@
       <workItem from="1575278531852" duration="11004000" />
       <workItem from="1576726910285" duration="1433000" />
       <workItem from="1578016078230" duration="1282000" />
+      <workItem from="1589338492567" duration="36195000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13719000" />
+    <option name="totallyTimeSpent" value="49914000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="259" y="-1369" width="1920" height="1111" extended-state="0" />
+    <frame x="0" y="173" width="1680" height="969" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -198,19 +184,19 @@
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3285273" />
       <window_info anchor="right" id="Flutter Outline" order="3" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25506938" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49939686" visible="true" weight="0.25703794" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Structure" order="1" sideWeight="0.50060314" side_tool="true" weight="0.25764993" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Flutter Inspector" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -247,9 +233,40 @@
     <entry file="file://$PROJECT_DIR$/weibo_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6448">
-          <caret line="220" column="28" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="28" />
+          <caret line="220" column="70" selection-start-line="220" selection-start-column="70" selection-end-line="220" selection-end-column="70" />
+          <folding>
+            <element signature="e#2379#2981#0" />
+            <element signature="e#4115#5290#0" />
+            <element signature="e#4508#5264#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/weibo_luming.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6076">
+          <caret line="208" selection-start-line="208" selection-end-line="208" />
           <folding>
             <element signature="e#115#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yiliao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2542">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/weibo_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6448">
+          <caret line="220" column="28" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="28" />
+          <folding>
+            <element signature="e#2379#2981#0" />
+            <element signature="e#4115#5290#0" />
+            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>
@@ -276,17 +293,9 @@
         <state relative-caret-position="6727">
           <caret line="229" column="50" lean-forward="true" selection-start-line="229" selection-start-column="50" selection-end-line="229" selection-end-column="50" />
           <folding>
-            <element signature="e#115#126#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/weibo_luming.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6076">
-          <caret line="208" selection-start-line="208" selection-end-line="208" />
-          <folding>
-            <element signature="e#115#126#0" expanded="true" />
+            <element signature="e#2379#2981#0" />
+            <element signature="e#4115#5290#0" />
+            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>
@@ -319,19 +328,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cookie_weibo.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/weibo_luming.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="193" lean-forward="true" selection-start-line="193" selection-end-line="193" />
+          <folding>
+            <element signature="e#115#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/yiliao.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2542">
+        <state relative-caret-position="267">
           <caret line="91" selection-start-line="91" selection-end-line="91" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cookie_weibo_17392448796.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="4" column="13" lean-forward="true" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/IntelliJIdea2018.1/python_stubs/-2066100795/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="2906" column="8" selection-start-line="2906" selection-start-column="8" selection-end-line="2906" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.7/lib/python3.7/ntpath.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/weibo_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="220" column="70" selection-start-line="220" selection-start-column="70" selection-end-line="220" selection-end-column="70" />
+        <state relative-caret-position="375">
+          <caret line="14" column="35" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
           <folding>
-            <element signature="e#115#126#0" expanded="true" />
+            <element signature="e#2379#2981#0" />
+            <element signature="e#4115#5290#0" />
+            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>

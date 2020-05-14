@@ -119,7 +119,7 @@ class WeiboFormDataController extends AdminController
                 $batch->disableDelete();
             });
 //            $tools->append(new WeiboUpload());
-            $tools->append(new WeiboGrab());
+//            $tools->append(new WeiboGrab());
         });
 
         $type = $this->appendDataType($grid);

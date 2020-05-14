@@ -9,7 +9,9 @@ use App\Models\ArrivingData;
 use App\Models\BillAccountData;
 use App\Models\FormData;
 use App\Models\TempCustomerData;
+use App\Models\WeiboAccounts;
 use App\Models\WeiboFormData;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Log;
@@ -98,19 +100,21 @@ class Kernel extends ConsoleKernel
         })->monthlyOn(date('t'), '23:45');
 
 
-//        // 每隔15分钟,拉取一次微博表单数据
-//        $schedule->call(function () {
-//            foreach (WeiboClient::$Account as $accountName => $value) {
-//                WeiboFormData::pullToday($accountName);
-//            }
-//        })->everyFifteenMinutes();
-//
-//        // 每天拉取一次昨天的微博表单数据,以防错漏
-//        $schedule->call(function () {
-//            foreach (WeiboClient::$Account as $accountName => $value) {
-//                WeiboFormData::pullYesterday($accountName);
-//            }
-//        })->daily();
+        // 当天
+        // 每隔15分钟,拉取一次微博表单数据
+
+        $schedule->call(function () {
+            $today = Carbon::today()->toDateString();
+            WeiboAccounts::checkAccountIsRun($today, $today);
+        })->everyFifteenMinutes();
+
+        // 隔天
+        // 每天拉取一次昨天的微博表单数据,以防错漏
+        $schedule->call(function () {
+            WeiboAccounts::setAccountData();
+            $yesterday = Carbon::yesterday()->toDateString();
+            WeiboAccounts::checkAccountIsRun($yesterday, $yesterday);
+        })->daily();
 //
 //        // 每个月月底,重新查询一遍表单的建档情况 (针对微博表单)
 //        $schedule->call(function () {

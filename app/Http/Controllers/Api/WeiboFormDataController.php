@@ -18,9 +18,9 @@ class WeiboFormDataController extends Controller
         $dates = $request->get('dates');
         if (!$dates || !is_array($dates)) $this->response->errorBadRequest('错误的参数,无法识别的日期');
 
-        $accountName = $request->get('account_name');
-
-        $result = WeiboFormData::pullWeiboData($accountName, $dates[0], $dates[1]);
+        $accountID = $request->get('account_id');
+        
+        $result = WeiboFormData::pullWeiboData($accountID, $dates[0], $dates[1]);
 
         if ($result === null) {
             return $this->response->array([
@@ -30,25 +30,10 @@ class WeiboFormDataController extends Controller
         } else {
             return $this->response->array([
                 'status' => 1,
-                'msg' => '获取数据成功,一共获取了' . $result . '条数据.',
+                'msg'    => '获取数据成功,一共获取了' . $result . '条数据.',
             ]);
         }
 
-
-    }
-
-    public function grabWeiboFormData(Request $request)
-    {
-        $dates = $request->get('dates');
-        if (!$dates || !is_array($dates)) $this->response->errorBadRequest('错误的参数,无法识别的日期');
-
-        Helpers::dateRangeForEach($dates, function ($date) {
-            $dateString = $date->toDateString();
-            WeiboFormData::pullAllTypeOfDate($dateString, $dateString);
-        });
-        return $this->response->array([
-            'message' => '提交成功,稍后将会自动抓取,请稍安勿躁.'
-        ]);
     }
 
     public function userHasNew(Request $request)

@@ -60,7 +60,7 @@ class WeiboClient
             throw new ProcessFailedException($process);
         }
         try {
-            $data  = $process->getOutput();
+            $data = $process->getOutput();
             $test  = json_decode($data, true);
             $total = $test['result']['total'];
             if ($total > $count) {
