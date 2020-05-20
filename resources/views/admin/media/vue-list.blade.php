@@ -1,7 +1,7 @@
-<media-page :prop-list='@json($list)'
-            :prop-nav='@json($nav)'
-            :prop-url='@json($url)'
-            :permissions='@json($permissions)'
-            :router-index-list='@json($router)'
-            :csrf='@json($csrf)'
+<media-page :prop-list='@json($list,true)'
+            :prop-nav='@json($nav,true)'
+            :prop-url='@json($url,true)'
+            :permissions='@json($permissions, true)'
+            :router-index-list='@json($router, true)'
+            :csrf='@json($csrf, true)'
 ></media-page>
