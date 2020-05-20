@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/PythonScript/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/PythonScript/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/MediaPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/MediaPage.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -47,13 +46,12 @@
         <entry file="file://$PROJECT_DIR$/resources/js/components/MediaPage.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="227">
-              <caret line="267" column="39" selection-start-line="267" selection-start-column="39" selection-end-line="267" selection-end-column="39" />
+              <caret line="260" column="47" selection-start-line="260" selection-start-column="47" selection-end-line="260" selection-end-column="47" />
               <folding>
                 <element signature="e#939#945#0" expanded="true" />
                 <element signature="n#style#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="e#8045#8084#0" expanded="true" />
                 <element signature="e#10891#11373#0" />
-                <element signature="e#12072#12104#0" />
                 <element signature="e#9609#9641#0" />
                 <element signature="e#10086#10120#0" />
                 <element signature="e#14274#14335#0" />
@@ -542,12 +540,12 @@
       <workItem from="1587534582982" duration="4423000" />
       <workItem from="1588912989180" duration="23071000" />
       <workItem from="1589338153042" duration="28000" />
-      <workItem from="1589341469639" duration="58409000" />
+      <workItem from="1589341469639" duration="58620000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1064245000" />
+    <option name="totallyTimeSpent" value="1064456000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="173" width="1680" height="969" extended-state="6" />
@@ -1012,13 +1010,12 @@
     <entry file="file://$PROJECT_DIR$/resources/js/components/MediaPage.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
-          <caret line="267" column="39" selection-start-line="267" selection-start-column="39" selection-end-line="267" selection-end-column="39" />
+          <caret line="260" column="47" selection-start-line="260" selection-start-column="47" selection-end-line="260" selection-end-column="47" />
           <folding>
             <element signature="e#939#945#0" expanded="true" />
             <element signature="n#style#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="e#8045#8084#0" expanded="true" />
             <element signature="e#10891#11373#0" />
-            <element signature="e#12072#12104#0" />
             <element signature="e#9609#9641#0" />
             <element signature="e#10086#10120#0" />
             <element signature="e#14274#14335#0" />

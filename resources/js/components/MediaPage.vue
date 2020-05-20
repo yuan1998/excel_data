@@ -257,6 +257,9 @@
         },
         methods : {
             parseListFile(list) {
+                if (typeof list === 'object' && list !== null) {
+                    list = Object.values(list);
+                }
                 return list.map((item) => {
                     item.ext      = getFileExtension(item.name);
                     item.basename = basename(item.name);
