@@ -41,7 +41,7 @@ EOF
 
             $manager = new MediaManager($path);
 
-            dd($manager->ls());
+//            dd($manager->ls());
             $content->body(view("admin.media.vue-list", [
                 'list'        => $manager->ls(),
                 'nav'         => $manager->navigation(),
