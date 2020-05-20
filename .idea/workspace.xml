@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/media/vue-list.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/media/vue-list.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonScript/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/PythonScript/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/MediaPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/MediaPage.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/js/components/MediaPage.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="215" column="34" lean-forward="true" selection-start-line="215" selection-start-column="28" selection-end-line="215" selection-end-column="34" />
+            <state relative-caret-position="227">
+              <caret line="267" column="39" selection-start-line="267" selection-start-column="39" selection-end-line="267" selection-end-column="39" />
               <folding>
                 <element signature="e#939#945#0" expanded="true" />
                 <element signature="n#style#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -70,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/admin/media/vue-list.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
+            <state>
+              <caret column="22" selection-start-column="18" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -220,9 +221,9 @@
         <option value="$PROJECT_DIR$/config/filesystems.php" />
         <option value="$PROJECT_DIR$/config/admin.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/MediaPage.vue" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/MediaController.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/media/vue-list.blade.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/MediaPage.vue" />
       </list>
     </option>
   </component>
@@ -541,12 +542,12 @@
       <workItem from="1587534582982" duration="4423000" />
       <workItem from="1588912989180" duration="23071000" />
       <workItem from="1589338153042" duration="28000" />
-      <workItem from="1589341469639" duration="58246000" />
+      <workItem from="1589341469639" duration="58409000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1064082000" />
+    <option name="totallyTimeSpent" value="1064245000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="173" width="1680" height="969" extended-state="6" />
@@ -967,32 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/MediaPage.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="215" column="34" lean-forward="true" selection-start-line="215" selection-start-column="28" selection-end-line="215" selection-end-column="34" />
-          <folding>
-            <element signature="e#939#945#0" expanded="true" />
-            <element signature="n#style#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#8045#8084#0" expanded="true" />
-            <element signature="e#10891#11373#0" />
-            <element signature="e#12072#12104#0" />
-            <element signature="e#9609#9641#0" />
-            <element signature="e#10086#10120#0" />
-            <element signature="e#14274#14335#0" />
-            <element signature="e#10491#10523#0" />
-            <element signature="e#13793#13825#0" />
-            <element signature="e#14243#14275#0" />
-            <element signature="e#14470#14502#0" />
-            <element signature="e#14912#15390#0" />
-            <element signature="e#14864#14896#0" />
-            <element signature="e#18428#18460#0" />
-            <element signature="e#12713#12891#0" />
-            <element signature="e#13715#14090#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/MediaController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="58">
@@ -1029,8 +1004,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/admin/media/vue-list.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
+        <state>
+          <caret column="22" selection-start-column="18" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/MediaPage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="267" column="39" selection-start-line="267" selection-start-column="39" selection-end-line="267" selection-end-column="39" />
+          <folding>
+            <element signature="e#939#945#0" expanded="true" />
+            <element signature="n#style#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#8045#8084#0" expanded="true" />
+            <element signature="e#10891#11373#0" />
+            <element signature="e#12072#12104#0" />
+            <element signature="e#9609#9641#0" />
+            <element signature="e#10086#10120#0" />
+            <element signature="e#14274#14335#0" />
+            <element signature="e#10491#10523#0" />
+            <element signature="e#13793#13825#0" />
+            <element signature="e#14243#14275#0" />
+            <element signature="e#14470#14502#0" />
+            <element signature="e#14912#15390#0" />
+            <element signature="e#14864#14896#0" />
+            <element signature="e#18428#18460#0" />
+            <element signature="e#12713#12891#0" />
+            <element signature="e#13715#14090#0" />
+          </folding>
         </state>
       </provider>
     </entry>

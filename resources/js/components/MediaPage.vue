@@ -257,7 +257,6 @@
         },
         methods : {
             parseListFile(list) {
-                console.log('list :', list);
                 return list.map((item) => {
                     item.ext      = getFileExtension(item.name);
                     item.basename = basename(item.name);
@@ -266,6 +265,7 @@
                 })
             },
             fillOtherData(list, nav, url) {
+                console.log(' arguments:', arguments);
                 this.list = this.parseListFile(list);
                 this.nav  = nav;
                 this.url  = url;
