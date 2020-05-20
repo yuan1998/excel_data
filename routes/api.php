@@ -179,5 +179,23 @@ $api->version('v1', [
             ->name('api.vivo.import');
     });
 
+    $api->group([
+        'prefix' => 'media',
+    ], function ($api) {
+        $api->get('/list', "MediaController@list")
+            ->name('api.media.list');
+        $api->post('/move', "MediaController@move")
+            ->name('api.media.move');
+        $api->delete('/delete', "MediaController@delete")
+            ->name('api.media.list');
+        $api->post('/upload', "MediaController@upload")
+            ->name('api.media.upload');
+        $api->post('/makeFolder', "MediaController@makeFolder")
+            ->name('api.media.makeFolder');
+
+
+
+    });
+
 
 });

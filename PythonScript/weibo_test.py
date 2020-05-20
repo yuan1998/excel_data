@@ -174,10 +174,7 @@ class WeiboLogin(object):
         # 先不输入验证码登录测试
         sever_data = self.pre_login()
         login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.19)&_'
-        # login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.19)'
-        # login_url = login_url + str(time.time() * 1000)
         login_page = self.session.post(login_url, data=self.postdata, headers=headers)
-        # print(login_page.content.decode('utf-8'))
         ticket_js = login_page.json()
         ticket = ticket_js["ticket"]
 

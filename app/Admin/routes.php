@@ -13,6 +13,28 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->get('/weibo_user/settings', 'WeiboUserController@settings')->name('admin.weiboUser.settings');
 
+
+    $router->group([
+        'prefix' => 'media-manager',
+    ], function (Router $router) {
+
+
+        $router->get('/', 'MediaController@index')
+            ->name('vue-media-index');
+        $router->get('download', 'MediaController@download')
+            ->name('vue-media-download');
+        $router->delete('delete', 'MediaController@delete')
+            ->name('vue-media-delete');
+        $router->put('move', 'MediaController@move')
+            ->name('vue-media-move');
+        $router->post('upload', 'MediaController@upload')
+            ->name('vue-media-upload');
+        $router->post('folder', 'MediaController@newFolder')
+            ->name('vue-media-new-folder');
+
+    });
+
+
     $router->resource('baidu_data', 'BaiduDataController');
     $router->resource('weibo_data', 'WeiboDataController');
     $router->resource('feiyu_data', "FeiyuDataController");

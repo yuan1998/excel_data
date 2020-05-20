@@ -396,10 +396,12 @@ return [
     */
     'extensions'                => [
 
-        'chartjs' => [
-
+        'chartjs'       => [
             // Set to `false` if you want to disable this extension
             'enable' => true,
-        ]
+        ],
+        'media-manager' => [
+            'disk'   => 'xxl_data'   // Points to the disk set in config/filesystem.php
+        ],
     ],
 ];
