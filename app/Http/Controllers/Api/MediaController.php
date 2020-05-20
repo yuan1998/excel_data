@@ -11,7 +11,7 @@ class MediaController extends Controller
 
     public static function hasDeletePermission()
     {
-        return Admin::user()->isAdministrator() || Admin::user()->can('media-delete');
+        return Admin::user()->isRole('administrator') || Admin::user()->can('media-delete');
     }
 
     public static function toData($path)
@@ -71,9 +71,9 @@ class MediaController extends Controller
 
     public function delete(Request $request)
     {
-        if (!static::hasDeletePermission()) {
-            $this->response->errorUnauthorized();
-        }
+//        if (!static::hasDeletePermission()) {
+//            $this->response->errorUnauthorized();
+//        }
 
         $files   = $request->get('files');
         $manager = new MediaManager();
@@ -107,5 +107,5 @@ class MediaController extends Controller
 
 
     }
-    
+
 }
