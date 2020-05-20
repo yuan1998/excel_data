@@ -57,6 +57,7 @@ return [
         'xxl_data' => [
             'driver' => 'local',
             'root' => storage_path('app/public/xxl_data'),
+            'url' => env('APP_URL').'/storage/xxl_data',
         ],
         's3' => [
             'driver' => 's3',
