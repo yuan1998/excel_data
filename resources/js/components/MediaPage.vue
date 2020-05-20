@@ -257,6 +257,7 @@
         },
         methods : {
             parseListFile(list) {
+                console.log('list :', list);
                 return list.map((item) => {
                     item.ext      = getFileExtension(item.name);
                     item.basename = basename(item.name);
