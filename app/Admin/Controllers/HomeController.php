@@ -30,6 +30,11 @@ class HomeController extends AdminController
     {
         $this->initVue();
 
+        if (Admin::user()->isRole('media-user') || Admin::user()->isRole('media-admin')) {
+            return redirect()->route('vue-media-index');
+        }
+
+
         return $content
             ->title($this->title)
             ->description($this->description)
