@@ -140,8 +140,24 @@ class BaseClient
     public static $temp_search_url = '/Reservation/TempCustSearch/Index';
     public static $customer_info_check_url = '/Reservation/TempCustInfo/Index';
     public static $reservation_search_url = '/Reservation/ReservationSearch/Index';
+
+    // 客户 基本信息
+    public static $cust_info_cust_infos_url = '/CommonArea/CustInfo/Custinfos';
+    // 预约金 储值
+    public static $cust_info_pre_charge_url = '/CommonArea/CustInfo/PreCharge';
+
+    // 正常收费单及退款、还款
+    public static $normal_charge_url = '/CommonArea/CustInfo/NormalCharge';
+    // 检验，辅助治疗单，住院结算单及退款、还款
+    public static $normal_charges_url = '/CommonArea/CustInfo/NormalCharges';
+    // 客户信息 Index
+    public static $cust_info_index_url = '/CommonArea/CustInfo/Index';
+
+    // 到院查询
     public static $to_hospital_search_url = '/Reservation/ToHospital/Index';
+    // 网电咨询师业绩查询
     public static $account_search_url = '/ReportCenter/NetBillAccount/Index';
+    //
     public static $customer_phone_check_url = '/CommonArea/CustInfo/ShowPhoneAndLog';
     public static $customer_info_create_url = '/Reservation/TempCustInfo/Create';
 
@@ -465,6 +481,97 @@ class BaseClient
             }
         }
         return $res;
+    }
+
+
+    public static function normalChargeApi($id, $count)
+    {
+        $data = [
+            'id'       => $id,
+            'pageSize' => $count,
+        ];
+
+        $test = static::postUriGetDom(static::$normal_charge_url, $data);
+        return $test;
+    }
+
+    public static function custInfoApi($id)
+    {
+        $data = [
+            'id' => $id,
+        ];
+
+        $test = static::postUriGetDom(static::$cust_info_index_url, $data, false);
+        return $test;
+    }
+
+
+    public static function normalChargesApi($id, $count)
+    {
+        $data = [
+            'id'       => $id,
+            'pageSize' => $count,
+        ];
+
+        return static::postUriGetDom(static::$normal_charges_url, $data);
+    }
+
+
+    public static function normalChargeData($id, $a = true, $count = 80)
+    {
+        $dom = $a ? static::normalChargeApi($id, $count) : static::normalChargesApi($id, $count);
+        return static::parserDomTableData($dom, 'table[data-nowrap]');
+    }
+
+
+    public static function trim($str)
+    {
+        preg_replace("/\ \'/", '', $str);
+
+    }
+
+    public static function baseCustomerInfoApi($id)
+    {
+
+        $data = [
+            'id' => $id,
+        ];
+
+        $dom = static::postUriGetDom(static::$cust_info_cust_infos_url, $data);
+
+        $btns  = $dom->find('#ShowPhoneButton');
+        $check = [];
+        foreach ($btns as $btn) {
+            preg_match("/ShowPhone\((.*),/", $btn->outerHTML, $match);
+            if ($match) {
+                $str    = $match[1];
+                $strArr = explode(',', $str);
+                array_push($check, [
+                    'id'   => preg_replace("/\ |\'/", '', $strArr[0]),
+                    'type' => preg_replace("/\ |\'/", '', $strArr[1]),
+                ]);
+            }
+        }
+        return $check;
+    }
+
+    public static function customerPreChargeApi($id, $count)
+    {
+        $data = [
+            'id'       => $id,
+            'pageSize' => $count,
+        ];
+
+        return static::postUriGetDom(static::$cust_info_pre_charge_url, $data);
+    }
+
+    public static function customerPreChargeData($id, $count = 80)
+    {
+        $dom = static::customerPreChargeApi($id, $count);
+//        dd($dom);
+        $test = static::parserDomTableData($dom, 'table[data-nowrap]');
+//        dd($test);
+        return $test;
     }
 
 

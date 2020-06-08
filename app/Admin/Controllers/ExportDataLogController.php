@@ -52,7 +52,7 @@ class ExportDataLogController extends AdminController
 
         $grid->disableCreateButton();
 
-        $grid->header(function ($header) {
+        $grid->header(function () {
             $queueName = [
                 'form_data_phone'    => '表单电话',
                 'crm_grab_log_queue' => 'crm 数据',

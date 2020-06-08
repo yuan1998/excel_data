@@ -243,10 +243,15 @@ class Helpers
         foreach ($trs as $tr) {
             $td  = $tr->find('td');
             $arr = [];
-            foreach ($td as $key => $value) {
-                $name = $keys[$key];
+            foreach ($td as $index => $value) {
+                $name      = $keys[$index];
+                $valueText = $value->innerHTML;
 
                 if ($name === '客户' || $name === '客户姓名' || $name == '网电客户') {
+                    $aTag = $value->find('a');
+                    if ($aTag) {
+                        $valueText = $aTag->innerHTML;
+                    }
 //                    dd($value->outerHTML);
                     preg_match("/CustInfo\(\'(.*?)\'\)/", $value->outerHTML, $match);
                     if (isset($match[1])) {
@@ -254,9 +259,9 @@ class Helpers
                     }
                 }
 
-                $field = $_keys ? (isset($_keys[$name]) ? $_keys[$name] : null) : $name;
+                $field = $_keys ? (isset($_keys[$name]) ? $_keys[$name] : $name) : $name;
 
-                $field && $arr[$field] = strip_tags($value->innerHTML);
+                $field && $arr[$field] = strip_tags($valueText);
             }
             array_push($result, $arr);
         }

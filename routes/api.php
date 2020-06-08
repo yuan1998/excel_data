@@ -192,8 +192,7 @@ $api->version('v1', [
             ->name('api.media.upload');
         $api->post('/makeFolder', "MediaController@makeFolder")
             ->name('api.media.makeFolder');
-
-
+        
     });
 
 
