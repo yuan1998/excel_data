@@ -69,14 +69,14 @@ class VivoData extends Model
         $first = $data->get(0);
         return $first
             && (
-                 (
-                    $first->contains('站点ID')
-                    && $first->contains('线索ID')
-                    && $first->contains('电话')
-                    && $first->contains('站点名称')
-                    && $first->contains('线索数据')
-                    && $first->contains('提交时间')
-                )
+            (
+                $first->contains('站点ID')
+                && $first->contains('线索ID')
+                && $first->contains('电话')
+                && $first->contains('站点名称')
+                && $first->contains('线索数据')
+                && $first->contains('提交时间')
+            )
             );
     }
 
@@ -138,7 +138,7 @@ class VivoData extends Model
      */
     public static function parserData($item)
     {
-        $item['form_type'] = 9;
+        $item['form_type'] = FormData::$FORM_TYPE_VIVO;
         $item['date']      = Carbon::parse($item['post_date'])->toDateString();
         $item['code']      = $item['site_name'];
         $code              = $item['code'];

@@ -56,7 +56,7 @@ class YiliaoImport implements ToCollection
             $yiliao->projects()->sync($projectType);
 
 
-            if ($yiliao['phone'] && $parserItem['form_type'] == 1) {
+            if ($yiliao['phone'] && $parserItem['form_type'] == FormData::$FORM_TYPE_BAIDU_XXL) {
                 $form  = FormData::updateOrCreate(
                     [
                         'model_id'   => $yiliao->id,

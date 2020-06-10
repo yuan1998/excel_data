@@ -34,7 +34,7 @@ class WeiboDataController extends AdminController
             $tools->batch(function (BatchActions $batch) {
                 $batch->disableDelete();
             });
-            $tools->append(new ExcelUpload($type ?? 'zx', 'weibo'));
+//            $tools->append(new ExcelUpload($type ?? 'zx', 'weibo'));
         });
         $grid->disableCreateButton();
         $grid->disableActions();
@@ -50,7 +50,7 @@ class WeiboDataController extends AdminController
         $grid->column('phone', __('Phone'));
         $grid->column('category_type', __('Category type'));
         $grid->column('weixin', __('Weixin'));
-        
+
         return $grid;
     }
 

@@ -31,7 +31,7 @@ class ExportDataLogController extends AdminController
     {
         $grid = new Grid(new ExportDataLog);
 
-        $grid->model()->orderBy('id', 'desc');
+        $grid->model()->whereIn('data_type', ['xxl_data_excel'])->orderBy('id', 'desc');
         $this->initVue();
 
         $grid->tools(function (Grid\Tools $tools) {

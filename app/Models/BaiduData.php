@@ -81,19 +81,19 @@ class BaiduData extends Model
         if (!$str) return null;
 
         if (preg_match('/A6/', $str)) {
-            return 1;
+            return FormData::$FORM_TYPE_BAIDU_XXL;
         }
         if (preg_match('/A30/', $str)) {
-            return 7;
+            return FormData::$FORM_TYPE_SHENMA;
         }
         if (preg_match('/A20/', $str)) {
-            return 6;
+            return FormData::$FORM_TYPE_SOGOU;
         }
         if (preg_match('/A10/', $str)) {
-            return 5;
+            return FormData::$FORM_TYPE_BAIDU_WEB;
         }
         if (preg_match('/A8/', $str)) {
-            return 8;
+            return FormData::$FORM_TYPE_OPPO;
         }
 
     }
@@ -211,7 +211,8 @@ class BaiduData extends Model
 
             $clue = static::parseClue($item['clue']);
 
-            if (in_array($baidu['form_type'], [1, 8]) && $clue->isNotEmpty()) {
+            if (in_array($baidu['form_type'], [FormData::$FORM_TYPE_BAIDU_XXL, FormData::$FORM_TYPE_OPPO])
+                && $clue->isNotEmpty()) {
                 $form = FormData::updateOrCreate([
                     'model_id'   => $baidu->id,
                     'model_type' => static::class,

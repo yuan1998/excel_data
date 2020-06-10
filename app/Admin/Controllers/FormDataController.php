@@ -21,7 +21,7 @@ class FormDataController extends AdminController
      *
      * @var string
      */
-    protected $title = '表单数据';
+    protected $title = '表单数据管理';
 
     /**
      * Make a grid builder.
@@ -30,11 +30,13 @@ class FormDataController extends AdminController
      */
     protected function grid()
     {
-        $this->initVue();
+        static::initVue();
+        static::clearAutoComplete();
 
         $grid = new Grid(new FormData);
-        $grid->model()->with(['phones', 'projects', 'department', 'account'])->orderBy('date', 'desc');
-
+        $grid->model()
+            ->with(['phones', 'projects', 'department', 'account'])
+            ->orderBy('date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
             $filter->column(6, function (Grid\Filter $filter) {
@@ -48,7 +50,6 @@ class FormDataController extends AdminController
                         $query->whereNull('department_id');
                     }
                 }, '科室')->select($departmentOptions);
-
 
                 $accountOptions = array_merge(
                     ['0' => '没有账户'],
@@ -65,6 +66,29 @@ class FormDataController extends AdminController
 
                 $filter->where(function ($query) {
                     $val = $this->input;
+
+                    switch ($val) {
+                        case 0 :
+                        case 1 :
+                        case 2 :
+                            $query->whereHas('phones', function ($query) use ($val) {
+                                $query->where('is_archive', $val);
+                            });
+                            break;
+                        case 3:
+                            $query->whereHas('phones', function ($query) use ($val) {
+                                $query->where('is_repeat', 2);
+                            });
+                            break;
+                        case 4:
+                            $query->whereHas('phones', function ($query) use ($val) {
+                                $query->where('is_repeat', '<>', 2)
+                                    ->where('intention', 0)
+                                    ->where('is_archive', '1');
+                            });
+                            break;
+                    }
+
                     if ($val >= 0) {
                         if ($val == 3) {
                             $query->whereHas('phones', function ($query) use ($val) {
@@ -81,12 +105,12 @@ class FormDataController extends AdminController
                     1 => '已建档',
                     2 => '未建档',
                     3 => '重复建档',
+                    4 => '未下单',
                 ]);
 
-
                 $filter->between('date', '日期')->date();
-
             });
+
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->equal('type', '数据类型')->select(CrmGrabLog::$typeList);
                 $filter->equal('form_type', '表单类型')->select(FormData::$FormTypeList);

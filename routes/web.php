@@ -12,17 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin');
 });
 Route::group([
     'prefix' => 'weibo'
-] , function () {
+], function () {
     Route::get('/login', "WeiboUserController@loginPage");
 });
 
 
 Route::get('/excelView/{key}', "ExcelViewController@index");
-
 
 
 Auth::routes();

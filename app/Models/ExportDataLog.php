@@ -14,6 +14,7 @@ class ExportDataLog extends Model
         'request_data',
         'run_time',
         'log',
+        'data_type',
     ];
 
     public static $staticList = [
@@ -22,6 +23,18 @@ class ExportDataLog extends Model
         2 => '生成成功',
         3 => '生成失败',
     ];
+
+    public static $typeList = [
+        'xxl_data_excel' => '信息流数据表格',
+    ];
+
+    public static function setAllToType($type)
+    {
+        static::query()->update([
+            'data_type' => $type
+        ]);
+
+    }
 
     public static function makeName($data)
     {

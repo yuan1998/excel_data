@@ -14,7 +14,7 @@ class AddLogType extends Migration
     public function up()
     {
         Schema::table('export_data_logs', function (Blueprint $table) {
-            $table->string('type')->nullable();
+            $table->string('data_type')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddLogType extends Migration
     public function down()
     {
         Schema::table('export_data_logs', function (Blueprint $table) {
-            $table->dropColumn('type');
+            $table->dropColumn('data_type');
         });
     }
 }

@@ -18,7 +18,7 @@ class ChannelController extends AdminController
      *
      * @var string
      */
-    protected $title = '平台渠道';
+    protected $title = '平台渠道管理';
 
     /**
      * Make a grid builder.
@@ -29,8 +29,24 @@ class ChannelController extends AdminController
     {
         $grid = new Grid(new Channel);
 
+        $grid->disableRowSelector();
+
         $grid->column('title', __('Title'));
-        $grid->column('mediums', '关联媒介')->style("width:300px;")->pluck('title')->label();
+        $grid->column('mediums', '关联媒介')
+            ->display(function ($val) {
+                $labels = $this->mediums->pluck('title');
+                $count  = count($labels);
+                return '共关联' . $count . '个媒介类型';
+            })
+            ->modal('关联媒介' . '-列表', function ($model) {
+                $labels = $model->mediums->pluck('title');
+                $string = collect($labels)->map(function ($label) {
+                    return "<h4 style='display: inline-block;margin-right:5px;'><span class=\" label label-success\">$label</span></h4>";
+                })->join("");
+                return $string;
+            });
+
+
         $grid->column('form_type', '关联数据类型')
             ->display(function ($value) {
                 return collect(explode(',', $value))->map(function ($value) {
@@ -42,7 +58,6 @@ class ChannelController extends AdminController
             })
             ->label();
         $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }

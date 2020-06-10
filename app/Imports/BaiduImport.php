@@ -112,7 +112,7 @@ class BaiduImport implements ToCollection
 
 
             $clue = $this->parseClue($item['clue']);
-            if (in_array($baidu['form_type'], [1, 8]) && $clue->isNotEmpty()) {
+            if (in_array($baidu['form_type'], [FormData::$FORM_TYPE_BAIDU_XXL, FormData::$FORM_TYPE_OPPO]) && $clue->isNotEmpty()) {
                 $form = FormData::updateOrCreate([
                     'model_id'   => $baidu->id,
                     'model_type' => BaiduData::class,

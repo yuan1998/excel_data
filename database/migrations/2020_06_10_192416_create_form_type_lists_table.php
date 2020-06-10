@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeBaiduDataAddType extends Migration
+class CreateFormTypeListsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class ChangeBaiduDataAddType extends Migration
      */
     public function up()
     {
-        Schema::table('baidu_data', function (Blueprint $table) {
-            $table->string('data_type')->default('zx');
+        Schema::create('form_type_lists', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class ChangeBaiduDataAddType extends Migration
      */
     public function down()
     {
-        Schema::table('baidu_data', function (Blueprint $table) {
-            $table->dropColumn('data_type');
-        });
+        Schema::dropIfExists('form_type_lists');
     }
 }

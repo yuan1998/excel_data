@@ -17,7 +17,7 @@ class AccountDataController extends AdminController
      *
      * @var string
      */
-    protected $title = '账户';
+    protected $title = '渠道账户管理';
 
     /**
      * Make a grid builder.
@@ -29,15 +29,30 @@ class AccountDataController extends AdminController
         $grid = new Grid(new AccountData);
         $grid->model()->with(['channel']);
 
-        $type = $this->appendChannelType($grid, 'channel_id');
+        $grid->filter(function (Grid\Filter $filter) {
+            $filter->expand();
 
-        $grid->column('type', __('分类'))
+            // 去掉默认的id过滤器
+            $filter->disableIdFilter();
+            $filter->column(1 / 2, function (Grid\Filter $filter) {
+                $options = Channel::all()->pluck('title', 'id')->toArray();
+
+                $filter->equal('type', __('Hospital type'))->select(CrmGrabLog::$typeList);
+                $filter->equal('channel_id', __('Channel'))->select($options);
+
+            });
+            $filter->column(1 / 2, function (Grid\Filter $filter) {
+                $filter->like('name',__('Account name'));
+            });
+        });
+        $grid->disableRowSelector();
+
+        $grid->column('type', __('Hospital type'))
             ->using(CrmGrabLog::$typeList)
             ->label();
+        $grid->column('channel.title', __('渠道名称'))->label();
 
-        if (!$type || $type == 'all') {
-            $grid->column('channel.title', __('渠道名称'))->label();
-        }
+
 
         $grid->column('name', __('账户名称'));
         $grid->column('rebate', __('Rebate'));

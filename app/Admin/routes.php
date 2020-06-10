@@ -35,6 +35,7 @@ Route::group([
     });
 
 
+    $router->resource('form-type-lists', FormTypeListController::class);
     $router->resource('baidu_data', 'BaiduDataController');
     $router->resource('weibo_data', 'WeiboDataController');
     $router->resource('feiyu_data', "FeiyuDataController");

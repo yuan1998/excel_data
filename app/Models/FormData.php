@@ -45,16 +45,28 @@ class FormData extends Model
 
     // 平台类型列表
     public static $FormTypeList = [
-        1 => '百度信息流',
-        2 => '微博',
-        3 => '头条',
-        4 => '抖音',
-        5 => '百度竞价',
-        6 => '搜狗',
-        7 => '神马',
-        8 => 'oppo',
-        9 => 'vivo',
+        1  => '百度信息流',
+        2  => '微博',
+        3  => '头条',
+        4  => '抖音',
+        5  => '百度竞价',
+        6  => '搜狗',
+        7  => '神马',
+        8  => 'oppo',
+        9  => 'vivo',
+        10 => '美柚',
     ];
+
+    public static $FORM_TYPE_BAIDU_XXL = 1;
+    public static $FORM_TYPE_WEIBO = 2;
+    public static $FORM_TYPE_TOUTIAO = 3;
+    public static $FORM_TYPE_DOUYIN = 4;
+    public static $FORM_TYPE_BAIDU_WEB = 5;
+    public static $FORM_TYPE_SOGOU = 6;
+    public static $FORM_TYPE_SHENMA = 7;
+    public static $FORM_TYPE_OPPO = 8;
+    public static $FORM_TYPE_VIVO = 9;
+    public static $FORM_TYPE_MEIYOU = 10;
 
     // 表单数量基础格式
     public static $FormCountDataFormat = [

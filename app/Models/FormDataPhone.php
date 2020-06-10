@@ -100,7 +100,8 @@ class FormDataPhone extends Model
     public static function recheckUnArchive()
     {
         $data = FormDataPhone::where('is_archive', 0)
-            ->has('formData')->get();
+            ->has('formData')
+            ->get();
         static::recheckHandler($data);
         return $data->count();
     }
@@ -111,6 +112,20 @@ class FormDataPhone extends Model
         static::recheckHandler($data);
 
         return $data->count();
+    }
+
+    public static function recheckOfTypeAndDate($data)
+    {
+        $query = static::query();
+        $data  = $query->whereHas('formData', function ($query) use ($data) {
+            $query->whereBetween('date', [$data['dates']])
+                ->where('type', $data['type'])
+                ->whereIn('form_type', $data['form_type']);
+        })->get();
+        $count = $data->count();
+
+        static::recheckHandler($data);
+        return $count;
     }
 
     public static function recheckOfDate($dates)

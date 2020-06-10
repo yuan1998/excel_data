@@ -18,6 +18,7 @@ import WeiboGrabAction       from "./components/WeiboGrabAction";
 import weiboIndex            from "./components/weibo-index";
 import dataIndex             from "./components/data-index";
 import mediaPage             from "./components/MediaPage";
+import ActionRecheck         from "./components/ActionRecheck";
 
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
@@ -33,6 +34,7 @@ Vue.component('weibo-grab-action', WeiboGrabAction);
 Vue.component('weibo-index', weiboIndex);
 Vue.component('data-index', dataIndex);
 Vue.component('media-page', mediaPage);
+Vue.component('action-recheck', ActionRecheck);
 
 // const app = new Vue({
 //     el: '#app'

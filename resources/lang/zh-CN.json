@@ -1,4 +1,10 @@
 {
+  "Channel": "渠道",
+  "Id": "序号",
+  "Hospital type": "医院类型",
+  "Account name": "账户名称",
+  "Department by": "所属科室",
+  "Department project name": "病种名称",
   "A fresh verification link has been sent to your email address.": "新的验证链接已发送到您的 E-mail。",
   "All rights reserved.": "版本所有。",
   "Before proceeding, please check your email for a verification link.": "在继续之前请先验证您的 E-mail。",

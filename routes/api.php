@@ -149,6 +149,9 @@ $api->version('v1', [
     ], function ($api) {
         $api->post('/recheckOfDate', "FormDataPhoneController@recheckStatusOfDate")
             ->name('api.formDataPhone.recheckStatusOfDate');
+        $api->post('/recheckOfFormType', "FormDataPhoneController@recheckOfFormType")
+            ->name('api.formDataPhone.recheckOfFormType');
+
     });
 
     $api->group([
@@ -192,7 +195,7 @@ $api->version('v1', [
             ->name('api.media.upload');
         $api->post('/makeFolder', "MediaController@makeFolder")
             ->name('api.media.makeFolder');
-        
+
     });
 
 

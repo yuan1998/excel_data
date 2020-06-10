@@ -22,10 +22,10 @@ class FeiyuImport implements ToCollection
     public function parserFormType($str)
     {
         if (preg_match("/B/", $str)) {
-            return 3;
+            return FormData::$FORM_TYPE_TOUTIAO;
         }
         if (preg_match("/D/", $str)) {
-            return 4;
+            return FormData::$FORM_TYPE_DOUYIN;
         }
         return 0;
     }

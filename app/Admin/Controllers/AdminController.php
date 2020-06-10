@@ -16,11 +16,21 @@ use Encore\Admin\Grid;
 class AdminController extends BaseController
 {
 
-    public function initVue()
+    public static function initVue()
     {
         Admin::script(<<<EOF
         const app = new Vue({
             el: '#app'
+        });
+EOF
+        );
+    }
+
+    public static function clearAutoComplete()
+    {
+        Admin::script(<<<EOF
+        $(function () {
+        $('input.form-control').attr('autocomplete' , 'off');
         });
 EOF
         );
@@ -40,6 +50,23 @@ EOF
         });
 
         return $type;
+    }
+
+    public static function keywordLabelModal($grid, $field, $name)
+    {
+        $grid->column($field, $name)->display(function ($val) {
+            $labels = explode(',', $val);
+            $count  = count($labels);
+            return '共有' . $count . '个匹配词';
+        })->modal($name . '-列表', function ($model) use ($field) {
+            $values = $model[$field];
+            $labels = explode(',', $values);
+
+            $string = collect($labels)->map(function ($label) {
+                return "<h4 style='display: inline-block;margin-right:5px;'><span class=\" label label-success\">$label</span></h4>";
+            })->join("");
+            return $string;
+        });
     }
 
     public function appendDepartmentType(Grid $grid)
