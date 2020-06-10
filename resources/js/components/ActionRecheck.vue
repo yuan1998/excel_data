@@ -184,8 +184,7 @@
                 });
             },
         },
-
-        watch: {
+        watch  : {
             loading(v) {
                 if (v) {
                     let dialogPanel      = this.$refs.dialog.$refs.dialog // dialog面板的dom节点

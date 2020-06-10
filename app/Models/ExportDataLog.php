@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class ExportDataLog extends Model
 {
@@ -26,6 +27,7 @@ class ExportDataLog extends Model
 
     public static $typeList = [
         'xxl_data_excel' => '信息流数据表格',
+        'baidu_plan'     => '百度计划数据表格',
     ];
 
     public static function setAllToType($type)
@@ -34,6 +36,13 @@ class ExportDataLog extends Model
             'data_type' => $type
         ]);
 
+    }
+
+    public static function makeDatesName($dates)
+    {
+        return collect($dates)->map(function ($date) {
+            return Carbon::parse($date)->toDateString();
+        })->join('_');
     }
 
     public static function makeName($data)
@@ -48,7 +57,7 @@ class ExportDataLog extends Model
             ->get('title')
             ->pluck('title')
             ->implode(',');
-        $dateName       = implode('_', $data['dates']);
+        $dateName       = static::makeDatesName($data['dates']);
         $type           = CrmGrabLog::$typeList[$data['type']];
         return time() . "_[$type]_[{$channelName}]_[{$departmentName}]_[{$dateName}]";
     }
@@ -61,6 +70,7 @@ class ExportDataLog extends Model
 
         return static::create([
             'name'         => $name,
+            'data_type'    => $data['data_type'],
             'path'         => '/exports/' . $date . '/',
             'file_name'    => $name . '.xlsx',
             'request_data' => json_encode($data),
@@ -69,11 +79,12 @@ class ExportDataLog extends Model
 
     public static function baiduPlanGenerate($data)
     {
-        $dateName = implode('_', $data['dates']);
+        $dateName = static::makeDatesName($data['dates']);
         $name     = time() . '_百度计划报告_' . $dateName;
         $date     = Carbon::today()->toDateString();
 
         return static::create([
+            'data_type'    => $data['data_type'],
             'name'         => $name,
             'path'         => '/exports/' . $date . '/',
             'file_name'    => $name . '.xlsx',
@@ -83,12 +94,15 @@ class ExportDataLog extends Model
 
     public static function generate($data)
     {
-        if (isset($data['data_type'])) {
-            if ($data['data_type'] === 'baidu_plan') {
+        $dataType = Arr::get($data, 'data_type', null);
+        switch ($dataType) {
+            case 'baidu_plan':
                 return static::baiduPlanGenerate($data);
-            }
-        } else {
-            return static::baseGenerate($data);
+                break;
+            case 'xxl_data_excel':
+                return static::baseGenerate($data);
+                break;
+
         }
     }
 }

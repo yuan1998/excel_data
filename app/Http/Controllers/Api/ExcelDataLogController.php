@@ -13,7 +13,7 @@ class ExcelDataLogController extends Controller
     {
         $data = $request->only(['department_id', 'channel_id', 'dates', 'type']);
 
-        $data['type'] = 'xxl_data_excel';
+        $data['data_type'] = 'xxl_data_excel';
 
         $exportDataLog = ExportDataLog::generate($data);
         if (!$exportDataLog) {

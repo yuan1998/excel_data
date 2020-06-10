@@ -1,6 +1,6 @@
 <template>
     <div :style="'display: inline-block;'" style="display: none;">
-        <div id="app-export-data-action" class="dib" >
+        <div id="app-export-data-action" class="dib">
             <el-button type="primary" size="mini" @click="handleOpen">创建导出数据</el-button>
 
             <el-dialog title="创建导出数据"
@@ -12,7 +12,7 @@
                          :model="form"
                          :rules="rules"
                          :label-width="formLabelWidth">
-                    <el-form-item label="类型" prop="type" required>
+                    <el-form-item label="类型" prop="type">
                         <el-radio-group v-model="form.type" size="mini">
                             <el-radio-button label="zx"
                             >
@@ -25,7 +25,7 @@
 
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="渠道" prop="channel_id" required>
+                    <el-form-item label="渠道" prop="channel_id">
                         <el-checkbox-group v-model="form.channel_id" size="mini">
                             <el-checkbox-button :label="key"
                                                 :key="key"
@@ -36,14 +36,14 @@
                     </el-form-item>
 
 
-                    <el-form-item label="科室" prop="department_id" required>
+                    <el-form-item label="科室" prop="department_id">
                         <el-checkbox-group v-model="form.department_id" size="mini">
                             <el-checkbox-button v-for="(option , key) in departmentOptions" :label="key" :key="key">
                                 {{option}}
                             </el-checkbox-button>
                         </el-checkbox-group>
                     </el-form-item>
-                    <el-form-item label="时间范围" required prop="dates">
+                    <el-form-item label="时间范围" prop="dates">
                         <el-col :span="11">
                             <el-date-picker
                                     size="mini"
@@ -225,7 +225,7 @@
         z-index: 2500
     }
 
-    .dib    {
+    .dib {
         display: inline-block;
     }
 
