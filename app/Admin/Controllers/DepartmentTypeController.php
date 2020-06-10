@@ -6,7 +6,6 @@ use App\Models\ArchiveType;
 use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\ProjectType;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -18,7 +17,7 @@ class DepartmentTypeController extends AdminController
      *
      * @var string
      */
-    protected $title = '科室';
+    protected $title = '科室管理';
 
     /**
      * Make a grid builder.
@@ -31,12 +30,20 @@ class DepartmentTypeController extends AdminController
         $grid->model()->with(['archives']);
 
         $grid->column('title', __('Title'));
-        $grid->column('archives', __('关联建档类型'))->style('width:400px')->pluck('title')->label();
-        $grid->column('keyword', __('匹配词'))->display(function ($val) {
-            return $val ? explode(',', $val) : [];
-        })->style('width:400px')->label();
+        $grid->column('archives', __('关联建档类型'))
+            ->display(function ($val) {
+                $labels = $this->archives->pluck('title');
+                $count  = count($labels);
+                return '共有关联' . $count . '个建档类型';
+            })->modal('建档类型匹配' . '-列表', function ($model) {
+                $labels = $model->archives->pluck('title');
+                $string = collect($labels)->map(function ($label) {
+                    return "<h4 style='display: inline-block;margin-right:5px;'><span class=\" label label-success\">$label</span></h4>";
+                })->join("");
+                return $string;
+            });
+        static::keywordLabelModal($grid, 'keyword', __('匹配词'));
         $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
         return $grid;
     }
 
