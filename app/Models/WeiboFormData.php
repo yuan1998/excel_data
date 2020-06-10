@@ -48,12 +48,14 @@ class WeiboFormData extends Model
     public static $TagList = [
         0 => '未标记',
         1 => '转微',
-        2 => '未接通',
-        3 => '空号',
+        2 => '无人接听/关机',
+        3 => '空错号/停机',
         4 => '无需求',
         5 => '重复建档',
-        6 => '已到院',
-        7 => '有需求',
+//        6 => '已到院',
+        7 => '初步了解',
+        8 => '代咨询',
+        9 => '重点跟进',
     ];
 
     public function recallLog()
@@ -121,6 +123,16 @@ class WeiboFormData extends Model
             'phone'           => $this->phone,
             'date'            => $this->post_date,
         ];
+    }
+
+    public static function switchTagToNewTag()
+    {
+        static::query()
+            ->where('tags', 6)
+            ->update([
+                'tags' => 5,
+            ]);
+
     }
 
     /**
