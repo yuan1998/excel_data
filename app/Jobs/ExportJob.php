@@ -63,22 +63,27 @@ class ExportJob implements ShouldQueue
             'pathName'    => $pathName,
             'requestData' => $requestData,
         ]);
-        if (isset($requestData['data_type'])) {
-            Log::info(' 导出 文件 Debug : 抵达 百度  ', []);
-            if ($requestData['data_type'] === 'baidu_plan') {
-                $baiduPlanData = new BaiduPlanData($requestData);
-                $export        = new BaiduPlanExport($baiduPlanData);
-                Excel::store($export, $pathName, 'public');
-            }
-        } else {
-            Log::info(' 导出 文件 Debug : 抵达 报表  ', []);
-            $parser = new ParserStart($requestData);
-            $test   = Excel::store(new TestExport($parser), $pathName, 'public');
-            Log::info(' 导出 文件 Debug  ', [
-                'pathName' => $pathName,
-                'result'   => $test,
-            ]);
+        $dataType = $model['data_type'];
+        switch ($dataType) {
+            case 'xxl_data_excel':
+                Log::info(' 导出 文件 Debug : 抵达 报表  ', []);
+                $parser = new ParserStart($requestData);
+                $test   = Excel::store(new TestExport($parser), $pathName, 'public');
+                Log::info(' 导出 文件 Debug  ', [
+                    'pathName' => $pathName,
+                    'result'   => $test,
+                ]);
+                break;
+            case "baidu_plan":
+                Log::info(' 导出 文件 Debug : 抵达 百度  ', []);
+                if ($requestData['data_type'] === 'baidu_plan') {
+                    $baiduPlanData = new BaiduPlanData($requestData);
+                    $export        = new BaiduPlanExport($baiduPlanData);
+                    Excel::store($export, $pathName, 'public');
+                }
+                break;
         }
+
 
         $model->status   = 2;
         $model->run_time = Carbon::now()->diffInSeconds($time) ?? 0;
