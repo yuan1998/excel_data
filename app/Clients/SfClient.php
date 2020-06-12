@@ -82,13 +82,21 @@ class SfClient extends BaseClient
 //        dd($this->result);
 
 
-        $export   = new SfExport($this->result, '三方数据', [
+        return new SfExport($this->result, '三方数据', [
             '到院时间', '是否成交', '客户状态', '客户姓名', '电话', '跟进客服', '媒介', '现场咨询', '客户卡号', '建档项目', '成交项目', '消费金额', '备注'
         ]);
-        $filename = '三方数据_' . $this->startDate . '_' . $this->endDate . '.xlsx';
-        Excel::store($export, 'test_excel/' . $filename, 'public');
 
     }
+
+
+    public function generateExcelFile()
+    {
+        $export   = $this->makeExport();
+        $filename = '三方数据_' . $this->startDate . '_' . $this->endDate . '.xlsx';
+
+        Excel::store($export, 'test_excel/' . $filename, 'public');
+    }
+
 
     public function mergeAccountData($hospitalData, $accountData)
     {

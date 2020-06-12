@@ -17,8 +17,6 @@ Route::group([
     $router->group([
         'prefix' => 'media-manager',
     ], function (Router $router) {
-
-
         $router->get('/', 'MediaController@index')
             ->name('vue-media-index');
         $router->get('download', 'MediaController@download')
@@ -32,6 +30,12 @@ Route::group([
         $router->post('folder', 'MediaController@newFolder')
             ->name('vue-media-new-folder');
 
+    });
+
+    $router->group([
+        'prefix' => 'sanfang_export_data_logs',
+    ], function ($router) {
+        $router->get('/', 'ExportDataLogController@sanfangIndex');
     });
 
 

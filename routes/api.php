@@ -173,6 +173,9 @@ $api->version('v1', [
     ], function ($api) {
         $api->post('/excel', "ExcelDataLogController@exportExcelStore")
             ->name('api.import.excelMake');
+        $api->post('/sanfang/excel', "ExcelDataLogController@sanfangExportData")
+            ->name('api.export.sanfangExportData');
+
     });
 
     $api->group([

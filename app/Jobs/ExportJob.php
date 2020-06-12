@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Clients\SfClient;
 use App\Exports\BaiduPlanExport;
 use App\Exports\TestExport;
 use App\Models\ExportDataLog;
@@ -20,7 +21,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $timeout = 620;
+    public $timeout = 0;
 
     /**
      * @var ExportDataLog
@@ -76,11 +77,16 @@ class ExportJob implements ShouldQueue
                 break;
             case "baidu_plan":
                 Log::info(' 导出 文件 Debug : 抵达 百度  ', []);
-                if ($requestData['data_type'] === 'baidu_plan') {
-                    $baiduPlanData = new BaiduPlanData($requestData);
-                    $export        = new BaiduPlanExport($baiduPlanData);
-                    Excel::store($export, $pathName, 'public');
-                }
+                $baiduPlanData = new BaiduPlanData($requestData);
+                $export        = new BaiduPlanExport($baiduPlanData);
+                Excel::store($export, $pathName, 'public');
+                break;
+            case "sanfang_data_excel":
+                Log::info(' 导出 文件 Debug : 抵达 三方  ', []);
+                $dates  = $requestData['dates'];
+                $client = new SfClient($dates[0], $dates[1]);
+                $export = $client->makeExcel();
+                Excel::store($export, $pathName, 'public');
                 break;
         }
 

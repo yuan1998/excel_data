@@ -26,8 +26,9 @@ class ExportDataLog extends Model
     ];
 
     public static $typeList = [
-        'xxl_data_excel' => '信息流数据表格',
-        'baidu_plan'     => '百度计划数据表格',
+        'xxl_data_excel'     => '信息流数据表格',
+        'baidu_plan'         => '百度计划数据表格',
+        'sanfang_data_excel' => '三方数据表格',
     ];
 
     public static function setAllToType($type)
@@ -92,6 +93,21 @@ class ExportDataLog extends Model
         ]);
     }
 
+    public static function sanfangGenerate($data)
+    {
+        $dateName = static::makeDatesName($data['dates']);
+        $name     = time() . '_三方数据报表_' . $dateName;
+        $date     = Carbon::today()->toDateString();
+        
+        return static::create([
+            'data_type'    => $data['data_type'],
+            'name'         => $name,
+            'path'         => '/exports/' . $date . '/',
+            'file_name'    => $name . '.xlsx',
+            'request_data' => json_encode($data),
+        ]);
+    }
+
     public static function generate($data)
     {
         $dataType = Arr::get($data, 'data_type', null);
@@ -101,6 +117,9 @@ class ExportDataLog extends Model
                 break;
             case 'xxl_data_excel':
                 return static::baseGenerate($data);
+                break;
+            case 'sanfang_data_excel':
+                return static::sanfangGenerate($data);
                 break;
 
         }
