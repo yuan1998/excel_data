@@ -35,7 +35,8 @@ Route::group([
     $router->group([
         'prefix' => 'sanfang_export_data_logs',
     ], function ($router) {
-        $router->get('/', 'ExportDataLogController@sanfangIndex');
+        $router->get('/', 'ExportDataLogController@sanfangIndex')
+            ->name('admin.sanfang.export');
     });
 
 
