@@ -3,6 +3,8 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
+use App\Admin\Actions\FormData\BatchRecheckItem;
+use App\Admin\Actions\FormData\BatchRecheckPhones;
 use App\Admin\Actions\FormData\RecheckItem;
 use App\Admin\Actions\FormData\RecheckPhones;
 use App\Admin\Actions\RecheckFormAction;
@@ -125,10 +127,14 @@ class FormDataController extends AdminController
 
             $filter->expand();
         });
-        $grid->disableRowSelector();
         $grid->disableExport();
         $grid->disableCreateButton();
 
+
+        $grid->batchActions(function ($batch) {
+            $batch->add(new BatchRecheckItem());
+            $batch->add(new BatchRecheckPhones());
+        });
 
         $grid->actions(function ($actions) {
             $actions->add(new RecheckItem());
