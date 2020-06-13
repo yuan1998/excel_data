@@ -19,6 +19,7 @@
  */
 
 use App\Admin\Extentions\Fields\MySelect;
+use App\Admin\Extentions\Fields\ProjectSelectOfDepartment;
 use App\Admin\Filters\BetweenDate;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -32,7 +33,7 @@ Admin::js('/js/app.js');
 Admin::css('/css/app.css');
 
 app('view')->prependNamespace('admin', resource_path('views/admin/views'));
-
-Form::extend('mySelect', MySelect::class);
 Filter::extend('betweenDate' , BetweenDate::class);
 Form::forget(['map', 'editor']);
+Form::extend('mySelect', MySelect::class);
+Form::extend('projectSelectOfDepartment', ProjectSelectOfDepartment::class);

@@ -37,7 +37,6 @@ class HomeController extends AdminController
             return redirect()->route('admin.sanfang.export');
         }
 
-
         return $content
             ->title($this->title)
             ->description($this->description)

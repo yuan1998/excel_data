@@ -3,6 +3,8 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
+use App\Admin\Actions\FormData\RecheckItem;
+use App\Admin\Actions\FormData\RecheckPhones;
 use App\Admin\Actions\RecheckFormAction;
 use App\Models\AccountData;
 use App\models\CrmGrabLog;
@@ -12,6 +14,7 @@ use App\Models\FormDataPhone;
 use App\Models\ProjectType;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
 class FormDataController extends AdminController
@@ -83,22 +86,10 @@ class FormDataController extends AdminController
                         case 4:
                             $query->whereHas('phones', function ($query) use ($val) {
                                 $query->where('is_repeat', '<>', 2)
-                                    ->where('intention', 0)
-                                    ->where('is_archive', '1');
+                                    ->whereIn('intention', [0, 1])
+                                    ->where('is_archive', 1);
                             });
                             break;
-                    }
-
-                    if ($val >= 0) {
-                        if ($val == 3) {
-                            $query->whereHas('phones', function ($query) use ($val) {
-                                $query->where('is_repeat', 2);
-                            });
-                        } else {
-                            $query->whereHas('phones', function ($query) use ($val) {
-                                $query->where('is_archive', $val);
-                            });
-                        }
                     }
                 }, '建档状态')->select([
                     0 => '未查询',
@@ -134,8 +125,15 @@ class FormDataController extends AdminController
 
             $filter->expand();
         });
+        $grid->disableRowSelector();
+        $grid->disableExport();
         $grid->disableCreateButton();
 
+
+        $grid->actions(function ($actions) {
+            $actions->add(new RecheckItem());
+            $actions->add(new RecheckPhones());
+        });
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
@@ -189,17 +187,55 @@ class FormDataController extends AdminController
         return $show;
     }
 
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->title($this->title())
+            ->description($this->description['edit'] ?? trans('admin.edit'))
+            ->body($this->form($id)->edit($id));
+    }
+
     /**
      * Make a form builder.
      *
+     * @param null $id
      * @return Form
      */
-    protected function form()
+    protected function form($id = null)
     {
         $form = new Form(new FormData);
 
-        $form->multipleSelect('projects', __('Project'))->options(ProjectType::all()->pluck('title', 'id'));
-        $form->text('data_type', __('Data type'));
+        $departmentTypeList = DepartmentType::all()->pluck('title', 'id')->toArray();
+        $accountList        = AccountData::all()->pluck('name', 'id')->toArray();
+
+        $form->text('date', '时间')->disable();
+        $form->select('type', __('Type'))->options(CrmGrabLog::$typeList);
+
+        $form->divider('关联数据');
+        $form->select('form_type', '表单类型')->options(FormData::$FormTypeList);
+        $form->select('account_id', __('所属账户'))
+            ->options($accountList);
+        $form->projectSelectOfDepartment('department_id', __('所属科室'))
+            ->options($departmentTypeList)
+            ->load($id, 'projects', 'id', 'title');
+
+        $form->multipleSelect('projects', __('Project'));
+        $form->text('data_type', '关键分配词');
+        $form->divider('关联手机号码');
+        $form->hasMany('phones', '手机号码', function (Form\NestedForm $form) {
+            $form->text('phone', '手机号码');
+            $form->select('is_archive', '建档状态')
+                ->options(FormDataPhone::$IsArchiveList);
+
+            $form->select('is_repeat', '是否重复')
+                ->options(FormDataPhone::$IsRepeatList);
+            $form->select('intention', '建档等级')
+                ->options(FormDataPhone::$IsRepeatList);
+
+            $form->disableSubmit();
+
+        });
+
 
         return $form;
     }

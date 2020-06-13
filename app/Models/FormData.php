@@ -87,7 +87,6 @@ class FormData extends Model
         'intention-4'   => 0,
         'intention-5'   => 0,
         'intention-6'   => 0,
-
     ];
 
     public function formModel()
@@ -232,12 +231,12 @@ class FormData extends Model
             'model_type' => $modelType,
         ], $data);
 
+        FormDataPhone::createOrUpdateItem($form, collect($data['phone']), $delay);
         // 如果科室存在 , 再判断病种
         if ($departmentType) {
             // 判断 是否所属 科室下的病种,有则写入
             $projectType = Helpers::checkDepartmentProject($departmentType, $data['data_type']);
             $form->projects()->sync($projectType);
-            FormDataPhone::createOrUpdateItem($form, collect($data['phone']), $delay);
         }
 
         // 返回Model

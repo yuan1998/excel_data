@@ -16,7 +16,7 @@ class WeiboAccountController extends AdminController
      *
      * @var string
      */
-    protected $title = 'App\Models\WeiboAccounts';
+    protected $title = '微博账户管理';
 
     /**
      * Make a grid builder.
@@ -28,6 +28,10 @@ class WeiboAccountController extends AdminController
         $grid = new Grid(new WeiboAccounts);
         $this->appendDataType($grid);
         $this->initVue();
+        $grid->disableCreateButton();
+        $grid->disableRowSelector();
+        $grid->disableExport();
+        $grid->disableFilter();
 
 
         $grid->tools(function (Grid\Tools $tools) {

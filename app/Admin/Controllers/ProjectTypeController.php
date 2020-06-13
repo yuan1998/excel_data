@@ -122,13 +122,15 @@ class ProjectTypeController extends AdminController
         $departmentTypes = DepartmentType::all()->pluck('title', 'id');
 
         $form->mySelect('department_id', __('所属科室'))
-            ->options($departmentTypes)->load(
+            ->options($departmentTypes)
+            ->load(
                 'archives',
                 '/api/department/archives',
                 $id
-            )->required();
-        $form->multipleSelect('archives', __('建档类型匹配'))->required();
+            )
+            ->required();
 
+        $form->multipleSelect('archives', __('建档类型匹配'))->required();
         $form->text('title', __('Title'))->required();
         $form->tags('keyword', __('表单数据匹配词'))->required();
         $form->tags('spend_keyword', __('消费数据匹配词'))->required();

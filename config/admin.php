@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name'                      => 'Laravel-admin',
+    'name'                      => '数据统计',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo'                      => '<b>Laravel</b> admin',
+    'logo'                      => '<b>数据</b> 统计',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini'                 => '<b>La</b>',
+    'logo-mini'                 => '<b>数据</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
     | Html title for all pages.
     |
     */
-    'title'                     => 'Admin',
+    'title'                     => '大数一统',
 
     /*
     |--------------------------------------------------------------------------
@@ -401,7 +401,7 @@ return [
             'enable' => true,
         ],
         'media-manager' => [
-            'disk'   => 'xxl_data'   // Points to the disk set in config/filesystem.php
+            'disk' => 'xxl_data'   // Points to the disk set in config/filesystem.php
         ],
     ],
 ];

@@ -42,6 +42,7 @@ class WeiboFormDataController extends AdminController
             ->orderBy('upload_date', 'desc')
             ->orderBy('weibo_user_id');
         $this->initVue();
+        static::clearAutoComplete();
 
         $grid->header(function ($query) {
             $today              = Carbon::today();
