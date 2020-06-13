@@ -211,7 +211,6 @@ class FormData extends Model
     }
 
 
-
     /**
      * 创建 FormData 数据,同时生成 FormDataPhone
      * @param array  $data      数据
@@ -281,7 +280,7 @@ class FormData extends Model
         ];
         $this->update($data);
 
-        if ($this->phones->isEmpty() && $this->formModel) {
+        if ($this->formModel) {
             $phone = $this->formModel->phone;
             FormDataPhone::createOrUpdateItem($this, collect($phone));
         }
