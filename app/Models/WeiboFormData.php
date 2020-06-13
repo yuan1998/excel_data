@@ -57,6 +57,11 @@ class WeiboFormData extends Model
         9 => '重点跟进',
     ];
 
+    public function formData()
+    {
+        return $this->morphMany(FormData::class, 'model');
+    }
+
     public function recallLog()
     {
         return $this->hasMany(RecallLog::class, 'weibo_form_id', 'id');
@@ -243,6 +248,16 @@ class WeiboFormData extends Model
                 $weibo->makeFormData();
             });
     }
+
+
+    public static function fixNotCreatePhone()
+    {
+        $data = static::query()->doesntHave('formData.phones')->get();
+        $data->each(function ($item) {
+            $item->makeFormData();
+        });
+    }
+
 
     /**
      * 将拉取回来的后台数据转换成服务器可以存储的字段
