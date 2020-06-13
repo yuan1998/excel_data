@@ -250,7 +250,11 @@ class Helpers
                 if ($name === '客户' || $name === '客户姓名' || $name == '网电客户') {
                     $aTag = $value->find('a');
                     if ($aTag) {
-                        $valueText = $aTag->innerHTML;
+                        try {
+                            $valueText = $aTag->innerHTML;
+                        } catch (\Exception $exception) {
+                            $valueText = $value->innerHTML;
+                        }
                     }
 //                    dd($value->outerHTML);
                     preg_match("/CustInfo\(\'(.*?)\'\)/", $value->outerHTML, $match);
