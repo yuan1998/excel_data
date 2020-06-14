@@ -55,6 +55,7 @@ class FormData extends Model
         8  => 'oppo',
         9  => 'vivo',
         10 => '美柚',
+        11 => '穿山甲',
     ];
 
     public static $FORM_TYPE_BAIDU_XXL = 1;
@@ -67,6 +68,7 @@ class FormData extends Model
     public static $FORM_TYPE_OPPO = 8;
     public static $FORM_TYPE_VIVO = 9;
     public static $FORM_TYPE_MEIYOU = 10;
+    public static $FORM_TYPE_CHUANSHANJIA = 11;
 
     // 表单数量基础格式
     public static $FormCountDataFormat = [

@@ -42,20 +42,20 @@ class FeiyuSpend extends Model
     protected $fillable = [
         'type',
         'date',
-        'advertiser_id',
-        'advertiser_name',
         'show',
         'click',
-        'click_rate',
-        'average_click_price',
-        'average_thousand_times_show_price',
         'spend',
+        'click_rate',
         'conversion',
-        'conversion_price',
+        'advertiser_id',
+        'advertiser_name',
         'conversion_rate',
         'deep_conversion',
-        'deep_conversion_price',
+        'conversion_price',
+        'average_click_price',
         'deep_conversion_rate',
+        'deep_conversion_price',
+        'average_thousand_times_show_price',
     ];
 
     /**
@@ -130,6 +130,7 @@ class FeiyuSpend extends Model
         if (!$departmentType = Helpers::checkDepartment($code)) {
             throw new \Exception('无法判断科室:' . $code);
         }
+
         $item['type'] = $departmentType->type;;
         $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;
@@ -137,22 +138,12 @@ class FeiyuSpend extends Model
 
         $item['advertiser_id'] = trim($item['advertiser_id']);
 
-        if (!$item['spend_type'] = static::parseCodeType($code))
-            throw new \Exception('无法判断渠道' . $code);
+        if (!$item['spend_type'] = FeiyuData::parserFormType($code))
+            throw new \Exception('无法判断数据渠道类型' . $code);
 
         $item['date'] = Carbon::parse($item['date'])->toDateString();
 
         return $item;
     }
 
-    public static function parseCodeType($str)
-    {
-        if (preg_match("/B/", $str)) {
-            return 3;
-        }
-        if (preg_match("/D/", $str)) {
-            return 4;
-        }
-        return 0;
-    }
 }

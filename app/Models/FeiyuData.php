@@ -123,11 +123,14 @@ class FeiyuData extends Model
 
     public static function parserFormType($str)
     {
-        if (preg_match("/B/", $str)) {
-            return 3;
+        if (preg_match("/[bB]\d/", $str)) {
+            return FormData::$FORM_TYPE_TOUTIAO;
         }
-        if (preg_match("/D/", $str)) {
-            return 4;
+        if (preg_match("/[dD]\d/", $str)) {
+            return FormData::$FORM_TYPE_DOUYIN;
+        }
+        if (preg_match("/[cC]\d/", $str)) {
+            return FormData::$FORM_TYPE_CHUANSHANJIA;
         }
         return 0;
     }
@@ -162,7 +165,7 @@ class FeiyuData extends Model
     {
         $count = 0;
         foreach ($data as $item) {
-            $item  = static::parseData($item);
+            $item = static::parseData($item);
 
             $feiyu = FeiyuData::updateOrCreate([
                 'clue_id' => $item['clue_id']
@@ -202,9 +205,9 @@ class FeiyuData extends Model
         $item['post_date']       = Carbon::parse($item['post_date'])->toDateString();
         $item['form_type']       = static::parserFormType($code);
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
-        Log::info('飞鱼表单 DEBUG' , [
-            'code' => $code,
-            'project' =>$item['project_type'],
+        Log::info('飞鱼表单 DEBUG', [
+            'code'    => $code,
+            'project' => $item['project_type'],
         ]);
 
         return $item;
