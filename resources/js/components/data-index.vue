@@ -118,7 +118,7 @@
                     type   : '',
                 };
 
-                this.files.push(item);
+                this.files.unshift(item);
 
                 try {
                     let res  = await axios.request({

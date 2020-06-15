@@ -7,12 +7,14 @@ use App\Models\BaiduData;
 use App\Models\BaiduSpend;
 use App\Models\FeiyuData;
 use App\Models\FeiyuSpend;
+use App\Models\KuaiShouData;
 use App\Models\VivoData;
 use App\Models\VivoSpend;
 use App\Models\WeiboFormData;
 use App\Models\WeiboSpend;
 use App\Models\YiliaoData;
 use App\OppoSpend;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -23,6 +25,21 @@ class AutoImport implements ToCollection
     public $model = null;
 
     public static $modelType = [
+        'baidu'          => BaiduData::class,
+        'weibo'          => WeiboFormData::class,
+        'feiyu'          => FeiyuData::class,
+        'yiliao'         => YiliaoData::class,
+        'vivo'           => VivoData::class,
+        'kuaishou'       => KuaiShouData::class,
+        'kuaishou-spend' => '快手表单数据',
+        'vivo-spend'     => VivoSpend::class,
+        'baidu-spend'    => BaiduSpend::class,
+        'feiyu-spend'    => FeiyuData::class,
+        'weibo-spend'    => WeiboSpend::class,
+        'oppo-spend'     => OppoSpend::class,
+    ];
+
+    public static $modelName = [
         'baidu'          => '快商通数据',
         'weibo'          => '微博表单数据',
         'feiyu'          => '飞鱼表单数据',
@@ -40,37 +57,13 @@ class AutoImport implements ToCollection
 
     public static function checkExcelModel($data)
     {
-        if (FeiyuData::isModel($data)) {
-            return 'feiyu';
-        }
-        if (BaiduData::isModel($data)) {
-            return 'baidu';
-        }
 
-        if (FeiyuSpend::isModel($data)) {
-            return 'feiyu-spend';
-        }
-        if (BaiduSpend::isModel($data)) {
-            return 'baidu-spend';
-        }
-
-        if (YiliaoData::isModel($data)) {
-            return 'yiliao';
-        }
-        if (VivoData::isModel($data)) {
-            return 'vivo';
-        }
-        if (OppoSpend::isModel($data)) {
-            return 'oppo-spend';
-        }
-        if (VivoSpend::isModel($data)) {
-            return 'vivo-spend';
-        }
-        if (WeiboSpend::isModel($data)) {
-            return 'weibo-spend';
-        }
-        if (WeiboFormData::isModel($data)) {
-            return 'weibo';
+        dd($data);
+        foreach (static::$modelType as $modelName => $model) {
+            if (method_exists($model, 'isModel')) {
+                if (call_user_func_array([$model, 'isModel'], [$data]))
+                    return $modelName;
+            }
         }
     }
 
@@ -83,38 +76,9 @@ class AutoImport implements ToCollection
      */
     public static function excelModel($model, $data)
     {
-        switch ($model) {
-            case 'baidu':
-                // pass
-                return BaiduData::excelCollection($data);
-            case 'weibo':
-                // pass
-                return WeiboFormData::excelCollection($data);
-            case 'feiyu':
-                // pass
-                return FeiyuData::excelCollection($data);
-            case 'yiliao':
-                // pass
-                return YiliaoData::excelCollection($data);
-            case 'vivo':
-                // pass
-                return VivoData::excelCollection($data);
-            case 'baidu-spend':
-                // pass
-                return BaiduSpend::excelCollection($data);
-            case 'feiyu-spend':
-                // pass
-                return FeiyuSpend::excelCollection($data);
-            case 'weibo-spend':
-                // pass
-                return WeiboSpend::excelCollection($data);
-            case 'oppo-spend':
-                // pass
-                return OppoSpend::excelCollection($data);
-            case 'vivo-spend':
-                // pass
-                return VivoSpend::excelCollection($data);
-        }
+        $modelClass = static::$modelType[$model];
+        if (method_exists($modelClass, 'excelCollection'))
+            return call_user_func_array([$modelClass, 'excelCollection'], [$data]);
         return null;
     }
 
@@ -124,7 +88,6 @@ class AutoImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
-        dd($collection);
         $model = static::checkExcelModel($collection);
 
         if (!$this->model && isset(static::$modelType[$model])) {
@@ -138,7 +101,6 @@ class AutoImport implements ToCollection
 
     public function getModelType()
     {
-        $model = $this->model;
-        return $model && isset(static::$modelType[$model]) ? static::$modelType[$model] : null;
+        return Arr::get(static::$modelName, $this->model, null);
     }
 }

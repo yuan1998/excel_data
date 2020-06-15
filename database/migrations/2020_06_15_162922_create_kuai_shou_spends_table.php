@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKuaiShouDataTable extends Migration
+class CreateKuaiShouSpendsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateKuaiShouDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('kuai_shou_data', function (Blueprint $table) {
+        Schema::create('kuai_shou_spends', function (Blueprint $table) {
             $table->bigIncrements('id');
-            foreach (\App\Models\KuaiShouData::$fields as $fieldName => $field) {
-                $table->string($field)->nullable()->comment($fieldName);
+
+            foreach (\App\Models\KuaiShouSpend::$fields as $fieldText => $field) {
+                $table->string($field)->nullable()->comment($fieldText);
             }
-            $table->dateTime('date')->nullable();
-            $table->string('code')->nullable();
+
             $table->string('type');
-            $table->integer('form_type');
             $table->unsignedBigInteger('department_id')->nullable();
+            $table->string('code');
+
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ class CreateKuaiShouDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kuai_shou_data');
+        Schema::dropIfExists('kuai_shou_spends');
     }
 }
