@@ -23,16 +23,18 @@ class AutoImport implements ToCollection
     public $model = null;
 
     public static $modelType = [
-        'baidu'       => '快商通数据',
-        'weibo'       => '微博表单数据',
-        'feiyu'       => '飞鱼表单数据',
-        'yiliao'      => '易聊数据',
-        'vivo'        => 'vivo数据',
-        'vivo-spend'  => 'vivo消费数据',
-        'baidu-spend' => '百度消费数据',
-        'feiyu-spend' => '飞鱼消费数据',
-        'weibo-spend' => '微博消费数据',
-        'oppo-spend'  => 'oppo消费数据',
+        'baidu'          => '快商通数据',
+        'weibo'          => '微博表单数据',
+        'feiyu'          => '飞鱼表单数据',
+        'yiliao'         => '易聊数据',
+        'vivo'           => 'vivo数据',
+        'kuaishou'       => '快手表单数据',
+        'kuaishou-spend' => '快手表单数据',
+        'vivo-spend'     => 'vivo消费数据',
+        'baidu-spend'    => '百度消费数据',
+        'feiyu-spend'    => '飞鱼消费数据',
+        'weibo-spend'    => '微博消费数据',
+        'oppo-spend'     => 'oppo消费数据',
     ];
 
 
@@ -122,6 +124,7 @@ class AutoImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
+        dd($collection);
         $model = static::checkExcelModel($collection);
 
         if (!$this->model && isset(static::$modelType[$model])) {

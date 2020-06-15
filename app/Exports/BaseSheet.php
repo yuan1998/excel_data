@@ -124,14 +124,13 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
                     $index++;
                 }
 
-                $name   = Helpers::getNameFromNumber($index);
+                $name = Helpers::getNameFromNumber($index);
                 $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setVertical('center');
                 $event->sheet->getDelegate()->getStyle("A1:{$name}{$this->rows}")->getAlignment()->setHorizontal('center');
 
                 $this->mergeDayCell($event);
                 $this->setColumnsWidth($event);
                 $event->sheet->getDelegate()->freezePaneByColumnAndRow(3, 1);
-
             },
         ];
     }
