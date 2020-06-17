@@ -173,6 +173,23 @@ class SpendData extends Model
         ];
     }
 
+    public static function baseMakeModelData($className, $item, $nameField = 'advertiser_name', $dateField = 'date')
+    {
+        $model = $className::updateOrCreate([
+            $nameField => $item[$nameField],
+            $dateField => $item[$dateField],
+        ], $item);
+        $model->projects()->sync($item['project_type']);
+
+        $spend = static::updateOrCreate([
+            'model_id'   => $model->id,
+            'model_type' => $className
+        ], static::parseMakeSpendData($item));
+
+        $spend->projects()->sync($item['project_type']);
+
+    }
+
     public static function parseWeiboMakeSpendData($item)
     {
         $item = static::parseMakeSpendData($item);

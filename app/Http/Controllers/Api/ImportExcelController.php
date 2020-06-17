@@ -34,7 +34,7 @@ class ImportExcelController extends Controller
         }
 
         return $this->response->array([
-            'type'    => $import->getModelType(),
+            'type'    => $type,
             'message' => $message,
             'count'   => $import->count,
         ]);

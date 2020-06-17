@@ -114,20 +114,7 @@ class VivoSpend extends Model
 
         foreach ($data as $item) {
             $item = static::parserItem($item);
-
-            $model = static::updateOrCreate([
-                'ad_plan_name' => $item['ad_plan_name'],
-                'date'         => $item['date'],
-            ], $item);
-            $model->projects()->sync($item['project_type']);
-
-
-            $spend = SpendData::updateOrCreate([
-                'model_id'   => $model->id,
-                'model_type' => static::class
-            ], SpendData::parseMakeSpendData($item));
-
-            $spend->projects()->sync($item['project_type']);
+            SpendData::baseMakeModelData(static::class, $item, 'ad_plan_name');
             $count++;
         }
 
@@ -141,13 +128,13 @@ class VivoSpend extends Model
      */
     public static function parserItem($item)
     {
-        $code               = $item['code'] = $item['ad_plan_name'];
-        $item['spend_type'] = 9;
+        $code               = $item['code'] = $item['spend_name'] = $item['ad_plan_name'];
 
 
         if (!$departmentType = Helpers::checkDepartment($code)) {
             throw new \Exception('无法判断科室:' . $code);
         }
+        $item['spend_type'] = FormData::$FORM_TYPE_VIVO;
         $item['type'] = $departmentType->type;;
         $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;

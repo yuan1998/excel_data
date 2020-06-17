@@ -901,6 +901,20 @@ class Helpers
 
     }
 
+
+    public static function validateFormat($date, $format)
+    {
+
+        // parse date with current format
+        $parsed = date_parse_from_format($format, $date);
+
+        // if value matches given format return true=validation succeeded
+        if ($parsed['error_count'] === 0 && $parsed['warning_count'] === 0) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 

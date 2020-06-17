@@ -8,6 +8,7 @@ use App\Models\BaiduSpend;
 use App\Models\FeiyuData;
 use App\Models\FeiyuSpend;
 use App\Models\KuaiShouData;
+use App\Models\KuaiShouSpend;
 use App\Models\VivoData;
 use App\Models\VivoSpend;
 use App\Models\WeiboFormData;
@@ -31,7 +32,7 @@ class AutoImport implements ToCollection
         'yiliao'         => YiliaoData::class,
         'vivo'           => VivoData::class,
         'kuaishou'       => KuaiShouData::class,
-        'kuaishou-spend' => '快手表单数据',
+        'kuaishou-spend' => KuaiShouSpend::class,
         'vivo-spend'     => VivoSpend::class,
         'baidu-spend'    => BaiduSpend::class,
         'feiyu-spend'    => FeiyuData::class,
@@ -58,7 +59,6 @@ class AutoImport implements ToCollection
     public static function checkExcelModel($data)
     {
 
-        dd($data);
         foreach (static::$modelType as $modelName => $model) {
             if (method_exists($model, 'isModel')) {
                 if (call_user_func_array([$model, 'isModel'], [$data]))

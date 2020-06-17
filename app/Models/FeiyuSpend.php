@@ -131,7 +131,7 @@ class FeiyuSpend extends Model
             throw new \Exception('无法判断科室:' . $code);
         }
 
-        $item['type'] = $departmentType->type;;
+        $item['type']            = $departmentType->type;
         $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code, 'spend_keyword');
