@@ -12,7 +12,9 @@ use App\Models\ProjectType;
 use App\Models\SpendData;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
 
 class SpendDataController extends AdminController
 {
@@ -31,6 +33,7 @@ class SpendDataController extends AdminController
     protected function grid()
     {
         $this->initVue();
+        static::clearAutoComplete();
         $grid = new Grid(new SpendData);
         $grid->model()->with(['projects', 'department', 'account'])->orderBy('date', 'desc');
 
@@ -98,23 +101,25 @@ class SpendDataController extends AdminController
 //                'oppo_spend'  => 'oppo消费',
 //            ]));
         });
+        $grid->disableRowSelector();
         $grid->disableCreateButton();
-
-        $grid->column('department_info', __('科室'))->display(function () {
-            return $this->department ? $this->department->title : '-';
-        });
+        $grid->fixColumns(5);
         $grid->column('date', __('Date'));
         $grid->column('spend_type', __('消费类型'))->using(FormData::$FormTypeList)->label();
+        $grid->column('spend_name', __('Spend name'));
+
         $grid->column('project_info', __('Project'))->display(function () {
             $project = $this->projects->first();
             return $project ? $project->title : '其他';
         })->label();
         $grid->column('account.name', __('账户名称'))->label();
-        $grid->column('spend_name', __('Spend name'));
         $grid->column('spend', __('Spend'));
+        $grid->column('off_spend', __('Off spend'));
         $grid->column('show', __('Show'));
         $grid->column('click', __('Click'));
-        $grid->column('created_at', __('上传时间'));
+        $grid->column('department_info', __('科室'))->display(function () {
+            return $this->department ? $this->department->title : '-';
+        });
 
         return $grid;
     }
@@ -129,30 +134,96 @@ class SpendDataController extends AdminController
     {
         $show = new Show(SpendData::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('baidu_id', __('Baidu id'));
-        $show->field('feiyu_id', __('Feiyu id'));
-        $show->field('weibo_id', __('Weibo id'));
-        $show->field('date', __('Date'));
-        $show->field('spend', __('Spend'));
-        $show->field('spend_type', __('Spend type'));
+        $show->field('date', __('时间'));
+        $show->field('type', __('医院类型'))->using(CrmGrabLog::$typeList);
+        $show->field('spend_type', __('所属渠道'))->using(FormData::$FormTypeList);
+        $show->divider();
+
+        $show->field('spend', __('消耗'));
+        $show->field('rebate', __('返点'))->as(function () {
+            $val = $this->off_spend;
+            return $val ? round($this->spend / $val, 2) : '无返点';
+        });
+        $show->field('off_spend', __('实消'));
+
         $show->field('show', __('Show'));
         $show->field('click', __('Click'));
 
         return $show;
     }
 
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->title($this->title())
+            ->description($this->description['edit'] ?? trans('admin.edit'))
+            ->body($this->form($id)->edit($id));
+    }
+
     /**
      * Make a form builder.
      *
+     * @param $id
      * @return Form
      */
-    protected function form()
+    protected function form($id = null)
     {
-        $form = new Form(new SpendData);
+        $form               = new Form(new SpendData);
+        $departmentTypeList = DepartmentType::all()->pluck('title', 'id');
+        $accountQuery       = AccountData::query()
+            ->select(['channel_id', 'name', 'id']);
+        $defaultRebate      = 1;
+
+        if ($id && $model = SpendData::find($id)) {
+            $accountQuery->whereHas('channel', function ($query) use ($model) {
+                $query->where('form_type', $model['spend_type']);
+            });
+
+            if ($model['off_spend']) {
+                $defaultRebate = round($model['spend'] / $model['off_spend'], 2);
+            }
+
+        }
+
+        $form->ignore(['spend_field']);
+        $form->display('date', '时间');
+        $form->select('type', __('Type'))
+            ->options(CrmGrabLog::$typeList)->readOnly();
+        $form->select('spend_type', '消费类型')
+            ->options(FormData::$FormTypeList)->readOnly();
+        $form->display('spend', '消耗');
+        $form->hidden('spend', '消耗');
+        $form->hidden('off_spend');
+
+        $form->divider();
+        $form->currency('spend_field', __('实消返点'))
+            ->default($defaultRebate);
         $form->text('spend_name', __('消费名称'));
-        $form->multipleSelect('projects', __('Project'))->options(ProjectType::all()->pluck('title', 'id'));
-        $form->select('account_id', __('账户'))->options(AccountData::all()->pluck('name', 'id'));
+
+        $form->projectSelectOfDepartment('department_id', __('所属科室'))
+            ->options($departmentTypeList)
+            ->load($id, 'projects', 'id', 'title');
+
+        $form->select('account_id', __('账户'))->options($accountQuery->get()->pluck('name', 'id'));
+
+
+        $form->submitted(function (Form $form) {
+            $rebate = (float)request()->get('spend_field');
+
+            if ($rebate < 1 || $rebate > 10) {
+                $error = new MessageBag([
+                    'title'   => '参数错误',
+                    'message' => '返点数据错误',
+                ]);
+
+                return back()->with(compact('error'));
+            }
+
+            $spend = request()->get('spend');
+
+            $form->off_spend = round($spend / $rebate, 3);
+
+        });
 
         return $form;
     }
