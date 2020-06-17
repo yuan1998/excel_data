@@ -9,6 +9,8 @@ use App\Models\FeiyuData;
 use App\Models\FeiyuSpend;
 use App\Models\KuaiShouData;
 use App\Models\KuaiShouSpend;
+use App\Models\MeiyouData;
+use App\Models\MeiyouSpend;
 use App\Models\VivoData;
 use App\Models\VivoSpend;
 use App\Models\WeiboFormData;
@@ -32,6 +34,8 @@ class AutoImport implements ToCollection
         'yiliao'         => YiliaoData::class,
         'vivo'           => VivoData::class,
         'kuaishou'       => KuaiShouData::class,
+        'meiyou'         => MeiyouData::class,
+        'meiyou-spend'   => MeiyouSpend::class,
         'kuaishou-spend' => KuaiShouSpend::class,
         'vivo-spend'     => VivoSpend::class,
         'baidu-spend'    => BaiduSpend::class,
@@ -47,6 +51,8 @@ class AutoImport implements ToCollection
         'yiliao'         => '易聊数据',
         'vivo'           => 'vivo数据',
         'kuaishou'       => '快手表单数据',
+        'meiyou'         => '美柚表单数据',
+        'meiyou-spend'   => '美柚消费数据',
         'kuaishou-spend' => '快手表单数据',
         'vivo-spend'     => 'vivo消费数据',
         'baidu-spend'    => '百度消费数据',

@@ -8,23 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 
-class KuaiShouSpend extends Model
+class MeiyouSpend extends Model
 {
-    public static $fields = [
-        "日期"         => 'date',
-        "广告计划"       => 'advertiser_name',
-        "花费"         => 'spend',
-        "封面曝光数"      => 'cover_show',
-        "封面点击数"      => 'click',
-        "素材曝光数"      => 'material_show',
-        "行为数"        => 'behavior',
-        "封面点击率"      => 'cover_click_rate',
-        "行为率"        => 'behavior_rate',
-        "平均千次封面曝光花费" => 'svg_cover_show_cost',
-        "平均封面点击单价"   => 'svg_cover_click_cost',
-        "平均行为单价"     => 'svg_behavior_cost',
-    ];
-
     protected $fillable = [
         'type',
         'code',
@@ -32,16 +17,39 @@ class KuaiShouSpend extends Model
 
         'date',
         'advertiser_name',
-        'spend',
-        'cover_show',
+        'show',
         'click',
-        'material_show',
-        'behavior',
-        'cover_click_rate',
-        'behavior_rate',
-        'svg_cover_show_cost',
-        'svg_cover_click_cost',
-        'svg_behavior_cost',
+        'click_rate',
+        'translate',
+        'spend',
+        'an_start_download',
+        'an_complete_download',
+        'an_install',
+        'an_start_download_cost',
+        'an_complete_download_cost',
+        'an_install_cost',
+        'an_start_download_rate',
+        'an_complete_download_rate',
+        'an_install_rate',
+    ];
+
+    public static $fields = [
+        "日期"       => 'date',
+        "计划名称"     => 'advertiser_name',
+        "展现量"      => 'show',
+        "点击量"      => 'click',
+        "点击率"      => 'click_rate',
+        "转化量"      => 'translate',
+        "花费"       => 'spend',
+        "安卓开始下载量"  => 'an_start_download',
+        "安卓下载完成量"  => 'an_complete_download',
+        "安卓安装完成量"  => 'an_install',
+        "安卓开始下载成本" => 'an_start_download_cost',
+        "安卓下载完成成本" => 'an_complete_download_cost',
+        "安卓安装完成成本" => 'an_install_cost',
+        "安卓开始下载率"  => 'an_start_download_rate',
+        "安卓下载完成率"  => 'an_complete_download_rate',
+        "安卓安装完成率"  => 'an_install_rate',
     ];
 
     /**
@@ -67,16 +75,13 @@ class KuaiShouSpend extends Model
         return FormData::isModel($data, static::$fields);
     }
 
-
     public static function excelCollection($collection)
     {
         $data = Helpers::excelToKeyArray($collection, static::$fields);
-
         $data = collect($data)->filter(function ($item) {
             $date = Arr::get($item, 'date', null);
             return Helpers::validateFormat($date, 'Y-m-d');
         });
-
 
         return static::handleExcelData($data);
     }
@@ -84,7 +89,6 @@ class KuaiShouSpend extends Model
     public static function handleExcelData($data)
     {
         $count = 0;
-
         foreach ($data as $item) {
             $item = static::parserItem($item);
             SpendData::baseMakeModelData(static::class, $item);
@@ -100,8 +104,8 @@ class KuaiShouSpend extends Model
         if (!$departmentType = Helpers::checkDepartment($code)) {
             throw new \Exception('无法判断科室:' . $code);
         }
-        $item['show']       = $item['cover_show'];
-        $item['spend_type'] = FormData::$FORM_TYPE_KUAISHOU;
+
+        $item['spend_type'] = FormData::$FORM_TYPE_MEIYOU;
         $item['type']       = $departmentType->type;;
         $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;
@@ -109,5 +113,4 @@ class KuaiShouSpend extends Model
 
         return $item;
     }
-
 }

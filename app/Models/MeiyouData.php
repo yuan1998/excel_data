@@ -4,50 +4,30 @@ namespace App\Models;
 
 use App\Helpers;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\Collection;
 
-class KuaiShouData extends Model
+class MeiyouData extends Model
 {
 
     protected $fillable = [
+        'question_data',
         'type',
         'form_type',
         'code',
         'date',
         'department_id',
 
-        'clue_id',
+        'site_id',
+        'advertiser_name',
+        'material_name',
+        'origin',
         'name',
         'phone',
-        'clue_status',
-        'call_status',
-        'follow_status',
-        'tags',
         'post_date',
-        'page_name',
-        'form_component',
-        'comment',
-        'description',
     ];
-
-    public static $fields = [
-        "线索id" => 'clue_id',
-        "姓名"   => 'name',
-        "电话"   => 'phone',
-        "线索状态" => 'clue_status',
-        "通话状态" => 'call_status',
-        "跟进状态" => 'follow_status',
-        "标签"   => 'tags',
-        "收集时间" => 'post_date',
-        "落地页"  => 'page_name',
-        "表单"   => 'form_component',
-        "备注"   => 'comment',
-        "详情"   => 'description',
-    ];
-
 
     /**
      * 关联 项目
@@ -68,15 +48,35 @@ class KuaiShouData extends Model
     }
 
 
+    public static $fields = [
+        "站点ID"  => 'site_id',
+        "计划名称"  => 'advertiser_name',
+        "素材组名称" => 'material_name',
+        "来源"    => 'origin',
+        "姓名"    => 'name',
+        "手机号码"  => 'phone',
+        "创建时间"  => 'post_date',
+    ];
+
+    protected $casts = [
+        'question_data' => 'json'
+    ];
+
+    /**
+     * @param $data
+     * @return mixed
+     */
     public static function isModel($data)
     {
-        $keys  = array_keys(static::$fields);
-        $first = $data->get(0);
+        $keys = $data->get(0);
 
-        $diff = $first->diff($keys);
-
-        $count = $diff->count();
-        return $count <= 1;
+        return $keys->contains('站点ID')
+            && $keys->contains('素材组名称')
+            && $keys->contains('计划名称')
+            && $keys->contains('来源')
+            && $keys->contains('姓名')
+            && $keys->contains('手机号码')
+            && $keys->contains('创建时间');
     }
 
     /**
@@ -89,20 +89,14 @@ class KuaiShouData extends Model
         $data = Helpers::excelToKeyArray($collection, static::$fields);
         $data = collect($data)->filter(function ($item) {
             return isset($item['post_date'])
-                && isset($item['clue_id'])
-                && isset($item['page_name'])
+                && isset($item['advertiser_name'])
                 && isset($item['phone']);
         });
 
         return static::handleExcelData($data);
     }
 
-    /**
-     * @param $data Collection
-     * @return int
-     * @throws \Exception
-     */
-    public static function handleExcelData($data): int
+    public static function handleExcelData($data)
     {
         $count = 0;
         foreach ($data as $item) {
@@ -113,20 +107,16 @@ class KuaiShouData extends Model
             ]);
             $count++;
         }
-
         return $count;
     }
 
-
-    /**
-     * @param $item array
-     * @return array
-     * @throws \Exception
-     */
-    public static function parseData($item): array
+    public static function parseData($item)
     {
-        $item['form_type'] = FormData::$FORM_TYPE_KUAISHOU;
-        $code              = $item['code'] = $item['page_name'] . '-' . $item['form_component'];
+        $keys     = array_values(static::$fields);
+        $question = collect($item)->filter(function ($item, $key) use ($keys) {
+            return !in_array($key, $keys);
+        });
+        $code     = $item['advertiser_name'] . '-' . $question->join('-');
 
         if (!$departmentType = Helpers::checkDepartment($code))
             throw new \Exception('无法判断科室 :' . $code);
@@ -136,7 +126,9 @@ class KuaiShouData extends Model
         $item['type']            = $departmentType->type;
         $item['department_type'] = $departmentType;
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
-
+        $item['form_type']       = FormData::$FORM_TYPE_MEIYOU;
+        $item['question_data']   = $question;
+        $item['code']            = $code;
         return $item;
     }
 

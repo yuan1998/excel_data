@@ -205,6 +205,17 @@ class FormData extends Model
 
     }
 
+    public static function isModel($data, $fields)
+    {
+        $keys  = array_keys($fields);
+        $first = $data->get(0);
+
+        $diff = $first->diff($keys);
+
+        $count = $diff->count();
+        return $count <= 1;
+    }
+
     /**
      * 获取已关联的科室的数据
      * @return mixed
@@ -351,7 +362,24 @@ class FormData extends Model
             'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
             'account_keyword' => $item['code'],
         ];
+    }
 
+    public static function baseMakeFormData($className, $item, $condition)
+    {
+        $model = $className::updateOrCreate($condition, $item);
+        $model->projects()->sync($item['project_type']);
+
+        $phone = $item['phone'];
+        if ($phone) {
+            $form  = static::updateOrCreate(
+                [
+                    'model_id'   => $model->id,
+                    'model_type' => $className,
+                ], static::parseFormData($item));
+            $phone = collect(explode(',', $phone));
+            FormDataPhone::createOrUpdateItem($form, $phone);
+            $form->projects()->sync($item['project_type']);
+        }
     }
 
 }
