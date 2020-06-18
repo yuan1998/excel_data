@@ -70,7 +70,6 @@ class FeiyuSpend extends Model
         $diff  = $first->diff($keys);
 
         $count = $diff->count();
-        dd($first,$keys,$diff);
         return $count <= 2;
     }
 
