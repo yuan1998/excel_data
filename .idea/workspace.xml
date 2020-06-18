@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/liuyun.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/liuyun.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Imports/AutoImport.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/AutoImport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/KuaiShouData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/KuaiShouData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/KuaiShouSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/KuaiShouSpend.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/FeiyuSpend.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FeiyuSpend.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,20 +30,38 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Imports/AutoImport.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="78" column="29" selection-start-line="78" selection-start-column="29" selection-end-line="78" selection-end-column="29" />
+            <state relative-caret-position="470">
+              <caret line="41" column="46" lean-forward="true" selection-start-line="41" selection-start-column="46" selection-end-line="41" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="33" column="17" lean-forward="true" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/FeiyuSpend.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="373">
+              <caret line="72" column="31" lean-forward="true" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/MeiyouSpend.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="98" column="5" lean-forward="true" selection-start-line="98" selection-start-column="5" selection-end-line="98" selection-end-column="5" />
+            <state relative-caret-position="385">
+              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
               <folding>
                 <element signature="e#30#46#0#PHP" expanded="true" />
               </folding>
@@ -85,10 +102,9 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="207" column="27" selection-start-line="207" selection-start-column="27" selection-end-line="207" selection-end-column="27" />
+            <state relative-caret-position="1160">
+              <caret line="167" column="16" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="16" />
               <folding>
-                <element signature="e#3237#4665#0#PHP" />
                 <element signature="e#4671#5770#0#PHP" />
               </folding>
             </state>
@@ -99,7 +115,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>export/accountPlan</find>
       <find>BaiduDataController</find>
       <find>accountPlanExcelExport</find>
       <find>export</find>
@@ -122,13 +137,14 @@
       <find>共创建</find>
       <find>isMode</find>
       <find>isM</find>
-      <find>dd</find>
       <find>spendData</find>
       <find>素材组名称</find>
       <find>计划名称</find>
       <find>来源</find>
       <find>站点ID</find>
       <find>['code'] =</find>
+      <find>dd(</find>
+      <find>dd</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -174,20 +190,20 @@
         <option value="$PROJECT_DIR$/resources/js/components/data-index.vue" />
         <option value="$PROJECT_DIR$/database/migrations/2020_06_15_162922_create_kuai_shou_spends_table.php" />
         <option value="$PROJECT_DIR$/app/Helpers.php" />
-        <option value="$PROJECT_DIR$/app/Models/FeiyuSpend.php" />
         <option value="$PROJECT_DIR$/app/Models/VivoSpend.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php" />
         <option value="$PROJECT_DIR$/app/Models/SpendData.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_06_17_104913_change_spend_data_table_spend_field_type_to_string.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_06_17_144518_create_meiyou_data_table.php" />
-        <option value="$PROJECT_DIR$/app/Imports/AutoImport.php" />
         <option value="$PROJECT_DIR$/app/Models/FormData.php" />
         <option value="$PROJECT_DIR$/app/Models/MeiyouData.php" />
         <option value="$PROJECT_DIR$/app/Models/KuaiShouData.php" />
         <option value="$PROJECT_DIR$/app/Models/KuaiShouSpend.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_06_17_150117_create_meiyou_spends_table.php" />
         <option value="$PROJECT_DIR$/app/Models/MeiyouSpend.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php" />
+        <option value="$PROJECT_DIR$/app/Models/FeiyuSpend.php" />
+        <option value="$PROJECT_DIR$/app/Imports/AutoImport.php" />
       </list>
     </option>
   </component>
@@ -476,12 +492,12 @@
       <workItem from="1589341469639" duration="63083000" />
       <workItem from="1590284356064" duration="69780000" />
       <workItem from="1591763674113" duration="75000" />
-      <workItem from="1591784260165" duration="71911000" />
+      <workItem from="1591784260165" duration="74963000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1210685000" />
+    <option name="totallyTimeSpent" value="1213737000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1117" extended-state="0" />
@@ -562,13 +578,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Admin/Actions/SanfangExportAction.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Jobs/ExportJob.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
@@ -814,13 +823,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="27" column="41" lean-forward="true" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Helpers.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="277">
@@ -828,13 +830,6 @@
           <folding>
             <element signature="e#4766#5499#0#PHP" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/FeiyuSpend.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="112" column="32" selection-start-line="112" selection-start-column="32" selection-end-line="112" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -900,17 +895,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="207" column="27" selection-start-line="207" selection-start-column="27" selection-end-line="207" selection-end-column="27" />
-          <folding>
-            <element signature="e#3237#4665#0#PHP" />
-            <element signature="e#4671#5770#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/MeiyouData.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-56">
@@ -945,20 +929,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Imports/AutoImport.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="78" column="29" selection-start-line="78" selection-start-column="29" selection-end-line="78" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/MeiyouSpend.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="98" column="5" lean-forward="true" selection-start-line="98" selection-start-column="5" selection-end-line="98" selection-end-column="5" />
+        <state relative-caret-position="385">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
           <folding>
             <element signature="e#30#46#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ExcelViewController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/FormData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1160">
+          <caret line="167" column="16" selection-start-line="167" selection-start-column="16" selection-end-line="167" selection-end-column="16" />
+          <folding>
+            <element signature="e#4671#5770#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/FeiyuSpend.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="72" column="31" lean-forward="true" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ImportExcelController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="33" column="17" lean-forward="true" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Imports/AutoImport.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="41" column="46" lean-forward="true" selection-start-line="41" selection-start-column="46" selection-end-line="41" selection-end-column="46" />
         </state>
       </provider>
     </entry>

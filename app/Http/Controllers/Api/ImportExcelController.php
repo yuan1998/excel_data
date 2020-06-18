@@ -29,6 +29,7 @@ class ImportExcelController extends Controller
             $message = $exception->getMessage();
         }
         $type = $import->getModelType();
+
         if (!$type) {
             $message = '无法识别该文件类型,如果确认数据正确,请联系管理员';
         }

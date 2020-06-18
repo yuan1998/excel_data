@@ -39,7 +39,7 @@ class AutoImport implements ToCollection
         'kuaishou-spend' => KuaiShouSpend::class,
         'vivo-spend'     => VivoSpend::class,
         'baidu-spend'    => BaiduSpend::class,
-        'feiyu-spend'    => FeiyuData::class,
+        'feiyu-spend'    => FeiyuSpend::class,
         'weibo-spend'    => WeiboSpend::class,
         'oppo-spend'     => OppoSpend::class,
     ];
@@ -107,6 +107,6 @@ class AutoImport implements ToCollection
 
     public function getModelType()
     {
-        return Arr::get(static::$modelName, $this->model, null);
+        return $this->model ? Arr::get(static::$modelName, $this->model, null) : null;
     }
 }
