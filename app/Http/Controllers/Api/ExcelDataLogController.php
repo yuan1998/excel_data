@@ -11,7 +11,7 @@ class ExcelDataLogController extends Controller
 
     public function exportExcelStore(ExportExcelRequest $request)
     {
-        $data = $request->only(['department_id', 'channel_id', 'dates', 'type']);
+        $data = $request->only(['department_id', 'channel_id', 'dates', 'type', 'project_id']);
 
         $data['data_type'] = 'xxl_data_excel';
 
