@@ -5,45 +5,14 @@
 
             <el-dialog title="创建导出数据"
                        ref="dialog"
-                       width="550px"
+                       width="650px"
                        :visible.sync="dialogFormVisible"
                        :before-close="handleClose">
                 <el-form ref="form"
                          :model="form"
                          :rules="rules"
                          :label-width="formLabelWidth">
-                    <el-form-item label="类型" prop="type">
-                        <el-radio-group v-model="form.type" size="mini">
-                            <el-radio-button label="zx"
-                            >
-                                整形
-                            </el-radio-button>
-                            <el-radio-button label="kq"
-                            >
-                                口腔
-                            </el-radio-button>
-
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="渠道" prop="channel_id">
-                        <el-checkbox-group v-model="form.channel_id" size="mini">
-                            <el-checkbox-button :label="key"
-                                                :key="key"
-                                                v-for="(value , key) in channelOptions">
-                                {{value}}
-                            </el-checkbox-button>
-                        </el-checkbox-group>
-                    </el-form-item>
-
-
-                    <el-form-item label="科室" prop="department_id">
-                        <el-checkbox-group v-model="form.department_id" size="mini">
-                            <el-checkbox-button v-for="(option , key) in departmentOptions" :label="key" :key="key">
-                                {{option}}
-                            </el-checkbox-button>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item label="时间范围" prop="dates">
+                    <el-form-item label="时间" prop="dates">
                         <el-col :span="11">
                             <el-date-picker
                                     size="mini"
@@ -55,6 +24,55 @@
                                     :picker-options="pickerOptions">
                             </el-date-picker>
                         </el-col>
+                    </el-form-item>
+                    <el-form-item label="医院类型" prop="type">
+                        <el-radio-group v-model="form.type" size="mini">
+                            <el-radio label="zx" border
+                            >
+                                整形医院
+                            </el-radio>
+                            <el-radio label="kq" border
+                            >
+                                口腔医院
+                            </el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="渠道类型" prop="channel_id">
+                        <el-checkbox-group v-model="form.channel_id" size="mini">
+                            <el-checkbox border
+                                         :label="key"
+                                         :key="key"
+                                         v-for="(value , key) in channelOptions">
+                                {{value}}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item label="科室类型" prop="department_id">
+                        <el-checkbox-group v-model="form.department_id" size="mini">
+                            <el-checkbox border v-for="(option , key) in departmentOptions" :label="option['id']"
+                                         :key="key">
+                                {{option['title']}}
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-button type="text"
+                               :disabled="disabledProject"
+                               @click="handleToggleProject"
+                    >
+                        病种设置
+                        <i class="el-icon "
+                           :class="projectsListShow ? 'el-icon-arrow-down': 'el-icon-arrow-up'"></i>
+                    </el-button>
+                    <el-form-item label="显示 - 病种汇总" prop="project_id" label-width="85px" v-if="projectsListShow">
+
+                        <el-transfer v-model="form.project_id"
+                                     :button-texts="['病种列表', '显示的病种']"
+                                     :props="{
+      key: 'id',
+      label: 'title'
+    }"
+                                     :data="projectList"></el-transfer>
+
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -74,8 +92,8 @@
 
 
     export default {
-        name   : 'ExportDataForm',
-        props  : {
+        name    : 'ExportDataForm',
+        props   : {
             channelOptions   : {
                 type    : Object,
                 required: true,
@@ -87,6 +105,7 @@
         },
         data() {
             return {
+                projectsListShow : false,
                 loadingInstance  : null,
                 dialogFormVisible: false,
                 loading          : false,
@@ -127,19 +146,44 @@
                         }
                     ]
                 },
+                test             : [],
                 form             : {
                     department_id: [],
                     channel_id   : [],
+                    project_id   : [],
                     type         : '',
                     dates        : [],
                 },
             }
         },
-        methods: {
+        computed: {
+            disabledProject() {
+                return !this.form.department_id.length;
+            },
+            projectList() {
+                let result        = [];
+                let departmentIds = this.form.department_id;
+                if (!departmentIds.length) return result;
+
+                this.departmentOptions
+                    .forEach((item) => {
+                        if (departmentIds.includes(item.id)) {
+                            result = [
+                                ...result,
+                                ...item.projects,
+                            ];
+                        }
+                    });
+                return result;
+            }
+        },
+        methods : {
+            handleToggleProject() {
+                this.projectsListShow = !this.projectsListShow;
+            },
             handleOpen() {
                 this.dialogFormVisible = true;
             },
-
             handleClose(done) {
                 this.$confirm('确认关闭？')
                     .then(_ => {

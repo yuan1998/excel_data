@@ -113,12 +113,13 @@ class BaiduDataController extends Controller
 //        Helpers::checkUTF8($file);
 
         $data = [
-            'channel_id'    => [3, 4, 1, 8],
-            'department_id' => [1, 2, 3, 4],
+            'channel_id'    => [1, 4],
+            'department_id' => [2],
+            'project_id'    => [1],
             'type'          => 'kq',
             'dates'         => [
-                '2020-01-03 00:00:00',
-                '2020-01-04 23:59:59',
+                '2020-06-20 00:00:00',
+                '2020-06-20 23:59:59',
             ]
         ];
 

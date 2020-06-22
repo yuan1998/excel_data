@@ -45,7 +45,8 @@ class ExportDataAction extends Action
     public function render()
     {
         $channelOptions    = Channel::all()->pluck('title', 'id');
-        $departmentOptions = DepartmentType::all()->pluck('title', 'id');
+        $departmentOptions = DepartmentType::query()->with(['projects'])->select(['title', 'id'])->get();
+
         return view('admin.actions.exportDataAction', [
             'channelOptions'    => $channelOptions,
             'departmentOptions' => $departmentOptions

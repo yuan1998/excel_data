@@ -14,13 +14,10 @@
       <file leaf-file-name="weibo_test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/weibo_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="224" column="79" lean-forward="true" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
+            <state relative-caret-position="6572">
+              <caret line="224" column="79" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
               <folding>
                 <element signature="e#115#126#0" expanded="true" />
-                <element signature="e#2379#2981#0" />
-                <element signature="e#4115#5290#0" />
-                <element signature="e#4508#5264#0" />
               </folding>
             </state>
           </provider>
@@ -29,13 +26,10 @@
       <file leaf-file-name="test.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="3599" column="46" lean-forward="true" selection-start-line="3599" selection-start-column="46" selection-end-line="3599" selection-end-column="46" />
+            <state relative-caret-position="409">
+              <caret line="3611" column="21" selection-start-line="3611" selection-start-column="21" selection-end-line="3611" selection-end-column="21" />
               <folding>
                 <element signature="n#article#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="e#1058#1088#0" expanded="true" />
-                <element signature="e#191126#191149#0" expanded="true" />
-                <element signature="e#212879#212903#0" />
               </folding>
             </state>
           </provider>
@@ -73,17 +67,17 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1" />
-    <option name="y" value="173" />
-    <option name="width" value="1680" />
-    <option name="height" value="969" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="1121" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -96,7 +90,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -185,14 +178,16 @@
       <workItem from="1576726910285" duration="1433000" />
       <workItem from="1578016078230" duration="1282000" />
       <workItem from="1589338492567" duration="103886000" />
+      <workItem from="1592793182572" duration="695000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117605000" />
+    <option name="totallyTimeSpent" value="118300000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="173" width="1680" height="969" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="1121" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -206,7 +201,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3285273" />
       <window_info anchor="right" id="Flutter Outline" order="3" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49939686" visible="true" weight="0.25703794" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49939686" visible="true" weight="0.25987193" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" sideWeight="0.50060314" side_tool="true" weight="0.25764993" />
@@ -235,13 +230,30 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/weibo_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6572">
+          <caret line="224" column="79" lean-forward="true" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
+          <folding>
+            <element signature="e#115#126#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111569">
+          <caret line="3599" column="46" lean-forward="true" selection-start-line="3599" selection-start-column="46" selection-end-line="3599" selection-end-column="46" />
+          <folding>
+            <element signature="n#article#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/weibo_luming.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6076">
           <caret line="208" selection-start-line="208" selection-end-line="208" />
-          <folding>
-            <element signature="e#115#126#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -258,9 +270,6 @@
           <caret line="220" column="70" selection-start-line="220" selection-start-column="70" selection-end-line="220" selection-end-column="70" />
           <folding>
             <element signature="e#115#126#0" expanded="true" />
-            <element signature="e#2379#2981#0" />
-            <element signature="e#4115#5290#0" />
-            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>
@@ -269,9 +278,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6076">
           <caret line="208" selection-start-line="208" selection-end-line="208" />
-          <folding>
-            <element signature="e#115#126#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -288,9 +294,6 @@
           <caret line="220" column="28" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="28" />
           <folding>
             <element signature="e#115#126#0" expanded="true" />
-            <element signature="e#2379#2981#0" />
-            <element signature="e#4115#5290#0" />
-            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>
@@ -299,9 +302,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6076">
           <caret line="208" selection-start-line="208" selection-end-line="208" />
-          <folding>
-            <element signature="e#115#126#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -318,20 +318,11 @@
           <caret line="229" column="50" lean-forward="true" selection-start-line="229" selection-start-column="50" selection-end-line="229" selection-end-column="50" />
           <folding>
             <element signature="e#115#126#0" expanded="true" />
-            <element signature="e#2379#2981#0" />
-            <element signature="e#4115#5290#0" />
-            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Downloads/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="587">
-          <caret line="96" column="35" lean-forward="true" selection-start-line="96" selection-start-column="17" selection-end-line="96" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Downloads/test.py" />
     <entry file="file://$PROJECT_DIR$/ip.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="93">
@@ -364,9 +355,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
           <caret line="193" lean-forward="true" selection-start-line="193" selection-end-line="193" />
-          <folding>
-            <element signature="e#115#126#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -396,26 +384,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/weibo_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="224" column="79" lean-forward="true" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
+        <state relative-caret-position="6572">
+          <caret line="224" column="79" selection-start-line="224" selection-start-column="79" selection-end-line="224" selection-end-column="79" />
           <folding>
             <element signature="e#115#126#0" expanded="true" />
-            <element signature="e#2379#2981#0" />
-            <element signature="e#4115#5290#0" />
-            <element signature="e#4508#5264#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="3599" column="46" lean-forward="true" selection-start-line="3599" selection-start-column="46" selection-end-line="3599" selection-end-column="46" />
+        <state relative-caret-position="409">
+          <caret line="3611" column="21" selection-start-line="3611" selection-start-column="21" selection-end-line="3611" selection-end-column="21" />
           <folding>
             <element signature="n#article#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#1058#1088#0" expanded="true" />
-            <element signature="e#191126#191149#0" expanded="true" />
-            <element signature="e#212879#212903#0" />
           </folding>
         </state>
       </provider>

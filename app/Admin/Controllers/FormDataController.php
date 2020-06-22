@@ -236,7 +236,7 @@ class FormDataController extends AdminController
             $form->select('is_repeat', '是否重复')
                 ->options(FormDataPhone::$IsRepeatList);
             $form->select('intention', '建档等级')
-                ->options(FormDataPhone::$IsRepeatList);
+                ->options(FormDataPhone::$IntentionList);
 
             $form->disableSubmit();
 

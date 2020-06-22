@@ -129,6 +129,7 @@ class TestExport implements WithMultipleSheets
         $sheets = [];
 
         $channelExcel = $this->parser->toArray("channel");
+//        dd($channelExcel);
         $sheets[]     = new BaseSheet($channelExcel, '信息流数据汇总表', static::$BaseHeaders);
 
         $accountExcel = $this->parser->toArray("account");

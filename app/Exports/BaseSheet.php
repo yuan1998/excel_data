@@ -143,7 +143,7 @@ class BaseSheet implements FromCollection, WithTitle, WithHeadings, WithEvents, 
             $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(25);
         }
         for ($i = 1; $i <= $count; $i++) {
-            $event->sheet->getDelegate()->getColumnDimension(Helpers::getNameFromNumber($i))->setWidth(15);
+            $event->sheet->getDelegate()->getColumnDimension(Helpers::getNameFromNumber($i))->setWidth(8);
         }
     }
 

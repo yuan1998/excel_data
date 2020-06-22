@@ -3,8 +3,10 @@
 namespace App\Parsers;
 
 use App\Helpers;
+use App\Models\ProjectType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -53,6 +55,7 @@ class ParserStart extends ParserBase
      * @var Collection|static
      */
     public $channelsModel;
+    public $project_id;
 
     /**
      * ParserStart constructor.
@@ -62,6 +65,7 @@ class ParserStart extends ParserBase
     {
         $this->requestData    = $requestData;
         $this->channels_id    = $requestData['channel_id'];
+        $this->project_id     = Arr::get($requestData, 'project_id', []);
         $this->departments_id = $requestData['department_id'];
         $this->type           = $requestData['type'];
 
@@ -78,6 +82,11 @@ class ParserStart extends ParserBase
         return "[{$channelName}]_[{$departmentName}]_{$dateName}.xlsx";
     }
 
+    /**
+     * 入口,解析所需要的数据
+     * @param $name
+     * @return Collection
+     */
     public function toArray($name)
     {
         $data = [
@@ -111,6 +120,11 @@ class ParserStart extends ParserBase
         return $this->channelsModel;
     }
 
+    /**
+     * 生成 日期 -> 渠道 -> 科室 格式的数据
+     * @param $data
+     * @return Collection
+     */
     public function generateChannelToDepartment($data)
     {
         $channelResult = collect();
@@ -123,6 +137,11 @@ class ParserStart extends ParserBase
         return $channelResult;
     }
 
+    /**
+     * 生成 日期 -> 渠道 -> 账户 格式的数据
+     * @param $data
+     * @return Collection
+     */
     public function generateDateToAccount($data)
     {
         $groupData = $this->groupDataOfDate($data);
@@ -164,6 +183,11 @@ class ParserStart extends ParserBase
         return $channelResult;
     }
 
+    /**
+     * 生成 日期 -> 渠道 格式的数据
+     * @param $data
+     * @return Collection
+     */
     public function generateDateToChannel($data)
     {
         $groupData = $this->groupDataOfDate($data);
@@ -185,17 +209,40 @@ class ParserStart extends ParserBase
         return $result;
     }
 
+    /**
+     * 日期 -> 渠道 数据: 将每个渠道数据 解析 成 ExcelFieldsCount
+     * @param $data
+     * @return Collection
+     */
     public function generateChannelItem($data)
     {
         $channelResult = collect();
 //        $data          = $this->filterAllDepartmentData($data);
-        $this->channels->each(function ($channel)
-        use ($channelResult, $data) {
+        // 根据 渠道 筛选出对应的数据
+        foreach ($this->channels as $channel) {
             $channelData = $this->filterChannelData($data, $channel);
             $channelData = $this->filterAllDepartmentData($channelData);
             $test        = new ExcelFieldsCount($channelData);
             $channelResult->put($channel->title, $test);
-        });
+        }
+
+        // 根据 科室 筛选出数据
+//        foreach ($this->departments as $department) {
+//            $departmentData = $this->filterDepartmentData($data, $department);
+//            $channelResult->put($department->title . '汇总', new ExcelFieldsCount($departmentData));
+//        }
+
+        if (count($this->project_id) > 0) {
+            $projects = ProjectType::find($this->project_id);
+
+            foreach ($projects as $project) {
+                $projectData = $this->filterProjectData($data, $project);
+
+                $channelResult->put($project->title . '汇总', new ExcelFieldsCount($projectData));
+            }
+        }
+
+        // 判断 渠道 数量,是否需要添加 汇总 行
         if ($this->channels->count() > 1) {
             $test = new ExcelFieldsCount($data);
             $channelResult->put('汇总', $test);
@@ -203,6 +250,11 @@ class ParserStart extends ParserBase
         return $channelResult;
     }
 
+    /**
+     * 生成 日期 -> 科室 -> 病种 格式的数据
+     * @param $data
+     * @return Collection
+     */
     public function generateDateToDepartment($data)
     {
         $groupData        = $this->groupDataOfDate($data);
@@ -222,6 +274,11 @@ class ParserStart extends ParserBase
         return $resultDepartment;
     }
 
+    /**
+     * 日期 -> 科室 -> 病种 数据 : 解析 数据 ,拆分出不同 科室和病种 中的数据
+     * @param $data
+     * @return Collection
+     */
     public function generateDepartmentItem($data)
     {
         $departmentResult = collect();
