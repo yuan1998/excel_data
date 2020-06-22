@@ -66,7 +66,7 @@
                     <el-form-item label="显示 - 病种汇总" prop="project_id" label-width="85px" v-if="projectsListShow">
 
                         <el-transfer v-model="form.project_id"
-                                     :button-texts="['病种列表', '显示的病种']"
+                                     :titles="['病种列表', '病种汇总']"
                                      :props="{
       key: 'id',
       label: 'title'
