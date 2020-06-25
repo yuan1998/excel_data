@@ -98,31 +98,35 @@ class SpendData extends Model
         });
     }
 
-    public static function recheckSpendData()
+    public static function itemSelfRecheck($item)
+    {
+        $departmentType = Helpers::checkDepartment($item['spend_name']);
+        $accountKey     = $item['account_keyword'] ? 'account_keyword' : 'spend_name';
+        $item['type']   = $departmentType ? $departmentType->type : null;
+        $account        = Helpers::formDataCheckAccount($item, $accountKey, 'spend_type', true);
+        $offSpend       = (float)$item['spend'];
+        if ($account) {
+            $offSpend = $offSpend / (float)$account['rebate'];
+        }
+
+        $item->update([
+            'department_id' => $departmentType ? $departmentType->id : null,
+            'account_id'    => $account ? $account['id'] : null,
+            'off_spend'     => $offSpend,
+            'type'          => $item['type'],
+        ]);
+
+        if ($departmentType) {
+            $projectType = Helpers::checkDepartmentProject($departmentType, $item['spend_name'], 'spend_keyword');
+            $item->projects()->sync($projectType);
+        }
+    }
+
+    public static function recheckAllSpendData()
     {
         static::all()
             ->each(function ($item) {
-                $departmentType = Helpers::checkDepartment($item['spend_name']);
-                $accountKey     = $item['account_keyword'] ? 'account_keyword' : 'spend_name';
-
-                $item['type'] = $departmentType ? $departmentType->type : null;
-                $account      = Helpers::formDataCheckAccount($item, $accountKey, 'spend_type', true);
-                $offSpend     = (float)$item['spend'];
-                if ($account) {
-                    $offSpend = $offSpend / (float)$account['rebate'];
-                }
-
-                $item->update([
-                    'department_id' => $departmentType ? $departmentType->id : null,
-                    'account_id'    => $account ? $account['id'] : null,
-                    'off_spend'     => $offSpend,
-                    'type'          => $item['type'],
-                ]);
-
-                if ($departmentType) {
-                    $projectType = Helpers::checkDepartmentProject($departmentType, $item['spend_name'], 'spend_keyword');
-                    $item->projects()->sync($projectType);
-                }
+                static::itemSelfRecheck($item);
             });
     }
 
@@ -183,7 +187,7 @@ class SpendData extends Model
 
         $spend = static::updateOrCreate([
             'model_id'   => $model->id,
-            'model_type' => $className
+            'model_type' => $className,
         ], static::parseMakeSpendData($item));
 
         $spend->projects()->sync($item['project_type']);

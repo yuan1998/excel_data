@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Admin/Actions/SpendData/RecheckItem.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/SpendData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SpendData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/less/app.less" beforeDir="false" afterPath="$PROJECT_DIR$/resources/less/app.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/less/app.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/less/app.min.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,7 +24,7 @@
         <entry file="file://$PROJECT_DIR$/resources/js/components/exportDataForm.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="163">
-              <caret line="62" column="43" lean-forward="true" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+              <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
               <folding>
                 <element signature="n#el-form-item#0;n#el-form#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" />
                 <element signature="n#el-form-item#1;n#el-form#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" />
@@ -29,19 +34,66 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+            <state relative-caret-position="444">
+              <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="106" column="38" lean-forward="true" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="38" />
+              <folding>
+                <element signature="e#908#3040#2#PHP" />
+                <element signature="e#973#2074#1#PHP" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="348">
+              <caret line="137" selection-start-line="137" selection-end-line="141" selection-end-column="11" />
+              <folding>
+                <element signature="e#1106#4557#2#PHP" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Actions/FormData/RecheckItem.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="186">
+              <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Actions/SpendData/RecheckItem.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="372">
+              <caret line="15" column="24" lean-forward="true" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php">
+        <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="390">
+              <caret line="119" column="40" lean-forward="true" selection-start-line="119" selection-start-column="40" selection-end-line="119" selection-end-column="40" />
+              <folding>
+                <element signature="e#3661#3973#0#PHP" />
+                <element signature="e#3979#4235#0#PHP" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,8 +140,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/js/components/ActionSanfangExport.vue" />
-        <option value="$PROJECT_DIR$/app/Jobs/ExportJob.php" />
         <option value="$PROJECT_DIR$/resources/lang/zh-CN.json" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" />
         <option value="$PROJECT_DIR$/app/Admin/routes.php" />
@@ -114,9 +164,7 @@
         <option value="$PROJECT_DIR$/database/migrations/2020_06_15_162922_create_kuai_shou_spends_table.php" />
         <option value="$PROJECT_DIR$/app/Helpers.php" />
         <option value="$PROJECT_DIR$/app/Models/VivoSpend.php" />
-        <option value="$PROJECT_DIR$/app/Models/SpendData.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_06_17_104913_change_spend_data_table_spend_field_type_to_string.php" />
-        <option value="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_06_17_144518_create_meiyou_data_table.php" />
         <option value="$PROJECT_DIR$/app/Models/FormData.php" />
         <option value="$PROJECT_DIR$/app/Models/MeiyouData.php" />
@@ -136,9 +184,13 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" />
         <option value="$PROJECT_DIR$/app/Exports/TestExport.php" />
         <option value="$PROJECT_DIR$/app/Exports/BaseSheet.php" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/resources/js/components/exportDataForm.vue" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php" />
+        <option value="$PROJECT_DIR$/resources/less/app.less" />
+        <option value="$PROJECT_DIR$/app/Admin/Actions/SpendData/RecheckItem.php" />
+        <option value="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/app/Models/SpendData.php" />
       </list>
     </option>
   </component>
@@ -382,7 +434,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Admin/Actions/FormData" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Admin/Actions/SpendData" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -392,11 +444,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/Admin/Actions/SpendData" />
       <recent name="$PROJECT_DIR$/app/Admin/Actions/FormData" />
       <recent name="$PROJECT_DIR$/resources/js/components" />
       <recent name="$PROJECT_DIR$/app/Admin/Actions" />
       <recent name="$PROJECT_DIR$/resources/views/admin/actions" />
-      <recent name="$PROJECT_DIR$/app/Exports" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Http/Controllers/Api" />
@@ -464,12 +516,12 @@
       <workItem from="1589341469639" duration="63083000" />
       <workItem from="1590284356064" duration="69780000" />
       <workItem from="1591763674113" duration="75000" />
-      <workItem from="1591784260165" duration="96877000" />
+      <workItem from="1591784260165" duration="103836000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1235651000" />
+    <option name="totallyTimeSpent" value="1242610000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1116" extended-state="0" />
@@ -538,25 +590,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Models/WeiboFormData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="245" column="21" lean-forward="true" selection-start-line="245" selection-start-column="21" selection-end-line="245" selection-end-column="21" />
-          <folding>
-            <element signature="e#1354#1467#0#PHP" />
-            <element signature="e#1474#1567#0#PHP" />
-            <element signature="e#1572#2493#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/ActionExcelUpload.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="85" column="44" selection-start-line="85" selection-start-column="44" selection-end-line="85" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_12_13_141459_create_vivo_data_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -627,16 +660,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="144" column="31" lean-forward="true" selection-start-line="144" selection-start-column="31" selection-end-line="144" selection-end-column="31" />
-          <folding>
-            <element signature="e#803#2935#2#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/AccountData.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-97">
@@ -675,13 +698,6 @@
           <folding>
             <element signature="e#30#46#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="178" column="42" selection-start-line="178" selection-start-column="32" selection-end-line="178" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -764,23 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
           <caret line="466" column="19" selection-start-line="466" selection-start-column="19" selection-end-line="466" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Admin/Actions/FormData/RecheckItem.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
-          <caret line="238" column="55" selection-start-line="238" selection-start-column="55" selection-end-line="238" selection-end-column="55" />
-          <folding>
-            <element signature="e#1106#4557#2#PHP" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -917,6 +916,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/less/app.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Admin/Actions/FormData/RecheckItem.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="137" selection-start-line="137" selection-end-line="141" selection-end-column="11" />
+          <folding>
+            <element signature="e#1106#4557#2#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
@@ -927,7 +957,7 @@
     <entry file="file://$PROJECT_DIR$/resources/js/components/exportDataForm.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="163">
-          <caret line="62" column="43" lean-forward="true" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+          <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
           <folding>
             <element signature="n#el-form-item#0;n#el-form#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#el-form-item#1;n#el-form#0;n#el-dialog#0;n#div#0;n#div#0;n#template#0;n#!!top" />
@@ -935,10 +965,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/ExcelDataLogController.php">
+    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="384">
+          <caret line="106" column="38" lean-forward="true" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="38" />
+          <folding>
+            <element signature="e#908#3040#2#PHP" />
+            <element signature="e#973#2074#1#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Admin/Actions/SpendData/RecheckItem.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="15" column="24" lean-forward="true" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="119" column="40" lean-forward="true" selection-start-line="119" selection-start-column="40" selection-end-line="119" selection-end-column="40" />
+          <folding>
+            <element signature="e#3661#3973#0#PHP" />
+            <element signature="e#3979#4235#0#PHP" />
+          </folding>
         </state>
       </provider>
     </entry>

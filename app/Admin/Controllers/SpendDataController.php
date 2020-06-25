@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\ExcelUpload;
+use App\Admin\Actions\SpendData\RecheckSpendItem;
 use App\Admin\Actions\SpendExcelUpload;
 use App\Models\AccountData;
 use App\models\CrmGrabLog;
@@ -100,6 +101,10 @@ class SpendDataController extends AdminController
 //                'baidu_spend' => '百度消费',
 //                'oppo_spend'  => 'oppo消费',
 //            ]));
+        });
+
+        $grid->actions(function ($actions) {
+            $actions->add(new RecheckSpendItem());
         });
         $grid->disableRowSelector();
         $grid->disableCreateButton();
@@ -203,6 +208,8 @@ class SpendDataController extends AdminController
         $form->projectSelectOfDepartment('department_id', __('所属科室'))
             ->options($departmentTypeList)
             ->load($id, 'projects', 'id', 'title');
+
+        $form->multipleSelect('projects', __('Project'));
 
         $form->select('account_id', __('账户'))->options($accountQuery->get()->pluck('name', 'id'));
 
