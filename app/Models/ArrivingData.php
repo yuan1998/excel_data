@@ -179,7 +179,7 @@ class ArrivingData extends Model
     public static function fixOnlineArchiveBy()
     {
         $data = static::query()
-            ->doesntHave('onlineArchiveBy')
+            ->whereNull('online_customer_id')
             ->select([
                 'online_return_visit_by',
                 'online_customer',
