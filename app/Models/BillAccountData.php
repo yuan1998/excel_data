@@ -70,6 +70,11 @@ class BillAccountData extends Model
         'customer_id',
         'medium_id',
         'account_id',
+
+        'online_return_visit_by_id',
+        'account_by_id',
+        'online_customer_id',
+        'archive_by_id',
     ];
 
     public static $BillAccountCountDataFormat = [
@@ -106,6 +111,11 @@ class BillAccountData extends Model
         return $this->morphToMany(ProjectType::class, 'model', 'project_list', 'model_id', 'project_id');
     }
 
+    public function archiveBy()
+    {
+        return $this->belongsTo(Consultant::class, 'archive_by_id', 'id');
+    }
+
     public function archive()
     {
         return $this->belongsTo(ArchiveType::class, 'archive_id', 'id');
@@ -114,6 +124,30 @@ class BillAccountData extends Model
     public function customerPhone()
     {
         return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
+    }
+
+
+    public static function fixArchiveBy()
+    {
+        $data = static::query()
+            ->doesntHave('archiveBy')
+            ->select([
+                'online_return_visit_by',
+                'account_by',
+                'online_customer',
+                'archive_by',
+                'type'
+            ])
+            ->get()->each(function ($item) {
+                $arr = Helpers::multipleCheckConsultantId($item, $item['type'], [
+                    'online_return_visit_by',
+                    'account_by',
+                    'online_customer',
+                    'archive_by',
+                ]);
+                $item->update($arr);
+            });
+        return $data->count();
     }
 
     public static function recheckCustomerPhone()
@@ -176,6 +210,14 @@ class BillAccountData extends Model
             );
             $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
             $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
+
+            $consultantResult = Helpers::multipleCheckConsultantId($item, $type, [
+                'online_return_visit_by',
+                'account_by',
+                'online_customer',
+                'archive_by',
+            ]);
+            $item             = array_merge($item, $consultantResult);
 
             $uuid->push($item['uuid']);
             static::updateOrCreate([

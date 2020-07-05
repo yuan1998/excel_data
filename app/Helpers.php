@@ -15,6 +15,7 @@ use App\Models\BaiduData;
 use App\Models\BaiduSpend;
 use App\Models\BillAccountData;
 use App\Models\Channel;
+use App\Models\Consultant;
 use App\Models\DepartmentType;
 use App\Models\FeiyuData;
 use App\Models\FeiyuSpend;
@@ -30,6 +31,7 @@ use Carbon\CarbonPeriod;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -550,6 +552,105 @@ class Helpers
         return $val;
     }
 
+
+    public static function multipleCheckConsultantId($item, $type, $arr)
+    {
+        $result = [];
+        foreach ($arr as $field) {
+            $value = Arr::get($item, $field);
+            if ($value)
+                $result[$field . '_id'] = static::getConsultantId($type, str_replace(' ', '', $value));
+        }
+
+        return $result;
+    }
+
+    public static function consultantNameParse($name)
+    {
+        $name = str_replace('）', ')', $name);
+        return str_replace('（', '(', $name);
+
+
+    }
+
+    /**
+     * 生成 客服 ID
+     * @param        $type
+     * @param        $name
+     * @param string $prefix
+     * @return mixed
+     */
+    public static function getConsultantId($type, $name, $prefix = 'GET_CONSULTANT_ID_')
+    {
+        $name = static::consultantNameParse($name);
+
+        $val = Redis::get($prefix . $name);
+
+        if (!$val) {
+            $item = Consultant::firstOrCreate([
+                'name'    => $name,
+                'keyword' => $name,
+                'type'    => $type,
+            ]);
+            $val  = $item->id;
+            Redis::set("{$prefix}{$type}_{$name}", $val);
+        }
+
+        return $val;
+    }
+
+
+    /**
+     * 缓存 咨询数据.
+     * @var array
+     */
+    public static $consultantList = [];
+
+    /**
+     * 根据 医院类型  获取 咨询数据.
+     * @param $type
+     * @return mixed
+     */
+    public static function getConsultantOfType($type)
+    {
+        if (!Arr::exists(static::$consultantList, $type)) {
+            $consultants = Consultant::query()
+                ->where('type', $type)
+                ->get(['id', 'keyword'])
+                ->toArray();
+
+            Arr::set(static::$consultantList, $type, $consultants);
+        }
+        return Arr::get(static::$consultantList, $type);
+
+    }
+
+    /**
+     * 获取咨询数据,判断该数据 属于哪个 咨询人员.
+     * @param $type
+     * @param $name
+     * @return null
+     */
+    public static function checkConsultantNameOf($type, $name)
+    {
+        if (!$name || $name === 'None' || $name === '未分组') return null;
+
+        $consultants = static::getConsultantOfType($type);
+        foreach ($consultants as $consultant) {
+            $keywords = preg_replace('/(\,)/', '|', $consultant['keyword']);
+
+            try {
+                if (preg_match("/{$keywords}/", $name))
+                    return $consultant['id'];
+
+            } catch (\Exception $exception) {
+                
+            }
+        }
+
+        return null;
+    }
+
     /**
      * 验证 电话号码 是否正确
      * @param string|int $value 电话号
@@ -557,7 +658,7 @@ class Helpers
      */
     public static function validatePhone($value)
     {
-        return $value && preg_match("/^1[345789]\d{9}$/", $value);
+        return $value && preg_match("/^1[345789]\d{9}$/", trim($value));
     }
 
     /**

@@ -47,15 +47,12 @@ use Illuminate\Support\Collection;
  */
 class ParserStart extends ParserBase
 {
-    /**
-     * @var array
-     */
-    public $requestData;
+
     /**
      * @var Collection|static
      */
     public $channelsModel;
-    public $project_id;
+
 
     /**
      * ParserStart constructor.
@@ -64,10 +61,11 @@ class ParserStart extends ParserBase
     public function __construct($requestData)
     {
         $this->requestData    = $requestData;
-        $this->channels_id    = $requestData['channel_id'];
         $this->project_id     = Arr::get($requestData, 'project_id', []);
-        $this->departments_id = $requestData['department_id'];
-        $this->type           = $requestData['type'];
+        $this->channels_id    = Arr::get($requestData, 'channel_id', []);
+        $this->departments_id = Arr::get($requestData, 'department_id', []);
+        $this->group_id       = Arr::get($requestData, 'consultant_group_id', null);
+        $this->type           = Arr::get($requestData, 'type');
 
         $this->parserDates($requestData['dates']);
     }
@@ -105,9 +103,15 @@ class ParserStart extends ParserBase
                 return $this->generateDateToDepartment($data);
             case "channel-department":
                 return $this->generateChannelToDepartment($data);
-
         }
+    }
 
+
+    public function generateConsultantGroup() {
+        $data = [
+            'billAccountData' => $this->billAccountData,
+            'arrivingData'    => $this->arrivingData,
+        ];
     }
 
     public function getChannelsModel()
@@ -129,8 +133,8 @@ class ParserStart extends ParserBase
     {
         $channelResult = collect();
         foreach ($this->channels as $channel) {
-            $channelData = $this->filterChannelData($data, $channel);
-            $channelData = $this->filterAllDepartmentData($channelData);
+            $channelData = $this->filterAllDataOfChannelMediums($data, $channel);
+            $channelData = $this->filterAllDataOfRequestDepartment($channelData);
             $channelResult->put($channel->title, $this->generateDateToDepartment($channelData));
         }
 
@@ -152,7 +156,7 @@ class ParserStart extends ParserBase
         Helpers::dateRangeForEach($this->dates, function (Carbon $date)
         use ($groupData, $result) {
             $dateString = $date->toDateString();
-            $dayData    = $this->filterDateStringData($groupData, $date);
+            $dayData    = $this->filterAllDataOfDate($groupData, $date);
 
             $channelData = $this->generateAccountItem($dayData);
             $result->put($dateString, $channelData);
@@ -164,17 +168,17 @@ class ParserStart extends ParserBase
     public function generateAccountItem($data)
     {
         $channelResult = collect();
-        $data          = $this->filterAllDepartmentData($data);
+        $data          = $this->filterAllDataOfRequestDepartment($data);
         foreach ($this->channels as $channel) {
-            $channelData = $this->filterChannelData($data, $channel);
+            $channelData = $this->filterAllDataOfChannelMediums($data, $channel);
             $accounts    = $channel->accounts;
 
             $accountResult = collect();
             foreach ($accounts as $account) {
-                $accountData = $this->filterAccountData($channelData, $account);
+                $accountData = $this->filterAllDataOfAccount($channelData, $account);
                 $accountResult->put($account->name, new ExcelFieldsCount($accountData));
             }
-            $otherAccountData = $this->filterOtherAccountData($channelData, $accounts);
+            $otherAccountData = $this->filterAllDataNotInAccount($channelData, $accounts);
             $accountResult->put('其他', new ExcelFieldsCount($otherAccountData));
             $accountResult->put('汇总', new ExcelFieldsCount($channelData));
 
@@ -200,7 +204,7 @@ class ParserStart extends ParserBase
         Helpers::dateRangeForEach($this->dates, function (Carbon $date)
         use ($groupData, $result) {
             $dateString = $date->toDateString();
-            $dayData    = $this->filterDateStringData($groupData, $date);
+            $dayData    = $this->filterAllDataOfDate($groupData, $date);
 
             $channelData = $this->generateChannelItem($dayData);
             $result->put($dateString, $channelData);
@@ -220,8 +224,8 @@ class ParserStart extends ParserBase
 //        $data          = $this->filterAllDepartmentData($data);
         // 根据 渠道 筛选出对应的数据
         foreach ($this->channels as $channel) {
-            $channelData = $this->filterChannelData($data, $channel);
-            $channelData = $this->filterAllDepartmentData($channelData);
+            $channelData = $this->filterAllDataOfChannelMediums($data, $channel);
+            $channelData = $this->filterAllDataOfRequestDepartment($channelData);
             $test        = new ExcelFieldsCount($channelData);
             $channelResult->put($channel->title, $test);
         }
@@ -236,7 +240,7 @@ class ParserStart extends ParserBase
             $projects = ProjectType::find($this->project_id);
 
             foreach ($projects as $project) {
-                $projectData = $this->filterProjectData($data, $project);
+                $projectData = $this->filterAllDataOfProjectArchive($data, $project);
 
                 $channelResult->put($project->title . '汇总', new ExcelFieldsCount($projectData));
             }
@@ -265,7 +269,7 @@ class ParserStart extends ParserBase
         Helpers::dateRangeForEach($this->dates, function (Carbon $date)
         use ($groupData, $resultDepartment) {
             $dateString = $date->toDateString();
-            $dayData    = $this->filterDateStringData($groupData, $date);
+            $dayData    = $this->filterAllDataOfDate($groupData, $date);
 
             $departmentData = $this->generateDepartmentItem($dayData);
             $resultDepartment->put($dateString, $departmentData);
@@ -284,18 +288,18 @@ class ParserStart extends ParserBase
         $departmentResult = collect();
 
         foreach ($this->departments as $department) {
-            $departmentData = $this->filterDepartmentData($data, $department);
+            $departmentData = $this->filterAllDataOfDepartment($data, $department);
             $projects       = $department->projects;
             $projectId      = $projects->pluck('id');
-            $archivesId     = $this->filterProjectArchives($department);
+            $archivesId     = $this->getArchiveOfDepartmentProject($department);
 
             $projectResult = collect();
             foreach ($projects as $project) {
-                $projectData = $this->filterProjectData($departmentData, $project);
+                $projectData = $this->filterAllDataOfProjectArchive($departmentData, $project);
 
                 $projectResult->put($project->title, new ExcelFieldsCount($projectData));
             }
-            $otherProjectData = $this->filterOtherData($departmentData, $projectId, $archivesId);
+            $otherProjectData = $this->filterAllDataNotInProjectId($departmentData, $projectId, $archivesId);
             $projectResult->put('其他', new ExcelFieldsCount($otherProjectData));
             $projectResult->put('汇总', new ExcelFieldsCount($departmentData));
 

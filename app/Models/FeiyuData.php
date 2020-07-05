@@ -6,6 +6,7 @@ use App\Helpers;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -184,7 +185,7 @@ class FeiyuData extends Model
         }
         return $count;
     }
-
+    
     /**
      * @param $item
      * @return mixed
@@ -205,6 +206,10 @@ class FeiyuData extends Model
         $item['post_date']       = Carbon::parse($item['post_date'])->toDateString();
         $item['form_type']       = static::parserFormType($code);
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+
+        $item['follow_logs']     = substr(Arr::get($item, 'follow_logs') ?? '', 0, Builder::$defaultStringLength);
+        $item['consultant_code'] = $item['owner'];
+
         Log::info('飞鱼表单 DEBUG', [
             'code'    => $code,
             'project' => $item['project_type'],

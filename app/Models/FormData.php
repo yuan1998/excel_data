@@ -17,7 +17,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Arr;
 use stringEncode\Exception;
+use Symfony\Component\Console\Helper\Helper;
 
 /**
  * @property mixed data_type
@@ -41,6 +43,9 @@ class FormData extends Model
         'model_id',
         'model_type',
         'type',
+
+        'consultant_code',
+        'consultant_id',
     ];
 
     // 平台类型列表
@@ -128,6 +133,63 @@ class FormData extends Model
     public function account()
     {
         return $this->belongsTo(AccountData::class, 'account_id', 'id');
+    }
+
+
+    public static function fixConsultantInfo()
+    {
+        $data = static::query()
+            ->with(['formModel'])
+            ->whereHasMorph('formModel', [
+                WeiboFormData::class,
+                BaiduData::class,
+                FeiyuData::class,
+                KuaiShouData::class,
+                YiliaoData::class,
+            ])
+            ->get();
+
+        foreach ($data as $item) {
+            $modelType = $item['model_type'];
+            $code      = null;
+            $id        = null;
+            $model     = $item['model'];
+            switch ($modelType) {
+                case BaiduData::class:
+                    $code = $model['visitor_name'];
+                    break;
+                case KuaiShouData::class:
+                    $code = $model['comment'];
+                    break;
+                case FeiyuData::class:
+                    $code = $model['owner'];
+                    break;
+                case WeiboFormData::class:
+                    $consultant = Consultant::query()
+                        ->whereHas('weiboUser', function ($query) use ($model) {
+                            $query->where('id', $model['weibo_user_id']);
+                        })->first();
+                    if ($consultant && $consultant['consultant_id']) {
+                        $code = $consultant['name'];
+                        $id   = $consultant['id'];
+                    }
+                    break;
+                case YiliaoData::class:
+                    $code = $item['name'];
+                    break;
+            }
+
+            if (!$id && $code) {
+                $id = Helpers::checkConsultantNameOf($item['type'], $code);
+            }
+            $item->update([
+                'consultant_id'   => $id,
+                'consultant_code' => $code,
+            ]);
+        }
+
+        return $data->count();
+
     }
 
     public static function fixWeiboMorph()
@@ -352,7 +414,10 @@ class FormData extends Model
 
     public static function parseFormData($item)
     {
-        $date = Carbon::parse($item['date'])->toDateString();
+        $date           = Carbon::parse($item['date'])->toDateString();
+        $consultantCode = Arr::get($item, 'consultant_code', null);
+        $consultantId   = Helpers::checkConsultantNameOf($item['type'], $consultantCode);
+
         return [
             'data_type'       => $item['code'],
             'form_type'       => $item['form_type'],
@@ -361,6 +426,8 @@ class FormData extends Model
             'date'            => $date,
             'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
             'account_keyword' => $item['code'],
+            'consultant_code' => $consultantCode,
+            'consultant_id'   => $consultantId,
         ];
     }
 
@@ -376,7 +443,7 @@ class FormData extends Model
                     'model_id'   => $model->id,
                     'model_type' => $className,
                 ], static::parseFormData($item));
-            $phone = collect(explode(',', $phone));
+            $phone = BaiduData::parseClue($phone);
             FormDataPhone::createOrUpdateItem($form, $phone);
             $form->projects()->sync($item['project_type']);
         }

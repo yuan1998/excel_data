@@ -8,6 +8,7 @@ use App\Imports\BaiduImport;
 use App\Imports\FeiyuImport;
 use App\Imports\WeiboImport;
 use App\Models\Channel;
+use App\Models\ConsultantGroup;
 use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\ExportDataLog;
@@ -30,26 +31,16 @@ class ExportDataAction extends Action
         parent::__construct();
     }
 
-
-    public function handle(Request $request)
-    {
-        $data = $request->only(['department_id', 'channel_id', 'dates']);
-
-        $exportDataLog = ExportDataLog::generate($data);
-        if ($exportDataLog) {
-            return $this->response()->success('创建成功,已加入生成队列.')->refresh();
-        }
-    }
-
-
     public function render()
     {
-        $channelOptions    = Channel::all()->pluck('title', 'id');
-        $departmentOptions = DepartmentType::query()->with(['projects'])->select(['title', 'id'])->get();
+        $channelOptions         = Channel::all()->pluck('title', 'id');
+        $departmentOptions      = DepartmentType::query()->with(['projects'])->select(['title', 'id'])->get();
+        $consultantGroupOptions = ConsultantGroup::query()->select(['title', 'id'])->get();
 
         return view('admin.actions.exportDataAction', [
-            'channelOptions'    => $channelOptions,
-            'departmentOptions' => $departmentOptions
+            'channelOptions'         => $channelOptions,
+            'departmentOptions'      => $departmentOptions,
+            'consultantGroupOptions' => $consultantGroupOptions,
         ]);
     }
 }

@@ -822,7 +822,8 @@ class BaseClient
 
         $result = $client->request('POST', $uri, [
             'form_params' => $data,
-            'cookies'     => $jar, 'timeout' => 0,
+            'cookies'     => $jar,
+            'timeout' => 0,
         ]);
 
         $body = $result->getBody()->getContents();

@@ -42,14 +42,14 @@ class ExcelFieldsCount
 
     /**
      * ExcelFieldsCount constructor.
-     * @param array $data
+     * @param Collection|array $data
      */
     public function __construct($data)
     {
-        $this->formData        = $data['formData'];
-        $this->spendData       = $data['spendData'];
-        $this->arrivingData    = $data['arrivingData'];
-        $this->billAccountData = $data['billAccountData'];
+        $this->formData        = Arr::get($data, 'formData', []);
+        $this->spendData       = Arr::get($data, 'spendData', []);
+        $this->arrivingData    = Arr::get($data, 'arrivingData', []);
+        $this->billAccountData = Arr::get($data, 'billAccountData', []);
     }
 
     public function toArray()
@@ -64,7 +64,7 @@ class ExcelFieldsCount
 
     public function toBaseExcel()
     {
-        $formData = $this->getCountData('formData');
+        $formData        = $this->getCountData('formData');
         $spendData       = $this->getCountData('spendData');
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
@@ -72,8 +72,8 @@ class ExcelFieldsCount
         $effectiveForm   = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
 
-        $offSpend = round($spendData['off_spend'], 2);
-        $unArchiveCount      = Arr::get($formData, 'is_archive-2', 0) + Arr::get($formData, 'is_archive', 0);
+        $offSpend       = round($spendData['off_spend'], 2);
+        $unArchiveCount = Arr::get($formData, 'is_archive-2', 0) + Arr::get($formData, 'is_archive', 0);
         return [
             // 总互动
             'interactive'                      => Arr::get($spendData, 'interactive', 0),
@@ -160,7 +160,7 @@ class ExcelFieldsCount
             'new_again_average'                => round(Helpers::divisionOfSelf($billAccountData['new_again_account'], $arrivingData['new_again_transaction']), 2),
             // 老客单体 = 老客业绩  / 老客成交数
             'old_average'                      => round(Helpers::divisionOfSelf($billAccountData['old_account'], $arrivingData['old_transaction']), 2),
-            // 总单体 = 总业绩 / 总到院
+            // 总单体 = 总业绩 / 总成交
             'total_average'                    => round(Helpers::divisionOfSelf($billAccountData['total_account'], $totalTransition), 2),
             // 首次成交占比 = 首次成交 / 总成交
             'new_first_transaction_proportion' => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first_transaction'], $totalTransition)),
@@ -520,6 +520,113 @@ class ExcelFieldsCount
         }
     }
 
+    public function toConsultantData()
+    {
+        $formData        = $this->getCountData('formData');
+        $billAccountData = $this->getCountData('billAccountData');
+        $arrivingData    = $this->getCountData('arrivingData');
+
+        $allIntention = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'] + $formData['intention-6'];
+
+        $totalArriving          = $arrivingData['arriving_count'];
+        $less5IntentionNewFirst = $formData['is_archive-1'] - $formData['intention-6'];
+        $totalTransition        = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
+
+        return [
+            // 建档数据
+            '总表单数'        => $formData['form_count'],
+            '建档数'         => $formData['is_archive-1'],
+            '重复建档'        => $formData['is_repeat-2'],
+            '未下单'         => $formData['intention-1'],
+            '预约单总数'       => $allIntention,
+            '一级预约'        => $formData['intention-2'],
+            '二级预约'        => $formData['intention-3'],
+            '三级预约'        => $formData['intention-4'],
+            '四级预约'        => $formData['intention-5'],
+            '五级预约'        => $formData['intention-6'],
+            '一级占比'        => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-2'], $allIntention)),
+            '二级占比'        => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-3'], $allIntention)),
+            '三级占比'        => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-4'], $allIntention)),
+            '四级占比'        => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-5'], $allIntention)),
+            '五级占比'        => Helpers::toRate(Helpers::divisionOfSelf($formData['intention-6'], $allIntention)),
+
+            // 到院数据
+            '新客首次'        => $arrivingData['new_first'],
+            '新客二次'        => $arrivingData['new_again'],
+            '老客'          => $arrivingData['old'],
+            '到院总数'        => $totalArriving,
+            '新客首次到院率'     => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first'], $formData['is_archive-1'])),
+            '除去5级首次到院率'   => Helpers::toRate(Helpers::divisionOfSelf(
+                $arrivingData['new_first'],
+                $less5IntentionNewFirst
+            )),
+            '除去4,5级首次到院率' => Helpers::toRate(Helpers::divisionOfSelf(
+                $arrivingData['new_first'],
+                $less5IntentionNewFirst - $formData['intention-5']
+            )),
+            '新客二次到院占比'    => Helpers::toRate(Helpers::divisionOfSelf(
+                $arrivingData['new_again'],
+                $totalArriving
+            )),
+            '老客到院占比'      => Helpers::toRate(Helpers::divisionOfSelf(
+                $arrivingData['old'],
+                $totalArriving
+            )),
+            '总到院率'        => Helpers::toRate(Helpers::divisionOfSelf(
+                $totalArriving,
+                $formData['is_archive-1']
+            )),
+
+            // 成交数据
+            '新客首次成交'      => $arrivingData['new_first_transaction'],
+            '新客二次成交'      => $arrivingData['new_again_transaction'],
+            '老客成交'        => $arrivingData['old_transaction'],
+            '成交总数'        => $totalTransition,
+            '新客首次成交率'     => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_first_transaction'], $arrivingData['new_first'])),
+            '新客二次成交率'     => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['new_again_transaction'], $arrivingData['new_again'])),
+            '老客成交率'       => Helpers::toRate(Helpers::divisionOfSelf($arrivingData['old_transaction'], $arrivingData['old'])),
+            '总成交率'        => Helpers::toRate(Helpers::divisionOfSelf($totalTransition, $totalArriving)),
+
+            // 业绩数据
+            '新客首次业绩'      => $billAccountData['new_first_account'],
+            '新客二次业绩'      => $billAccountData['new_again_account'],
+            '老客业绩'        => $billAccountData['old_account'],
+            '业绩小计'        => $billAccountData['total_account'],
+            '新客首次成交单体'    => round(Helpers::divisionOfSelf(
+                $billAccountData['new_first_account'],
+                $arrivingData['new_first_transaction']
+            ), 2),
+            '新客二次成交单体'    => round(Helpers::divisionOfSelf(
+                $billAccountData['new_again_account'],
+                $arrivingData['new_again_transaction']
+            ), 2),
+            '老客成交单体'      => round(Helpers::divisionOfSelf(
+                $billAccountData['old_account'],
+                $arrivingData['old_transaction']
+            ), 2),
+            '总成交单体'       => round(Helpers::divisionOfSelf(
+                $billAccountData['total_account'],
+                $totalTransition
+            ), 2),
+            '新客首次挂号单体'    => round(Helpers::divisionOfSelf(
+                $billAccountData['new_first_account'],
+                $arrivingData['new_first']
+            ), 2),
+            '新客二次挂号单体'    => round(Helpers::divisionOfSelf(
+                $billAccountData['new_again_account'],
+                $arrivingData['new_again']
+            ), 2),
+            '老客挂号单体'      => round(Helpers::divisionOfSelf(
+                $billAccountData['old_account'],
+                $arrivingData['old']
+            ), 2),
+            '总挂号单体'       => round(Helpers::divisionOfSelf(
+                $billAccountData['total_account'],
+                $totalArriving
+            ), 2),
+        ];
+
+    }
 
     /**
      * @return array

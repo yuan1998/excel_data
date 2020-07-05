@@ -136,6 +136,7 @@ class KuaiShouData extends Model
         $item['type']            = $departmentType->type;
         $item['department_type'] = $departmentType;
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+        $item['consultant_code'] = $item['comment'];
 
         return $item;
     }

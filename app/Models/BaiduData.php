@@ -133,9 +133,7 @@ class BaiduData extends Model
             ->filter(function ($value) {
                 return Helpers::validatePhone($value);
             })
-            ->map(function ($value) {
-                return $value;
-            });
+            ->values();
     }
 
     /**
@@ -168,6 +166,8 @@ class BaiduData extends Model
         $item['department_id']   = $departmentType->id;
         $item['department_type'] = $departmentType;
         $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+        $item['consultant_code'] = $item['visitor_name'];
+        $item['phone'] = $item['clue'];
 
         return $item;
     }
@@ -201,29 +201,14 @@ class BaiduData extends Model
         $count = 0;
         foreach ($data as $item) {
             $item = static::parserData($item);
-            if (!$item) continue;
-
-            $baidu = static::updateOrCreate([
-                'visitor_id' => $item['visitor_id']
-            ], $item);
-            $baidu->projects()->sync($item['project_type']);
+            if (!$item || !in_array($item['form_type'], [FormData::$FORM_TYPE_BAIDU_XXL, FormData::$FORM_TYPE_OPPO])) continue;
 
 
-            $clue = static::parseClue($item['clue']);
+            FormData::baseMakeFormData(static::class, $item, [
+                'visitor_id' => $item['visitor_id'],
+            ]);
 
-            if (in_array($baidu['form_type'], [FormData::$FORM_TYPE_BAIDU_XXL, FormData::$FORM_TYPE_OPPO])
-                && $clue->isNotEmpty()) {
-                $form = FormData::updateOrCreate([
-                    'model_id'   => $baidu->id,
-                    'model_type' => static::class,
-                ], FormData::parseFormData($item));
-
-                FormDataPhone::createOrUpdateItem($form, $clue);
-                $form->projects()->sync($item['project_type']);
-                $count++;
-            } else {
-//                dump($item);
-            }
+            $count++;
         }
         return $count;
     }

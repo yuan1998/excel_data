@@ -2,17 +2,21 @@
 
 namespace App\Exports;
 
+use App\Parsers\BaiduPlanData;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class BaiduPlanExport implements WithMultipleSheets
 {
 
+    /**
+     * @var BaiduPlanData
+     */
     public $parser;
 
     /**
      * BaiduPlanExport constructor.
-     * @param $parser
+     * @param $parser BaiduPlanData
      */
     public function __construct($parser)
     {
@@ -31,7 +35,7 @@ class BaiduPlanExport implements WithMultipleSheets
         foreach ($data as $accountData) {
             $sheets[] = new BaiduPlanSheet($accountData);
         }
-        
+
         return $sheets;
     }
 }

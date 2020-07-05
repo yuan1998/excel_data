@@ -4,9 +4,11 @@ namespace App\Jobs;
 
 use App\Clients\SfClient;
 use App\Exports\BaiduPlanExport;
+use App\Exports\ConsultantGroupExport;
 use App\Exports\TestExport;
 use App\Models\ExportDataLog;
 use App\Parsers\BaiduPlanData;
+use App\Parsers\ParserConsultantGroup;
 use App\Parsers\ParserStart;
 use Carbon\Carbon;
 use Exception;
@@ -53,6 +55,7 @@ class ExportJob implements ShouldQueue
         $model = ExportDataLog::find($this->model);
 
         if (!$model) return;
+
         $time        = Carbon::now();
         $requestData = json_decode($model->request_data, true);
         Log::info('生成 Excel 参数', [$requestData]);
@@ -66,6 +69,15 @@ class ExportJob implements ShouldQueue
         ]);
         $dataType = $model['data_type'];
         switch ($dataType) {
+            case "consultant_group_excel":
+                Log::info(' 导出 文件 Debug : 抵达 客服报表  ', []);
+                $parser = new ParserConsultantGroup($requestData);
+                $test   = Excel::store(new ConsultantGroupExport($parser), $pathName, 'public');
+                Log::info(' 导出 文件 Debug  ', [
+                    'pathName' => $pathName,
+                    'result'   => $test,
+                ]);
+                break;
             case 'xxl_data_excel':
                 Log::info(' 导出 文件 Debug : 抵达 报表  ', []);
                 $parser = new ParserStart($requestData);

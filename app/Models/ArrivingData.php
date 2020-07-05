@@ -102,35 +102,40 @@ class ArrivingData extends Model
         "comment",
         "medium_id",
         "account_id",
+
+        'online_return_visit_by_id',
+        'online_customer_id',
+        'online_archive_by_id',
+        'archive_by_id',
     ];
 
     public static $ArrivingCountDataFormat = [
-        'count'                 => 0,
-        'new_first'             => 0,
-        'new_again'             => 0,
-        'new_total'             => 0,
-        'old'                   => 0,
-        'arriving_count'        => 0,
-        'new_transaction'       => 0,
-        'new_first_transaction' => 0,
-        'new_again_transaction' => 0,
-        'old_transaction'       => 0,
+        'count'                  => 0,
+        'new_first'              => 0,
+        'new_again'              => 0,
+        'new_total'              => 0,
+        'old'                    => 0,
+        'arriving_count'         => 0,
+        'new_transaction'        => 0,
+        'new_first_transaction'  => 0,
+        'new_again_transaction'  => 0,
+        'old_transaction'        => 0,
         // 微博字段
         'first_arriving_comment' => 0,
-        'first_arriving_form' => 0,
+        'first_arriving_form'    => 0,
         'first_arriving_message' => 0,
-        'first_arriving_follow' => 0,
-        'first_arriving_other' => 0,
+        'first_arriving_follow'  => 0,
+        'first_arriving_other'   => 0,
         'again_arriving_comment' => 0,
-        'again_arriving_form' => 0,
+        'again_arriving_form'    => 0,
         'again_arriving_message' => 0,
-        'again_arriving_follow' => 0,
-        'again_arriving_other' => 0,
-        'old_arriving_comment' => 0,
-        'old_arriving_form' => 0,
-        'old_arriving_message' => 0,
-        'old_arriving_follow' => 0,
-        'old_arriving_other' => 0,
+        'again_arriving_follow'  => 0,
+        'again_arriving_other'   => 0,
+        'old_arriving_comment'   => 0,
+        'old_arriving_form'      => 0,
+        'old_arriving_message'   => 0,
+        'old_arriving_follow'    => 0,
+        'old_arriving_other'     => 0,
 
 
     ];
@@ -158,6 +163,40 @@ class ArrivingData extends Model
     public function customerPhone()
     {
         return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
+    }
+
+    public function onlineArchiveBy()
+    {
+        return $this->belongsTo(Consultant::class, 'online_archive_by_id', 'id');
+    }
+
+    public function onlineCustomer()
+    {
+        return $this->belongsTo(Consultant::class, 'online_customer_id', 'id');
+    }
+
+
+    public static function fixOnlineArchiveBy()
+    {
+        $data = static::query()
+            ->doesntHave('onlineArchiveBy')
+            ->select([
+                'online_return_visit_by',
+                'online_customer',
+                'online_archive_by',
+                'archive_by',
+                'type'
+            ])
+            ->get()->each(function ($item) {
+                $arr = Helpers::multipleCheckConsultantId($item, $item['type'], [
+                    'online_return_visit_by',
+                    'online_customer',
+                    'online_archive_by',
+                    'archive_by',
+                ]);
+                $item->update($arr);
+            });
+        return $data->count();
     }
 
     public static function recheckCustomerPhone()
@@ -206,6 +245,7 @@ class ArrivingData extends Model
         $uuid = collect();
         collect($array)
             ->filter(function ($data) {
+
                 return isset($data['reception_date']) && isset($data['customer_id']);
             })
             ->each(function ($item) use ($type, $uuid) {
@@ -217,6 +257,14 @@ class ArrivingData extends Model
                 $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
                 $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
                 $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
+
+                $consultantResult = Helpers::multipleCheckConsultantId($item, $type, [
+                    'online_return_visit_by',
+                    'online_customer',
+                    'online_archive_by',
+                    'archive_by',
+                ]);
+                $item             = array_merge($item, $consultantResult);
 
                 $uuid->push($item['uuid']);
                 static::updateOrCreate([

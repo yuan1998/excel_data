@@ -67,7 +67,10 @@ class FeiyuSpend extends Model
         $keys = array_keys(static::$excelFields);
 
         $first = $data->get(0);
-        $diff  = $first->diff($keys);
+        if (!$first->contains('广告组id') || !$first->contains('广告组'))
+            return false;
+
+        $diff = $first->diff($keys);
 
         $count = $diff->count();
         return $count <= 2;

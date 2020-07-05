@@ -88,7 +88,37 @@ class TempCustomerData extends Model
         'medium_id',
         'account_id',
         'type',
+
+        'online_customer_id',
+        'return_visit_by_id',
+        'archive_by_id',
     ];
+
+    public function archiveBy()
+    {
+        return $this->belongsTo(Consultant::class, 'archive_by_id', 'id');
+    }
+
+    public static function fixArchiveBy()
+    {
+        $data = static::query()
+            ->doesntHave('archiveBy')
+            ->select([
+                'online_customer',
+                'return_visit_by',
+                'archive_by',
+                'type'
+            ])
+            ->get()->each(function ($item) {
+                $arr = Helpers::multipleCheckConsultantId($item, $item['type'], [
+                    'online_customer',
+                    'return_visit_by',
+                    'archive_by',
+                ]);
+                $item->update($arr);
+            });
+        return $data->count();
+    }
 
     public static function getTempCustomerDataOfCrm($data, $type)
     {
@@ -122,6 +152,14 @@ class TempCustomerData extends Model
             $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
             $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
             $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
+
+            $consultantResult = Helpers::multipleCheckConsultantId($item, $type, [
+                'return_visit_by',
+                'online_customer',
+                'archive_by',
+            ]);
+            $item             = array_merge($item, $consultantResult);
+
             $uuid->push($item['uuid']);
 
             static::updateOrCreate([

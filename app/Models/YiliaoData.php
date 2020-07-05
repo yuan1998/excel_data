@@ -207,15 +207,34 @@ class YiliaoData extends Model
 
     public static function parserData($item)
     {
+        $url = urldecode($item['chatUrl']);
+        preg_match("/\?A[0-9](.{12,20})/", $url, $match);
+        $item['code'] = (isset($match[0]) ? $match[0] : '') . '-' . $item['extCard1'];
+        $code         = $item['code'];
+
+        if (!$item['form_type'] || !$departmentType = Helpers::checkDepartment($code)) {
+            Log::info('无法判断科室', [
+                'code' => $code,
+            ]);
+            throw new \Exception('无法判断科室: ' . $code);
+        }
+
+
         $item['chatUrl']   = substr($item['chatUrl'] ?? '', 0, Builder::$defaultStringLength);
         $item['firstUrl']  = substr($item['firstUrl'] ?? '', 0, Builder::$defaultStringLength);
         $item['referPage'] = substr($item['referUrl'] ?? '', 0, Builder::$defaultStringLength);
         $item['date']      = $item['startChatTime'];
-
-        $url = urldecode($item['chatUrl']);
-        preg_match("/\?A[0-9](.{12,20})/", $url, $match);
-        $item['code']      = (isset($match[0]) ? $match[0] : '') . '-' . $item['extCard1'];
         $item['form_type'] = BaiduData::checkCodeIs($item['code']);
+
+
+        $item['type']            = $departmentType->type;
+        $item['department_id']   = $departmentType->id;
+        $item['department_type'] = $departmentType;
+        $item['project_type']    = Helpers::checkDepartmentProject($departmentType, $code);
+
+        $item['consultant_code'] = $item['name'];
+
+
         return $item;
     }
 
@@ -266,31 +285,10 @@ class YiliaoData extends Model
             $item = static::parserData($item);
             if (!in_array($item['form_type'], [1, 8])) continue;
 
-            $code = $item['code'];
-            if (!$item['form_type'] || !$departmentType = Helpers::checkDepartment($code)) {
-                Log::info('无法判断科室', [
-                    'code' => $code,
-                ]);
-                throw new \Exception('无法判断科室: ' . $code);
-            }
-            $item['type']          = $departmentType->type;
-            $item['department_id'] = $departmentType->id;
-            $projectType           = Helpers::checkDepartmentProject($departmentType, $code);
-
-            $yiliao = YiliaoData::updateOrCreate(['chatId' => $item['chatId']], $item);
-            $yiliao->projects()->sync($projectType);
-
-            if ($item['phone']) {
-                $form  = FormData::updateOrCreate(
-                    [
-                        'model_id'   => $yiliao->id,
-                        'model_type' => static::class,
-                    ], FormData::parseFormData($item));
-                $phone = collect(explode(',', $yiliao['phone']));
-                FormDataPhone::createOrUpdateItem($form, $phone);
-                $form->projects()->sync($projectType);
-                $count++;
-            }
+            FormData::baseMakeFormData(static::class, $item, [
+                'chatId' => $item['chatId'],
+            ]);
+            $count++;
         }
         return $count;
     }

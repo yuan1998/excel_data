@@ -24,9 +24,9 @@ class ExportExcelRequest extends FormRequest
     public function rules()
     {
         return [
-            'department_id' => 'required',
-            'channel_id'    => 'required',
-            'dates'         => 'required',
+            'type'      => 'required',
+            'dates'     => 'required',
+            'data_type' => 'required',
         ];
     }
 }

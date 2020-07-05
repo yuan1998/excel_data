@@ -109,23 +109,11 @@ class VivoData extends Model
         foreach ($data as $item) {
             $item = static::parserData($item);
 
-            $model = static::updateOrCreate([
+            FormData::baseMakeFormData(static::class, $item, [
                 'date'  => $item['date'],
                 'phone' => $item['phone'],
-            ], $item);
-            $model->projects()->sync($item['project_type']);
-
-            if ($item['phone']) {
-                $form  = FormData::updateOrCreate(
-                    [
-                        'model_id'   => $model->id,
-                        'model_type' => static::class,
-                    ], FormData::parseFormData($item));
-                $phone = collect(explode(',', $item['phone']));
-                FormDataPhone::createOrUpdateItem($form, $phone);
-                $form->projects()->sync($item['project_type']);
-                $count++;
-            }
+            ]);
+            $count++;
         }
 
         return $count;

@@ -8,6 +8,7 @@ use App\Clients\YiliaoClient;
 use App\Clients\ZxClient;
 use App\Encoding;
 use App\Exports\BaiduPlanExport;
+use App\Exports\ConsultantGroupExport;
 use App\Exports\TestExport;
 use App\Helpers;
 use App\Http\Requests\UploadRequest;
@@ -31,6 +32,7 @@ use App\Models\SpendData;
 use App\Models\TempCustomerData;
 use App\Models\WeiboFormData;
 use App\Parsers\BaiduPlanData;
+use App\Parsers\ParserConsultantGroup;
 use App\Parsers\ParserStart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -109,23 +111,37 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
+//        $type = 'kq';
+//        dd($type);
+//        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');
+
 //        $file = $request->file('excel');
 //        Helpers::checkUTF8($file);
 
+
         $data = [
-            'channel_id'    => [1, 4],
-            'department_id' => [2],
-            'project_id'    => [1],
-            'type'          => 'kq',
-            'dates'         => [
-                '2020-06-20 00:00:00',
-                '2020-06-20 23:59:59',
-            ]
+            "consultant_group_id" => 1,
+            "department_id"       => [
+                2,
+            ],
+            "channel_id"          => [
+                "8",
+            ],
+            "project_id"          => [
+                1,
+            ],
+            "type"                => "kq",
+            "dates"               => [
+                "2020-06-01 00:00:00",
+                "2020-06-31 23:59:59",
+            ],
         ];
 
-        $item = new ParserStart($data);
+        $parser = new ParserConsultantGroup($data);
 
-        $export = new TestExport($item);
+
+        $export = new ConsultantGroupExport($parser);
+
         Excel::store($export, 'test_excel/test.xlsx', 'public');
 
 

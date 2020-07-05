@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -117,6 +118,18 @@ class WeiboFormData extends Model
      */
     public function toFormCreateData()
     {
+        $item = Consultant::query()
+            ->whereHas('weiboUser', function ($query) {
+                $query->where('id', $this->weibo_user_id);
+            })->first();
+        $consultantCode = null;
+        $consultantId   = null;
+
+        if ($item) {
+            $consultantCode = $item->name;
+            $consultantId   = $item->id;
+        }
+
         return [
             'model_id'        => $this->id,
             'model_type'      => static::class,
@@ -126,6 +139,8 @@ class WeiboFormData extends Model
             'type'            => $this->type,
             'phone'           => $this->phone,
             'date'            => $this->post_date,
+            'consultant_code' => $consultantCode,
+            'consultant_id'   => $consultantId,
         ];
     }
 

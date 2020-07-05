@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Consultant;
 use App\models\CrmGrabLog;
 use App\Models\WeiboDispatchSetting;
 use App\Models\WeiboUser;
@@ -87,6 +88,7 @@ class WeiboUserController extends AdminController
         $grid->column('weibo_form_data_all_count', __('总表单数'));
         $grid->column('limit', __('每日表单限制'));
         $grid->column('created_at', __('Created at'));
+
         if (!$type) {
             $grid->column('type', __('类型'))
                 ->using([
@@ -137,6 +139,11 @@ class WeiboUserController extends AdminController
                 return $form->model()->password;
             });
         $form->number('limit', __('Limit'))->default(20);
+
+        $consultantOptions = Consultant::all()->pluck('name', 'id');
+
+        $form->select('consultant_id', __('关联咨询'))
+            ->options($consultantOptions);
 
         $form->saving(function (Form $form) {
             if ($form->password && $form->model()->password != $form->password) {

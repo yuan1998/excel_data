@@ -40,6 +40,8 @@ Route::group([
     });
 
 
+    $router->resource('consultants', ConsultantController::class);
+    $router->resource('consultant-groups', ConsultantGroupController::class);
     $router->resource('form-type-lists', FormTypeListController::class);
     $router->resource('baidu_data', 'BaiduDataController');
     $router->resource('weibo_data', 'WeiboDataController');

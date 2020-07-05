@@ -8,7 +8,6 @@ import ElementUI             from 'element-ui'
 import ElInputTag            from 'el-input-tag'
 import ExampleComponent      from "./components/ExampleComponent";
 import ExportDataForm        from "./components/exportDataForm";
-import ExportBaiduPlanForm   from "./components/exportBaiduPlanExcelBtn";
 import WeiConfigAction       from "./components/WeiboConfigAction";
 import GrabDataForm          from "./components/GrabDataForm";
 import WeiboDispatchSettings from "./components/WeiboDispatchSettings";
@@ -26,7 +25,6 @@ Vue.use(ElInputTag);
 Vue.component('recall-log', RecallLog);
 Vue.component('example-component', ExampleComponent);
 Vue.component('export-data-form', ExportDataForm);
-Vue.component('export-baidu-plan-form', ExportBaiduPlanForm);
 Vue.component('grab-data-form', GrabDataForm);
 Vue.component('weibo-config-action', WeiConfigAction);
 Vue.component('weibo-dispatch-settings', WeiboDispatchSettings);
@@ -38,6 +36,3 @@ Vue.component('media-page', mediaPage);
 Vue.component('action-recheck', ActionRecheck);
 Vue.component('action-sanfang-export', ActionSanfangExport);
 
-// const app = new Vue({
-//     el: '#app'
-// });

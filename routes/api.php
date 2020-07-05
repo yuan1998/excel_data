@@ -35,8 +35,6 @@ $api->version('v1', [
             ->name('api.baidu.store');
         $api->post('/upload', "BaiduDataController@uploadExcel")
             ->name('api.baidu.uploadExcel');
-        $api->post('/export/accountPlan', "BaiduDataController@accountPlanExcelExport")
-            ->name('api.baidu.accountPlanExcelExport');
 
         $api->post('/test', "BaiduDataController@test")
             ->name('api.baidu.test');

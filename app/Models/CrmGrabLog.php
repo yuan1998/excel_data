@@ -17,8 +17,8 @@ class CrmGrabLog extends Model
     ];
 
     public static $typeList = [
-        'zx' => '整形',
-        'kq' => '口腔',
+        'zx' => '整形医院',
+        'kq' => '口腔医院',
     ];
 
     public static $statusList = [
@@ -30,8 +30,8 @@ class CrmGrabLog extends Model
 
 
     public static $modelTypeList = [
-        'arrivingData'    => '到院数据',
-        'billAccountData' => '业绩数据',
+        'arrivingData'     => '到院数据',
+        'billAccountData'  => '业绩数据',
         'tempCustomerData' => '临客数据',
     ];
 

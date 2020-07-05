@@ -26,6 +26,7 @@ class WeiboUser extends Authenticatable implements JWTSubject
         'pause',
         'limit',
         'type',
+        'consultant_id',
     ];
 
     protected $casts = [
@@ -39,6 +40,11 @@ class WeiboUser extends Authenticatable implements JWTSubject
     public function weiboFormData()
     {
         return $this->hasMany(WeiboFormData::class, 'weibo_user_id', 'id');
+    }
+
+    public function consultant()
+    {
+        return $this->belongsTo(Consultant::class, 'consultant_id', 'id');
     }
 
     /**
