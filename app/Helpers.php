@@ -559,7 +559,8 @@ class Helpers
         foreach ($arr as $field) {
             $value = Arr::get($item, $field);
             if ($value)
-                $result[$field . '_id'] = static::getConsultantId($type, str_replace(' ', '', $value));
+                $result[$field . '_id'] = static::getConsultantId($type,
+                    str_replace(' ', '', $value));
         }
 
         return $result;
@@ -644,7 +645,7 @@ class Helpers
                     return $consultant['id'];
 
             } catch (\Exception $exception) {
-                
+
             }
         }
 

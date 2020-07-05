@@ -185,9 +185,11 @@ class ArrivingData extends Model
                 'online_customer',
                 'online_archive_by',
                 'archive_by',
-                'type'
+                'type',
+                'id',
             ])
-            ->get()->each(function ($item) {
+            ->get()
+            ->each(function ($item) {
                 $arr = Helpers::multipleCheckConsultantId($item, $item['type'], [
                     'online_return_visit_by',
                     'online_customer',

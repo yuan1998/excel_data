@@ -146,7 +146,9 @@ class FormData extends Model
                 FeiyuData::class,
                 KuaiShouData::class,
                 YiliaoData::class,
+                WeiboData::class,
             ])
+            ->whereNull('consultant_code')
             ->get();
 
         foreach ($data as $item) {
@@ -163,6 +165,9 @@ class FormData extends Model
                     break;
                 case FeiyuData::class:
                     $code = $model['owner'];
+                    break;
+                case WeiboData::class:
+                    $code = $model['category_type'];
                     break;
                 case WeiboFormData::class:
                     $consultant = Consultant::query()

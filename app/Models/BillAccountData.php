@@ -130,13 +130,14 @@ class BillAccountData extends Model
     public static function fixArchiveBy()
     {
         $data = static::query()
-            ->doesntHave('archiveBy')
+            ->whereNull('online_customer_id')
             ->select([
                 'online_return_visit_by',
                 'account_by',
                 'online_customer',
                 'archive_by',
-                'type'
+                'type',
+                'id',
             ])
             ->get()->each(function ($item) {
                 $arr = Helpers::multipleCheckConsultantId($item, $item['type'], [

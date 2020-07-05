@@ -102,12 +102,13 @@ class TempCustomerData extends Model
     public static function fixArchiveBy()
     {
         $data = static::query()
-            ->doesntHave('archiveBy')
+            ->whereNull('online_customer_id')
             ->select([
                 'online_customer',
                 'return_visit_by',
                 'archive_by',
-                'type'
+                'type',
+                'id',
             ])
             ->get()->each(function ($item) {
                 $arr = Helpers::multipleCheckConsultantId($item, $item['type'], [
