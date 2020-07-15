@@ -82,18 +82,7 @@ class SpendData extends Model
 
     public static function fixToDataOrigin()
     {
-        $data = static::query()
-            ->with(['typeChannel', 'spendModel'])
-            ->whereNull('uuid')
-            ->whereHasMorph('spendModel', [
-                MeiyouSpend::class,
-                KuaiShouSpend::class,
-                VivoSpend::class,
-                BaiduSpend::class,
-                FeiyuSpend::class,
-                WeiboSpend::class,
-                OppoSpend::class,
-            ])
+        $data = static::query()->with(['typeChannel', 'spendModel'])->whereNull('uuid')
             ->get();
 
         foreach ($data as $item) {
