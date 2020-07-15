@@ -98,8 +98,7 @@ class ChannelController extends AdminController
 //        $form->multipleSelect('form_type', '表单关联')
 //            ->options(FormData::$FormTypeList)
 //            ->required();
-        $form->tags('keyword', __('匹配词'))
-            ->required();
+        $form->tags('keyword', __('匹配词'));
 
         return $form;
     }

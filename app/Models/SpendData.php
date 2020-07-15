@@ -84,7 +84,6 @@ class SpendData extends Model
     {
         $data = static::query()
             ->with(['typeChannel', 'spendModel'])
-            ->has('typeChannel')
             ->whereNull('uuid')
             ->whereHasMorph('spendModel', [
                 MeiyouSpend::class,
@@ -106,7 +105,7 @@ class SpendData extends Model
                     $uuid = $model['advertiser_name'];
                     break;
                 case VivoSpend::class:
-                    $uuid = $model['ad_plan_name'];
+                    $uuid = $model ? $model['ad_plan_name'] : $item['spend_name'];
                     break;
                 case BaiduSpend::class:
                     $uuid = $model['promotion_plan_id'];
@@ -115,7 +114,7 @@ class SpendData extends Model
                     $uuid = $model['advertiser_id'];
                     break;
                 case WeiboSpend::class:
-                    $uuid = $model['advertiser_account'];
+                    $uuid = $model['advertiser_plan'];
                     break;
                 case OppoSpend::class:
                     $uuid = $model['plan_id'];
