@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\WeiboGrab;
+use App\Models\Channel;
 use App\models\CrmGrabLog;
 use App\Models\WeiboAccounts;
 use Encore\Admin\Form;
@@ -102,6 +103,9 @@ class WeiboAccountController extends AdminController
         $form->switch('all_day', "全天抓取");
         $form->timeRange('begin_time', 'end_time', "抓取时段")
             ->default(['start' => '09:00:00', 'end' => '22:00:00']);
+        
+        $channelOptions = Channel::all()->pluck('title', 'id');
+        $form->select('channel_id', '渠道')->options($channelOptions)->required();
 
         return $form;
     }

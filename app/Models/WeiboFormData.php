@@ -30,6 +30,7 @@ class WeiboFormData extends Model
         'feedback',
         'comment',
         'weixin',
+        'channel_id',
 
         'type',
         'tags',
@@ -112,13 +113,18 @@ class WeiboFormData extends Model
         return $query->where('weibo_user_id', $user->id);
     }
 
+
+    public static function fixChannelId($id) {
+        static::query()->update(['channel_id' => $id]);
+    }
+
     /**
      * 将数据转换成可用于创建 FormData 的格式
      * @return array
      */
     public function toFormCreateData()
     {
-        $item = Consultant::query()
+        $item           = Consultant::query()
             ->whereHas('weiboUser', function ($query) {
                 $query->where('id', $this->weibo_user_id);
             })->first();
@@ -131,11 +137,10 @@ class WeiboFormData extends Model
         }
 
         return [
-            'model_id'        => $this->id,
-            'model_type'      => static::class,
             'data_type'       => $this->project_name,
-            'account_keyword' => $this->project_name,
-            'form_type'       => 2,
+            'code'            => $this->project_name,
+            'channel_id'      => $this->channel_id,
+            'data_snap'       => $this->toJson(),
             'type'            => $this->type,
             'phone'           => $this->phone,
             'date'            => $this->post_date,
@@ -298,9 +303,10 @@ class WeiboFormData extends Model
      * 创建 微博表单 数据
      * @param $type
      * @param $data
+     * @param $account
      * @return int
      */
-    public static function generateWeiboFormData($type, $data)
+    public static function generateWeiboFormData($type, $data, $account)
     {
         // 获取 当前时间,重复使用.
         $now = Carbon::now()->toDateTimeString();
@@ -308,6 +314,7 @@ class WeiboFormData extends Model
             // 获取转换基础数据
             $parserItem                = static::apiDataParse($item);
             $parserItem['upload_date'] = $now;
+            $parserItem['channel_id']  = $account['channel_id'];
 
             //使用 phone 和 post_date 判断是否需要创建新的数据
             $model = WeiboFormData::firstOrCreate([
@@ -334,7 +341,7 @@ class WeiboFormData extends Model
     public function makeFormData($delay = null)
     {
         // 调用 FormData 的方法创建 FormData 和 FormDataPhone.
-        FormData::updateOrCreateItem($this->toFormCreateData(), static::class, $delay);
+        FormData::updateOrCreateItem($this->toFormCreateData(), $delay);
     }
 
     /**
@@ -370,7 +377,7 @@ class WeiboFormData extends Model
             ]);
 
             // 将拉取到的数据保存到服务器
-            static::generateWeiboFormData($type, $data);
+            static::generateWeiboFormData($type, $data, $account);
             return $count;
         }
 

@@ -36,16 +36,22 @@ class Channel extends Model
     }
 
 
-    public function checkAccount($type, $code , $getOfItem = false)
+    public function checkAccount($type, $code, $getOfItem = false)
     {
         $channelId = $this->id;
 
+        return static::checkAccountByChannelId($channelId, $type, $code, $getOfItem);
+    }
+
+
+    public static function checkAccountByChannelId($channelId, $type, $code, $getOfItem = false)
+    {
         $accounts = AccountData::query()
             ->where('channel_id', $channelId)
             ->where('type', $type)
             ->get();
 
-        return $accounts ? Helpers::accountValidationString($accounts, $code, 'keyword',$getOfItem) : null;
+        return $accounts ? Helpers::accountValidationString($accounts, $code, 'keyword', $getOfItem) : null;
     }
 
 }

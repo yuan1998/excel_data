@@ -20,6 +20,7 @@ class WeiboAccounts extends Model
         'customer_id',
         'active',
         'all_day',
+        'channel_id',
     ];
 
     public static $_GRAB_SETTINGS_NAME_ = "weibo_data_grab_settings_name_prefix_test_";

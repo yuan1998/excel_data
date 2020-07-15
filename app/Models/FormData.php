@@ -329,23 +329,23 @@ class FormData extends Model
 
     /**
      * 创建 FormData 数据,同时生成 FormDataPhone
-     * @param array  $data      数据
-     * @param string $modelType Model
-     * @param null   $delay     电话号码创建延迟
+     * @param array $data  数据
+     * @param null  $delay 电话号码创建延迟
      * @return mixed
      */
-    public static function updateOrCreateItem($data, $modelType, $delay = null)
+    public static function updateOrCreateItem($data, $delay = null)
     {
         // 判断所属科室,如果存在则写入ID
-        $departmentType     = Helpers::checkDepartment($data['data_type']);
-        $data['account_id'] = Helpers::formDataCheckAccount($data, 'data_type');
+        $departmentType     = Helpers::checkDepartment($data['code']);
+        $data['account_id'] = Channel::checkAccountByChannelId($data['channel_id'], $data['type'], $data['code']);
 
         $data['department_id'] = $departmentType ? $departmentType->id : null;
 
         // 创建 FormData Model
         $form = FormData::updateOrCreate([
-            'model_id'   => $data['model_id'],
-            'model_type' => $modelType,
+            'channel_id' => $data['channel_id'],
+            'date'       => $data['date'],
+            'phone'      => $data['phone'],
         ], $data);
 
         FormDataPhone::createOrUpdateItem($form, collect($data['phone']), $delay);
