@@ -154,17 +154,7 @@ class FormData extends Model
         $data = static::query()
             ->with(['typeChannel', 'formModel', 'phones'])
             ->has('typeChannel')
-            ->whereNull('channel_id')
-            ->whereHasMorph('formModel', [
-                BaiduData::class,
-                WeiboFormData::class,
-                WeiboData::class,
-                FeiyuData::class,
-                YiliaoData::class,
-                VivoData::class,
-                KuaiShouData::class,
-                MeiyouData::class,
-            ])
+            ->whereNull('phone')
             ->get();
 
         foreach ($data as $item) {
@@ -172,7 +162,7 @@ class FormData extends Model
                 'channel_id' => $item->typeChannel->id,
                 'code'       => $item->data_type,
                 'phone'      => $item->phones()->pluck('phone')->join(','),
-                'data_snap'  => $item['model']->toJson(),
+                'data_snap'  => $item['model'] ? $item['model']->toJson() : null,
             ];
             $item->update($value);
         }
