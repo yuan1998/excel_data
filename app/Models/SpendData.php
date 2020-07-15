@@ -115,7 +115,7 @@ class SpendData extends Model
                 'channel_id' => $item->typeChannel->id,
                 'code'       => $item->spend_name,
                 'uuid'       => $uuid,
-                'data_snap'  => $model->toJson(),
+                'data_snap'  => $model ? $model->toJson() : null,
             ];
             $item->update($value);
         }
