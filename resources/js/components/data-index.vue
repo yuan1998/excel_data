@@ -21,7 +21,10 @@
                         action="/"
                         class="upload-demo"
                         :http-request="handleRequest"
+                        :before-upload="beforeUpload"
+                        :on-change="handleUploadChange"
                         :show-file-list="false"
+                        :auto-upload="false"
                         multiple
                         :file-list="fileList">
                     <i class="el-icon-upload"></i>
@@ -31,7 +34,8 @@
             <div class="files-preview">
                 <div v-for="(item,index) in files"
                      :index="index"
-                     class="file-item" :class="`item-status-${item.status}`">
+                     class="file-item"
+                     :class="`item-status-${item.status}`">
                     <div class="file-name">
                         {{ item.name }}
                         <span class="file-type">
@@ -40,10 +44,25 @@
                     </div>
                     <div class="file-result" v-if="item.status !== 0">
                         <div class="error-result" v-if="item.status === 2">
-                            上传失败! {{ item.message }}
+                            <p>创建数据失败! </p>
+                            <p>
+                                {{ item.message }}
+                            </p>
                         </div>
                         <div class="success-result" v-else>
-                            上传成功,一共创建了 {{ item.count }} 条表单.
+                            <p>创建数据成功!</p>
+                            <p v-if="item.count" @click="showLog(item.successLog , '成功创建的数据')">
+                                成功创建了 <span>{{ item.count }}</span> 条数据.<i
+                                    class="el-icon-question"></i>
+                            </p>
+                            <p v-if="item.failCount" @click="showLog(item.failLog,'无法识别的数据')">
+                                无法识别的数据有 <span>{{ item.failCount }}</span> 条数据. <i
+                                    class="el-icon-question"></i>
+                            </p>
+                            <p v-if="item.invalidCount">
+                                其中有 {{ item.invalidCount }} 条数据没有标识.
+                            </p>
+
                         </div>
                     </div>
                     <div class="file-label">
@@ -52,7 +71,15 @@
                 </div>
             </div>
         </el-dialog>
-
+        <el-dialog
+                :title="logDialog.name"
+                :visible.sync="logDialogShow"
+                width="50%">
+            <div v-html="logDialog.msg"></div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="logDialogShow = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -67,6 +94,12 @@
                 formLabelWidth   : '80px',
                 fileList         : [],
                 files            : [],
+                timecase         : null,
+                logDialogShow    : false,
+                logDialog        : {
+                    name: '',
+                    msg : '',
+                },
                 statusIcon       : {
                     0: 'el-icon-loading',
                     1: 'el-icon-check',
@@ -95,49 +128,53 @@
                 this.resetForm();
                 this.dialogFormVisible = false;
             },
-            handleUpload(res) {
-                //weibo_test.py 2019-12-07 2019-12-07 2000 17392449035 huamei2019 7165564518
-                console.log('res :', res);
+            async handleUpload() {
+                let fileList = this.files.filter((item) => {
+                    return item.status === 0;
+                });
+
+                for (let i = 0 ; i < fileList.length ; i++) {
+                    let item = fileList[ i ];
+                    console.log('item :', item);
+                    await this.beforeUpload(item);
+                }
+
             },
-            handleUploadError(res) {
-                console.log('res :', res);
-            },
-            async handleRequest(request) {
-                let formData = new FormData();
-                let file     = request.file;
-                formData.append('model', this.model);
-                formData.append('excel', file);
+            handleUploadChange(file, fileList) {
                 let item = {
+                    file,
                     name   : file.name,
-                    // 0 : loading
-                    // 1 : success
-                    // 2 : error
                     status : 0,
                     message: '',
                     count  : 0,
                     type   : '',
                 };
-
                 this.files.unshift(item);
 
+                if (this.timecase !== null) {
+                    clearTimeout(this.timecase);
+                }
+
+                this.timecase = setTimeout(() => {
+                    this.handleUpload();
+                }, 300);
+            },
+            async beforeUpload(item) {
+                let file = item.file.raw;
+                console.log('file :', file);
+                let formData = new FormData();
+                formData.append('excel', file);
+
+                let res;
                 try {
-                    let res  = await axios.request({
-                        url   : '/api/import/auto',
-                        method: 'post',
-                        data  : formData,
-                    });
-                    let data = res.data;
-                    this.$set(item, 'type', data.type);
-                    this.$set(item, 'count', data.count);
-                    if (data.message) {
-                        this.$set(item, 'status', 2);
-                        this.$set(item, 'message', data.message);
-                    } else {
-                        this.$set(item, 'status', 1);
-                    }
+                    res = await this.handleUploadFile(formData);
+                    this.setItemResponse(item, res.data);
                 } catch (e) {
-                    // request.onError(e);
+
+                    this.$set(item, 'status', 2);
+                    this.$set(item, 'message', '发生意外情况,请联系管理员!');
                     if (e.response) {
+                        console.log(e.response.data.message);
                         Swal.fire({
                             title            : e.response.data.message,
                             type             : 'error',
@@ -146,7 +183,65 @@
                         })
                     }
                 }
+                return res;
             },
+            async handleUploadFile(formData) {
+                return await axios.request({
+                    url   : '/api/import/auto',
+                    method: 'post',
+                    data  : formData,
+                });
+            },
+            setItemResponse(item, data) {
+
+                console.log('data.code :', data.code);
+                switch (data.code) {
+                    case 0:
+                        item.type        = data.type;
+                        item.status      = 1;
+                        item.log         = data.log;
+                        let successCount = data.log[ 'success_log' ][ 'code_log' ].length;
+                        let failCount    = Object.keys(data.log[ 'fail_log' ][ 'code_log' ]).length;
+                        this.$set(item, 'failCount', failCount);
+                        this.$set(item, 'failLog', data.log[ 'fail_log' ][ 'code_log' ]);
+                        this.$set(item, 'invalidCount', data.log[ 'fail_log' ][ 'code_invalid' ]);
+                        this.$set(item, 'successLog', data.log[ 'success_log' ][ 'code_log' ]);
+                        item.count = successCount;
+                        break;
+                    case 10001:
+                    case 10002:
+                        item.status  = 2;
+                        item.message = data.message;
+                        break;
+                    default :
+                        item.status  = 2;
+                        item.message = "发生意外情况,请联系管理员!";
+                        break;
+                }
+
+            },
+            showLog($log, name) {
+                let msg = '';
+                if (Array.isArray($log)) {
+                    msg = $log.map((log) => {
+                        return `<p>${ log }</p>`
+                    }).join('');
+                } else {
+                    msg = Object.keys($log).map((logName) => {
+                        return `<p> <strong>${ logName } :</strong> ${ $log[ logName ] }</p>`
+                    }).join('');
+
+                }
+
+                if (msg) {
+                    this.logDialogShow = true;
+                    this.logDialog     = {
+                        name,
+                        msg,
+                    }
+                }
+
+            }
         },
     }
 </script>

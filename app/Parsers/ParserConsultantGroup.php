@@ -120,10 +120,11 @@ class ParserConsultantGroup extends ParserBase
     {
         if (!$this->_formData) {
             $this->_formData = FormData::query()
+                ->select(['id', 'date', 'channel_id', 'department_id', 'type'])
                 ->with(['projects', 'phones'])
                 ->where('type', $this->type)
                 ->whereIn('department_id', $this->departments_id)
-                ->whereIn('form_type', $this->getFormType())
+                ->whereIn('channel_id', $this->getChannelsId())
                 ->whereBetween('date', $this->dates)
                 // ->orWhereBetween('date',$this->dateTimes)
                 ->get();

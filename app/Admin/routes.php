@@ -39,7 +39,7 @@ Route::group([
             ->name('admin.sanfang.export');
     });
 
-
+    $router->resource('data-origins', DataOriginController::class);
     $router->resource('consultants', ConsultantController::class);
     $router->resource('consultant-groups', ConsultantGroupController::class);
     $router->resource('form-type-lists', FormTypeListController::class);

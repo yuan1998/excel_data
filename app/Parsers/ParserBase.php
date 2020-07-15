@@ -144,10 +144,11 @@ class ParserBase
     {
         if (!$this->_formData) {
             $this->_formData = FormData::query()
+                ->select(['id', 'date', 'channel_id', 'department_id', 'account_id', 'type'])
                 ->with(['projects', 'department', 'phones', 'account'])
                 ->where('type', $this->type)
                 ->whereIn('department_id', $this->departments_id)
-                ->whereIn('form_type', $this->getFormType())
+                ->whereIn('channel_id', $this->getChannelsId())
                 ->whereBetween('date', $this->dates)
                 // ->orWhereBetween('date',$this->dateTimes)
                 ->get();
@@ -163,10 +164,11 @@ class ParserBase
     {
         if (!$this->_spendData) {
             $this->_spendData = SpendData::query()
+                ->select(['id', 'channel_id', 'date', 'department_id', 'type', 'spend', 'show', 'click', 'account_id', 'off_spend', 'interactive', 'data_snap'])
                 ->with(['projects', 'department', 'account'])
                 ->where('type', $this->type)
                 ->whereIn('department_id', $this->departments_id)
-                ->whereIn('spend_type', $this->getFormType())
+                ->whereIn('channel_id', $this->getChannelsId())
                 ->whereBetween('date', $this->dates)
                 // ->orWhereBetween('date',$this->dateTimes)
                 ->get();
@@ -182,6 +184,7 @@ class ParserBase
     {
         if (!$this->_arrivingData) {
             $this->_arrivingData = ArrivingData::query()
+                ->select(['type', 'medium_id', 'reception_date', 'is_transaction', 'customer_status', 'again_arriving', 'archive_id', 'account_id', 'online_customer_id'])
                 ->with(['account'])
                 ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())
@@ -200,6 +203,7 @@ class ParserBase
     {
         if (!$this->_billAccountData) {
             $this->_billAccountData = BillAccountData::query()
+                ->select(['account_id', 'type', 'medium_id', 'pay_date', 'customer_status', 'order_account', 'again_arriving', 'online_customer_id', 'archive_id'])
                 ->with(['account'])
                 ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())
@@ -249,9 +253,9 @@ class ParserBase
      * 获取 `所有渠道` 中的 from_type(表单类型)
      * @return Collection
      */
-    public function getFormType()
+    public function getChannelsId()
     {
-        return collect(explode(',', $this->getChannels()->pluck('form_type')->implode(',')))->unique();
+        return $this->getChannels()->pluck('id')->unique();
     }
 
     /**
@@ -262,9 +266,10 @@ class ParserBase
     {
         if (!$this->_mediumsData) {
             $this->_mediumsData = MediumType::query()
+                ->select(['id', 'title'])
                 ->whereHas('channels', function ($query) {
                     $query->whereIn('id', $this->channels_id);
-                })->get(['id', 'title']);
+                })->get();
         }
         return $this->_mediumsData;
     }
@@ -568,13 +573,13 @@ class ParserBase
     public function filterAllDataOfChannelMediums($data, $channel)
     {
         $mediumsId = $channel->mediums->pluck('id');
-        $formTypes = collect(explode(',', $channel->form_type ?? ''));
-        return collect($data)->map(function ($value, $key) use ($formTypes, $mediumsId) {
+        $channelId = collect($channel->id);
+        return collect($data)->map(function ($value, $key) use ($channelId, $mediumsId) {
             switch ($key) {
                 case "formData":
-                    return $this->filterDataOfTypeId($value, $formTypes, 'form_type');
+                    return $this->filterDataOfFieldId($value, $channelId);
                 case "spendData":
-                    return $this->filterDataOfTypeId($value, $formTypes, 'spend_type');
+                    return $this->filterDataOfFieldId($value, $channelId);
                 case "billAccountData":
                     return $this->filterDataOfMediumId($value, $mediumsId);
                 case "arrivingData":
@@ -657,7 +662,7 @@ class ParserBase
      * @param bool       $d
      * @return mixed
      */
-    private function filterDataOfTypeId($data, $typeId, $filed = 'form_type', $d = true)
+    private function filterDataOfFieldId($data, $typeId, $filed = 'channel_id', $d = true)
     {
         return $data->filter(function ($data) use ($typeId, $filed, $d) {
             if ($d) {
@@ -760,6 +765,7 @@ class ParserBase
     {
         if (!$this->_consultantData) {
             $this->_consultantData = Consultant::query()
+                ->select(['id', 'name'])
                 ->whereHas('consultantGroup', function ($query) {
                     $query->where('id', $this->group_id);
                 })

@@ -655,28 +655,18 @@ class Helpers
     /**
      * 验证 电话号码 是否正确
      * @param string|int $value 电话号
+     * @param bool       $str
      * @return bool
      */
-    public static function validatePhone($value)
+    public static function validatePhone($value, $str = false)
     {
-        return $value && preg_match("/^1[345789]\d{9}$/", trim($value));
+        $data = collect(explode(',', $value))->filter(function ($phone) {
+            return $phone && preg_match("/^1[3456789]\d{9}$/", trim($phone));
+        })->unique();
+
+        return $data->isEmpty() ? false : ($str ? $data->join(',') : true);
     }
 
-    /**
-     * 获取 账户模型 ,如果平台ID 为空则返回所有 账户模型,否则返回对应平台的 账户数据
-     * @param string|int|null $id 平台ID
-     * @return Helpers[]|\Illuminate\Database\Eloquent\Collection
-     */
-    public static function getAccountRebate($id = null)
-    {
-        if (!static::$AccountRebate) {
-            // 缓存 所有账户数据
-            static::$AccountRebate = AccountReturnPoint::all();
-        }
-        return $id ? static::$AccountRebate->filter(function ($data) use ($id) {
-            return $data->form_type == $id;
-        }) : static::$AccountRebate;
-    }
 
     /**
      * 获取 所有 科室模型
@@ -704,34 +694,6 @@ class Helpers
         }
 
         return static::$ProjectTypes->get($id);
-    }
-
-    /**
-     * 判断 平台的回扣
-     * @param string|integer $id     平台ID
-     * @param string         $search 关键词字符串
-     * @return float|int
-     */
-    public static function checkFormTypeRebate($id, $search)
-    {
-        $data = static::getAccountRebate($id);
-
-        if ($data->isEmpty()) {
-            return 0;
-        }
-
-        $result = $data->first(function ($data) use ($search) {
-            return preg_match("/{$data->keyword}/", $search);
-        });
-
-        if ($result) {
-            return (float)$result->rebate;
-        }
-
-        $result = $data->first(function ($data) {
-            return $data->is_default;
-        });
-        return $result ? (float)$result->rebate : 0;
     }
 
     /**
@@ -1013,6 +975,36 @@ class Helpers
         // if value matches given format return true=validation succeeded
         if ($parsed['error_count'] === 0 && $parsed['warning_count'] === 0) {
             return true;
+        }
+        return false;
+    }
+
+    public static function validateUploadExcelType($sheetName, $headers)
+    {
+
+    }
+
+    public static function isDate($value)
+    {
+        if (!$value) {
+            return false;
+        }
+
+        try {
+            new \DateTime($value);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public static function isUrl($url)
+    {
+        $urlParse = parse_url($url);
+
+        if (isset($urlParse['host']) && isset($urlParse['query'])) {
+            parse_str($urlParse['query'], $get_array);
+            return implode('-', array_keys($get_array));
         }
         return false;
     }

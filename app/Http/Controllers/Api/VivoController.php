@@ -18,9 +18,14 @@ class VivoController extends Controller
 
         $import = new AutoImport();
         Excel::import($import, $file);
+        $model = null;
+
+        if (count($import->models)) {
+            $model = collect($import->models)->unique();
+        }
 
         return $this->response->array([
-            'model' => $import->model,
+            'model' => $model,
             'count' => $import->count,
         ]);
     }

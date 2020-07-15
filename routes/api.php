@@ -199,5 +199,18 @@ $api->version('v1', [
 
     });
 
+    $api->group([
+        'prefix' => 'data-origin',
+    ], function ($api) {
+        $api->post('/', 'DataOriginController@create')
+            ->name('api.dataOrigin.store');
+        $api->put('/{model}', 'DataOriginController@change')
+            ->name('api.dataOrigin.update');
+        $api->delete('/{ids}', 'DataOriginController@destroy')
+            ->name('api.dataOrigin.destroy');
+
+
+    });
+
 
 });

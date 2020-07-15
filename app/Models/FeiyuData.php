@@ -9,6 +9,7 @@ use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * @method static updateOrCreate(array $array, $item)
@@ -167,25 +168,14 @@ class FeiyuData extends Model
         $count = 0;
         foreach ($data as $item) {
             $item = static::parseData($item);
-
-            $feiyu = FeiyuData::updateOrCreate([
-                'clue_id' => $item['clue_id']
-            ], $item);
-
-            if ($item['form_type']) {
-                $form = FormData::updateOrCreate([
-                    'model_id'   => $feiyu->id,
-                    'model_type' => static::class,
-                ], FormData::parseFormData($item));
-
-                FormDataPhone::createOrUpdateItem($form, collect($item['phone']));
-                $form->projects()->sync($item['project_type']);
-                $count++;
-            }
+            FormData::baseMakeFormData(static::class, $item, [
+                'clue_id' => $item['clue_id'],
+            ]);
+            $count++;
         }
         return $count;
     }
-    
+
     /**
      * @param $item
      * @return mixed

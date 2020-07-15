@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use stringEncode\Exception;
-use Symfony\Component\Console\Helper\Helper;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * @property mixed data_type
@@ -46,6 +46,14 @@ class FormData extends Model
 
         'consultant_code',
         'consultant_id',
+        'code',
+        'phone',
+        'channel_id',
+        'data_snap',
+    ];
+
+    protected $casts = [
+        'data_snap' => 'json',
     ];
 
     // 平台类型列表
@@ -135,18 +143,54 @@ class FormData extends Model
         return $this->belongsTo(AccountData::class, 'account_id', 'id');
     }
 
+    public function typeChannel()
+    {
+        return $this->belongsTo(Channel::class, 'form_type', 'form_type');
+
+    }
+
+    public static function fixToDataOrigin()
+    {
+        $data = static::query()
+            ->with(['typeChannel', 'formModel', 'phones'])
+            ->has('typeChannel')
+            ->whereNull('channel_id')
+            ->whereHasMorph('formModel', [
+                BaiduData::class,
+                WeiboFormData::class,
+                WeiboData::class,
+                FeiyuData::class,
+                YiliaoData::class,
+                VivoData::class,
+                KuaiShouData::class,
+                MeiyouData::class,
+            ])
+            ->get();
+
+        foreach ($data as $item) {
+            $value = [
+                'channel_id' => $item->typeChannel->id,
+                'code'       => $item->data_type,
+                'phone'      => $item->phones()->pluck('phone')->join(','),
+                'data_snap'  => $item['model']->toJson(),
+            ];
+            $item->update($value);
+        }
+    }
 
     public static function fixConsultantInfo()
     {
         $data = static::query()
             ->with(['formModel'])
             ->whereHasMorph('formModel', [
-                WeiboFormData::class,
                 BaiduData::class,
-                FeiyuData::class,
-                KuaiShouData::class,
-                YiliaoData::class,
+                WeiboFormData::class,
                 WeiboData::class,
+                FeiyuData::class,
+                YiliaoData::class,
+                VivoData::class,
+                KuaiShouData::class,
+                MeiyouData::class,
             ])
             ->whereNull('consultant_code')
             ->get();
@@ -438,6 +482,12 @@ class FormData extends Model
 
     public static function baseMakeFormData($className, $item, $condition)
     {
+        $value   = implode('_', $condition);
+        $lockKey = "{$className}_LOCK_{$value}";
+        if (Redis::exists($lockKey))
+            return;
+        Redis::setex($lockKey, 20, 1);
+
         $model = $className::updateOrCreate($condition, $item);
         $model->projects()->sync($item['project_type']);
 
@@ -453,5 +503,6 @@ class FormData extends Model
             $form->projects()->sync($item['project_type']);
         }
     }
+
 
 }

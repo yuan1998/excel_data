@@ -3,12 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TestExport;
-use App\Models\Channel;
-use App\Parsers\ParserChannel;
-use App\Parsers\ParserDepartment;
 use App\Parsers\ParserStart;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelViewController extends Controller

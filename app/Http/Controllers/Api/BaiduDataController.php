@@ -120,29 +120,37 @@ class BaiduDataController extends Controller
 
 
         $data = [
-            "consultant_group_id" => 1,
+            "consultant_group_id" => "",
+            "data_type" => 'xxl_data_excel',
             "department_id"       => [
                 2,
             ],
             "channel_id"          => [
-                "8",
-            ],
-            "project_id"          => [
-                1,
+                "3",
             ],
             "type"                => "kq",
             "dates"               => [
-                "2020-06-01 00:00:00",
-                "2020-06-31 23:59:59",
+                "2020-07-01 00:00:00",
+                "2020-07-09 23:59:59",
             ],
         ];
 
-        $parser = new ParserConsultantGroup($data);
+        $parser = new ParserStart($data);
+        $mediumId = $parser->getMediumsId();
+        $dates = $parser->dates;
+        $data = ArrivingData::query()
+            ->with(['account'])
+            ->where('type','kq')
+            ->whereIn('medium_id', $mediumId)
+            ->whereBetween('reception_date', $dates)
+            // ->orWhereBetween('reception_date',$this->dateTimes)
+            ->get();
+
+//        $export = new TestExport($parser);
+        dd($data->toArray() , $mediumId,$dates);
 
 
-        $export = new ConsultantGroupExport($parser);
-
-        Excel::store($export, 'test_excel/test.xlsx', 'public');
+//        Excel::store($export, 'test_excel/test.xlsx', 'public');
 
 
 //        $date1  = "2019-12-1 00:00:00";

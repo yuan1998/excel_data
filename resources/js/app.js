@@ -18,7 +18,8 @@ import weiboIndex            from "./components/weibo-index";
 import dataIndex             from "./components/data-index";
 import mediaPage             from "./components/MediaPage";
 import ActionRecheck         from "./components/ActionRecheck";
-import ActionSanfangExport         from "./components/ActionSanfangExport";
+import ActionSanfangExport   from "./components/ActionSanfangExport";
+import DataOriginCreate      from "./pages/DataOriginCreate";
 
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
@@ -35,4 +36,5 @@ Vue.component('data-index', dataIndex);
 Vue.component('media-page', mediaPage);
 Vue.component('action-recheck', ActionRecheck);
 Vue.component('action-sanfang-export', ActionSanfangExport);
+Vue.component('data-origin-create', DataOriginCreate);
 

@@ -71,6 +71,19 @@ class WeiboSpend extends Model
         'negative_fans',
     ];
 
+
+    public static function getWeiboSpendField($snap, $keys, $cb)
+    {
+        foreach (static::$excelFields as $key => $field) {
+            if (in_array($field, $keys)) {
+                $value = Arr::get($snap, $field) ?? Arr::get($snap, $key, 0);
+                if ($value) {
+                    $cb($field, $value);
+                }
+            }
+        }
+    }
+
     /**
      * @param ArrivingData|BillAccountData|TempCustomerData $value
      * @return null

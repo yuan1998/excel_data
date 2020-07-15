@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Helpers;
 use App\Models\BaiduData;
 use App\Models\BaiduSpend;
+use App\Models\DataOrigin;
 use App\Models\FeiyuData;
 use App\Models\FeiyuSpend;
 use App\Models\KuaiShouData;
@@ -20,12 +21,18 @@ use App\OppoSpend;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeSheet;
 
-class AutoImport implements ToCollection
+class AutoImport implements ToCollection, WithEvents
 {
 
     public $count = 0;
     public $model = null;
+    public $models = [];
+
+    public $importFailLog = [];
+    public $importSuccessLog = [];
 
     public static $modelType = [
         'baidu'          => BaiduData::class,
@@ -60,6 +67,10 @@ class AutoImport implements ToCollection
         'weibo-spend'    => '微博消费数据',
         'oppo-spend'     => 'oppo消费数据',
     ];
+    /**
+     * @var string
+     */
+    public $sheetName;
 
 
     public static function checkExcelModel($data)
@@ -94,6 +105,46 @@ class AutoImport implements ToCollection
      */
     public function collection(Collection $collection)
     {
+        $this->dataOriginCheck($collection);
+    }
+
+    /**
+     * @param $collection Collection
+     */
+    public function dataOriginCheck($collection)
+    {
+        $dataOrigin = DataOrigin::validateExcelType($this->sheetName, $collection[0]);
+        if ($dataOrigin) {
+            $dataOrigin->makeFormData($collection);
+
+            array_push($this->models, $dataOrigin['title']);
+            $this->mergeLog($dataOrigin, ['importSuccessLog', 'importFailLog']);
+        }
+    }
+
+    public function mergeLog($dataOrigin, $names)
+    {
+        foreach ($names as $name) {
+            foreach ($dataOrigin->{$name} as $key => $value) {
+                if (is_array($value)) {
+                    if (!isset($this->{$name}[$key])) $this->{$name}[$key] = [];
+
+                    $this->{$name}[$key] = array_merge($this->{$name}[$key], $value);
+                } else if (is_int($value)) {
+
+                    if (!isset($this->{$name}[$key])) $this->{$name}[$key] = 0;
+                    $this->{$name}[$key] += $value;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $collection Collection
+     * @throws \Exception
+     */
+    public function modelTypeCheck($collection)
+    {
         $model = static::checkExcelModel($collection);
 
         if (!$this->model && isset(static::$modelType[$model])) {
@@ -108,5 +159,17 @@ class AutoImport implements ToCollection
     public function getModelType()
     {
         return $this->model ? Arr::get(static::$modelName, $this->model, null) : null;
+    }
+
+    /**
+     * @return array
+     */
+    public function registerEvents(): array
+    {
+        return [
+            BeforeSheet::class => function (BeforeSheet $event) {
+                $this->sheetName = $event->getSheet()->getTitle();
+            }
+        ];
     }
 }

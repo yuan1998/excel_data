@@ -5,7 +5,6 @@ namespace App\Admin\Controllers;
 use App\Models\Channel;
 use App\Models\FormData;
 use App\Models\MediumType;
-use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -46,17 +45,19 @@ class ChannelController extends AdminController
                 return $string;
             });
 
+//        $grid->column('form_type', '关联数据类型')
+//            ->display(function ($value) {
+//                return collect(explode(',', $value))->map(function ($value) {
+//                    if (!$value) {
+//                        return '-无-';
+//                    }
+//                    return isset(FormData::$FormTypeList[$value]) ? FormData::$FormTypeList[$value] : '-未知-';
+//                })->toArray();
+//            })
+//            ->label();
 
-        $grid->column('form_type', '关联数据类型')
-            ->display(function ($value) {
-                return collect(explode(',', $value))->map(function ($value) {
-                    if (!$value) {
-                        return '-无-';
-                    }
-                    return isset(FormData::$FormTypeList[$value]) ? FormData::$FormTypeList[$value] : '-未知-';
-                })->toArray();
-            })
-            ->label();
+        static::keywordLabelModal($grid, 'keyword', __('匹配词'));
+
         $grid->column('created_at', __('Created at'));
 
         return $grid;
@@ -94,8 +95,10 @@ class ChannelController extends AdminController
             ->options(MediumType::select('id', 'title')->get()->pluck('title', 'id'))
             ->required();
 
-        $form->multipleSelect('form_type', '表单关联')
-            ->options(FormData::$FormTypeList)
+//        $form->multipleSelect('form_type', '表单关联')
+//            ->options(FormData::$FormTypeList)
+//            ->required();
+        $form->tags('keyword', __('匹配词'))
             ->required();
 
         return $form;

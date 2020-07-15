@@ -668,12 +668,16 @@ class ExcelFieldsCount
             $result['click']       += (int)Arr::get($item, 'click', 0);
             $result['show']        += (int)Arr::get($item, 'show', 0);
 
-            if ($weibo && $spendItem = $item->spendModel) {
-                $result['diversions'] += (int)Arr::get($spendItem, 'diversions', 0);
-                $result['like']       += (int)Arr::get($spendItem, 'like_count', 0);
-                $result['share']      += (int)Arr::get($spendItem, 'share_count', 0);
-                $result['start']      += (int)Arr::get($spendItem, 'start_count', 0);
-                $result['follow']     += (int)Arr::get($spendItem, 'follow_count', 0);
+            if ($weibo && $item['data_snap']) {
+                WeiboSpend::getWeiboSpendField($item['data_snap'], [
+                    'diversions',
+                    'like',
+                    'share',
+                    'start',
+                    'follow',
+                ], function ($field, $value) use (&$result) {
+                    $result[$field] += (int)$value;
+                });
             }
 
         }

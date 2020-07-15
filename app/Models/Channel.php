@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
@@ -32,6 +33,19 @@ class Channel extends Model
     public function setFormTypeAttribute($formType)
     {
         $this->attributes['form_type'] = trim(implode($formType, ','), ',');
+    }
+
+
+    public function checkAccount($type, $code , $getOfItem = false)
+    {
+        $channelId = $this->id;
+
+        $accounts = AccountData::query()
+            ->where('channel_id', $channelId)
+            ->where('type', $type)
+            ->get();
+
+        return $accounts ? Helpers::accountValidationString($accounts, $code, 'keyword',$getOfItem) : null;
     }
 
 }

@@ -55,8 +55,12 @@ EOF
     public static function keywordLabelModal($grid, $field, $name)
     {
         $grid->column($field, $name)->display(function ($val) {
-            $labels = explode(',', $val);
-            $count  = count($labels);
+            $count = 0;
+
+            if($val) {
+                $labels = explode(',', $val);
+                $count  = count($labels);
+            }
             return '共有' . $count . '个匹配词';
         })->modal($name . '-列表', function ($model) use ($field) {
             $values = $model[$field];

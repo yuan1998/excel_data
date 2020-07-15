@@ -20,25 +20,34 @@ class ImportExcelController extends Controller
         if (!$excel) $this->response->errorBadRequest('表单文件不存在.');
         Helpers::checkUTF8($excel);
 
-        $import  = new AutoImport();
-        $message = '';
-        $type    = null;
+        $import = new AutoImport();
+
         try {
             Excel::import($import, $excel);
+            $type = collect($import->models)->unique()->join(',');
+
+            if (!$type) {
+                return $this->response->array([
+                    'code'    => 10002,
+                    'message' => '无法判断该文件,请补充数据源或者检查文件表头.',
+                ]);
+            }
+
+            return $this->response->array([
+                'code' => 0,
+                'type' => $type,
+                'log'  => [
+                    'success_log' => $import->importSuccessLog,
+                    'fail_log'    => $import->importFailLog,
+                ]
+            ]);
         } catch (\Exception $exception) {
-            $message = $exception->getMessage();
+            throw $exception;
+            return $this->response->array([
+                'code'    => 10001,
+                'message' => $exception->getMessage()
+            ]);
         }
-        $type = $import->getModelType();
-
-        if (!$type) {
-            $message = '无法识别该文件类型,如果确认数据正确,请联系管理员';
-        }
-
-        return $this->response->array([
-            'type'    => $type,
-            'message' => $message,
-            'count'   => $import->count,
-        ]);
     }
 
     public function uploadFormDataExcel(ImportExcelRequest $request)

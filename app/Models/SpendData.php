@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers;
+use App\OppoSpend;
 use Illuminate\Database\Eloquent\Model;
 use stringEncode\Exception;
 
@@ -29,6 +30,15 @@ class SpendData extends Model
         'model_id',
         'model_type',
         'type',
+
+        'code',
+        'data_snap',
+        'channel_id',
+        'uuid',
+    ];
+
+    protected $casts = [
+        'data_snap' => 'json',
     ];
 
     public static $SpendCountDataFormat = [
@@ -62,6 +72,65 @@ class SpendData extends Model
     public function spendModel()
     {
         return $this->morphTo('model');
+    }
+
+    public function typeChannel()
+    {
+        return $this->belongsTo(Channel::class, 'spend_type', 'form_type');
+
+    }
+
+    public static function fixToDataOrigin()
+    {
+        $data = static::query()
+            ->with(['typeChannel', 'spendModel'])
+            ->has('typeChannel')
+            ->whereNull('uuid')
+            ->whereHasMorph('spendModel', [
+                MeiyouSpend::class,
+                KuaiShouSpend::class,
+                VivoSpend::class,
+                BaiduSpend::class,
+                FeiyuSpend::class,
+                WeiboSpend::class,
+                OppoSpend::class,
+            ])
+            ->get();
+
+        foreach ($data as $item) {
+            $uuid  = null;
+            $model = $item['model'];
+            switch ($item['model_type']) {
+                case MeiyouSpend::class:
+                case KuaiShouSpend::class:
+                    $uuid = $model['advertiser_name'];
+                    break;
+                case VivoSpend::class:
+                    $uuid = $model['ad_plan_name'];
+                    break;
+                case BaiduSpend::class:
+                    $uuid = $model['promotion_plan_id'];
+                    break;
+                case FeiyuSpend::class:
+                    $uuid = $model['advertiser_id'];
+                    break;
+                case WeiboSpend::class:
+                    $uuid = $model['advertiser_account'];
+                    break;
+                case OppoSpend::class:
+                    $uuid = $model['plan_id'];
+                    break;
+            }
+
+
+            $value = [
+                'channel_id' => $item->typeChannel->id,
+                'code'       => $item->spend_name,
+                'uuid'       => $uuid,
+                'data_snap'  => $model->toJson(),
+            ];
+            $item->update($value);
+        }
     }
 
     public static function fixMorph()

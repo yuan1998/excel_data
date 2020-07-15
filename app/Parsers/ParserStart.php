@@ -106,24 +106,6 @@ class ParserStart extends ParserBase
         }
     }
 
-
-    public function generateConsultantGroup() {
-        $data = [
-            'billAccountData' => $this->billAccountData,
-            'arrivingData'    => $this->arrivingData,
-        ];
-    }
-
-    public function getChannelsModel()
-    {
-        if (!$this->channelsModel) {
-            $this->channelsModel = $this->channels->map(function ($channel) {
-                return new ParserChannel($channel, $this);
-            });
-        }
-        return $this->channelsModel;
-    }
-
     /**
      * 生成 日期 -> 渠道 -> 科室 格式的数据
      * @param $data

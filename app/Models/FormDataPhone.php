@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Jobs\ClueDataCheck;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class FormDataPhone extends Model
@@ -82,7 +83,13 @@ class FormDataPhone extends Model
     public function getIsBaiduAttribute()
     {
         $form = $this->formData;
-        return $form ? $this->formData->model_type === BaiduData::class : false;
+
+        if ($form && $form['data_snap']) {
+            $data = json_decode($form['data_snap']);
+            return Arr::exists($data , 'visitor_id') || Arr::exists($data , '访客ID');
+        }
+
+        return false;
     }
 
     public function getDateAttribute()
