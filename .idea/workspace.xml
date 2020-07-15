@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Admin/Controllers/ChannelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Controllers/ChannelController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/SpendData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/SpendData.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -111,8 +110,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="116" column="51" selection-start-line="116" selection-start-column="51" selection-end-line="116" selection-end-column="51" />
+            <state relative-caret-position="593">
+              <caret line="106" column="38" lean-forward="true" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -506,18 +505,18 @@
       <workItem from="1591763674113" duration="75000" />
       <workItem from="1591784260165" duration="138963000" />
       <workItem from="1593696768004" duration="73451000" />
-      <workItem from="1594282229594" duration="78883000" />
+      <workItem from="1594282229594" duration="79004000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1430071000" />
+    <option name="totallyTimeSpent" value="1430192000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49879807" visible="true" weight="0.23479189" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49879807" visible="true" weight="0.23479189" />
       <window_info id="Structure" order="1" sideWeight="0.5012019" side_tool="true" weight="0.2864137" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -533,7 +532,7 @@
       <window_info anchor="bottom" id="GraphQL" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="12" visible="true" weight="0.22708757" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" visible="true" weight="0.22708757" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -976,8 +975,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/SpendData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="116" column="51" selection-start-line="116" selection-start-column="51" selection-end-line="116" selection-end-column="51" />
+        <state relative-caret-position="593">
+          <caret line="106" column="38" lean-forward="true" selection-start-line="106" selection-start-column="38" selection-end-line="106" selection-end-column="38" />
         </state>
       </provider>
     </entry>

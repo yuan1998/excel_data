@@ -105,7 +105,7 @@ class SpendData extends Model
                     $uuid = $model['advertiser_name'];
                     break;
                 case VivoSpend::class:
-                    $uuid = $model ? $model['ad_plan_name'] : $item['spend_name'];
+                    $uuid = isset($model['ad_plan_name']) ? $model['ad_plan_name'] : $item['spend_name'];
                     break;
                 case BaiduSpend::class:
                     $uuid = $model['promotion_plan_id'];
