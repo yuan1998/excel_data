@@ -30,6 +30,8 @@ class ExportJob implements ShouldQueue
      */
     public $model;
 
+    public $time;
+
     /**
      * Create a new job instance.
      *
@@ -38,6 +40,7 @@ class ExportJob implements ShouldQueue
     public function __construct($modelId)
     {
         Log::info('导出 报表 __construct ', [$modelId]);
+        $this->time =  Carbon::now();
         $this->model = $modelId;
     }
 
@@ -56,7 +59,6 @@ class ExportJob implements ShouldQueue
 
         if (!$model) return;
 
-        $time        = Carbon::now();
         $requestData = json_decode($model->request_data, true);
         Log::info('生成 Excel 参数', [$requestData]);
 
@@ -104,7 +106,7 @@ class ExportJob implements ShouldQueue
 
 
         $model->status   = 2;
-        $model->run_time = Carbon::now()->diffInSeconds($time) ?? 0;
+        $model->run_time = Carbon::now()->diffInSeconds($this->time) ?? 0;
         $model->save();
     }
 
@@ -121,6 +123,7 @@ class ExportJob implements ShouldQueue
         ]);
         $model         = ExportDataLog::find($this->model);
         $model->status = 3;
+        $model->run_time = Carbon::now()->diffInSeconds($this->time) ?? 0;
         $model->save();
         Log::error('抓取数据时错误', [$model->file_name, $exception]);
 
