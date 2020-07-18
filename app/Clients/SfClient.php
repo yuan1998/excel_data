@@ -6,6 +6,8 @@ use App\Exports\SfExport;
 use App\Exports\SfSheet;
 use App\Exports\TestExport;
 use App\Helpers;
+use App\Models\ArrivingData;
+use App\Models\BillAccountData;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
@@ -53,6 +55,25 @@ class SfClient extends BaseClient
 //        $this->accountData = $this->getAccountSearchData($this->startDate, $this->endDate);
     }
 
+    public function getArrivingData($date)
+    {
+        return ArrivingData::query()
+            ->with(['customerPhone'])
+            ->where('client', 'sf')
+            ->whereDate('reception_date', $date)
+            ->get();
+
+    }
+
+    public function getBillAccountData($date)
+    {
+        return BillAccountData::query()
+            ->with(['customerPhone'])
+            ->where('client', 'sf')
+            ->whereDate('pay_date', $date)
+            ->get();
+    }
+
     public function toHospitalData($start, $end)
     {
 
@@ -88,29 +109,21 @@ class SfClient extends BaseClient
 
     }
 
-
-    public function generateExcelFile()
-    {
-        $export   = $this->makeExport();
-        $filename = '三方数据_' . $this->startDate . '_' . $this->endDate . '.xlsx';
-
-        Excel::store($export, 'test_excel/' . $filename, 'public');
-    }
-
-
     public function mergeAccountData($hospitalData, $accountData)
     {
         $result = [];
 
         foreach ($hospitalData as $hospitalItem) {
-            $id = $hospitalItem['customer_id'];
+            $hospitalItem = $hospitalItem->toArray();
+            $id           = $hospitalItem['customer_id'];
             if (!Arr::exists($result, $id)) {
                 $result[$id] = $this->mapToMergeHospitalItem($hospitalItem);
             }
         }
 
         foreach ($accountData as $accountItem) {
-            $id = $accountItem['customer_id'];
+            $accountItem = $accountItem->toArray();
+            $id          = $accountItem['customer_id'];
             if (!Arr::exists($result, $id)) {
                 $result[$id] = $this->mapToMergeAccountItem($accountItem);
             }
@@ -158,12 +171,17 @@ class SfClient extends BaseClient
         Helpers::dateRangeForEach([$this->startDate, $this->endDate], function ($date) {
             $day = $date->toDateString();
 
+
             var_dump('获取 ' . $day . ' 的数据:开始');
+            var_dump('获取 ' . $day . ' 的数据: 获取到院数据 .... ');
+            $hospitalData = $this->getArrivingData($day);
 
             var_dump('获取 ' . $day . ' 的数据: 获取业绩数据 .... ');
-            $accountData = $this->getAccountSearchData($day, $day);
-            var_dump('获取 ' . $day . ' 的数据: 获取到院数据 .... ');
-            $hospitalData = $this->toHospitalData($day, $day);
+            $accountData = $this->getBillAccountData($day);
+
+
+//            $accountData = $this->getAccountSearchData($day, $day);
+//            $hospitalData = $this->toHospitalData($day, $day);
 
             $data = $this->mergeAccountData($hospitalData, $accountData);
 
@@ -172,6 +190,7 @@ class SfClient extends BaseClient
             $this->makeResult(collect($data), $day);
 
         });
+
     }
 
     public function makeResult($arr, $day)
@@ -220,9 +239,14 @@ class SfClient extends BaseClient
 
     public function generateItemTemp($item)
     {
-        $id    = $item['customer_id'];
-        $phone = $this->checkPhone($id);
-        $info  = $this->custInfo($id);
+        $id = $item['customer_id'];
+
+        if ($item['customer_phone'] && isset($item['customer_phone']['phone'])) {
+            $phone = explode(',', $item['customer_phone']['phone']);
+        } else {
+            $phone = $this->checkPhone($id);
+        }
+        $info = $this->custInfo($id);
 
         return [
             'reception_date'       => $item['reception_date'],
@@ -255,11 +279,10 @@ class SfClient extends BaseClient
 
     public static function checkPhone($customer_id)
     {
-        $phoneList   = static::baseCustomerInfoApi($customer_id);
+        $phoneList   = static::baseCustomerInfoApi($customer_id, static::$cust_info_cust_infos_url);
         $phoneResult = [];
         foreach ($phoneList as $phone) {
             $phoneResult[] = static::customerPhoneApi($phone['id'], $phone['type']);
-
         }
 
         return $phoneResult;

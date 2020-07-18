@@ -15,7 +15,7 @@ class CustomerPhoneObserver
      */
     public function created(CustomerPhone $customerPhone)
     {
-        CustomerPhoneCheckJob::dispatch($customerPhone)->onQueue('check_customer_phone');
+        CustomerPhoneCheckJob::dispatch($customerPhone->id)->onQueue('check_customer_phone');
     }
 
     /**

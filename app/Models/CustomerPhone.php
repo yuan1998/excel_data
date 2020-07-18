@@ -15,6 +15,7 @@ class CustomerPhone extends Model
         'customer_id',
         'phone',
         'type',
+        'client',
     ];
 
     public $timestamps = false;
@@ -23,7 +24,7 @@ class CustomerPhone extends Model
     {
         static::query()->whereNull('phone')
             ->get()->each(function ($phone) {
-                CustomerPhoneCheckJob::dispatch($phone)->onQueue('check_customer_phone');
+                CustomerPhoneCheckJob::dispatch($phone->id)->onQueue('check_customer_phone');
             });
     }
 }

@@ -143,6 +143,8 @@ class BaseClient
 
     // 客户 基本信息
     public static $cust_info_cust_infos_url = '/CommonArea/CustInfo/Custinfos';
+    public static $temp_cust_info_cust_infos_url = '/CommonArea/TempCustInfo/TempCustinfos';
+
     // 预约金 储值
     public static $cust_info_pre_charge_url = '/CommonArea/CustInfo/PreCharge';
 
@@ -530,14 +532,15 @@ class BaseClient
 
     }
 
-    public static function baseCustomerInfoApi($id)
+    public static function baseCustomerInfoApi($id, $url = null)
     {
+        if (!$url) $url = static::$cust_info_cust_infos_url;
 
         $data = [
             'id' => $id,
         ];
 
-        $dom = static::postUriGetDom(static::$cust_info_cust_infos_url, $data);
+        $dom = static::postUriGetDom($url, $data);
 
         $btns  = $dom->find('#ShowPhoneButton');
         $check = [];
@@ -823,7 +826,7 @@ class BaseClient
         $result = $client->request('POST', $uri, [
             'form_params' => $data,
             'cookies'     => $jar,
-            'timeout' => 0,
+            'timeout'     => 0,
         ]);
 
         $body = $result->getBody()->getContents();

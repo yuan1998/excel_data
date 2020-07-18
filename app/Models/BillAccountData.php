@@ -75,6 +75,8 @@ class BillAccountData extends Model
         'account_by_id',
         'online_customer_id',
         'archive_by_id',
+        'client',
+        'medium',
     ];
 
     public static $BillAccountCountDataFormat = [
@@ -159,6 +161,7 @@ class BillAccountData extends Model
                 CustomerPhone::firstOrCreate([
                     'customer_id' => $data->customer_id,
                     'type'        => $data->type,
+                    'client'      => $data->client ?? $data->type,
                 ]);
             })->count();
     }
@@ -172,31 +175,21 @@ class BillAccountData extends Model
         });
     }
 
-    public static function getBillAccountData($type, $data)
+    public static function getBillAccountDataOfDate($client, $start, $end, $count = 10000)
     {
-        $client = Helpers::typeClient($type);
-        if (!$client) {
-            return [];
-        }
-
-        return $client::accountSearchData($data);
-    }
-
-    public static function getBillAccountDataOfDate($type, $start, $end, $count = 10000)
-    {
-        return static::getBillAccountData($type, [
+        return $client::accountSearchData([
             'DatetimeCheckoutStart' => $start,
             'DatetimeCheckoutEnd'   => $end,
             'pageSize'              => $count,
         ]);
     }
 
-    public static function generateBillAccountOfData($type, $data)
+    public static function generateBillAccountOfData($type, $data, $clientName)
     {
         $uuid = collect();
         collect($data)->filter(function ($data) {
             return isset($data['pay_date']) && isset($data['customer_id']);
-        })->each(function ($item) use ($type, $uuid) {
+        })->each(function ($item) use ($type, $uuid, $clientName) {
             $key = $item['pay_date'] . $item['customer_id'] . $item['order_type'] . $item['order_account'];
 
             $item['uuid'] = md5($key);
@@ -211,6 +204,7 @@ class BillAccountData extends Model
             );
             $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
             $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
+            $item['client']     = $clientName;
 
             $consultantResult = Helpers::multipleCheckConsultantId($item, $type, [
                 'online_return_visit_by',
@@ -227,16 +221,20 @@ class BillAccountData extends Model
             CustomerPhone::firstOrCreate([
                 'customer_id' => $item['customer_id'],
                 'type'        => $type,
+                'client'      => $clientName,
             ]);
         });
         return $uuid;
     }
 
-    public static function getDataOfDate($type, $start, $end, $count = 10000)
+    public static function getDataOfDate($clientName, $start, $end, $count = 10000)
     {
-        $data        = static::getBillAccountDataOfDate($type, $start, $end, $count);
-        $uuidList    = static::generateBillAccountOfData($type, $data);
-        $deleteCount = static::removeNotInDateUUID($uuidList, $type, [$start, $end]);
+        $client = Helpers::typeClient($clientName);
+        if (!$client) return null;
+        $type        = $client::$type;
+        $data        = static::getBillAccountDataOfDate($client, $start, $end, $count);
+        $uuidList    = static::generateBillAccountOfData($type, $data, $clientName);
+        $deleteCount = static::removeNotInDateUUID($uuidList, $clientName, [$start, $end]);
 
         return $data ? [
             'createCount' => $uuidList->count(),
@@ -244,10 +242,10 @@ class BillAccountData extends Model
         ] : null;
     }
 
-    public static function removeNotInDateUUID($uuid, $type, $dates)
+    public static function removeNotInDateUUID($uuid, $clientName, $dates)
     {
         return static::query()
-            ->where('type', $type)
+            ->where('client', $clientName)
             ->whereBetween('pay_date', $dates)
             ->whereNotIn('uuid', $uuid)
             ->delete();

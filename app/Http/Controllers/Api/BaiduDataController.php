@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Clients\KqClient;
+use App\Clients\SfClient;
 use App\Clients\YiliaoClient;
 use App\Clients\ZxClient;
 use App\Encoding;
@@ -108,9 +109,18 @@ class BaiduDataController extends Controller
         return $this->response->array([0]);
     }
 
+    public function testSanfang()
+    {
+        $client = new SfClient('2020-07-15', '2020-07-15');
+
+        $client->makeExcel();
+
+    }
+
 
     public function test(Request $request)
     {
+        $this->testSanfang();
 //        $type = 'kq';
 //        dd($type);
 //        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');
@@ -121,7 +131,7 @@ class BaiduDataController extends Controller
 
         $data = [
             "consultant_group_id" => "",
-            "data_type" => 'xxl_data_excel',
+            "data_type"           => 'xxl_data_excel',
             "department_id"       => [
                 2,
             ],
@@ -135,19 +145,19 @@ class BaiduDataController extends Controller
             ],
         ];
 
-        $parser = new ParserStart($data);
+        $parser   = new ParserStart($data);
         $mediumId = $parser->getMediumsId();
-        $dates = $parser->dates;
-        $data = ArrivingData::query()
+        $dates    = $parser->dates;
+        $data     = ArrivingData::query()
             ->with(['account'])
-            ->where('type','kq')
+            ->where('type', 'kq')
             ->whereIn('medium_id', $mediumId)
             ->whereBetween('reception_date', $dates)
             // ->orWhereBetween('reception_date',$this->dateTimes)
             ->get();
 
 //        $export = new TestExport($parser);
-        dd($data->toArray() , $mediumId,$dates);
+        dd($data->toArray(), $mediumId, $dates);
 
 
 //        Excel::store($export, 'test_excel/test.xlsx', 'public');

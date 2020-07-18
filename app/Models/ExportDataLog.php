@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -95,8 +96,21 @@ class ExportDataLog extends Model
         ]);
     }
 
+    public static function sanfangDataPreload($data)
+    {
+
+        $dates = $data['dates'];
+        Helpers::dateRangeForEach($dates, function ($date) {
+            $dateString = $date->toDateString();
+            CrmGrabLog::generate('sf', 'billAccountData', $dateString, $dateString);
+            CrmGrabLog::generate('sf', 'arrivingData', $dateString, $dateString);
+        });
+    }
+
     public static function sanfangGenerate($data)
     {
+        static::sanfangDataPreload($data);
+
         $dateName = static::makeDatesName($data['dates']);
         $name     = time() . '_三方数据报表_' . $dateName;
         $date     = Carbon::today()->toDateString();

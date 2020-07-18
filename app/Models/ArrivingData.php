@@ -107,6 +107,7 @@ class ArrivingData extends Model
         'online_customer_id',
         'online_archive_by_id',
         'archive_by_id',
+        'client',
     ];
 
     public static $ArrivingCountDataFormat = [
@@ -175,7 +176,6 @@ class ArrivingData extends Model
         return $this->belongsTo(Consultant::class, 'online_customer_id', 'id');
     }
 
-
     public static function fixOnlineArchiveBy()
     {
         $data = static::query()
@@ -223,25 +223,17 @@ class ArrivingData extends Model
         });
     }
 
-    public static function getArrivingDataOfCrm($data, $type)
-    {
-        $client = Helpers::typeClient($type);
-        if (!$client) {
-            return [];
-        }
-        return $client::toHospitalSearchData($data);
-    }
 
-    public static function getArrivingDataOfDate($type, $start, $end, $count = 10000)
+    public static function getArrivingDataOfDate($client, $start, $end, $count = 10000)
     {
-        return static::getArrivingDataOfCrm([
+        return $client::toHospitalSearchData([
             'DatetimeRegStart' => $start,
             'DatetimeRegEnd'   => $end,
             'pageSize'         => $count
-        ], $type);
+        ]);
     }
 
-    public static function arrivingDataGenerate($array, $type)
+    public static function arrivingDataGenerate($array, $type, $clientName)
     {
 
         $uuid = collect();
@@ -250,7 +242,7 @@ class ArrivingData extends Model
 
                 return isset($data['reception_date']) && isset($data['customer_id']);
             })
-            ->each(function ($item) use ($type, $uuid) {
+            ->each(function ($item) use ($type, $uuid, $clientName) {
                 $key = $item['reception_date'] . $item['customer_id'] . $item['order_type'] . $item['payable'] . $item['real_payment'];
 
                 $item['uuid']       = md5($key);
@@ -259,6 +251,7 @@ class ArrivingData extends Model
                 $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
                 $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
                 $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
+                $item['client']     = $clientName;
 
                 $consultantResult = Helpers::multipleCheckConsultantId($item, $type, [
                     'online_return_visit_by',
@@ -276,16 +269,20 @@ class ArrivingData extends Model
                 CustomerPhone::firstOrCreate([
                     'customer_id' => $item['customer_id'],
                     'type'        => $type,
+                    'client'      => $clientName
                 ]);
             });
         return $uuid;
     }
 
-    public static function getDataOfDate($type, $start, $end, $count = 10000)
+    public static function getDataOfDate($clientName, $start, $end, $count = 10000)
     {
-        $data        = static::getArrivingDataOfDate($type, $start, $end, $count);
-        $uuid        = static::arrivingDataGenerate($data, $type);
-        $deleteCount = static::removeNotInDateUUID($uuid, $type, [$start, $end]);
+        $client = Helpers::typeClient($clientName);
+        if (!$client) return null;
+        $type        = $client::$type;
+        $data        = static::getArrivingDataOfDate($client, $start, $end, $count);
+        $uuid        = static::arrivingDataGenerate($data, $type, $clientName);
+        $deleteCount = static::removeNotInDateUUID($uuid, $clientName, [$start, $end]);
 
         return $data ? [
             'createCount' => $uuid->count(),
@@ -293,10 +290,10 @@ class ArrivingData extends Model
         ] : null;
     }
 
-    public static function removeNotInDateUUID($uuid, $type, $dates)
+    public static function removeNotInDateUUID($uuid, $clientName, $dates)
     {
         return static::query()
-            ->where('type', $type)
+            ->where('client', $clientName)
             ->whereBetween('reception_date', $dates)
             ->whereNotIn('uuid', $uuid)
             ->delete();

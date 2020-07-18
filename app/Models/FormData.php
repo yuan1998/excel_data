@@ -219,7 +219,7 @@ class FormData extends Model
             }
 
             if (!$id && $code) {
-                $id = Helpers::checkConsBaseClient.phpultantNameOf($item['type'], $code);
+                $id = Helpers::checkConsultantNameOf($item['type'], $code);
             }
             $item->update([
                 'consultant_id'   => $id,

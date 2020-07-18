@@ -20,7 +20,11 @@ class ExportDataLogObserver
         Log::info('生成 导出 Job', [
             'exportDataLog' => $exportDataLog
         ]);
-        ExportJob::dispatch($exportDataLog->id)->onQueue('data_exports');
+        $queueName = 'data_exports';
+        if ($exportDataLog['data_type'] === 'sanfang_data_excel')
+            $queueName = 'sanfang_data_export';
+
+        ExportJob::dispatch($exportDataLog->id)->onQueue($queueName);
     }
 
     /**

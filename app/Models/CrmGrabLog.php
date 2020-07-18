@@ -19,6 +19,7 @@ class CrmGrabLog extends Model
     public static $typeList = [
         'zx' => '整形医院',
         'kq' => '口腔医院',
+        'sf' => '三方数据',
     ];
 
     public static $statusList = [

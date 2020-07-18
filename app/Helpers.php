@@ -5,6 +5,7 @@ namespace App;
 use App\Admin\Extensions\Tools\DepartmentDataType;
 use App\Clients\BaseClient;
 use App\Clients\KqClient;
+use App\Clients\SfClient;
 use App\Clients\ZxClient;
 use App\Models\AccountData;
 use App\Models\AccountReturnPoint;
@@ -352,7 +353,8 @@ class Helpers
 
     public static function tempCustInfoArchive($model)
     {
-        if (!$model->type || !$client = static::typeClient($model->type)) {
+        $clientName = $model->client ?? $model->type;
+        if (!$client = static::typeClient($clientName)) {
             return;
         }
         $data = $client::tempCustomerInfoArchiveCheck($model);
@@ -366,7 +368,8 @@ class Helpers
      */
     public static function baiduCheckArchive($model)
     {
-        if (!$model->type || !$client = static::typeClient($model->type)) {
+        $clientName = $model->client ?? $model->type;
+        if (!$client = static::typeClient($clientName)) {
             return;
         }
         $data = $client::baiduTempSearch([
@@ -386,8 +389,8 @@ class Helpers
      */
     public static function checkArriving($model)
     {
-        // 获取 Crm客户端
-        if (!$client = static::typeClient($model->type)) {
+        $clientName = $model->client ?? $model->type;
+        if (!$client = static::typeClient($clientName)) {
             return;
         }
         // 获取 模型日期月份 的第一天 和 最后一天
@@ -411,8 +414,10 @@ class Helpers
      */
     public static function checkIntention($model)
     {
+
         // 获取 Crm客户端
-        if (!$model->type || !$client = static::typeClient($model->type)) {
+        $clientName = $model->client ?? $model->type;
+        if (!$client = static::typeClient($clientName)) {
             return;
         }
         // 获取并保存 意向度和其他结果
@@ -429,8 +434,8 @@ class Helpers
      */
     public static function checkIsArchive($model)
     {
-        $client = static::typeClient($model->type);
-        if (!$client) {
+        $clientName = $model->client ?? $model->type;
+        if (!$client = static::typeClient($clientName)) {
             return;
         }
         // 获取 建档状态 结果,并保存
@@ -447,11 +452,19 @@ class Helpers
      */
     public static function typeClient($type)
     {
-        if (!in_array($type, ['zx', 'kq'])) {
+        if (!in_array($type, ['zx', 'kq', 'sf'])) {
             Log::error("{$type} Not Exists");
             return false;
         }
-        return $type === 'zx' ? ZxClient::class : KqClient::class;
+        switch ($type) {
+            case 'sf':
+                return SfClient::class;
+            case 'zx':
+                return ZxClient::class;
+            case 'kq':
+                return KqClient::class;
+        }
+        return false;
     }
 
 

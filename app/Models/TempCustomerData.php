@@ -88,6 +88,7 @@ class TempCustomerData extends Model
         'medium_id',
         'account_id',
         'type',
+        'client',
 
         'online_customer_id',
         'return_visit_by_id',
@@ -121,30 +122,22 @@ class TempCustomerData extends Model
         return $data->count();
     }
 
-    public static function getTempCustomerDataOfCrm($data, $type)
+    public static function getTempCustomerDataOfDate($client, $start, $end, $count = 10000)
     {
-        $client = Helpers::typeClient($type);
-        if (!$client) {
-            return [];
-        }
-        return $client::tempSearchData($data);
-    }
 
-    public static function getTempCustomerDataOfDate($type, $start, $end, $count = 10000)
-    {
-        return static::getTempCustomerDataOfCrm([
+        return $client::tempSearchData([
             'DatetimeRegStart' => $start,
             'DatetimeRegEnd'   => $end,
             'pageSize'         => $count
-        ], $type);
+        ]);
     }
 
-    public static function tempCustomerDataGenerate($array, $type)
+    public static function tempCustomerDataGenerate($array, $type, $clientName)
     {
         $uuid = collect();
         collect($array)->filter(function ($data) {
             return isset($data['customer_id']);
-        })->each(function ($item) use ($type, $uuid) {
+        })->each(function ($item) use ($type, $uuid, $clientName) {
             $key = $item['customer_id'] . $item['archive_type'] . $item['archive_date'];
 
             $item['uuid']       = md5($key);
@@ -153,6 +146,7 @@ class TempCustomerData extends Model
             $item['visitor_id'] = mb_substr($item['visitor_id'] ?? '', 0, Builder::$defaultStringLength);
             $item['archive_id'] = Helpers::getArchiveTypeId($item['archive_type']);
             $item['account_id'] = Helpers::crmDataCheckAccount($item, $type);
+            $item['client']     = $clientName;
 
             $consultantResult = Helpers::multipleCheckConsultantId($item, $type, [
                 'return_visit_by',
@@ -170,27 +164,33 @@ class TempCustomerData extends Model
                 'customer_id'   => $item['customer_id'],
                 'type'          => $type,
                 'customer_type' => 'temp_cust_info_cross',
+                'client'        => $clientName,
             ]);
         });
 
         return $uuid;
     }
 
-    public static function removeNotInDateUUID($uuid, $type, $dates)
+    public static function removeNotInDateUUID($uuid, $clientName, $dates)
     {
         return static::query()
-            ->where('type', $type)
+            ->where('client', $clientName)
             ->whereBetween('archive_date', $dates)
             ->whereNotIn('uuid', $uuid)
             ->delete();
     }
 
 
-    public static function getDataOfDate($type, $start, $end, $count = 10000)
+    public static function getDataOfDate($clientName, $start, $end, $count = 10000)
     {
-        $data        = static::getTempCustomerDataOfDate($type, $start, $end, $count);
-        $uuid        = static::tempCustomerDataGenerate($data, $type);
-        $deleteCount = static::removeNotInDateUUID($uuid, $type, [$start, $end]);
+
+        $client = Helpers::typeClient($clientName);
+        if (!$client) return null;
+        $type = $client::$type;
+
+        $data        = static::getTempCustomerDataOfDate($client, $start, $end, $count);
+        $uuid        = static::tempCustomerDataGenerate($data, $type, $clientName);
+        $deleteCount = static::removeNotInDateUUID($uuid, $clientName, [$start, $end]);
 
         return $data ? [
             'createCount' => $uuid->count(),
