@@ -214,6 +214,7 @@ class DataOrigin extends Model
             $propertyData = $this->parserPropertyField($raw);
             $dateValue    = $propertyData['date'];
             $codeValue    = $propertyData['code'];
+            $keyword      = 'keyword';
 
             if (!$codeValue) {
                 $this->importFailLog['code_invalid']++;
@@ -261,7 +262,7 @@ class DataOrigin extends Model
                     $off_spend = $off_spend / (float)$account_type['rebate'];
                 }
                 $propertyData['off_spend'] = $off_spend;
-
+                $keyword                   = 'spend_keyword';
             }
 
             if ($this->data_type === 'form_type') {
@@ -277,7 +278,7 @@ class DataOrigin extends Model
             }
 
 
-            $propertyData['project_type'] = Helpers::checkDepartmentProject($departmentType, $codeValue);
+            $propertyData['project_type'] = Helpers::checkDepartmentProject($departmentType, $codeValue, $keyword);
             $propertyData['channel_type'] = $channel;
             $propertyData['channel_id']   = $channel->id;
             $propertyData['data_snap']    = json_encode($raw);

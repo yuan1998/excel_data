@@ -179,10 +179,6 @@ class SfClient extends BaseClient
             var_dump('获取 ' . $day . ' 的数据: 获取业绩数据 .... ');
             $accountData = $this->getBillAccountData($day);
 
-
-//            $accountData = $this->getAccountSearchData($day, $day);
-//            $hospitalData = $this->toHospitalData($day, $day);
-
             $data = $this->mergeAccountData($hospitalData, $accountData);
 
             var_dump('获取 ' . $day . ' 的数据:成功.');
