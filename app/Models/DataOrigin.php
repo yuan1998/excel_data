@@ -277,7 +277,6 @@ class DataOrigin extends Model
                 }
             }
 
-
             $propertyData['project_type'] = Helpers::checkDepartmentProject($departmentType, $codeValue, $keyword);
             $propertyData['channel_type'] = $channel;
             $propertyData['channel_id']   = $channel->id;
@@ -323,11 +322,12 @@ class DataOrigin extends Model
                 'code', 'uuid', 'spend', 'off_spend', 'date', 'type', 'department_id', 'account_id', 'spend_name', 'channel_id', 'data_snap', 'show', 'click'
             ]);
 
-            SpendData::updateOrCreate([
+            $spend =  SpendData::updateOrCreate([
                 'channel_id' => $item['channel_id'],
                 'date'       => $item['date'],
                 'uuid'       => $item['uuid'],
             ], $makeData);
+            $spend->projects()->sync($item['project_type']);
             $this->importSuccessLog['code_log'][] = $item['code'];
         }
 
