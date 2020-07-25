@@ -184,7 +184,7 @@ class ParserBase
     {
         if (!$this->_arrivingData) {
             $this->_arrivingData = ArrivingData::query()
-                ->select(['type', 'medium_id', 'reception_date', 'is_transaction', 'customer_status', 'again_arriving', 'archive_id', 'account_id', 'online_customer_id'])
+                ->select(['type', 'medium_id', 'reception_date', 'is_transaction', 'customer_status', 'again_arriving', 'archive_id', 'account_id', 'online_customer_id','customer_id'])
                 ->with(['account'])
                 ->where('type', $this->type)
                 ->whereIn('medium_id', $this->getMediumsId())

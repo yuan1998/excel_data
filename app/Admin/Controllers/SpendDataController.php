@@ -94,13 +94,6 @@ class SpendDataController extends AdminController
             $tools->batch(function ($batch) {
                 $batch->disableDelete();
             });
-
-//            $tools->append(new ExcelUpload([
-//                'weibo_spend' => '微博消费',
-//                'feiyu_spend' => '飞鱼消费',
-//                'baidu_spend' => '百度消费',
-//                'oppo_spend'  => 'oppo消费',
-//            ]));
         });
 
         $grid->actions(function ($actions) {

@@ -69,6 +69,7 @@ class ExcelFieldsCount
         $billAccountData = $this->getCountData('billAccountData');
         $arrivingData    = $this->getCountData('arrivingData');
 
+
         $effectiveForm   = $formData['intention-2'] + $formData['intention-3'] + $formData['intention-4'] + $formData['intention-5'];
         $totalTransition = $arrivingData['new_transaction'] + $arrivingData['old_transaction'];
 

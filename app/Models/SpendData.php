@@ -161,7 +161,7 @@ class SpendData extends Model
         $accountKey     = $item['account_keyword'] ? 'account_keyword' : 'spend_name';
         $item['type']   = $departmentType ? $departmentType->type : null;
         $account        = Helpers::formDataCheckAccount($item, $accountKey, 'spend_type', true);
-        $offSpend       = (float)$item['spend'];
+        $offSpend       = (float) $item['spend'];
         if ($account) {
             $offSpend = $offSpend / (float)$account['rebate'];
         }

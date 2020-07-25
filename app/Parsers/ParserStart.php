@@ -203,12 +203,14 @@ class ParserStart extends ParserBase
     public function generateChannelItem($data)
     {
         $channelResult = collect();
+
 //        $data          = $this->filterAllDepartmentData($data);
         // 根据 渠道 筛选出对应的数据
         foreach ($this->channels as $channel) {
             $channelData = $this->filterAllDataOfChannelMediums($data, $channel);
+
             $channelData = $this->filterAllDataOfRequestDepartment($channelData);
-            $test        = new ExcelFieldsCount($channelData);
+            $test = new ExcelFieldsCount($channelData);
             $channelResult->put($channel->title, $test);
         }
 
