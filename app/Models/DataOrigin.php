@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redis;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class DataOrigin extends Model
 {
@@ -212,6 +213,9 @@ class DataOrigin extends Model
 
         foreach ($data as $raw) {
             $propertyData = $this->parserPropertyField($raw);
+            if (is_numeric($propertyData['date'])) {
+                $propertyData['date'] = Date::excelToDateTimeObject($propertyData['date'])->format('Y-m-d');
+            }
             $dateValue    = $propertyData['date'];
             $codeValue    = $propertyData['code'];
             $keyword      = 'keyword';
@@ -235,6 +239,7 @@ class DataOrigin extends Model
                 $this->importFailLog['code_log'][$codeValue] = "无法判断该条数据的所属科室: {$codeValue}";
                 continue;
             }
+
 
 
             $propertyData['date']            = Carbon::parse($propertyData['date'])->toDateString();
@@ -322,7 +327,7 @@ class DataOrigin extends Model
                 'code', 'uuid', 'spend', 'off_spend', 'date', 'type', 'department_id', 'account_id', 'spend_name', 'channel_id', 'data_snap', 'show', 'click'
             ]);
 
-            $spend =  SpendData::updateOrCreate([
+            $spend = SpendData::updateOrCreate([
                 'channel_id' => $item['channel_id'],
                 'date'       => $item['date'],
                 'uuid'       => $item['uuid'],

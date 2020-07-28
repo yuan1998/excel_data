@@ -673,9 +673,13 @@ class Helpers
      */
     public static function validatePhone($value, $str = false)
     {
-        $data = collect(explode(',', $value))->filter(function ($phone) {
-            return $phone && preg_match("/^1[3456789]\d{9}$/", trim($phone));
-        })->unique();
+        $data = collect();
+        preg_match_all('/1[3456789]\d{9}/', $value, $matches);
+        if (isset($matches[0])) {
+            $data = $data->merge($matches[0]);
+        }
+
+        $data = $data->unique();
 
         return $data->isEmpty() ? false : ($str ? $data->join(',') : true);
     }
