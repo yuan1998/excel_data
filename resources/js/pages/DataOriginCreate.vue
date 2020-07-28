@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card class="box-card">
-            <el-form ref="form" :model="formData" label-width="150px" v-loading="loading">
+            <el-form ref="form" :rules="rules" :model="formData" label-width="150px" v-loading="loading">
                 <el-form-item label="数据文件上传">
                     <el-upload
                             v-if="!formData.file_name"
@@ -21,7 +21,7 @@
                         <el-button type="text" @click="resetData">重新上传</el-button>
                     </p>
                 </el-form-item>
-                <el-form-item v-if="fileStatus" label="单元表选择" prop="sheetName">
+                <el-form-item v-if="fileStatus" label="单元表选择" prop="sheet_name">
                     <el-radio-group v-model="formData.sheet_name" @change="handleSheetChange" size="small">
                         <el-radio v-for="(item,index) in sheets" :key="index" :label="item" border>{{ item }}</el-radio>
                     </el-radio-group>
@@ -53,7 +53,7 @@
                     <el-form-item label="数据源名称" prop="title">
                         <el-input v-model="formData.title"></el-input>
                     </el-form-item>
-                    <el-form-item label="关联渠道" prop="channelId">
+                    <el-form-item label="关联渠道" prop="channel_id">
                         <el-select v-model="formData.channel_id"
                                    style="width: 100%"
                                    multiple placeholder="请选择">
