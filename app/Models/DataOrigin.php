@@ -216,9 +216,9 @@ class DataOrigin extends Model
             if (is_numeric($propertyData['date'])) {
                 $propertyData['date'] = Date::excelToDateTimeObject($propertyData['date'])->format('Y-m-d');
             }
-            $dateValue    = $propertyData['date'];
-            $codeValue    = $propertyData['code'];
-            $keyword      = 'keyword';
+            $dateValue = $propertyData['date'];
+            $codeValue = $propertyData['code'];
+            $keyword   = 'keyword';
 
             if (!$codeValue) {
                 $this->importFailLog['code_invalid']++;
@@ -241,7 +241,6 @@ class DataOrigin extends Model
             }
 
 
-
             $propertyData['date']            = Carbon::parse($propertyData['date'])->toDateString();
             $propertyData['type']            = $departmentType->type;
             $propertyData['department_type'] = $departmentType;
@@ -262,10 +261,12 @@ class DataOrigin extends Model
                     continue;
                 }
 
-                $off_spend = (float)$propertyData['spend'];
+                $off_spend = (float)str_replace(',', '', $propertyData['spend']);
                 if ($account_type) {
                     $off_spend = $off_spend / (float)$account_type['rebate'];
                 }
+                $propertyData['show']      = (float)str_replace(',', '', $propertyData['show']);
+                $propertyData['click']     = (float)str_replace(',', '', $propertyData['click']);
                 $propertyData['off_spend'] = $off_spend;
                 $keyword                   = 'spend_keyword';
             }
