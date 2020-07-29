@@ -9,6 +9,7 @@ use App\Admin\Actions\FormData\RecheckItem;
 use App\Admin\Actions\FormData\RecheckPhones;
 use App\Admin\Actions\RecheckFormAction;
 use App\Models\AccountData;
+use App\Models\Channel;
 use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\FormData;
@@ -40,7 +41,7 @@ class FormDataController extends AdminController
 
         $grid = new Grid(new FormData);
         $grid->model()
-            ->with(['phones', 'projects', 'department', 'account'])
+            ->with(['phones', 'projects', 'department', 'account', 'channel'])
             ->orderBy('date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
@@ -106,7 +107,8 @@ class FormDataController extends AdminController
 
             $filter->column(6, function (Grid\Filter $filter) {
                 $filter->equal('type', '数据类型')->select(CrmGrabLog::$typeList);
-                $filter->equal('form_type', '表单类型')->select(FormData::$FormTypeList);
+
+                $filter->equal('channel_id', '所属渠道')->select(Channel::query()->pluck('title', 'id'));
 
                 $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
                 $projectOption = array_merge(["0" => '其他'], $projectOption);
@@ -151,7 +153,7 @@ class FormDataController extends AdminController
         $grid->column('department_info', __('科室'))->display(function () {
             return $this->department ? $this->department->title : '-';
         });
-        $grid->column('form_type', __('Form type'))->using(FormData::$FormTypeList);
+        $grid->column('channel.title', __('所属渠道'));
         $grid->column('phones', __('Phone'))->display(function ($val) {
             return collect($val)->map(function ($item) {
                 return FormDataPhone::toString($item);

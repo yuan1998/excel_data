@@ -77,8 +77,13 @@ class SpendData extends Model
     public function typeChannel()
     {
         return $this->belongsTo(Channel::class, 'spend_type', 'form_type');
-
     }
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id', 'id');
+    }
+
 
     public static function fixToDataOrigin()
     {
@@ -161,7 +166,7 @@ class SpendData extends Model
         $accountKey     = $item['account_keyword'] ? 'account_keyword' : 'spend_name';
         $item['type']   = $departmentType ? $departmentType->type : null;
         $account        = Helpers::formDataCheckAccount($item, $accountKey, 'spend_type', true);
-        $offSpend       = (float) $item['spend'];
+        $offSpend       = (float)$item['spend'];
         if ($account) {
             $offSpend = $offSpend / (float)$account['rebate'];
         }

@@ -149,6 +149,11 @@ class FormData extends Model
 
     }
 
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id', 'id');
+    }
+
     public static function fixToDataOrigin()
     {
         $data = static::query()

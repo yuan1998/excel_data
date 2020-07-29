@@ -6,6 +6,7 @@ use App\Admin\Actions\ExcelUpload;
 use App\Admin\Actions\SpendData\RecheckSpendItem;
 use App\Admin\Actions\SpendExcelUpload;
 use App\Models\AccountData;
+use App\Models\Channel;
 use App\models\CrmGrabLog;
 use App\Models\DepartmentType;
 use App\Models\FormData;
@@ -36,7 +37,7 @@ class SpendDataController extends AdminController
         $this->initVue();
         static::clearAutoComplete();
         $grid = new Grid(new SpendData);
-        $grid->model()->with(['projects', 'department', 'account'])->orderBy('date', 'desc');
+        $grid->model()->with(['projects', 'department', 'account', 'channel'])->orderBy('date', 'desc');
 
         $grid->filter(function (Grid\Filter $filter) {
 
@@ -67,7 +68,7 @@ class SpendDataController extends AdminController
             });
 
             $filter->column(6, function (Grid\Filter $filter) {
-                $filter->equal('spend_type', '消费类型')->select(FormData::$FormTypeList);
+                $filter->equal('channel_id', '所属渠道')->select(Channel::query()->pluck('title', 'id'));
                 $filter->equal('type', '数据类型')->select(CrmGrabLog::$typeList);
 
                 $projectOption = ProjectType::all()->pluck('title', 'id')->toArray();
@@ -103,7 +104,7 @@ class SpendDataController extends AdminController
         $grid->disableCreateButton();
         $grid->fixColumns(5);
         $grid->column('date', __('Date'));
-        $grid->column('spend_type', __('消费类型'))->using(FormData::$FormTypeList)->label();
+        $grid->column('channel.title', __('所属渠道'));
         $grid->column('spend_name', __('Spend name'));
 
         $grid->column('project_info', __('Project'))->display(function () {
