@@ -8,6 +8,7 @@ use App\Admin\Actions\FormData\BatchRecheckPhones;
 use App\Admin\Actions\FormData\RecheckItem;
 use App\Admin\Actions\FormData\RecheckPhones;
 use App\Admin\Actions\RecheckFormAction;
+use App\Admin\Extensions\Exporter\FormDataExporter;
 use App\Models\AccountData;
 use App\Models\Channel;
 use App\models\CrmGrabLog;
@@ -129,8 +130,9 @@ class FormDataController extends AdminController
 
             $filter->expand();
         });
-        $grid->disableExport();
+//        $grid->disableExport();
         $grid->disableCreateButton();
+        $grid->exporter(new FormDataExporter());
 
 
         $grid->batchActions(function ($batch) {
