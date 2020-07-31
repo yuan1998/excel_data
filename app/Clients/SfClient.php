@@ -61,21 +61,20 @@ class SfClient extends BaseClient
 
     public function getArrivingData($date)
     {
-        $ids = $this->getMediumIds();
+//        $ids = $this->getMediumIds();
 
         return ArrivingData::query()
             ->with(['customerPhone'])
-            ->whereIn('medium_id', $ids)
+            ->where('medium', 'like', '%三方转诊%')
             ->whereDate('reception_date', $date)
             ->get();
     }
 
     public function getBillAccountData($date)
     {
-        $ids = $this->getMediumIds();
         return BillAccountData::query()
             ->with(['customerPhone'])
-            ->whereIn('medium_id', $ids)
+            ->where('medium', 'like', '%三方转诊%')
             ->whereDate('pay_date', $date)
             ->get();
     }
@@ -87,6 +86,7 @@ class SfClient extends BaseClient
                 ->select(['id', 'title'])
                 ->where('title', 'like', '%三方转诊%')
                 ->get()
+//            dd($this->mediumIds->toArray());
                 ->pluck('id');
 
         }
@@ -192,16 +192,11 @@ class SfClient extends BaseClient
             $day = $date->toDateString();
 
 
-            var_dump('获取 ' . $day . ' 的数据:开始');
-            var_dump('获取 ' . $day . ' 的数据: 获取到院数据 .... ');
             $hospitalData = $this->getArrivingData($day);
 
-            var_dump('获取 ' . $day . ' 的数据: 获取业绩数据 .... ');
             $accountData = $this->getBillAccountData($day);
 
             $data = $this->mergeAccountData($hospitalData, $accountData);
-
-            var_dump('获取 ' . $day . ' 的数据:成功.');
 
             $this->makeResult(collect($data), $day);
 
@@ -284,7 +279,7 @@ class SfClient extends BaseClient
     public function generateNormalItem($day, $id, $item, $name, $accountValue, $a = true)
     {
         $projectName = $this->payInfo($id, $day, $a);
-        $name = $name . ' : ' . $projectName;
+        $name        = $name . ' : ' . $projectName;
 
         $this->saveResultItem($day, $item, [
             'project' => $name,

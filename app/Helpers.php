@@ -531,7 +531,7 @@ class Helpers
      */
     public static function getMediumTypeId($name)
     {
-        $val = Redis::get($name);
+        $val = Redis::get("_MEDIUM_TITLE_CHECK_ID_" . $name);
 
         if (!$val) {
             $item = MediumType::firstOrCreate([

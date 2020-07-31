@@ -190,7 +190,7 @@ class BillAccountData extends Model
         collect($data)->filter(function ($data) {
             return isset($data['pay_date']) && isset($data['customer_id']);
         })->each(function ($item) use ($type, $uuid, $clientName) {
-            $key = $item['pay_date'] . $item['customer_id'] . $item['order_type'] . $item['order_account'];
+            $key = $item['pay_date'] . $item['customer_id'] . $item['order_type'] . $item['order_account'] . $item['project_name'];
 
             $item['uuid'] = md5($key);
 
