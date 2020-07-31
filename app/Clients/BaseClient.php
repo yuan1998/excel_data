@@ -202,7 +202,10 @@ class BaseClient
             return new Client([
                 'base_uri' => static::$base_url,
                 'cookies'  => true,
-                'defaults' => ['verify' => false],
+                'defaults' => [
+                    'verify' => false,
+                    'http_errors' => false,
+                ],
                 'headers'  => [
                     'CLIENT-IP'       => '202.103.229.40',
                     'X-FORWARDED-FOR' => '202.103.229.40',
