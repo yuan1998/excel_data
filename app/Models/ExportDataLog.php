@@ -110,7 +110,6 @@ class ExportDataLog extends Model
     public static function sanfangGenerate($data)
     {
         static::sanfangDataPreload($data);
-
         $dateName = static::makeDatesName($data['dates']);
         $name     = time() . '_三方数据报表_' . $dateName;
         $date     = Carbon::today()->toDateString();

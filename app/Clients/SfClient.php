@@ -8,6 +8,7 @@ use App\Exports\TestExport;
 use App\Helpers;
 use App\Models\ArrivingData;
 use App\Models\BillAccountData;
+use App\Models\MediumType;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,10 +19,12 @@ class SfClient extends BaseClient
     public static $cookie_name = '172.16.8.880_AdminContext_';
     public static $base_url = 'http://172.16.8.8/';
     public static $domain = '172.16.8.8';
+    public static $companyApi = true;
+    public static $mediaSourceType = 'E10D9F6497004F29BE8DA99600EF5B1D';
 
     public static $account = [
-        'username' => '6003',
-        'password' => '666888',
+        'username' => '7016',
+        'password' => 'hm2018',
     ];
 
     public $startDate = '';
@@ -37,6 +40,7 @@ class SfClient extends BaseClient
      * @var \Illuminate\Support\Collection
      */
     public $accountData;
+    public $mediumIds;
     public $total = 0;
 
     /**
@@ -57,21 +61,37 @@ class SfClient extends BaseClient
 
     public function getArrivingData($date)
     {
+        $ids = $this->getMediumIds();
+
         return ArrivingData::query()
             ->with(['customerPhone'])
-            ->where('client', 'sf')
+            ->whereIn('medium_id', $ids)
             ->whereDate('reception_date', $date)
             ->get();
-
     }
 
     public function getBillAccountData($date)
     {
+        $ids = $this->getMediumIds();
         return BillAccountData::query()
             ->with(['customerPhone'])
-            ->where('client', 'sf')
+            ->whereIn('medium_id', $ids)
             ->whereDate('pay_date', $date)
             ->get();
+    }
+
+    public function getMediumIds()
+    {
+        if (!$this->mediumIds) {
+            $this->mediumIds = MediumType::query()
+                ->select(['id', 'title'])
+                ->where('title', 'like', '%三方转诊%')
+                ->get()
+                ->pluck('id');
+
+        }
+
+        return $this->mediumIds;
     }
 
     public function toHospitalData($start, $end)
@@ -207,9 +227,9 @@ class SfClient extends BaseClient
                 $this->saveResultItem($day, $tmpItem);
             } else {
                 foreach ($item['account_data'] as $accountName => $accountValue) {
-                    if ($accountName === ' 正常收费单 ') {
+                    if (preg_match('/正常收费单/', $accountName)) {
                         $this->generateNormalItem($day, $id, $tmpItem, $accountName, $accountValue);
-                    } else if ($accountName === ' 辅助治疗 ') {
+                    } else if (preg_match('/辅助治疗/', $accountName)) {
                         $this->generateNormalItem($day, $id, $tmpItem, $accountName, $accountValue, false);
                     } else {
                         $this->saveResultItem($day, $tmpItem, [
@@ -264,7 +284,7 @@ class SfClient extends BaseClient
     public function generateNormalItem($day, $id, $item, $name, $accountValue, $a = true)
     {
         $projectName = $this->payInfo($id, $day, $a);
-        $name        = $name . ' : ' . $projectName;
+        $name = $name . ' : ' . $projectName;
 
         $this->saveResultItem($day, $item, [
             'project' => $name,

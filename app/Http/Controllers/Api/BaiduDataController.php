@@ -111,10 +111,9 @@ class BaiduDataController extends Controller
 
     public function testSanfang()
     {
-        $client = new SfClient('2020-07-15', '2020-07-15');
+        $client = new SfClient('2020-07-29', '2020-07-30');
 
         $client->makeExcel();
-
     }
 
 
@@ -146,8 +145,8 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
-//        $this->testSanfang();
-        $this->testBaseExcel();
+        $this->testSanfang();
+//        $this->testBaseExcel();
 //        $type = 'kq';
 //        dd($type);
 //        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');

@@ -137,9 +137,19 @@ class BaseClient
     ];
 
     public static $login_url = '/Account/Auth/Login';
+
+    // 临客查询
     public static $temp_search_url = '/Reservation/TempCustSearch/Index';
+    // 临客查询 (公司)
+    public static $temp_search_company_index = '/Reservation/TempCustSearch/CompayIndex';
+
+    // 临客信息 查看
     public static $customer_info_check_url = '/Reservation/TempCustInfo/Index';
+
+    // 预约单查询
     public static $reservation_search_url = '/Reservation/ReservationSearch/Index';
+    // 预约单查询 (公司)
+    public static $reservation_search_company_index = '/Reservation/ReservationSearch/CompayIndex';
 
     // 客户 基本信息
     public static $cust_info_cust_infos_url = '/CommonArea/CustInfo/Custinfos';
@@ -157,9 +167,14 @@ class BaseClient
 
     // 到院查询
     public static $to_hospital_search_url = '/Reservation/ToHospital/Index';
-    // 网电咨询师业绩查询
-    public static $account_search_url = '/ReportCenter/NetBillAccount/Index';
-    //
+    // 到院查询 (公司)
+    public static $to_hospital_company_index = '/Reservation/ToHospital/CompayIndex';
+
+    // 网电咨询师业绩明细
+    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/Index';
+    // 网电咨询师业绩明细(公司)
+    public static $net_bill_account_dtl_company_index = '/ReportCenter/NetBillAccountDtl/CompanyIndex';
+
     public static $customer_phone_check_url = '/CommonArea/CustInfo/ShowPhoneAndLog';
     public static $customer_info_create_url = '/Reservation/TempCustInfo/Create';
 
@@ -173,6 +188,8 @@ class BaseClient
     public static $account;
     public static $cookie_name;
     public static $client;
+    public static $companyApi = false;
+    public static $mediaSourceType;
 
 
     /**
@@ -327,7 +344,9 @@ class BaseClient
             'DatetimeRegEnd'   => '',
         ], $data ?? []);
 
-        return static::postUriGetDom(static::$temp_search_url, $data, $toDom);
+        $api = static::$companyApi ? static::$temp_search_company_index : static::$temp_search_url;
+
+        return static::postUriGetDom($api, $data, $toDom);
     }
 
     public static function tempSearchOfDate($start, $end, $count = 10000)
@@ -411,7 +430,14 @@ class BaseClient
             'DatetimeReg'      => 1,
             'Isxiangxi'        => 'Y',
         ], $data ?? []);
-        return static::postUriGetDom(static::$reservation_search_url, $data);
+
+        if (static::$mediaSourceType) {
+            $data['MediaSourceType'] = static::$mediaSourceType;
+        }
+
+        $api = static::$companyApi ? static::$reservation_search_company_index : static::$reservation_search_url;
+
+        return static::postUriGetDom($api, $data);
     }
 
     /**
@@ -598,7 +624,12 @@ class BaseClient
             'pageSize'             => 1
         ], $data ?? []);
 
-        return static::postUriGetDom(static::$to_hospital_search_url, $data);
+        if (static::$mediaSourceType) {
+            $data['MediaSourceType'] = static::$mediaSourceType;
+        }
+
+        $api = static::$companyApi ? static::$to_hospital_company_index : static::$to_hospital_search_url;
+        return static::postUriGetDom($api, $data);
     }
 
     /**
@@ -660,14 +691,21 @@ class BaseClient
     public static function accountSearchApi($data)
     {
         $today = Carbon::now()->toDateString();
-        $data  = array_merge([
+
+        $data = array_merge([
             'DatetimeCheckoutStart' => $today,
             'DatetimeCheckoutEnd'   => $today,
             'isSearch'              => 1,
             'pageSize'              => 1
         ], $data ?? []);
 
-        return static::postUriGetDom(static::$account_search_url, $data);
+        if (static::$mediaSourceType) {
+            $data['MediaSourceType'] = static::$mediaSourceType;
+        }
+
+
+        $api = static::$companyApi ? static::$net_bill_account_dtl_company_index : static::$account_search_url;
+        return static::postUriGetDom($api, $data);
     }
 
     /**
