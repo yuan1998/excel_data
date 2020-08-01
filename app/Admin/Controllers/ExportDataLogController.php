@@ -13,6 +13,7 @@ use Encore\Admin\Grid\Tools\BatchActions;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 
 class ExportDataLogController extends AdminController
@@ -75,16 +76,13 @@ class ExportDataLogController extends AdminController
                 'data_exports'       => '导出数据',
             ];
 
-            $data = DB::table('jobs')
-                ->select([
-                    DB::raw('count(queue) as count'),
-                    'queue'
-                ])->whereIn('queue', array_keys($queueName))->groupBy('queue')->get()->pluck('count', 'queue');
-
-
             return view('admin.headers.ExportDataLogHeader', [
                 'queueName' => $queueName,
-                'data'      => $data,
+                'data'      => [
+                    'form_data_phone'    => Queue::size('form_data_phone'),
+                    'crm_grab_log_queue' => Queue::size('crm_grab_log_queue'),
+                    'data_exports'       => Queue::size('data_exports'),
+                ],
             ]);
         });
 
@@ -111,7 +109,7 @@ class ExportDataLogController extends AdminController
         $grid = new Grid(new ExportDataLog);
 
         $grid->model()
-            ->whereIn('data_type', ['xxl_data_excel', 'baidu_plan','consultant_group_excel'])
+            ->whereIn('data_type', ['xxl_data_excel', 'baidu_plan', 'consultant_group_excel'])
             ->orderBy('id', 'desc');
         $this->initVue();
 
@@ -140,16 +138,14 @@ class ExportDataLogController extends AdminController
                 'data_exports'       => '导出数据',
             ];
 
-            $data = DB::table('jobs')
-                ->select([
-                    DB::raw('count(queue) as count'),
-                    'queue'
-                ])->whereIn('queue', array_keys($queueName))->groupBy('queue')->get()->pluck('count', 'queue');
-
 
             return view('admin.headers.ExportDataLogHeader', [
                 'queueName' => $queueName,
-                'data'      => $data,
+                'data'      => [
+                    'form_data_phone'    => Queue::size('form_data_phone'),
+                    'crm_grab_log_queue' => Queue::size('crm_grab_log_queue'),
+                    'data_exports'       => Queue::size('data_exports'),
+                ],
             ]);
         });
 

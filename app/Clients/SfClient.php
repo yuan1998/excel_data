@@ -70,14 +70,15 @@ class SfClient extends BaseClient
             ->whereDate('reception_date', $date)
             ->get();
     }
-/*
-> install_name_tool -change
-/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/Python
-/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/Python /usr/local/bin/python
+
+    /*
+    > install_name_tool -change
+    /usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/Python
+    /usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/Python /usr/local/bin/python
 
 
 
- */
+     */
     public function getBillAccountData($date)
     {
         return BillAccountData::query()
@@ -112,7 +113,7 @@ class SfClient extends BaseClient
             "pageSize"         => 1000
         ];
         return static::toHospitalSearchData($data)->sortByDesc(function ($item) {
-            return $item['is_transaction'] == ' 是 ';
+            return preg_match('/是/', $item['is_transaction']);
         });
     }
 
@@ -172,8 +173,8 @@ class SfClient extends BaseClient
 
     public function mapToMergeHospitalItem($value)
     {
-        if ($value['customer_status'] == ' 新客户 ') {
-            if ($value['again_arriving'] == '二次') {
+        if (preg_match('/新客户/', $value['customer_status'])) {
+            if (preg_match('/二次/', $value['again_arriving'])) {
                 $value['customer_status'] = '新客二次';
             } else {
                 $value['customer_status'] = '新客首次';

@@ -76,6 +76,7 @@ class BaseClient
         "是否成交"    => 'is_transaction',
         "客户状态"    => 'customer_status',
         "二次来院"    => 'again_arriving',
+        "二次到院"    => 'again_arriving',
         "客户"      => 'customer',
         "项目需求"    => 'project_demand',
         "网电建档人"   => 'online_archive_by',

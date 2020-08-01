@@ -145,8 +145,8 @@ class BaiduDataController extends Controller
 
     public function test(Request $request)
     {
-        $this->testSanfang();
-//        $this->testBaseExcel();
+//        $this->testSanfang();
+        $this->testBaseExcel();
 //        $type = 'kq';
 //        dd($type);
 //        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');

@@ -645,6 +645,12 @@ class ExcelFieldsCount
                 $result["is_repeat-{$phone['is_repeat']}"]++;
             } else {
                 $turn_weixin = $phone['turn_weixin'] ?? 0;
+                if (!isset($result["is_archive-{$phone['is_archive']}"]))
+                    $result["is_archive-{$phone['is_archive']}"] = 0;
+                if (!isset($result["intention-{$phone['intention']}"]))
+                    $result["intention-{$phone['intention']}"] = 0;
+                if (!isset($result["turn_weixin-{$turn_weixin}"]))
+                    $result["turn_weixin-{$turn_weixin}"] = 0;
 
                 $result["is_archive-{$phone['is_archive']}"]++;
                 $result["intention-{$phone['intention']}"]++;
@@ -701,10 +707,10 @@ class ExcelFieldsCount
         foreach ($data as $value) {
             $weiboType = $weibo ? WeiboSpend::getWeiboType($value) : null;
 
-            $transaction = $value['is_transaction'] == ' 是 ';
+            $transaction = preg_match('/是/', $value['is_transaction']);
 
-            if ($value['customer_status'] == ' 新客户 ') {
-                if ($value['again_arriving'] == '二次') {
+            if (preg_match('/新客户/', $value['customer_status'])) {
+                if (preg_match('/二次/', $value['again_arriving'])) {
                     $result['new_again']++;
                     $transaction && $result['new_again_transaction']++;
 
@@ -743,8 +749,8 @@ class ExcelFieldsCount
             $weiboType && ($result["{$weiboType}_account"] += $account);
 
             if ($customerStatus) {
-                if ($customerStatus == ' 新客户 ') {
-                    if ($value['again_arriving'] == ' 是 ') {
+                if (preg_match('/新客户/', $customerStatus)) {
+                    if (preg_match('/是/', $value['again_arriving'])) {
                         $result['new_again_count']++;
                         $result['new_again_account'] += $account;
                     } else {
