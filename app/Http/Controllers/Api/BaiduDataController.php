@@ -111,7 +111,7 @@ class BaiduDataController extends Controller
 
     public function testSanfang()
     {
-        $client = new SfClient('2020-07-01', '2020-07-30');
+        $client = new SfClient('2020-07-01', '2020-07-08');
 
         $client->makeExcel();
     }

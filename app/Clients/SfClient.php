@@ -66,15 +66,24 @@ class SfClient extends BaseClient
         return ArrivingData::query()
             ->with(['customerPhone'])
             ->where('medium', 'like', '%三方转诊%')
+            ->where('type', 'zx')
             ->whereDate('reception_date', $date)
             ->get();
     }
+/*
+> install_name_tool -change
+/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/Python
+/usr/local/Cellar/python/3.6.5/Frameworks/Python.framework/Versions/3.6/Python /usr/local/bin/python
 
+
+
+ */
     public function getBillAccountData($date)
     {
         return BillAccountData::query()
             ->with(['customerPhone'])
             ->where('medium', 'like', '%三方转诊%')
+            ->where('type', 'zx')
             ->whereDate('pay_date', $date)
             ->get();
     }
