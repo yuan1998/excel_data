@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Callable_;
+use PHPHtmlParser\Exceptions\EmptyCollectionException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -424,6 +425,7 @@ class Helpers
         $data = $client::reservationSearchIntention([
             'phone' => $model->phone
         ], $model);
+
         $model->fill($data);
         $model->save();
     }

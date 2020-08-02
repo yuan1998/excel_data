@@ -191,6 +191,7 @@ class BaseClient
     public static $client;
     public static $companyApi = false;
     public static $mediaSourceType;
+    public static $baseAccount;
 
 
     /**
@@ -204,7 +205,7 @@ class BaseClient
                 'base_uri' => static::$base_url,
                 'cookies'  => true,
                 'defaults' => [
-                    'verify' => false,
+                    'verify'      => false,
                     'http_errors' => false,
                 ],
                 'headers'  => [
@@ -246,9 +247,11 @@ class BaseClient
      */
     public static function login()
     {
+        $account = static::$account;
+
         $client = static::getClient();
         $result = $client->post(static::$login_url, [
-            'form_params' => static::$account,
+            'form_params' => $account,
         ]);
 
         $token = $result->getHeader('Set-Cookie');
@@ -808,7 +811,11 @@ class BaseClient
     public static function tempCustomerInfoCheckData($phone)
     {
         $dom = static::tempCustomerInfoCheckApi($phone);
-        return static::parserDomTableData($dom, 'table.table-hover');
+        try {
+            return static::parserDomTableData($dom, 'table.table-hover');
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
     public static function tempCustomerInfoCheckExists($phone)
@@ -819,6 +826,7 @@ class BaseClient
 
     public static function tempCustomerInfoArchiveCheck($model)
     {
+
         $item = static::tempCustomerInfoCheckData($model->phone)->first();
         if (!$item) return [
             'is_archive' => 2,

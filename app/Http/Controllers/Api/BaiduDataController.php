@@ -142,11 +142,20 @@ class BaiduDataController extends Controller
 
     }
 
+    public function testPhone()
+    {
+        $model = FormDataPhone::find(3531);
+        Helpers::checkIntentionAndArchive($model);
+
+//        $result = ZxClient::tempCustomerInfoCheckData("17791229833");
+        dd($model->toArray());
+    }
 
     public function test(Request $request)
     {
 //        $this->testSanfang();
-        $this->testBaseExcel();
+//        $this->testBaseExcel();
+        $this->testPhone();
 //        $type = 'kq';
 //        dd($type);
 //        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');
