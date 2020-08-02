@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Clients/ZxClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/ZxClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,8 +39,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="236" column="36" lean-forward="true" selection-start-line="236" selection-start-column="36" selection-end-line="236" selection-end-column="36" />
+            <state relative-caret-position="232">
+              <caret line="829" column="25" lean-forward="true" selection-start-line="829" selection-start-column="25" selection-end-line="829" selection-end-column="25" />
               <folding>
                 <element signature="e#31#47#0#PHP" expanded="true" />
               </folding>
@@ -83,7 +79,7 @@
         <entry file="file://$PROJECT_DIR$/app/Helpers.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="418">
-              <caret line="375" column="40" selection-start-line="375" selection-start-column="25" selection-end-line="375" selection-end-column="40" />
+              <caret line="360" column="53" selection-start-line="360" selection-start-column="25" selection-end-line="360" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -144,11 +140,11 @@
       <find>dd</find>
       <find>dd(</find>
       <find>tempCustomerInfoCheckData</find>
-      <find>tempCustomerInfoArchiveCheck</find>
       <find>time</find>
       <find>reservationSearchIntention</find>
       <find>baiduTempSearch</find>
       <find>$baseAccount</find>
+      <find>tempCustomerInfoArchiveCheck</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/database/migrations</dir>
@@ -493,12 +489,12 @@
       <workItem from="1593696768004" duration="73451000" />
       <workItem from="1594282229594" duration="98988000" />
       <workItem from="1595207768525" duration="2576000" />
-      <workItem from="1595382200872" duration="46973000" />
+      <workItem from="1595382200872" duration="47271000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1499725000" />
+    <option name="totallyTimeSpent" value="1500023000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -917,13 +913,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="375" column="40" selection-start-line="375" selection-start-column="25" selection-end-line="375" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Clients/ZxClient.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="496">
@@ -931,10 +920,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helpers.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="360" column="53" selection-start-line="360" selection-start-column="25" selection-end-line="360" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="236" column="36" lean-forward="true" selection-start-line="236" selection-start-column="36" selection-end-line="236" selection-end-column="36" />
+        <state relative-caret-position="232">
+          <caret line="829" column="25" lean-forward="true" selection-start-line="829" selection-start-column="25" selection-end-line="829" selection-end-column="25" />
           <folding>
             <element signature="e#31#47#0#PHP" expanded="true" />
           </folding>
