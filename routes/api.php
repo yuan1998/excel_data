@@ -101,6 +101,20 @@ $api->version('v1', [
 
         $api->post('/syncAccount', 'WeiboAccountsController@syncAccounts')
             ->name('api.weiboAccounts.syncAccounts');
+        $api->get('/auth/qrcode', 'WeiboAccountsController@getQrCode')
+            ->name('api.weiboAccounts.auth.getQrCode');
+        $api->get('/auth/scanQrCode', 'WeiboAccountsController@scanQrCode')
+            ->name('api.weiboAccounts.auth.scanQrCode');
+        $api->get('/auth/loginQrCode', 'WeiboAccountsController@loginQrCode')
+            ->name('api.weiboAccounts.auth.loginQrCode');
+        $api->get('/auth/isLogin', 'WeiboAccountsController@isLogin')
+            ->name('api.weiboAccounts.auth.isLogin');
+        $api->get('/auth/cplDataList', 'WeiboAccountsController@cplDataList')
+            ->name('api.weiboAccounts.auth.cplDataList');
+
+
+
+
 
 
         $api->get('/user/pause', "WeiboUserController@updatePause")

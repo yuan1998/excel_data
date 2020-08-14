@@ -151,11 +151,18 @@ class BaiduDataController extends Controller
         dd($model->toArray());
     }
 
+    public function testIP()
+    {
+        $ip = request()->ip();
+        dd($ip);
+    }
+
     public function test(Request $request)
     {
+        $this->testIP();
 //        $this->testSanfang();
 //        $this->testBaseExcel();
-        $this->testPhone();
+//        $this->testPhone();
 //        $type = 'kq';
 //        dd($type);
 //        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');

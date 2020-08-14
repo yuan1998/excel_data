@@ -17,7 +17,7 @@ class FeiyuObserver
     public function created(FeiyuData $feiyuData)
     {
         Redis::set($feiyuData->getTable() . '_' . $feiyuData->id . '_queue_clue_loading', 1);
-        ClueDataCheck::dispatch($feiyuData)->onQueue('feiyu');
+        ClueDataCheck::dispatch($feiyuData->id)->onQueue('feiyu');
     }
 
     /**
@@ -31,7 +31,7 @@ class FeiyuObserver
         $change = $feiyuData->getChanges();
         if (isset($change['phone'])) {
             Redis::set($feiyuData->getTable() . '_' . $feiyuData->id . '_queue_clue_loading', 1);
-            ClueDataCheck::dispatch($feiyuData)->onQueue('feiyu');
+            ClueDataCheck::dispatch($feiyuData->id)->onQueue('feiyu');
         }
     }
 

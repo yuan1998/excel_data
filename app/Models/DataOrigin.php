@@ -199,8 +199,8 @@ class DataOrigin extends Model
         foreach (['uuid', 'spend', 'click', 'show'] as $item) {
             $value = $propertyData[$item];
             if ($value === '' || $value === null) {
-                $text                                        = static::$fieldText[$item];
-                $this->importFailLog['code_log'][$codeValue] = "消费数据的{$text}不存在: {$value}";
+                $text                              = static::$fieldText[$item];
+                $this->importFailLog['code_log'][] = "$codeValue 消费数据的{$text}不存在: {$value}";
                 return false;
             }
         }
@@ -226,17 +226,17 @@ class DataOrigin extends Model
             }
 
             if (!Helpers::isDate($dateValue)) {
-                $this->importFailLog['code_log'][$codeValue] = "无法判断该条数据的时间格式: {$dateValue}";
+                $this->importFailLog['code_log'][] = "无法判断该条数据的时间格式: {$dateValue}";
                 continue;
             }
 
             if (!$channel = $this->checkChannel($codeValue)) {
-                $this->importFailLog['code_log'][$codeValue] = "无法判断该条数据的所属渠道: {$codeValue}";
+                $this->importFailLog['code_log'][] = "无法判断该条数据的所属渠道: {$codeValue}";
                 continue;
             }
 
             if (!$departmentType = Helpers::checkDepartment($codeValue)) {
-                $this->importFailLog['code_log'][$codeValue] = "无法判断该条数据的所属科室: {$codeValue}";
+                $this->importFailLog['code_log'][] = "无法判断该条数据的所属科室: {$codeValue}";
                 continue;
             }
 
@@ -257,7 +257,7 @@ class DataOrigin extends Model
                 if (!$this->validateSpendRequiredField($propertyData, $codeValue)) continue;
 
                 if (!Helpers::validateFormat($dateValue, 'Y-m-d')) {
-                    $this->importFailLog['code_log'][$codeValue] = "消费数据必须为每日消费: {$dateValue}";
+                    $this->importFailLog['code_log'][] = "消费数据必须为每日消费: {$dateValue}";
                     continue;
                 }
 
@@ -274,7 +274,7 @@ class DataOrigin extends Model
             if ($this->data_type === 'form_type') {
                 $phoneValue = $propertyData['phone'];
                 if (!$phone = Helpers::validatePhone($phoneValue, true)) {
-                    $this->importFailLog['code_log'][$codeValue] = "表单数据的电话格式错误或者为空: {$phoneValue}";
+                    $this->importFailLog['code_log'][] = "表单数据的电话格式错误或者为空: {$phoneValue}";
                     continue;
                 }
                 $propertyData['phone'] = $phone;
@@ -347,7 +347,6 @@ class DataOrigin extends Model
         if ($this->data_type === 'spend_type') {
             $this->dataOriginMakeSpendData($filterData);
         } else {
-
             $this->dataOriginMakeFormData($filterData);
         }
 

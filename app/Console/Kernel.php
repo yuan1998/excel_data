@@ -111,7 +111,6 @@ class Kernel extends ConsoleKernel
         // 隔天
         // 每天拉取一次昨天的微博表单数据,以防错漏
         $schedule->call(function () {
-            WeiboAccounts::setAccountData();
             $yesterday = Carbon::yesterday()->toDateString();
             WeiboAccounts::checkAccountIsRun($yesterday, $yesterday);
         })->daily();

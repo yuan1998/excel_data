@@ -8,6 +8,7 @@ use App\models\CrmGrabLog;
 use App\Models\WeiboAccounts;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
 class WeiboAccountController extends AdminController
@@ -19,6 +20,17 @@ class WeiboAccountController extends AdminController
      */
     protected $title = '微博账户管理';
 
+    public function index(Content $content)
+    {
+        $this->initVue();
+
+        return $content
+            ->title($this->title())
+            ->description($this->description['index'] ?? trans('admin.list'))
+            ->body("<model-generate-weibo-qr-code/>")
+            ->body($this->grid());
+    }
+
     /**
      * Make a grid builder.
      *
@@ -28,7 +40,6 @@ class WeiboAccountController extends AdminController
     {
         $grid = new Grid(new WeiboAccounts);
         $this->appendDataType($grid);
-        $this->initVue();
         $grid->disableCreateButton();
         $grid->disableRowSelector();
         $grid->disableExport();
@@ -55,6 +66,10 @@ class WeiboAccountController extends AdminController
                 ? "全天"
                 : $this->begin_time . " - " . $this->end_time;
         })->label();
+        $grid->column('login_status', "登录状态")->display(function () {
+            $data = $this->toJson();
+            return "<button-qr-code-login :data='$data'></button-qr-code-login>";
+        });
         return $grid;
     }
 
@@ -103,7 +118,7 @@ class WeiboAccountController extends AdminController
         $form->switch('all_day', "全天抓取");
         $form->timeRange('begin_time', 'end_time', "抓取时段")
             ->default(['start' => '09:00:00', 'end' => '22:00:00']);
-        
+
         $channelOptions = Channel::all()->pluck('title', 'id');
         $form->select('channel_id', '渠道')->options($channelOptions)->required();
 

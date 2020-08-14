@@ -18,7 +18,7 @@ class BaiduClueObserver
     public function created(BaiduClue $baiduClue)
     {
         Redis::set($baiduClue->getTable() . '_' . $baiduClue->id . '_queue_clue_loading', 1);
-        ClueDataCheck::dispatch($baiduClue)->onQueue('baidu');
+        ClueDataCheck::dispatch($baiduClue->id)->onQueue('baidu');
     }
 
     /**
@@ -32,7 +32,7 @@ class BaiduClueObserver
         $change = $baiduClue->getChanges();
         if (isset($change['phone'])) {
             Redis::set($baiduClue->getTable() . '_' . $baiduClue->id . '_queue_clue_loading', 1);
-            ClueDataCheck::dispatch($baiduClue)->onQueue('baidu');
+            ClueDataCheck::dispatch($baiduClue->id)->onQueue('baidu');
         }
 
     }

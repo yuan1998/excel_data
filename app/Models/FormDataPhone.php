@@ -64,7 +64,7 @@ class FormDataPhone extends Model
                 'form_data_id' => $id
             ]);
             if (!$item->is_archive) {
-                ClueDataCheck::dispatch($item)->onQueue('form_data_phone')->delay($delay);
+                ClueDataCheck::dispatch($item->id)->onQueue('form_data_phone')->delay($delay);
             }
         });
     }
@@ -100,7 +100,7 @@ class FormDataPhone extends Model
     public static function recheckHandler($data)
     {
         $data->each(function ($phone) {
-            ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
+            ClueDataCheck::dispatch($phone->id)->onQueue('form_data_phone');
         });
     }
 

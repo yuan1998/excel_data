@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Clients\WeiboClient;
 use App\Helpers;
+use App\Models\WeiboAccounts;
 use App\Models\WeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,10 +20,17 @@ class WeiboFormDataController extends Controller
         if (!$dates || !is_array($dates)) $this->response->errorBadRequest('错误的参数,无法识别的日期');
 
         $accountID = $request->get('account_id');
-        
-        $result = WeiboFormData::pullWeiboData($accountID, $dates[0], $dates[1]);
+        $account   = WeiboAccounts::find($accountID);
 
-        if ($result === null) {
+        if (!$account)
+            return $this->response->array([
+                'status' => 0,
+                'msg'    => '错误,账户不存在',
+            ]);
+
+        $result = $account->pullAccountFormData($dates[0], $dates[1]);
+
+        if ($result === false) {
             return $this->response->array([
                 'status' => 0,
                 'msg'    => '错误,数据获取失败,请呼叫先关人员',

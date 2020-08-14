@@ -22,7 +22,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExportJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
     public $timeout = 999999;
 
     /**
@@ -40,7 +40,7 @@ class ExportJob implements ShouldQueue
     public function __construct($modelId)
     {
         Log::info('导出 报表 __construct ', [$modelId]);
-        $this->time =  Carbon::now();
+        $this->time  = Carbon::now();
         $this->model = $modelId;
     }
 
@@ -121,8 +121,8 @@ class ExportJob implements ShouldQueue
         Log::info('生成 Excel 参数 : 失败', [
             'model' => $this->model,
         ]);
-        $model         = ExportDataLog::find($this->model);
-        $model->status = 3;
+        $model           = ExportDataLog::find($this->model);
+        $model->status   = 3;
         $model->run_time = Carbon::now()->diffInSeconds($this->time) ?? 0;
         $model->save();
         Log::error('抓取数据时错误', [$model->file_name, $exception]);

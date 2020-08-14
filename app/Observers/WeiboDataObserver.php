@@ -18,7 +18,7 @@ class WeiboDataObserver
     public function created(WeiboData $weiboData)
     {
         Redis::set($weiboData->getTable() . '_' . $weiboData->id . '_queue_clue_loading', 1);
-        ClueDataCheck::dispatch($weiboData)->onQueue('weibo');
+        ClueDataCheck::dispatch($weiboData->id)->onQueue('weibo');
     }
 
     /**
@@ -32,7 +32,7 @@ class WeiboDataObserver
         $change = $weiboData->getChanges();
         if (isset($change['phone'])) {
             Redis::set($weiboData->getTable() . '_' . $weiboData->id . '_queue_clue_loading', 1);
-            ClueDataCheck::dispatch($weiboData)->onQueue('weibo');
+            ClueDataCheck::dispatch($weiboData->id)->onQueue('weibo');
         }
     }
 

@@ -96,9 +96,10 @@ class WeiboLogin(object):
     def get_server_data(self, su):
         """与原来的相比，微博的登录从 v1.4.18 升级到了 v1.4.19
         这里使用了 URL 拼接的方式，也可以用 Params 参数传递的方式
+        https://login.sina.com.cn/sso/prelogin.php?entry=weibo&callback=sinaSSOController.preloginCallBack&su=MTczOTI0NDg3OTY%3D&rsakt=mod&checkpin=1&client=ssologin.js(v1.4.19)&_=1597196205262
         """
         pre_url = "http://login.sina.com.cn/sso/prelogin.php?entry=weibo&callback=sinaSSOController.preloginCallBack&su="
-        pre_url = pre_url + su + "&rsakt=mod&checkpin=1&client=ssologin.js(v1.4.19)&_="
+        pre_url = pre_url + su + "&rsakt=mod&checkpin=1&client=ssologin.js(v1.4.15)&_="
         pre_url = pre_url + str(int(time.time() * 1000))
         pre_data_res = self.session.get(pre_url, headers=headers)
         # print(pre_data_res.text)
@@ -147,16 +148,16 @@ class WeiboLogin(object):
         password_secret = self.get_password(servertime, nonce, pubkey)
 
         self.postdata = {
-            'entry': 'weibo',
+            'entry': 'homepage',
             'gateway': '1',
             'from': '',
-            'savestate': '7',
-            'qrcode_flag': 'false',
+            'savestate': '30',
+            'qrcode_flag': 'true',
             'useticket': '1',
             'pagerefer': "https://sina.com.cn/",
             'vsnf': '1',
             'su': su,
-            'service': 'miniblog',
+            'service': 'sso',
             'servertime': servertime,
             'nonce': nonce,
             'pwencode': 'rsa2',
@@ -164,8 +165,8 @@ class WeiboLogin(object):
             'sp': password_secret,
             'sr': '2560*1440',
             'encoding': 'UTF-8',
-            'prelt': '32',
-            'url': 'https://weibo.com/ajaxlogin.php?framelogin=1&callback=parent.sinaSSOController.feedBackUrlCallBack',
+            'prelt': '118',
+            'domain': 'sina.com.cn',
             'returntype': 'TEXT'  # 这里是 TEXT 和 META 选择，具体含义待探索
         }
         return sever_data
@@ -173,9 +174,12 @@ class WeiboLogin(object):
     def login(self):
         # 先不输入验证码登录测试
         sever_data = self.pre_login()
-        login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.19)&_'
+        login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.15)&_='
+        login_url = login_url + str(int(time.time() * 1000))
+
         login_page = self.session.post(login_url, data=self.postdata, headers=headers)
         ticket_js = login_page.json()
+        print(ticket_js);
         ticket = ticket_js["ticket"]
 
         # 以下内容是 处理登录跳转链接

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\WeiboAccounts;
 use App\Models\WeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -13,14 +14,12 @@ use Illuminate\Support\Facades\Log;
 
 class PullWeiboFormData implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     public $startDate;
     public $endDate;
     public $count;
-    public $type;
-
-    public $tries = 1;
+    public $accountId;
 
     public $timeout = 600;
 
@@ -33,7 +32,7 @@ class PullWeiboFormData implements ShouldQueue
      */
     public function __construct($type, $startDate, $endDate, $count = 2000)
     {
-        $this->type      = $type;
+        $this->accountId = $type;
         $this->startDate = $startDate;
         $this->endDate   = $endDate;
         $this->count     = $count;
@@ -48,7 +47,12 @@ class PullWeiboFormData implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("运行微博拉取Job", [$this->type]);
-        WeiboFormData::pullWeiboData($this->type, $this->startDate, $this->endDate, $this->count);
+        if (!$account = WeiboAccounts::find($this->accountId)) {
+            Log::error('拉取微博账户表单 : 账户不存在.', [$this->accountId]);
+            return;
+        }
+
+        Log::info("拉取微博账户表单 : 开始拉取数据", [$this->accountId]);
+        $account->pullAccountFormData($this->startDate, $this->endDate, $this->count);
     }
 }

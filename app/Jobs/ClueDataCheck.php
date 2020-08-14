@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Helpers;
 use App\Models\BaiduClue;
+use App\Models\FormDataPhone;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Redis;
 
 class ClueDataCheck implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     public $model;
     public $type;
@@ -38,7 +39,9 @@ class ClueDataCheck implements ShouldQueue
     public function handle()
     {
         $model = $this->model;
-        Helpers::checkIntentionAndArchive($model, $model->isBaidu);
-        Redis::del($model->getTable() . '_' . $model->id . '_queue_clue_loading');
+        if ($model && $model = FormDataPhone::find($this->model)) {
+            Helpers::checkIntentionAndArchive($model, $model->isBaidu);
+            Redis::del($model->getTable() . '_' . $model->id . '_queue_clue_loading');
+        }
     }
 }

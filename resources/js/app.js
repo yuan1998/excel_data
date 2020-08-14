@@ -6,6 +6,7 @@
 import Vue                   from 'vue';
 import ElementUI             from 'element-ui'
 import ElInputTag            from 'el-input-tag'
+import MyBus                    from './Utils/Vue-Bus';
 import ExampleComponent      from "./components/ExampleComponent";
 import ExportDataForm        from "./components/exportDataForm";
 import WeiConfigAction       from "./components/WeiboConfigAction";
@@ -20,7 +21,10 @@ import mediaPage             from "./components/MediaPage";
 import ActionRecheck         from "./components/ActionRecheck";
 import ActionSanfangExport   from "./components/ActionSanfangExport";
 import DataOriginCreate      from "./pages/DataOriginCreate";
+import modelGenerateWeiboQrCode      from "./components/modelGenerateWeiboQrCode";
+import ButtonOfQrCodeLogin      from "./components/ButtonOfQrCodeLogin";
 
+MyBus(Vue);
 Vue.use(ElementUI);
 Vue.use(ElInputTag);
 Vue.component('recall-log', RecallLog);
@@ -37,4 +41,6 @@ Vue.component('media-page', mediaPage);
 Vue.component('action-recheck', ActionRecheck);
 Vue.component('action-sanfang-export', ActionSanfangExport);
 Vue.component('data-origin-create', DataOriginCreate);
+Vue.component('model-generate-weibo-qr-code', modelGenerateWeiboQrCode);
+Vue.component(ButtonOfQrCodeLogin.name, ButtonOfQrCodeLogin);
 

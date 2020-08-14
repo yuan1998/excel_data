@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class CrmGrabLogJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * @var CrmGrabLog

@@ -387,7 +387,7 @@ class FormData extends Model
     {
         if ($this->phones->isNotEmpty()) {
             foreach ($this->phones as $phone) {
-                ClueDataCheck::dispatch($phone)->onQueue('form_data_phone');
+                ClueDataCheck::dispatch($phone->id)->onQueue('form_data_phone');
             }
         }
     }

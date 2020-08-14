@@ -16,7 +16,7 @@ class FormDataPhoneObserver
      */
     public function created(FormDataPhone $formDataPhone)
     {
-        ClueDataCheck::dispatch($formDataPhone)->onQueue('form_data_phone');
+        ClueDataCheck::dispatch($formDataPhone->id)->onQueue('form_data_phone');
     }
 
     /**
@@ -29,7 +29,7 @@ class FormDataPhoneObserver
     {
         $change = $formDataPhone->getChanges();
         if (isset($change['phone'])) {
-            ClueDataCheck::dispatch($formDataPhone)->onQueue('form_data_phone');
+            ClueDataCheck::dispatch($formDataPhone->id)->onQueue('form_data_phone');
         }
     }
 
