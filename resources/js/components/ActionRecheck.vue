@@ -26,8 +26,8 @@
 
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="渠道类型" prop="form_type">
-                        <el-checkbox-group v-model="form.form_type">
+                    <el-form-item label="渠道类型" prop="channel_id">
+                        <el-checkbox-group v-model="form.channel_id">
                             <el-checkbox border
                                          :label="key"
                                          :key="key"
@@ -81,10 +81,10 @@
                 loading          : false,
                 formLabelWidth   : '80px',
                 rules            : {
-                    form_type: [
+                    channel_id: [
                         { required: true, message: '请选择需要导出的渠道', trigger: 'blur' }
                     ],
-                    type     : [
+                    type      : [
                         { required: true, message: '请选择需要导出的类型', trigger: 'blur' }
                     ],
 
@@ -114,9 +114,9 @@
                     ]
                 },
                 form             : {
-                    form_type: [],
-                    type     : '',
-                    dates    : [],
+                    channel_id: [],
+                    type      : '',
+                    dates     : [],
                 },
             }
         },

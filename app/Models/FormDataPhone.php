@@ -127,7 +127,7 @@ class FormDataPhone extends Model
         $data  = $query->whereHas('formData', function ($query) use ($data) {
             $query->whereBetween('date', [$data['dates']])
                 ->where('type', $data['type'])
-                ->whereIn('form_type', $data['form_type']);
+                ->whereIn('channel_id', $data['channel_id']);
         })->get();
         $count = $data->count();
 

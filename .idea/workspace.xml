@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/FormDataPhone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormDataPhone.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/ActionRecheck.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/ActionRecheck.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,29 +20,58 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
+        <entry file="file://$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="203" selection-start-line="203" selection-end-line="203" />
+            <state relative-caret-position="359">
+              <caret line="86" column="40" lean-forward="true" selection-start-line="86" selection-start-column="40" selection-end-line="86" selection-end-column="40" />
               <folding>
-                <element signature="e#31#53#0#PHP" expanded="true" />
-                <element signature="e#221#1080#0#PHP" />
-                <element signature="e#2377#2675#0#PHP" />
-                <element signature="e#2683#2728#0#PHP" />
-                <element signature="e#2099#2491#0#PHP" />
+                <element signature="e#1184#1216#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
-              <folding>
-                <element signature="e#1184#1216#0" />
-              </folding>
+            <state relative-caret-position="515">
+              <caret line="151" column="39" lean-forward="true" selection-start-line="151" selection-start-column="39" selection-end-line="151" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="630">
+              <caret line="44" column="48" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/js/components/ActionRecheck.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="675">
+              <caret line="84" column="39" selection-start-line="84" selection-start-column="39" selection-end-line="84" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="124" column="5" lean-forward="true" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -58,20 +91,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
+            <state relative-caret-position="278">
               <caret line="32" selection-start-line="32" selection-end-line="32" />
               <folding>
                 <element signature="e#44#72#0#PHP" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/WeiboFormData.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="359" column="45" lean-forward="true" selection-start-line="359" selection-start-column="45" selection-end-line="359" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -86,18 +110,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Jobs/PullWeiboFormData.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
-              <caret line="55" column="37" lean-forward="true" selection-start-line="55" selection-start-column="18" selection-end-line="55" selection-end-column="37" />
-              <folding>
-                <element signature="e#28#57#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="197">
@@ -110,7 +122,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>total_pay</find>
       <find>dd</find>
       <find>dd(</find>
       <find>tempCustomerInfoCheckData</find>
@@ -140,6 +151,7 @@
       <find>swal</find>
       <find>pullWeiboFormData</find>
       <find>pullAccountFormData</find>
+      <find>recheckOfFormType</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/database/migrations</dir>
@@ -151,9 +163,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php" />
-        <option value="$PROJECT_DIR$/app/Models/CustomerPhone.php" />
-        <option value="$PROJECT_DIR$/app/Observers/ExportDataLogObserver.php" />
         <option value="$PROJECT_DIR$/app/Models/CrmGrabLog.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_07_18_114816_change_bill_account_data_add_medium_field.php" />
         <option value="$PROJECT_DIR$/app/Parsers/ParserStart.php" />
@@ -180,7 +189,6 @@
         <option value="$PROJECT_DIR$/app/Observers/WeiboDataObserver.php" />
         <option value="$PROJECT_DIR$/app/Observers/FeiyuObserver.php" />
         <option value="$PROJECT_DIR$/app/Models/FormData.php" />
-        <option value="$PROJECT_DIR$/app/Models/FormDataPhone.php" />
         <option value="$PROJECT_DIR$/app/Observers/FormDataPhoneObserver.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_08_12_105727_change_weibo_account_table_add_login_status.php" />
         <option value="$PROJECT_DIR$/app/Clients/BaseClient.php" />
@@ -198,10 +206,14 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" />
         <option value="$PROJECT_DIR$/app/Clients/WeiboClient.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/WeiboAccountController.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboFormDataController.php" />
         <option value="$PROJECT_DIR$/app/Models/WeiboAccounts.php" />
         <option value="$PROJECT_DIR$/resources/js/app.js" />
+        <option value="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" />
+        <option value="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" />
+        <option value="$PROJECT_DIR$/app/Models/FormDataPhone.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/ActionRecheck.vue" />
       </list>
     </option>
   </component>
@@ -414,7 +426,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
@@ -503,18 +515,18 @@
       <workItem from="1593696768004" duration="73451000" />
       <workItem from="1594282229594" duration="98988000" />
       <workItem from="1595207768525" duration="2576000" />
-      <workItem from="1595382200872" duration="91169000" />
+      <workItem from="1595382200872" duration="93414000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1543921000" />
+    <option name="totallyTimeSpent" value="1546166000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49879807" visible="true" weight="0.24012807" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49879807" visible="true" weight="0.24012807" />
       <window_info id="Structure" order="1" sideWeight="0.5012019" side_tool="true" weight="0.2864137" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -530,7 +542,7 @@
       <window_info anchor="bottom" id="GraphQL" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="12" visible="true" weight="0.4185336" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" visible="true" weight="0.122199595" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -577,39 +589,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Clients/ZxClient.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="18" column="30" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/d4/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-          <folding>
-            <element signature="n#GetIp#0;n#!!top" />
-            <element signature="n#GetIpLookup#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5256" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="161" column="24" lean-forward="true" selection-start-line="161" selection-start-column="24" selection-end-line="161" selection-end-column="24" />
-          <folding>
-            <element signature="e#3250#3903#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Middleware/TrustProxies.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
@@ -683,13 +662,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="263">
           <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="102" column="27" selection-start-line="102" selection-start-column="27" selection-end-line="102" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -871,16 +843,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#44#72#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
@@ -933,16 +895,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="47" column="14" lean-forward="true" selection-start-line="47" selection-start-column="14" selection-end-line="47" selection-end-column="14" />
-          <folding>
-            <element signature="e#1184#1216#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/WeiboAccounts.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="447">
@@ -964,6 +916,61 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#44#72#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="86" column="40" lean-forward="true" selection-start-line="86" selection-start-column="40" selection-end-line="86" selection-end-column="40" />
+          <folding>
+            <element signature="e#1184#1216#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="151" column="39" lean-forward="true" selection-start-line="151" selection-start-column="39" selection-end-line="151" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="44" column="48" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="124" column="5" lean-forward="true" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/ActionRecheck.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="84" column="39" selection-start-line="84" selection-start-column="39" selection-end-line="84" selection-end-column="39" />
         </state>
       </provider>
     </entry>

@@ -41,8 +41,9 @@ class RecheckFormAction extends Action
 
     public function render()
     {
+        $channel =  Channel::query()->pluck('title', 'id');
         return view('admin.actions.actionRecheck', [
-            'formTypeList' => FormData::$FormTypeList,
+            'formTypeList' => $channel,
         ]);
     }
 

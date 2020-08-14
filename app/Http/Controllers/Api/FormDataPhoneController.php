@@ -11,7 +11,7 @@ class FormDataPhoneController extends Controller
 
     public function recheckOfFormType(Request $request)
     {
-        $data  = $request->all(['dates', 'form_type', 'type']);
+        $data  = $request->all(['dates', 'channel_id', 'type']);
         $count = FormDataPhone::recheckOfTypeAndDate($data);
 
         return $this->response->array([

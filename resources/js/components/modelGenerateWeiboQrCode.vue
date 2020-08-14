@@ -91,9 +91,10 @@
                         'account_id': this.itemData.id,
                     }
                 });
+
                 if (res.status === 200) {
                     if (res.data.code === 0) {
-                        Swal("登录成功!", '系统错误', 'success');
+                        Swal("登录成功!", '', 'success');
                     } else {
                         Swal(res.data.msg, '', 'error');
                     }
@@ -101,8 +102,6 @@
                 } else {
                     Swal("请联系管理员", '系统错误', 'error');
                 }
-
-                console.log('handleScanLogin res :', res);
 
             },
             async generateQrCode() {
