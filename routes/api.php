@@ -111,7 +111,8 @@ $api->version('v1', [
             ->name('api.weiboAccounts.auth.isLogin');
         $api->get('/auth/cplDataList', 'WeiboAccountsController@cplDataList')
             ->name('api.weiboAccounts.auth.cplDataList');
-
+        $api->get('/auth/loginClient', 'WeiboAccountsController@loginClient')
+            ->name('api.weiboAccounts.auth.loginClient');
 
 
 

@@ -1,11 +1,20 @@
 <template>
     <div>
-        <div v-if="!data">
+        <div v-if="!item">
             错误
         </div>
-        <el-button v-else-if="data.login_status === 0" size="mini" @click="handleQrCodeLogin">
-            未登录
-        </el-button>
+        <el-popover
+                v-else-if="item.login_status === 0"
+                placement="bottom"
+                title="登录方式"
+                width="200"
+                trigger="click">
+            <div>
+                <el-button size="mini" @click="handleAutoLogin">自动登录</el-button>
+                <el-button size="mini" @click="handleQrCodeLogin">扫描登录</el-button>
+            </div>
+            <el-button size="mini" slot="reference">未登录</el-button>
+        </el-popover>
         <el-button v-else size="mini" @click="handleLoginCheck">
             已登录
         </el-button>
@@ -23,16 +32,40 @@
             data: Object,
         },
         mounted() {
-            console.log('this.data :', this.data);
+            this.item = this.data;
         },
         data() {
-            return {};
+            return {
+                item: null
+            };
         },
         methods: {
-            handleQrCodeLogin() {
-                this.$bus.$emit('qrcode-model-show', this.data);
+            async handleAutoLogin() {
+                this.showLoading();
+                let res = await axios.get('/api/weibo/auth/loginClient', {
+                    params: {
+                        'account_id': this.item.id
+                    }
+                });
+
+                if (res.status === 200) {
+                    if (res.data.code === 0) {
+                        this.$set(this.item, 'login_status', 1);
+                        Swal("登录成功", '', 'success');
+                    } else {
+                        this.$set(this.item, 'login_status', 0);
+                        Swal(res.data.msg, '', 'warning');
+                    }
+                } else {
+                    this.$set(this.item, 'login_status', 0);
+                    Swal("请联系管理员", '系统错误', 'error');
+                }
+
             },
-            async handleLoginCheck() {
+            handleQrCodeLogin() {
+                this.$bus.$emit('qrcode-model-show', this.item);
+            },
+            showLoading() {
                 swal.fire({
                     title            : '',
                     html             : `
@@ -46,20 +79,26 @@
                     showConfirmButton: false,
                     allowOutsideClick: false
                 });
+            },
+            async handleLoginCheck() {
+                this.showLoading();
 
                 let res = await axios.get('/api/weibo/auth/isLogin', {
                     params: {
-                        'account_id': this.data.id
+                        'account_id': this.item.id
                     }
                 });
 
                 if (res.status === 200) {
                     if (res.data.code === 0) {
+                        this.$set(this.item, 'login_status', 1);
                         Swal("登录状态正常", '', 'success');
                     } else {
+                        this.$set(this.item, 'login_status', 0);
                         Swal(res.data.msg, '', 'warning');
                     }
                 } else {
+                    this.$set(this.item, 'login_status', 0);
                     Swal("请联系管理员", '系统错误', 'error');
                 }
 

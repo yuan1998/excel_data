@@ -72,8 +72,8 @@ class WeiboAccounts extends Model
     public function pullAccountFormData($start, $end, $count = 1000, $page = 1)
     {
         $id          = $this->id;
-        $weiboClient = new WeiboClient($id);
-        if (!$weiboClient->isLogin()) {
+        $weiboClient = new WeiboClient($id, $this);
+        if (!$weiboClient->isLogin() && !$weiboClient->mapClientToLogin()) {
             Log::info("拉取微博账户表单 : 账户登录状态错误", [$this->username]);
             $this->login_status = 0;
             $this->save();

@@ -21,18 +21,16 @@ class WeiboAccountsController extends Controller
 
     public function getQrCode(Request $request)
     {
-        $accountId = $request->get('account_id');
-        $account   = WeiboAccounts::find($accountId);
+        $accountId   = $request->get('account_id');
+        $weiboClient = new WeiboClient($accountId);
 
-        if (!$account)
+        if (!$weiboClient->account)
             return $this->response->array([
                 'code' => 1003,
                 'msg'  => '错误的账户ID'
             ]);
 
-
-        $weiboClient = new WeiboClient(1);
-        $body        = $weiboClient->mapQrCodeToGet();
+        $body = $weiboClient->mapQrCodeToGet();
         preg_match("/({.*})/", $body, $matches);
 
         if ($matches && $item = json_decode($matches[0], true)) {
@@ -54,16 +52,16 @@ class WeiboAccountsController extends Controller
     {
         $qrId      = $request->get('qrid');
         $accountId = $request->get('account_id');
-        $account   = WeiboAccounts::find($accountId);
 
-        if (!$account)
+        $weiboClient = new WeiboClient($accountId);
+
+        if (!$weiboClient->account)
             return $this->response->array([
                 'code' => 1003,
                 'msg'  => '错误的账户ID'
             ]);
 
-        $weiboClient = new WeiboClient($accountId);
-        $body        = $weiboClient->mapQrCodeToScan($qrId);
+        $body = $weiboClient->mapQrCodeToScan($qrId);
 
         preg_match("/({.*})/", $body, $matches);
         if ($matches && $item = json_decode($matches[0], true)) {
@@ -121,16 +119,15 @@ class WeiboAccountsController extends Controller
 
     public function isLogin(Request $request)
     {
-        $id      = $request->get('account_id');
-        $account = WeiboAccounts::find($id);
-        if (!$account)
+        $id          = $request->get('account_id');
+        $weiboClient = new WeiboClient($id);
+
+        if (!$weiboClient->account)
             return $this->response->array([
                 'code' => 1001,
                 'msg'  => '错误的账户Id'
             ]);
 
-
-        $weiboClient = new WeiboClient($id);
 
         if ($weiboClient->isLogin()) {
             return $this->response->array([
@@ -139,8 +136,8 @@ class WeiboAccountsController extends Controller
             ]);
         }
 
-        $account->login_status = 0;
-        $account->save();
+        $weiboClient->account->login_status = 0;
+        $weiboClient->account->save();
 
         return $this->response->array([
             'code' => 1000,
@@ -172,5 +169,35 @@ class WeiboAccountsController extends Controller
         ]);
     }
 
+    public function loginClient(Request $request)
+    {
+        $id          = $request->get('account_id');
+        $weiboClient = new WeiboClient($id);
+
+        if (!$weiboClient->account)
+            return $this->response->array([
+                'code' => 1001,
+                'msg'  => '错误的账户Id'
+            ]);
+
+        $loginStatus = $weiboClient->mapClientToLogin();
+
+        $weiboClient->account->login_status = $loginStatus ? 1 : 0;
+        $weiboClient->account->save();
+
+        if ($loginStatus) {
+            return $this->response->array([
+                'code' => 0,
+                'msg'  => '登录成功'
+            ]);
+        } else {
+            return $this->response->array([
+                'code' => 10001,
+                'msg'  => '登录失败'
+            ]);
+        }
+
+
+    }
 
 }

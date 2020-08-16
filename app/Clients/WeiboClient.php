@@ -2,6 +2,7 @@
 
 namespace App\Clients;
 
+use App\Models\WeiboAccounts;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
 use Illuminate\Support\Facades\Log;
@@ -43,15 +44,50 @@ class WeiboClient
     ];
 
     public $accountId;
+    public $account;
     public $client;
 
     /**
      * WeiboClient constructor.
-     * @param $accountId
+     * @param      $accountId
+     * @param null $account
      */
-    public function __construct($accountId)
+    public function __construct($accountId, $account = null)
     {
         $this->accountId = $accountId;
+        $this->account   = $account ?? WeiboAccounts::find($accountId);
+    }
+
+    public static function getWeiboSu($username)
+    {
+        $cmd = base_path('PythonScript/weiboRSA.py');
+
+        $process = new Process(['python3', $cmd, $username]);
+        $process->run();
+
+        if ($process->isSuccessful()) {
+            $data = $process->getOutput();
+            $data = json_decode($data);
+            return $data;
+        }
+
+        return null;
+    }
+
+    public static function RSAWeiboPassword($json)
+    {
+        $cmd     = base_path('PythonScript/weiboRSAPassword.py');
+        $process = new Process(['python3', $cmd, $json]);
+        $process->run();
+
+        if ($process->isSuccessful() && $item = json_decode($process->getOutput(), true)) {
+            return $item['password'];
+        } else {
+            throw new ProcessFailedException($process);
+
+        }
+
+        return null;
     }
 
     public function checkIdCookieFile()
@@ -61,6 +97,12 @@ class WeiboClient
             return Storage::disk('public')->exists("weibo_cookie/{$id}-cookies.json");
 
         return false;
+    }
+
+    public function deleteIdCookieFile()
+    {
+        $id = $this->accountId;
+        Storage::disk('public')->delete("weibo_cookie/{$id}-cookies.json");
     }
 
     public function getIdCookie()
@@ -83,7 +125,7 @@ class WeiboClient
                 'verify'      => false,
                 'http_errors' => false,
                 'headers'     => [
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0'
+                    'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
                 ],
             ]);
         }
@@ -150,6 +192,101 @@ class WeiboClient
         return $res->getBody()->getContents();
     }
 
+    public function mapClientToPreLogin()
+    {
+        $su = static::getWeiboSu($this->account->username);
+
+        if (!$su) return false;
+
+        $data   = [
+            'entry'    => 'account',
+            'callback' => 'sinaSSOController.preloginCallBack',
+            'su'       => $su,
+            'rsakt'    => 'mod',
+            'client'   => 'ssologin.js(v1.4.15)',
+            '_'        => time() * 1000,
+        ];
+        $client = static::getClient();
+
+        $response = $client->request('GET', 'https://login.sina.com.cn/sso/prelogin.php', [
+            'query' => $data,
+        ]);
+        $body     = $response->getBody()->getContents();
+        preg_match("/({.*})/", $body, $matches);
+
+        if ($matches && $item = json_decode($matches[0], true)) {
+            if ($item['retcode'] == 0) {
+                $item['su'] = $su;
+                return $item;
+            }
+        }
+
+        return false;
+    }
+
+    public function mapClientToLogin()
+    {
+        $this->deleteIdCookieFile();
+
+        $serverData = $this->mapClientToPreLogin();
+        if (!$serverData) return false;
+
+        $json = [
+            'pubkey'     => $serverData['pubkey'],
+            'servertime' => $serverData['servertime'],
+            'nonce'      => $serverData['nonce'],
+            'password'   => $this->account->password,
+        ];
+
+        $RSAPassword = static::RSAWeiboPassword(json_encode($json));
+//        dd($RSAPassword);
+
+        $params = [
+            "entry"       => 'account',
+            "gateway"     => '1',
+            "from"        => '',
+            "savestate"   => '30',
+            'qrcode_flag' => 'true',
+            'useticket'   => '1',
+            "pagerefer"   => 'https://sina.com.cn/',
+            "vsnf"        => '1',
+            "su"          => $serverData['su'],
+            "service"     => 'sso',
+            "servertime"  => $serverData['servertime'],
+            "nonce"       => $serverData['nonce'],
+            "pwencode"    => 'rsa2',
+            "rsakv"       => $serverData['rsakv'],
+            "sp"          => $RSAPassword,
+            "sr"          => '2560*1440',
+            "encoding"    => 'UTF-8',
+            "cdult"       => '3',
+            "domain"      => 'sina.com.cn',
+            "prelt"       => '43',
+            "returntype"  => 'TEXT',
+        ];
+        $time   = time() * 1000;
+
+        $client = $this->getClient();
+
+        $uri      = "https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.15)&_={$time}";
+        $res      = $client->request('POST', $uri, [
+            'form_params' => $params,
+            'headers'     => [
+                'Referer'      => 'https://login.sina.com.cn/signup/signin.php',
+                "Content-Type" => 'application/x-www-form-urlencoded',
+                'Host'         => 'login.sina.com.cn',
+                'Origin'       => 'https://login.sina.com.cn',
+            ],
+        ]);
+        $body     = $res->getBody()->getContents();
+        $response = json_decode($body, true);
+        if ($response && $response['retcode'] == 0 && $response['crossDomainUrlList']) {
+            $this->crossDomainLogin($response['crossDomainUrlList']);
+        }
+
+        return $this->isLogin(false);
+    }
+
     public function crossDomainLogin($urlList)
     {
 
@@ -164,10 +301,9 @@ class WeiboClient
         return $result;
     }
 
-    public function isLogin()
+    public function isLogin($checkFile = true)
     {
-        $checkIdCookieFile = $this->checkIdCookieFile();
-        if (!$checkIdCookieFile)
+        if ($checkFile && !$this->checkIdCookieFile())
             return false;
 
         $client = $this->getClient();
@@ -178,7 +314,7 @@ class WeiboClient
         return !!preg_match('/\$CONFIG\[\'uid\'\]=\'\d+\'/', $ctx);
     }
 
-    public function mapFormListToGet($customerId, $start, $end, $count = 1000 , $page = 1)
+    public function mapFormListToGet($customerId, $start, $end, $count = 1000, $page = 1)
     {
         $params = [
             "page"        => $page,

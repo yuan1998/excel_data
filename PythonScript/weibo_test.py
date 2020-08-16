@@ -15,6 +15,8 @@ import random
 from urllib.parse import quote_plus
 from datetime import date
 import redis
+import requests.packages.urllib3
+
 
 """
 整体的思路是，
@@ -24,30 +26,9 @@ import redis
 3. 仅仅在 Python3.4+ 测试通过，低版本没有测试
 4. 代码 PEP8 规范
 """
-r = redis.Redis(host='127.0.0.1', port=6379, db=0, decode_responses=True)
-todayDateString = str(date.today())
 arguments = sys.argv
-try:
-    startDate = arguments[1]
-except IndexError:
-    startDate = todayDateString
+requests.packages.urllib3.disable_warnings()
 
-try:
-    endDate = arguments[2]
-except IndexError:
-    endDate = todayDateString
-
-try:
-    count = arguments[3]
-except IndexError:
-    count = "1000"
-
-agents = [
-    'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36',
-    'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0',
-    'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36',
-    'Chrome/78.0.3904.108 Mobile Safari/537.36',
-]
 agent = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Mobile Safari/537.36'
 headers = {
     'User-Agent': agent,
@@ -65,22 +46,8 @@ class WeiboLogin(object):
         self.user = user
         self.password = password
         self.session = requests.Session()
-        self.load_cookie()
         self.index_url = "http://weibo.com/login.php"
         self.postdata = dict()
-
-    def save_cookie(self):
-        cookies = self.session.cookies.get_dict()
-        name = "cookie_dict_1_" + self.user
-        r.hmset(name, cookies)
-
-    def load_cookie(self):
-        name = "cookie_dict_1_" + self.user
-        cookies = r.hgetall(name)
-        if cookies:
-            # cookies = pickle.loads(cookies)
-            cookiejar = requests.cookies.cookiejar_from_dict(cookies)
-            self.session.cookies.update(cookiejar)
 
     def get_su(self):
         """
@@ -111,30 +78,12 @@ class WeiboLogin(object):
         """对密码进行 RSA 的加密"""
         rsaPublickey = int(pubkey, 16)
         key = rsa.PublicKey(rsaPublickey, 65537)  # 创建公钥
+
         message = str(servertime) + '\t' + str(nonce) + '\n' + str(self.password)  # 拼接明文js加密文件中得到
         message = message.encode("utf-8")
         passwd = rsa.encrypt(message, key)  # 加密
         passwd = binascii.b2a_hex(passwd)  # 将加密信息转换为16进制。
         return passwd
-
-    def get_cha(self, pcid):
-        """获取验证码，并且用PIL打开，
-        1. 如果本机安装了图片查看软件，也可以用 os.subprocess 的打开验证码
-        2. 可以改写此函数接入打码平台。
-        """
-        cha_url = "https://login.sina.com.cn/cgi/pin.php?r="
-        cha_url = cha_url + str(int(random.random() * 100000000)) + "&s=0&p="
-        cha_url = cha_url + pcid
-        cha_page = self.session.get(cha_url, headers=headers)
-        with open("cha.jpg", 'wb') as f:
-            f.write(cha_page.content)
-            f.close()
-        try:
-            im = Image.open("cha.jpg")
-            im.show()
-            im.close()
-        except Exception as e:
-            print(u"请到当前目录下，找到验证码后输入")
 
     def pre_login(self):
         # su 是加密后的用户名
@@ -147,17 +96,17 @@ class WeiboLogin(object):
         showpin = sever_data["showpin"]  # 这个参数的意义待探索
         password_secret = self.get_password(servertime, nonce, pubkey)
 
+
         self.postdata = {
-            'entry': 'homepage',
+            'entry': 'account',
             'gateway': '1',
             'from': '',
             'savestate': '30',
-            'qrcode_flag': 'true',
-            'useticket': '1',
+            'useticket': '0',
             'pagerefer': "https://sina.com.cn/",
             'vsnf': '1',
             'su': su,
-            'service': 'sso',
+            'service': 'account',
             'servertime': servertime,
             'nonce': nonce,
             'pwencode': 'rsa2',
@@ -165,7 +114,8 @@ class WeiboLogin(object):
             'sp': password_secret,
             'sr': '2560*1440',
             'encoding': 'UTF-8',
-            'prelt': '118',
+            'cdult' : 3,
+            'prelt': '80',
             'domain': 'sina.com.cn',
             'returntype': 'TEXT'  # 这里是 TEXT 和 META 选择，具体含义待探索
         }
@@ -177,65 +127,32 @@ class WeiboLogin(object):
         login_url = 'https://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.15)&_='
         login_url = login_url + str(int(time.time() * 1000))
 
-        login_page = self.session.post(login_url, data=self.postdata, headers=headers)
-        ticket_js = login_page.json()
-        print(ticket_js);
-        ticket = ticket_js["ticket"]
+        login_list_page = self.session.post(login_url, data=self.postdata, headers=headers,verify=False)
+        login_content = login_list_page.text;
+        print(login_content)
+        url_list = [i.replace("\/", "/") for i in login_list_page.text.split('"') if "http" in i]
+        for i in url_list:
+            self.session.get(i, headers=headers,verify=False)
+            time.sleep(0.5)
 
-        # 以下内容是 处理登录跳转链接
-        save_pa = r'==-(\d+)-'
-        ssosavestate = int(re.findall(save_pa, ticket)[0]) + 3600 * 7
-        jump_ticket_params = {
-            "callback": "sinaSSOController.callbackLoginStatus",
-            "ticket": ticket,
-            "ssosavestate": str(ssosavestate),
-            "client": "ssologin.js(v1.4.19)",
-            "_": str(time.time() * 1000),
-        }
-        jump_url = "https://passport.weibo.com/wbsso/login"
-        jump_headers = {
-            "Host": "passport.weibo.com",
-            "Referer": "https://weibo.com/",
-            "User-Agent": headers["User-Agent"]
-        }
-        jump_login = self.session.get(jump_url, params=jump_ticket_params, headers=jump_headers)
-        uuid = jump_login.text
+        print(self.session.cookies.get_dict())
 
-        uuid_pa = r'"uniqueid":"(.*?)"'
-        uuid_res = re.findall(uuid_pa, uuid, re.S)[0]
-        web_weibo_url = "http://weibo.com/%s/profile?topnav=1&wvr=6&is_all=1" % uuid_res
-        self.session.get(web_weibo_url, headers=headers)
-        self.save_cookie()
-
-    def data(self):
-        m_headers = {
-            "Host": "cpl.biz.weibo.com",
-            "User-Agent": agent
-        }
-
-        m_params = {
-            "page": "1",
-            "page_size": count,
-            "time_order": "",
-            "feed_type": "",
-            "group_id": "",
-            "page_name": "",
-            "customer_id": arguments[6],
-            "time_start": startDate,
-            "time_end": endDate,
-        }
-        data_url = "https://cpl.biz.weibo.com/cpl/lead/list"
-
-        result = self.session.get(data_url, params=m_params, headers=m_headers)
-        self.save_cookie()
-
-        test_result = result.json()
-        print(json.dumps(test_result))
+    def isLogin(self):
+        page = self.session.get('https://my.sina.com.cn/',headers=headers)
+        print(page.text.decode('gbk'))
+        regexp = re.compile(r'\$CONFIG\[\'uid\'\]=\'\d+\'')
+        if regexp.search(page.text):
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
-    username = arguments[4]  # 用户名
-    password = arguments[5]  # 密码
+    username = arguments[1]  # 用户名
+    password = arguments[2]  # 密码
     weibo = WeiboLogin(username, password)
     weibo.login()
-    weibo.data()
+    if (weibo.isLogin()):
+        print('登录成功')
+    else:
+        print('登录失败')
