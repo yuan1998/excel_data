@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/FormDataPhone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/FormDataPhone.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/ActionRecheck.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/ActionRecheck.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/WeiboAccounts.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboAccounts.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/js/components/ActionRecheck.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="84" column="39" selection-start-line="84" selection-start-column="39" selection-end-line="84" selection-end-column="39" />
+            <state relative-caret-position="247">
+              <caret line="85" column="22" lean-forward="true" selection-start-line="85" selection-start-column="22" selection-end-line="85" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -61,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+            <state relative-caret-position="287">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
             </state>
           </provider>
         </entry>
@@ -70,17 +67,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="124" column="5" lean-forward="true" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
+            <state relative-caret-position="1273">
+              <caret line="125" column="33" lean-forward="true" selection-start-line="125" selection-start-column="33" selection-end-line="125" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/WeiboAccounts.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
+            <state relative-caret-position="524">
+              <caret line="78" column="26" lean-forward="true" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
               <folding>
                 <element signature="e#30#58#0#PHP" expanded="true" />
               </folding>
@@ -91,8 +88,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="538">
+              <caret line="132" column="32" selection-start-line="132" selection-start-column="32" selection-end-line="132" selection-end-column="32" />
               <folding>
                 <element signature="e#44#72#0#PHP" expanded="true" />
               </folding>
@@ -101,10 +98,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboFormDataController.php">
+        <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="30" column="47" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="47" />
+            <state relative-caret-position="350">
+              <caret line="125" column="5" lean-forward="true" selection-start-line="125" selection-start-column="5" selection-end-line="125" selection-end-column="5" />
+              <folding>
+                <element signature="e#31#53#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -122,7 +122,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dd</find>
       <find>dd(</find>
       <find>tempCustomerInfoCheckData</find>
       <find>time</find>
@@ -152,6 +151,7 @@
       <find>pullWeiboFormData</find>
       <find>pullAccountFormData</find>
       <find>recheckOfFormType</find>
+      <find>update</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/database/migrations</dir>
@@ -203,17 +203,17 @@
         <option value="$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php" />
         <option value="$PROJECT_DIR$/app/Jobs/ExportJob.php" />
         <option value="$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" />
         <option value="$PROJECT_DIR$/app/Clients/WeiboClient.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/WeiboAccountController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboFormDataController.php" />
-        <option value="$PROJECT_DIR$/app/Models/WeiboAccounts.php" />
         <option value="$PROJECT_DIR$/resources/js/app.js" />
         <option value="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" />
         <option value="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" />
         <option value="$PROJECT_DIR$/app/Models/FormDataPhone.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php" />
         <option value="$PROJECT_DIR$/resources/js/components/ActionRecheck.vue" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" />
+        <option value="$PROJECT_DIR$/app/Models/WeiboAccounts.php" />
       </list>
     </option>
   </component>
@@ -515,12 +515,12 @@
       <workItem from="1593696768004" duration="73451000" />
       <workItem from="1594282229594" duration="98988000" />
       <workItem from="1595207768525" duration="2576000" />
-      <workItem from="1595382200872" duration="93414000" />
+      <workItem from="1595382200872" duration="94508000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1546166000" />
+    <option name="totallyTimeSpent" value="1547260000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -542,7 +542,7 @@
       <window_info anchor="bottom" id="GraphQL" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="12" visible="true" weight="0.122199595" />
+      <window_info anchor="bottom" id="Terminal" order="12" weight="0.50509167" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -829,20 +829,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="203" selection-start-line="203" selection-end-line="203" />
-          <folding>
-            <element signature="e#31#53#0#PHP" expanded="true" />
-            <element signature="e#221#1080#0#PHP" />
-            <element signature="e#2377#2675#0#PHP" />
-            <element signature="e#2683#2728#0#PHP" />
-            <element signature="e#2099#2491#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
@@ -895,16 +881,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/WeiboAccounts.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="78" column="24" selection-start-line="78" selection-start-column="24" selection-end-line="78" selection-end-column="24" />
-          <folding>
-            <element signature="e#30#58#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/utils/Vue-Bus.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -916,16 +892,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#44#72#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -953,24 +919,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php">
+    <entry file="file://$PROJECT_DIR$/resources/js/components/ActionRecheck.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+        <state relative-caret-position="247">
+          <caret line="85" column="22" lean-forward="true" selection-start-line="85" selection-start-column="22" selection-end-line="85" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/FormDataPhone.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="124" column="5" lean-forward="true" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
+        <state relative-caret-position="1273">
+          <caret line="125" column="33" lean-forward="true" selection-start-line="125" selection-start-column="33" selection-end-line="125" selection-end-column="33" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/ActionRecheck.vue">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/FormDataPhoneController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="84" column="39" selection-start-line="84" selection-start-column="39" selection-end-line="84" selection-end-column="39" />
+        <state relative-caret-position="287">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="132" column="32" selection-start-line="132" selection-start-column="32" selection-end-line="132" selection-end-column="32" />
+          <folding>
+            <element signature="e#44#72#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="125" column="5" lean-forward="true" selection-start-line="125" selection-start-column="5" selection-end-line="125" selection-end-column="5" />
+          <folding>
+            <element signature="e#31#53#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/WeiboAccounts.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="78" column="26" lean-forward="true" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
+          <folding>
+            <element signature="e#30#58#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

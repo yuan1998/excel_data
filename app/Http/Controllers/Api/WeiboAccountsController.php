@@ -139,9 +139,8 @@ class WeiboAccountsController extends Controller
             ]);
         }
 
-        $account->update([
-            'login_status' => 0
-        ]);
+        $account->login_status = 0;
+        $account->save();
 
         return $this->response->array([
             'code' => 1000,

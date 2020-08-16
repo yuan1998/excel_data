@@ -75,9 +75,8 @@ class WeiboAccounts extends Model
         $weiboClient = new WeiboClient($id);
         if (!$weiboClient->isLogin()) {
             Log::info("拉取微博账户表单 : 账户登录状态错误", [$this->username]);
-            $this->update([
-                'login_status' => 0
-            ]);
+            $this->login_status = 0;
+            $this->save();
             return false;
         }
         $data = $weiboClient->mapFormListToGet($this->customer_id, $start, $end, $count, $page);
