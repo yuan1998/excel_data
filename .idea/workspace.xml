@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/NodeScript/weiboRSA.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonScript/weibo_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonScript/weibo_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Clients/WeiboClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/WeiboClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/WeiboAccounts.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/WeiboAccounts.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-    </list>
+    <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +17,7 @@
         <entry file="file://$PROJECT_DIR$/app/Models/WeiboAccounts.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="143">
-              <caret line="86" column="31" lean-forward="true" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
+              <caret line="86" column="31" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
               <folding>
                 <element signature="e#30#58#0#PHP" expanded="true" />
                 <element signature="e#936#1814#0#PHP" />
@@ -48,7 +39,7 @@
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="202">
-              <caret line="36" column="15" lean-forward="true" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
+              <caret line="36" column="15" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
               <folding>
                 <element signature="e#44#72#0#PHP" expanded="true" />
                 <element signature="e#2153#3456#0#PHP" />
@@ -61,7 +52,7 @@
         <entry file="file://$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="279">
-              <caret line="64" column="33" lean-forward="true" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
+              <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
               <folding>
                 <element signature="e#1787#2760#0" />
               </folding>
@@ -69,14 +60,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="530">
-              <caret line="322" column="21" selection-start-line="322" selection-start-column="21" selection-end-line="322" selection-end-column="21" />
+            <state relative-caret-position="141">
+              <caret line="324" column="25" selection-start-line="324" selection-start-column="25" selection-end-line="324" selection-end-column="25" />
               <folding>
                 <element signature="e#31#60#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/NodeScript/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="14" selection-start-column="14" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -135,7 +135,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Admin/Controllers/SpendDataController.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" />
         <option value="$PROJECT_DIR$/app/Admin/Extensions/Exporter/FormDataExporter.php" />
         <option value="$PROJECT_DIR$/app/Models/ExportDataLog.php" />
@@ -186,6 +185,7 @@
         <option value="$PROJECT_DIR$/storage/app/public/weibo_cookie/1-cookies.json" />
         <option value="$PROJECT_DIR$/storage/app/public/weibo_cookie/2-cookies.json" />
         <option value="$PROJECT_DIR$/app/Clients/WeiboClient.php" />
+        <option value="$PROJECT_DIR$/NodeScript/.gitignore" />
       </list>
     </option>
   </component>
@@ -378,7 +378,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/PythonScript" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/NodeScript" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -395,11 +395,11 @@
       <recent name="$PROJECT_DIR$/public/css" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/NodeScript" />
       <recent name="$PROJECT_DIR$/PythonScript" />
       <recent name="$PROJECT_DIR$/resources/js/utils" />
       <recent name="$PROJECT_DIR$/app/Exports" />
       <recent name="$PROJECT_DIR$/app/Admin/Actions/SpendData" />
-      <recent name="$PROJECT_DIR$/app/Admin/Actions/FormData" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -472,12 +472,12 @@
       <workItem from="1593696768004" duration="73451000" />
       <workItem from="1594282229594" duration="98988000" />
       <workItem from="1595207768525" duration="2576000" />
-      <workItem from="1595382200872" duration="113051000" />
+      <workItem from="1595382200872" duration="113145000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1565803000" />
+    <option name="totallyTimeSpent" value="1565897000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -499,7 +499,7 @@
       <window_info anchor="bottom" id="GraphQL" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="12" weight="0.50509167" />
+      <window_info anchor="bottom" id="Terminal" order="12" visible="true" weight="0.50509167" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -546,13 +546,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Observers/FeiyuObserver.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="33" column="50" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Observers/WeiboDataObserver.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
@@ -862,7 +855,7 @@
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/WeiboAccountsController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
-          <caret line="36" column="15" lean-forward="true" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
+          <caret line="36" column="15" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
           <folding>
             <element signature="e#44#72#0#PHP" expanded="true" />
             <element signature="e#2153#3456#0#PHP" />
@@ -887,7 +880,7 @@
     <entry file="file://$PROJECT_DIR$/app/Models/WeiboAccounts.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
-          <caret line="86" column="31" lean-forward="true" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
+          <caret line="86" column="31" selection-start-line="86" selection-start-column="31" selection-end-line="86" selection-end-column="31" />
           <folding>
             <element signature="e#30#58#0#PHP" expanded="true" />
             <element signature="e#936#1814#0#PHP" />
@@ -905,7 +898,7 @@
     <entry file="file://$PROJECT_DIR$/resources/js/components/ButtonOfQrCodeLogin.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
-          <caret line="64" column="33" lean-forward="true" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
+          <caret line="64" column="33" selection-start-line="64" selection-start-column="33" selection-end-line="64" selection-end-column="33" />
           <folding>
             <element signature="e#1787#2760#0" />
           </folding>
@@ -914,11 +907,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Clients/WeiboClient.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="530">
-          <caret line="322" column="21" selection-start-line="322" selection-start-column="21" selection-end-line="322" selection-end-column="21" />
+        <state relative-caret-position="141">
+          <caret line="324" column="25" selection-start-line="324" selection-start-column="25" selection-end-line="324" selection-end-column="25" />
           <folding>
             <element signature="e#31#60#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NodeScript/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="14" selection-start-column="14" selection-end-column="14" />
         </state>
       </provider>
     </entry>

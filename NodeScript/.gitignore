@@ -1,0 +1,7 @@
+./node_modules
+*.sql
+.env
+.env.backup
+.phpunit.result.cache
+npm-debug.log
+yarn-error.log
