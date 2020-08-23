@@ -12,6 +12,7 @@
             <div>
                 <el-button size="mini" @click="handleAutoLogin">自动登录</el-button>
                 <el-button size="mini" @click="handleQrCodeLogin">扫描登录</el-button>
+                <el-button size="mini" @click="handleJobLogin">Job 登录</el-button>
             </div>
             <el-button size="mini" slot="reference">未登录</el-button>
         </el-popover>
@@ -40,27 +41,49 @@
             };
         },
         methods: {
-            async handleAutoLogin() {
-                this.showLoading();
-                let res = await axios.get('/api/weibo/auth/loginClient', {
-                    params: {
-                        'account_id': this.item.id
-                    }
-                });
-
-                if (res.status === 200) {
+            async handleJobLogin() {
+                try {
+                    let res = await axios.get('/api/weibo/auth/jobLoginClient', {
+                        params: {
+                            'account_id': this.item.id
+                        }
+                    });
                     if (res.data.code === 0) {
-                        this.$set(this.item, 'login_status', 1);
-                        Swal("登录成功", '', 'success');
+                        Swal("登录成功,请稍后刷新页面", '', 'success');
                     } else {
-                        this.$set(this.item, 'login_status', 0);
                         Swal(res.data.msg, '', 'warning');
                     }
-                } else {
-                    this.$set(this.item, 'login_status', 0);
+
+                } catch (e) {
                     Swal("请联系管理员", '系统错误', 'error');
                 }
+            },
+            async handleAutoLogin() {
+                this.showLoading();
 
+                try {
+                    let res = await axios.get('/api/weibo/auth/loginClient', {
+                        params: {
+                            'account_id': this.item.id
+                        }
+                    });
+                    if (res.status === 200) {
+                        if (res.data.code === 0) {
+                            this.$set(this.item, 'login_status', 1);
+                            Swal("登录成功", '', 'success');
+                        } else {
+                            this.$set(this.item, 'login_status', 0);
+                            Swal(res.data.msg, '', 'warning');
+                        }
+                    } else {
+                        this.$set(this.item, 'login_status', 0);
+                        Swal("请联系管理员", '系统错误', 'error');
+                    }
+                } catch (e) {
+                    this.$set(this.item, 'login_status', 0);
+                    Swal("请联系管理员", '系统错误', 'error');
+                    throw e;
+                }
             },
             handleQrCodeLogin() {
                 this.$bus.$emit('qrcode-model-show', this.item);

@@ -113,9 +113,8 @@ $api->version('v1', [
             ->name('api.weiboAccounts.auth.cplDataList');
         $api->get('/auth/loginClient', 'WeiboAccountsController@loginClient')
             ->name('api.weiboAccounts.auth.loginClient');
-
-
-
+        $api->get('/auth/jobLoginClient', 'WeiboAccountsController@jobLoginClient')
+            ->name('api.weiboAccounts.auth.jobLoginClient');
 
 
         $api->get('/user/pause', "WeiboUserController@updatePause")

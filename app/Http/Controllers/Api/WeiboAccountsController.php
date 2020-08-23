@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Clients\WeiboClient;
+use App\Jobs\WeiboAccountClientLoginJob;
 use App\Models\WeiboAccounts;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
@@ -166,6 +167,23 @@ class WeiboAccountsController extends Controller
             'code' => 10006,
             'msg'  => '数据结果在意料之外',
             'data' => $data
+        ]);
+    }
+
+    public function jobLoginClient(Request $request)
+    {
+        $id = $request->get('account_id');
+        if (!WeiboAccounts::query()->where('id', $id)->exists())
+            return $this->response->array([
+                'code' => 1001,
+                'msg'  => '错误的账户Id'
+            ]);
+
+        WeiboAccountClientLoginJob::dispatch($id)->onQueue('pull_weibo_data');
+
+        return $this->response->array([
+            'code' => 0,
+            'msg'  => '登录成功'
         ]);
     }
 

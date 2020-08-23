@@ -105,11 +105,16 @@ class WeiboClient
         Storage::disk('public')->delete("weibo_cookie/{$id}-cookies.json");
     }
 
+    public function getCookieFilePath()
+    {
+        return Storage::disk('public')->path("weibo_cookie/{$this->accountId}-cookies.json");
+    }
+
     public function getIdCookie()
     {
         $id = $this->accountId;
         if ($id) {
-            return new FileCookieJar(Storage::disk('public')->path("weibo_cookie/{$id}-cookies.json"), true);
+            return new FileCookieJar($this->getCookieFilePath(), true);
         }
 
         return false;
@@ -311,6 +316,9 @@ class WeiboClient
         $response = $client->request('GET', 'https://weibo.com/');
         $ctx      = $response->getBody()->getContents();
 
+        Log::info('查看是否登录', [
+            'username' => $this->account->username,
+        ]);
         return !!preg_match('/\$CONFIG\[\'uid\'\]=\'\d+\'/', $ctx);
     }
 
