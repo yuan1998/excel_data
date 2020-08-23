@@ -42,7 +42,6 @@ class WeiboAccountClientLoginJob implements ShouldQueue
             $weiboClient->account->login_status = $loginStatus ? 1 : 0;
             $weiboClient->account->save();
         }
-        Log::info('Job 微博登录测试');
 
 
     }

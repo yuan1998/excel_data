@@ -12,7 +12,7 @@
             <div>
                 <el-button size="mini" @click="handleAutoLogin">自动登录</el-button>
                 <el-button size="mini" @click="handleQrCodeLogin">扫描登录</el-button>
-                <el-button size="mini" @click="handleJobLogin">Job 登录</el-button>
+<!--                <el-button size="mini" @click="handleJobLogin">Job 登录</el-button>-->
             </div>
             <el-button size="mini" slot="reference">未登录</el-button>
         </el-popover>

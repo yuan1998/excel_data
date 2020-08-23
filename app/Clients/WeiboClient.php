@@ -316,9 +316,6 @@ class WeiboClient
         $response = $client->request('GET', 'https://weibo.com/');
         $ctx      = $response->getBody()->getContents();
 
-        Log::info('查看是否登录', [
-            'username' => $this->account->username,
-        ]);
         return !!preg_match('/\$CONFIG\[\'uid\'\]=\'\d+\'/', $ctx);
     }
 
