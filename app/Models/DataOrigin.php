@@ -217,6 +217,13 @@ class DataOrigin extends Model
                 $propertyData['date'] = Date::excelToDateTimeObject($propertyData['date'])->format('Y-m-d');
             }
             $dateValue = $propertyData['date'];
+            try {
+                $carbonDate = Carbon::parse($dateValue);
+
+            }catch (\Exception $exception) {
+                $this->importFailLog['code_log'][] = "无法判断该条数据的时间格式: {$dateValue}";
+                continue;
+            }
             $codeValue = $propertyData['code'];
             $keyword   = 'keyword';
 
@@ -225,10 +232,6 @@ class DataOrigin extends Model
                 continue;
             }
 
-            if (!Helpers::isDate($dateValue)) {
-                $this->importFailLog['code_log'][] = "无法判断该条数据的时间格式: {$dateValue}";
-                continue;
-            }
 
             if (!$channel = $this->checkChannel($codeValue)) {
                 $this->importFailLog['code_log'][] = "无法判断该条数据的所属渠道: {$codeValue}";
@@ -256,7 +259,7 @@ class DataOrigin extends Model
             if ($this->data_type === 'spend_type') {
                 if (!$this->validateSpendRequiredField($propertyData, $codeValue)) continue;
 
-                if (!Helpers::validateFormat($dateValue, 'Y-m-d')) {
+                if (!($carbonDate->hour === 0 && $carbonDate->minute === 0)) {
                     $this->importFailLog['code_log'][] = "消费数据必须为每日消费: {$dateValue}";
                     continue;
                 }
