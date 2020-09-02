@@ -213,17 +213,20 @@ class DataOrigin extends Model
 
         foreach ($data as $raw) {
             $propertyData = $this->parserPropertyField($raw);
-            if (is_numeric($propertyData['date'])) {
-                $propertyData['date'] = Date::excelToDateTimeObject($propertyData['date'])->format('Y-m-d');
-            }
-            $dateValue = $propertyData['date'];
-            try {
-                $carbonDate = Carbon::parse($dateValue);
+            $dateValue    = $propertyData['date'];
 
-            }catch (\Exception $exception) {
-                $this->importFailLog['code_log'][] = "无法判断该条数据的时间格式: {$dateValue}";
-                continue;
+            try {
+                $carbonDate = Carbon::parse((string)$dateValue);
+            } catch (\Exception $exception) {
+                if (is_numeric($dateValue)) {
+                    $dateValue  = Date::excelToDateTimeObject($dateValue)->format('Y-m-d');
+                    $carbonDate = Carbon::parse($dateValue);
+                } else {
+                    $this->importFailLog['code_log'][] = "无法判断该条数据的时间格式: {$dateValue}";
+                    continue;
+                }
             }
+
             $codeValue = $propertyData['code'];
             $keyword   = 'keyword';
 
@@ -244,7 +247,7 @@ class DataOrigin extends Model
             }
 
 
-            $propertyData['date']            = Carbon::parse($propertyData['date'])->toDateString();
+            $propertyData['date']            = $carbonDate->toDateString();
             $propertyData['type']            = $departmentType->type;
             $propertyData['department_type'] = $departmentType;
             $propertyData['department_id']   = $departmentType->id;
