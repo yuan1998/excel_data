@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/horizon.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/horizon.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="17" column="42" lean-forward="true" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+            <state relative-caret-position="99">
+              <caret line="22" column="6" lean-forward="true" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -57,8 +58,30 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Shared/Date.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="89" column="27" selection-start-line="89" selection-start-column="22" selection-end-line="89" selection-end-column="27" />
+            <state relative-caret-position="358">
+              <caret line="91" lean-forward="true" selection-start-line="91" selection-end-line="91" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="386">
+              <caret line="212" column="54" selection-start-line="212" selection-start-column="54" selection-end-line="212" selection-end-column="54" />
+              <folding>
+                <element signature="e#31#47#0#PHP" expanded="true" />
+                <element signature="e#717#3929#0#PHP" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/horizon.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="150" column="39" lean-forward="true" selection-start-line="150" selection-start-column="39" selection-end-line="150" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -68,27 +91,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
               <caret line="109" selection-start-line="109" selection-end-line="109" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Helpers.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="1005" column="27" selection-start-line="1005" selection-start-column="27" selection-end-line="1005" selection-end-column="27" />
-              <folding>
-                <element signature="e#61#111#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/WeiboFormData.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="311" column="49" selection-start-line="311" selection-start-column="49" selection-end-line="311" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -121,7 +123,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>json_de</find>
       <find>isJ</find>
       <find>swal</find>
       <find>pullWeiboFormData</find>
@@ -150,6 +151,7 @@
       <find>navigator.appName</find>
       <find>res.item</find>
       <find>save</find>
+      <find>check_customer_phone</find>
       <find>excel</find>
     </findStrings>
     <dirStrings>
@@ -167,7 +169,6 @@
         <option value="$PROJECT_DIR$/app/Clients/SfClient.php" />
         <option value="$PROJECT_DIR$/app/Parsers/ParserBase.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/ExportDataLogController.php" />
-        <option value="$PROJECT_DIR$/config/horizon.php" />
         <option value="$PROJECT_DIR$/app/Parsers/ExcelFieldsCount.php" />
         <option value="$PROJECT_DIR$/app/Clients/ZxClient.php" />
         <option value="$PROJECT_DIR$/app/Helpers.php" />
@@ -181,7 +182,6 @@
         <option value="$PROJECT_DIR$/app/Models/FormData.php" />
         <option value="$PROJECT_DIR$/app/Observers/FormDataPhoneObserver.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_08_12_105727_change_weibo_account_table_add_login_status.php" />
-        <option value="$PROJECT_DIR$/app/Clients/BaseClient.php" />
         <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
         <option value="$PROJECT_DIR$/app/Console/Kernel.php" />
         <option value="$PROJECT_DIR$/app/Jobs/ClueDataCheck.php" />
@@ -213,6 +213,8 @@
         <option value="$PROJECT_DIR$/app/Imports/AutoImport.php" />
         <option value="$PROJECT_DIR$/app/Models/DataOrigin.php" />
         <option value="$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php" />
+        <option value="$PROJECT_DIR$/config/horizon.php" />
+        <option value="$PROJECT_DIR$/app/Clients/BaseClient.php" />
       </list>
     </option>
   </component>
@@ -498,12 +500,12 @@
       <workItem from="1595382200872" duration="113553000" />
       <workItem from="1597712492417" duration="11924000" />
       <workItem from="1598145422127" duration="12199000" />
-      <workItem from="1599012472418" duration="2422000" />
+      <workItem from="1599012472418" duration="3253000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1592850000" />
+    <option name="totallyTimeSpent" value="1593681000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1119" extended-state="0" />
@@ -525,7 +527,7 @@
       <window_info anchor="bottom" id="GraphQL" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="12" weight="0.34928718" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" visible="true" weight="0.34928718" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -712,17 +714,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/storage/logs/laravel-cli-root-vagrant-2020-05-14.log" />
-    <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="876" column="24" selection-start-line="876" selection-start-column="13" selection-end-line="876" selection-end-column="24" />
-          <folding>
-            <element signature="e#31#47#0#PHP" expanded="true" />
-            <element signature="e#717#3929#0#PHP" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonScript/weiboRSA_Test.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -793,13 +784,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/horizon.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="163" column="40" lean-forward="true" selection-start-line="163" selection-start-column="40" selection-end-line="163" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -910,13 +894,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Shared/Date.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="89" column="27" selection-start-line="89" selection-start-column="22" selection-end-line="89" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/DataOrigin.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1312">
@@ -941,10 +918,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config/horizon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="150" column="39" lean-forward="true" selection-start-line="150" selection-start-column="39" selection-end-line="150" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Shared/Date.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="91" lean-forward="true" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="17" column="42" lean-forward="true" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+        <state relative-caret-position="99">
+          <caret line="22" column="6" lean-forward="true" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="212" column="54" selection-start-line="212" selection-start-column="54" selection-end-line="212" selection-end-column="54" />
+          <folding>
+            <element signature="e#31#47#0#PHP" expanded="true" />
+            <element signature="e#717#3929#0#PHP" />
+          </folding>
         </state>
       </provider>
     </entry>
