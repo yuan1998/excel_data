@@ -11,6 +11,8 @@ class ZxClient extends BaseClient
     public static $companyApi = false;
     public static $mediaSourceType = '9295C7B6F93E4E51A9C09E1C2198CCB5';
 
+//    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/CareIndex';
+
     public static $account = [
         'username' => '7010',
         'password' => 'hm2020',

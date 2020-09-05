@@ -259,7 +259,6 @@ class ArrivingData extends Model
         if (!$client) return null;
         $type        = $client::$type;
         $data        = static::getArrivingDataOfDate($client, $start, $end, $count);
-        dd($data);
         $uuid        = static::arrivingDataGenerate($data, $type, $clientName);
         $deleteCount = static::removeNotInDateUUID($uuid, $clientName, [$start, $end]);
 

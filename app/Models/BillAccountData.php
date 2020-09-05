@@ -158,12 +158,16 @@ class BillAccountData extends Model
         });
     }
 
-    public static function getBillAccountDataOfDate($client, $start, $end, $count = 10000)
+    public static function getBillAccountDataOfDate($client, $start, $end, $count = 1000)
     {
         return $client::accountSearchData([
             'DatetimeCheckoutStart' => $start,
             'DatetimeCheckoutEnd'   => $end,
             'pageSize'              => $count,
+            'pageCurrent'           => '1',
+            "orderField"            => '',
+            "orderDirection"        => '',
+
         ]);
     }
 
@@ -240,7 +244,7 @@ class BillAccountData extends Model
         }
     }
 
-    public static function yesterdayBillAccountData($type , $queue = true)
+    public static function yesterdayBillAccountData($type, $queue = true)
     {
         $yesterday = Carbon::yesterday()->toDateString();
         if ($queue) {

@@ -7,12 +7,14 @@ use App\Models\ArchiveType;
 use App\Models\ArrivingData;
 use App\Models\FormDataPhone;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\FileCookieJar;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use PHPHtmlParser\Dom;
 use PHPHtmlParser\Exceptions\ChildNotFoundException;
 use PHPHtmlParser\Exceptions\CircularException;
@@ -37,7 +39,7 @@ class BaseClient
         "建档时间"    => 'archive_date',
         "到院时间"    => 'arriving_date',
         "最后回访时间"  => 'last_return_visit_date',
-        "媒介类型"    => 'medium_type',
+        "媒介类型"    => 'medium',
         "媒介来源"    => 'medium_source',
         "美容院类型"   => 'beauty_salon_type',
         "美容院名称"   => 'beauty_salon_name',
@@ -171,7 +173,7 @@ class BaseClient
     public static $to_hospital_company_index = '/Reservation/ToHospital/CompayIndex';
 
     // 网电咨询师业绩明细
-    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/CareIndex';
+    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/Index';
     // 网电咨询师业绩明细(公司)
     public static $net_bill_account_dtl_company_index = '/ReportCenter/NetBillAccountDtl/CompanyIndex';
 
@@ -194,6 +196,32 @@ class BaseClient
     public static $baseAccount;
 
 
+    public static function checkExistsCookieFile()
+    {
+        $name = static::$account['username'];
+        if ($name)
+            return Storage::disk('public')->exists("crm_cookie/{$name}-cookies.json");
+
+        return false;
+    }
+
+    public static function cookiePath()
+    {
+        $name = static::$account['username'];
+        return Storage::disk('public')->path("crm_cookie/{$name}-cookies.json");
+    }
+
+    public static function getAccountCookie()
+    {
+        $path = static::cookiePath();
+
+        if ($path) {
+            return new FileCookieJar($path, true);
+        }
+
+        return false;
+    }
+
     /**
      * 获取 Client
      * @return Client
@@ -201,14 +229,20 @@ class BaseClient
     public static function getClient()
     {
         if (!static::$client) {
-            return new Client([
+            $jar = static::getAccountCookie();
+
+            static::$client = new Client([
                 'base_uri' => static::$base_url,
-                'cookies'  => true,
+                'cookies'  => $jar,
                 'defaults' => [
                     'verify'      => false,
                     'http_errors' => false,
                 ],
                 'headers'  => [
+                    'Host' => '172.16.8.8',
+                    'Origin' => 'http://172.16.8.8',
+                    'Referer' => 'http://172.16.8.8/',
+                    'X-Requested-With' => 'XMLHttpRequest',
                     'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
                 ],
                 'curl'     => [
@@ -241,20 +275,40 @@ class BaseClient
 
     /**
      * 登录接口,获取新的Token
-     * @return array
+     * @return boolean
      */
     public static function login()
     {
         $account = static::$account;
 
         $client = static::getClient();
-        $result = $client->post(static::$login_url, [
+        $client->post(static::$login_url, [
             'form_params' => $account,
         ]);
 
-        $token = $result->getHeader('Set-Cookie');
-//        dd($token);
-        return Helpers::parseCookie($token);
+        return static::isLogin(false);
+    }
+
+    public static function isLogin($checkFile = true)
+    {
+        if ($checkFile && !static::checkExistsCookieFile())
+            return false;
+
+
+        $client = static::getClient();
+        $result = $client->get('/');
+
+        $response = $result->getBody()->getContents();
+
+        return !!preg_match('/注销登陆/', $response);
+    }
+
+    public static function authRequest()
+    {
+        if (!static::isLogin() && !static::login())
+            throw new \Exception("登录验证失败!");
+
+        return static::$client;
     }
 
 
@@ -542,9 +596,7 @@ class BaseClient
     public static function customerPreChargeData($id, $count = 80)
     {
         $dom = static::customerPreChargeApi($id, $count);
-//        dd($dom);
         $test = static::parserDomTableData($dom, 'table[data-nowrap]');
-//        dd($test);
         return $test;
     }
 
@@ -652,7 +704,6 @@ class BaseClient
         $api = static::$companyApi
             ? static::$net_bill_account_dtl_company_index
             : static::$account_search_url;
-
 
         return static::postUriGetDom($api, $data);
     }
@@ -810,19 +861,13 @@ class BaseClient
      */
     public static function postUriGetDom($uri, $data, $toDom = true)
     {
-        $cookies = static::getToken();
-        $client  = static::getClient();
-
-        $jar = CookieJar::fromArray($cookies, static::$domain);
+        $client = static::authRequest();
 
         $result = $client->request('POST', $uri, [
             'form_params' => $data,
-            'cookies'     => $jar,
-            'timeout'     => 0,
         ]);
 
         $body = $result->getBody()->getContents();
-        dd($body);
 
         if ($toDom) {
             $dom = new Dom;

@@ -202,12 +202,16 @@ class TempCustomerData extends Model
         }
     }
 
-    public static function yesterday($type)
+    public static function yesterday($type,$queue =true)
     {
 
         $date = Carbon::yesterday()->toDateString();
 
-        return CrmGrabLog::generate($type, 'tempCustomerData', $date, $date);
+        if ($queue) {
+            return CrmGrabLog::generate($type, 'tempCustomerData', $date, $date);
+        } else {
+            return static::getDataOfDate($type, $date, $date);
+        }
     }
 
 

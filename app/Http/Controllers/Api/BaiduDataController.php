@@ -143,10 +143,10 @@ class BaiduDataController extends Controller
 
     public function testPhone()
     {
-        $model = FormDataPhone::find(3531);
+        $model = FormDataPhone::find(4875);
         Helpers::checkIntentionAndArchive($model);
 
-//        $result = ZxClient::tempCustomerInfoCheckData("17791229833");
+
         dd($model->toArray());
     }
 
@@ -158,13 +158,12 @@ class BaiduDataController extends Controller
 
     public function testArrivingData()
     {
-        BillAccountData::yesterdayBillAccountData('zx' , false);
-
+        TempCustomerData::yesterday('zx', false);
     }
 
     public function test(Request $request)
     {
-        $this->testArrivingData();
+        $this->testPhone();
 
         return $this->response->noContent();
     }

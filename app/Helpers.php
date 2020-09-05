@@ -269,7 +269,7 @@ class Helpers
 
                 $field = $_keys ? (isset($_keys[$name]) ? $_keys[$name] : $name) : $name;
 
-                $field && $arr[$field] = strip_tags($valueText);
+                $field && $arr[$field] = trim(strip_tags($valueText));
             }
             array_push($result, $arr);
         }
