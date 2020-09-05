@@ -209,9 +209,6 @@ class BaseClient
                     'http_errors' => false,
                 ],
                 'headers'  => [
-                    'CLIENT-IP'       => '172.16.21.16',
-                    'X-FORWARDED-FOR' => '172.16.21.16',
-                    'User-Agent'      => 'Chrome/67.0.3865.90 Safari/507.36'
                 ],
                 'curl'     => [
                     CURLOPT_REFERER => static::$base_url,
