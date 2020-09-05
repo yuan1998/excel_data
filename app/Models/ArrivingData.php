@@ -161,11 +161,6 @@ class ArrivingData extends Model
         return $this->belongsTo(MediumType::class, 'medium_id', 'id');
     }
 
-    public function customerPhone()
-    {
-        return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
-    }
-
     public function onlineArchiveBy()
     {
         return $this->belongsTo(Consultant::class, 'online_archive_by_id', 'id');
@@ -199,18 +194,6 @@ class ArrivingData extends Model
                 $item->update($arr);
             });
         return $data->count();
-    }
-
-    public static function recheckCustomerPhone()
-    {
-        return static::query()
-            ->doesntHave('customerPhone')
-            ->get()->each(function ($data) {
-                CustomerPhone::firstOrCreate([
-                    'customer_id' => $data->customer_id,
-                    'type'        => $data->type,
-                ]);
-            })->count();
     }
 
 
@@ -266,11 +249,6 @@ class ArrivingData extends Model
                     'uuid' => $item['uuid'],
                 ], $item);
 
-                CustomerPhone::firstOrCreate([
-                    'customer_id' => $item['customer_id'],
-                    'type'        => $type,
-                    'client'      => $clientName
-                ]);
             });
         return $uuid;
     }
@@ -281,6 +259,7 @@ class ArrivingData extends Model
         if (!$client) return null;
         $type        = $client::$type;
         $data        = static::getArrivingDataOfDate($client, $start, $end, $count);
+        dd($data);
         $uuid        = static::arrivingDataGenerate($data, $type, $clientName);
         $deleteCount = static::removeNotInDateUUID($uuid, $clientName, [$start, $end]);
 

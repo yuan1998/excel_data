@@ -34,7 +34,7 @@ class ArrivingDataController extends AdminController
     {
         $grid = new Grid(new ArrivingData);
 
-        $grid->model()->with(['customerPhone', 'projects'])->orderBy('reception_date', 'desc');
+        $grid->model()->with(['projects'])->orderBy('reception_date', 'desc');
         $grid->disableCreateButton();
 
         $grid->filter(function (Grid\Filter $filter) {

@@ -35,69 +35,46 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // 拉取 CRM消费数据
-        $schedule->call(function () {
-            BillAccountData::todayBillAccountData('zx');
-        })->dailyAt('22:00');
-        $schedule->call(function () {
-            BillAccountData::todayBillAccountData('kq');
-        })->dailyAt('22:20');
-
-        // 拉取 CRM到院数据
-        $schedule->call(function () {
-            ArrivingData::getToday('zx');
-        })->dailyAt('22:40');
-        $schedule->call(function () {
-            ArrivingData::getToday('kq');
-        })->dailyAt('22:50');
-
-        // 拉取今天的 CRM临客数据
-        $schedule->call(function () {
-            TempCustomerData::getToday('zx');
-        })->dailyAt('22:40');
-        $schedule->call(function () {
-            TempCustomerData::getToday('kq');
-        })->dailyAt('22:50');
 
         // 拉取昨天的 CRM临客数据
         $schedule->call(function () {
             TempCustomerData::yesterday('zx');
-        })->dailyAt('22:40');
+        })->dailyAt('03:03');
         $schedule->call(function () {
             TempCustomerData::yesterday('kq');
-        })->dailyAt('22:50');
+        })->dailyAt('03:03');
 
         // 拉取昨天的 CRM消费数据
         $schedule->call(function () {
             BillAccountData::yesterdayBillAccountData('zx');
-        })->dailyAt('23:00');
+        })->dailyAt('03:01');
         $schedule->call(function () {
             BillAccountData::yesterdayBillAccountData('kq');
-        })->dailyAt('23:20');
+        })->dailyAt('03:01');
 
         // 拉取昨天的 CRM到院数据
         $schedule->call(function () {
             ArrivingData::getYesterday('zx');
-        })->dailyAt('23:00');
+        })->dailyAt('03:02');
         $schedule->call(function () {
             ArrivingData::getYesterday('kq');
-        })->dailyAt('23:20');
+        })->dailyAt('03:02');
 
         // 在每个月最后一天,重新拉取整个月的 到院数据
         $schedule->call(function () {
             ArrivingData::getCurrentMonth('zx');
-        })->monthlyOn(date('t'), '23:30');
+        })->monthlyOn(date('t'), '03:04');
         $schedule->call(function () {
             ArrivingData::getCurrentMonth('kq');
-        })->monthlyOn(date('t'), '23:35');
+        })->monthlyOn(date('t'), '03:04');
 
         // 在每个月最后一天,重新拉取整个月的 消费数据
         $schedule->call(function () {
             BillAccountData::monthBillAccountData('zx');
-        })->monthlyOn(date('t'), '23:40');
+        })->monthlyOn(date('t'), '03:05');
         $schedule->call(function () {
             BillAccountData::monthBillAccountData('kq');
-        })->monthlyOn(date('t'), '23:45');
+        })->monthlyOn(date('t'), '03:05');
 
 
         // 当天

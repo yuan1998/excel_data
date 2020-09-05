@@ -116,7 +116,6 @@ class BaiduDataController extends Controller
         $client->makeExcel();
     }
 
-
     public function testBaseExcel()
     {
         $data = [
@@ -157,27 +156,15 @@ class BaiduDataController extends Controller
         dd($ip);
     }
 
+    public function testArrivingData()
+    {
+        BillAccountData::yesterdayBillAccountData('zx' , false);
+
+    }
+
     public function test(Request $request)
     {
-        $this->testIP();
-//        $this->testSanfang();
-//        $this->testBaseExcel();
-//        $this->testPhone();
-//        $type = 'kq';
-//        dd($type);
-//        return TempCustomerData::getDataOfDate($type, '2020-06-27', '2020-06-27');
-
-//        $file = $request->file('excel');
-//        Helpers::checkUTF8($file);
-
-
-//        dd($data->toArray(), $mediumId, $dates);
-
-
-//        $date1  = "2019-12-1 00:00:00";
-//        $date2  = "2019-12-2 00:00:00";
-//        $result = YiliaoClient::getYiliaoData($date1, $date2);
-//        dd($import);
+        $this->testArrivingData();
 
         return $this->response->noContent();
     }

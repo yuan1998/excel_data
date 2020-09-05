@@ -123,11 +123,6 @@ class BillAccountData extends Model
         return $this->belongsTo(ArchiveType::class, 'archive_id', 'id');
     }
 
-    public function customerPhone()
-    {
-        return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
-    }
-
 
     public static function fixArchiveBy()
     {
@@ -153,18 +148,6 @@ class BillAccountData extends Model
         return $data->count();
     }
 
-    public static function recheckCustomerPhone()
-    {
-        return static::query()
-            ->doesntHave('customerPhone')
-            ->get()->each(function ($data) {
-                CustomerPhone::firstOrCreate([
-                    'customer_id' => $data->customer_id,
-                    'type'        => $data->type,
-                    'client'      => $data->client ?? $data->type,
-                ]);
-            })->count();
-    }
 
     public static function recheckProjects()
     {
@@ -218,11 +201,6 @@ class BillAccountData extends Model
             static::updateOrCreate([
                 'uuid' => $item['uuid'],
             ], $item);
-            CustomerPhone::firstOrCreate([
-                'customer_id' => $item['customer_id'],
-                'type'        => $type,
-                'client'      => $clientName,
-            ]);
         });
         return $uuid;
     }
@@ -262,10 +240,14 @@ class BillAccountData extends Model
         }
     }
 
-    public static function yesterdayBillAccountData($type)
+    public static function yesterdayBillAccountData($type , $queue = true)
     {
         $yesterday = Carbon::yesterday()->toDateString();
-        return CrmGrabLog::generate($type, 'billAccountData', $yesterday, $yesterday);
+        if ($queue) {
+            return CrmGrabLog::generate($type, 'billAccountData', $yesterday, $yesterday);
+        } else {
+            return static::getDataOfDate($type, $yesterday, $yesterday);
+        }
     }
 
     public static function monthBillAccountData($type)

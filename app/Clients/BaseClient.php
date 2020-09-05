@@ -5,7 +5,6 @@ namespace App\Clients;
 use App\Helpers;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
-use App\Models\CustomerPhone;
 use App\Models\FormDataPhone;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
@@ -148,7 +147,7 @@ class BaseClient
     public static $customer_info_check_url = '/Reservation/TempCustInfo/Index';
 
     // 预约单查询
-    public static $reservation_search_url = '/Reservation/ReservationSearch/Index';
+    public static $reservation_search_url = '/ReportCenter/NetBillAccountDtl/CareIndex';
     // 预约单查询 (公司)
     public static $reservation_search_company_index = '/Reservation/ReservationSearch/CompayIndex';
 
@@ -172,11 +171,12 @@ class BaseClient
     public static $to_hospital_company_index = '/Reservation/ToHospital/CompayIndex';
 
     // 网电咨询师业绩明细
-    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/Index';
+    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/CareIndex';
     // 网电咨询师业绩明细(公司)
     public static $net_bill_account_dtl_company_index = '/ReportCenter/NetBillAccountDtl/CompanyIndex';
 
-    public static $customer_phone_check_url = '/CommonArea/CustInfo/ShowPhoneAndLog';
+    public static $net_bill_account_dtl_care_index = '/ReportCenter/NetBillAccountDtl/CareIndex';
+
     public static $customer_info_create_url = '/Reservation/TempCustInfo/Create';
 
     public static $temp_search_result_selector = 'table[data-toggle]';
@@ -209,6 +209,7 @@ class BaseClient
                     'http_errors' => false,
                 ],
                 'headers'  => [
+                    'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
                 ],
                 'curl'     => [
                     CURLOPT_REFERER => static::$base_url,
@@ -280,54 +281,6 @@ class BaseClient
         }
 
 
-    }
-
-    /**
-     * 查询客户电话APi, 根据ID查询客户电话
-     * @param $id
-     * @param $type
-     * @return string|null
-     * @throws ChildNotFoundException
-     * @throws CircularException
-     * @throws CurlException
-     * @throws GuzzleException
-     * @throws StrictException
-     */
-    public static function customerPhoneApi($id, $type)
-    {
-        $data = [
-            'id'   => $id,
-            'type' => $type
-        ];
-        $json = static::postUriGetDom(static::$customer_phone_check_url, $data, false);
-        preg_match("/\{\"Phone\"\:\"(.*?)\"\}/", $json, $match);
-
-        return isset($match[1]) ? $match[1] : null;
-    }
-
-    /**
-     * 根据 客户ID 查询对应的电话号码
-     * @param        $id
-     * @param string $type
-     * @return CustomerPhone|null
-     * @throws ChildNotFoundException
-     * @throws CircularException
-     * @throws CurlException
-     * @throws GuzzleException
-     * @throws StrictException
-     */
-    public static function customerPhoneCreate($id, $type = 'cust_info')
-    {
-        $phone = static::customerPhoneApi($id, $type);
-        if ($phone) {
-            return CustomerPhone::updateOrCreate([
-                'customer_id'   => $id,
-                'customer_type' => $type,
-            ], [
-                'phone' => $phone
-            ]);
-        }
-        return null;
     }
 
     /**
@@ -570,22 +523,10 @@ class BaseClient
             'id' => $id,
         ];
 
-        $dom = static::postUriGetDom($url, $data);
+        $response = static::postUriGetDom($url, $data, false);
+        preg_match_all('/1[3456789]\d{9}/', $response, $matches);
 
-        $btns  = $dom->find('#ShowPhoneButton');
-        $check = [];
-        foreach ($btns as $btn) {
-            preg_match("/ShowPhone\((.*),/", $btn->outerHTML, $match);
-            if ($match) {
-                $str    = $match[1];
-                $strArr = explode(',', $str);
-                array_push($check, [
-                    'id'   => preg_replace("/\ |\'/", '', $strArr[0]),
-                    'type' => preg_replace("/\ |\'/", '', $strArr[1]),
-                ]);
-            }
-        }
-        return $check;
+        return collect($matches)->unique();
     }
 
     public static function customerPreChargeApi($id, $count)
@@ -708,7 +649,11 @@ class BaseClient
         }
 
 
-        $api = static::$companyApi ? static::$net_bill_account_dtl_company_index : static::$account_search_url;
+        $api = static::$companyApi
+            ? static::$net_bill_account_dtl_company_index
+            : static::$account_search_url;
+
+
         return static::postUriGetDom($api, $data);
     }
 
@@ -877,6 +822,7 @@ class BaseClient
         ]);
 
         $body = $result->getBody()->getContents();
+        dd($body);
 
         if ($toDom) {
             $dom = new Dom;

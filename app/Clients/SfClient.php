@@ -64,7 +64,6 @@ class SfClient extends BaseClient
 //        $ids = $this->getMediumIds();
 
         return ArrivingData::query()
-            ->with(['customerPhone'])
             ->where('medium', 'like', '%三方转诊%')
             ->where('type', 'zx')
             ->whereDate('reception_date', $date)
@@ -82,7 +81,6 @@ class SfClient extends BaseClient
     public function getBillAccountData($date)
     {
         return BillAccountData::query()
-            ->with(['customerPhone'])
             ->where('medium', 'like', '%三方转诊%')
             ->where('type', 'zx')
             ->whereDate('pay_date', $date)
@@ -120,9 +118,39 @@ class SfClient extends BaseClient
     public function getAccountSearchData($start, $end)
     {
         $data = [
-            'DatetimeCheckoutStart' => $start,
-            'DatetimeCheckoutEnd'   => $end,
-            'pageSize'              => 1000,
+            'DatetimeCheckoutStart'    => $start,
+            'DatetimeCheckoutEnd'      => $end,
+            "TypeId1"                  => '',
+            "TypeId2"                  => '',
+            "TypeId3"                  => '',
+            "ProductName"              => '',
+            "ProductSuitName"          => '',
+            "TmpCustRegType"           => '',
+            "TmpCustRegTypeMenus"      => '',
+            "MediaSourceType"          => '',
+            "MediaSource"              => '',
+            "ChargeTypes"              => '',
+            "DatetimeRegStart"         => '',
+            "DatetimeRegEnd"           => '',
+            "MinDatetimeCheckoutStart" => '',
+            "MinDatetimeCheckoutEnd"   => '',
+            "CustName"                 => '',
+            "Phone"                    => '',
+            "CustCardNo"               => '',
+            "IsHospSecond"             => '',
+            "CustStatus"               => '',
+            "SalesConsultantId"        => '',
+            "CreatedBy"                => '',
+            "PlanRecallEmpname"        => '',
+            "ChargeNo"                 => '',
+            "RealPaymentStart"         => '',
+            "RealPaymentEnd"           => '',
+            "GuestId"                  => '',
+            "pageSize"                 => '500',
+            "pageCurrent"              => '1',
+            "orderField"               => '',
+            "orderDirection"           => '',
+            "total"                    => '',
         ];
         return static::accountSearchData($data);
     }
@@ -262,11 +290,8 @@ class SfClient extends BaseClient
     {
         $id = $item['customer_id'];
 
-        if ($item['customer_phone'] && isset($item['customer_phone']['phone'])) {
-            $phone = explode(',', $item['customer_phone']['phone']);
-        } else {
-            $phone = $this->checkPhone($id);
-        }
+        $phone = $this->checkPhone($id);
+
         $info = $this->custInfo($id);
 
         return [
@@ -300,13 +325,9 @@ class SfClient extends BaseClient
 
     public static function checkPhone($customer_id)
     {
-        $phoneList   = static::baseCustomerInfoApi($customer_id, static::$cust_info_cust_infos_url);
-        $phoneResult = [];
-        foreach ($phoneList as $phone) {
-            $phoneResult[] = static::customerPhoneApi($phone['id'], $phone['type']);
-        }
+        $phoneList = static::baseCustomerInfoApi($customer_id, static::$cust_info_cust_infos_url);
 
-        return $phoneResult;
+        return $phoneList;
     }
 
     public static function payInfo($id, $day, $a = true)

@@ -160,12 +160,6 @@ class TempCustomerData extends Model
             static::updateOrCreate([
                 'uuid' => $item['uuid'],
             ], $item);
-            CustomerPhone::firstOrCreate([
-                'customer_id'   => $item['customer_id'],
-                'type'          => $type,
-                'customer_type' => 'temp_cust_info_cross',
-                'client'        => $clientName,
-            ]);
         });
 
         return $uuid;
