@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers;
 use App\Jobs\ClueDataCheck;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -48,6 +49,7 @@ class FormDataPhone extends Model
         'archive_type',
         'intention',
         'form_data_id',
+        'medium_error',
     ];
 
     /**
@@ -86,7 +88,7 @@ class FormDataPhone extends Model
 
         if ($form && $form['data_snap']) {
             $data = json_decode($form['data_snap']);
-            return Arr::exists($data , 'visitor_id') || Arr::exists($data , '访客ID');
+            return Arr::exists($data, 'visitor_id') || Arr::exists($data, '访客ID');
         }
 
         return false;
@@ -158,8 +160,38 @@ class FormDataPhone extends Model
             if ($item['is_archive'] == 1 && $item['intention'] > 1) {
                 $result .= '_' . static::$IntentionList[$item['intention']];
             }
+
+            if ($item['medium_error'] === 1) {
+                $result .= "_" . "媒介不一致";
+            }
+
         }
         return $result;
+    }
+
+    public function checkCrmInfo()
+    {
+        Helpers::checkIntentionAndArchive($this, $this->isBaidu);
+    }
+
+    public function checkMediumIsError($mediumName)
+    {
+        $formData = $this->formData;
+        if ($formData) {
+            $mediumId = Helpers::getMediumTypeId($mediumName);
+
+            $channelId = Channel::query()
+                ->select(['id'])
+                ->whereHas('mediums', function ($query) use ($mediumId) {
+                    $query->where('id', $mediumId);
+                })
+                ->get()
+                ->pluck('id');
+            return $channelId->contains($formData->channel_id) ? 2 : 1;
+        }
+
+        return 1;
+
     }
 
 

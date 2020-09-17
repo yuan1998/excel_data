@@ -239,11 +239,11 @@ class BaseClient
                     'http_errors' => false,
                 ],
                 'headers'  => [
-                    'Host' => '172.16.8.8',
-                    'Origin' => 'http://172.16.8.8',
-                    'Referer' => 'http://172.16.8.8/',
+                    'Host'             => '172.16.8.8',
+                    'Origin'           => 'http://172.16.8.8',
+                    'Referer'          => 'http://172.16.8.8/',
                     'X-Requested-With' => 'XMLHttpRequest',
-                    'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
+                    'User-Agent'       => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
                 ],
                 'curl'     => [
                     CURLOPT_REFERER => static::$base_url,
@@ -411,6 +411,7 @@ class BaseClient
         })->first();
 
         if (!$item) return [];
+
         return [
             'is_archive'     => 1,
             'has_visitor_id' => !!$item['qq'],
@@ -418,6 +419,7 @@ class BaseClient
             'archive_type'   => $item['archive_type'],
             'is_repeat'      => Helpers::checkIsRepeat($model->date, $item['archive_date']),
             'turn_weixin'    => Helpers::checkTurnWeixin($item['comment']),
+            'medium_error'   => $model->checkMediumIsError($item['medium']),
         ];
     }
 
@@ -514,9 +516,10 @@ class BaseClient
             $res['archive_type'] = $item['archive_type'];
             $res['intention']    = $intention;
             if ($intention > 1) {
-                $res['is_archive']  = 1;
-                $res['is_repeat']   = Helpers::checkIsRepeat($model->date, $item['archive_date']);
-                $res['turn_weixin'] = Helpers::checkTurnWeixin($item['visitor_remarks']);
+                $res['is_archive']   = 1;
+                $res['is_repeat']    = Helpers::checkIsRepeat($model->date, $item['archive_date']);
+                $res['turn_weixin']  = Helpers::checkTurnWeixin($item['visitor_remarks']);
+                $res['medium_error'] = $model->checkMediumIsError($item['medium']);
             }
         }
         return $res;
@@ -595,7 +598,7 @@ class BaseClient
 
     public static function customerPreChargeData($id, $count = 80)
     {
-        $dom = static::customerPreChargeApi($id, $count);
+        $dom  = static::customerPreChargeApi($id, $count);
         $test = static::parserDomTableData($dom, 'table[data-nowrap]');
         return $test;
     }
@@ -825,10 +828,12 @@ class BaseClient
             'is_archive' => 2,
         ];
 
+
         return [
-            'is_archive' => 1,
-            'intention'  => Helpers::intentionCheck($item['intention']),
-            'is_repeat'  => 2,
+            'is_archive'   => 1,
+            'intention'    => Helpers::intentionCheck($item['intention']),
+            'is_repeat'    => 2,
+            'medium_error' => $model->checkMediumIsError($item['medium']),
         ];
     }
 

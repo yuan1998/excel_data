@@ -143,10 +143,8 @@ class BaiduDataController extends Controller
 
     public function testPhone()
     {
-        $model = FormDataPhone::find(4875);
-        Helpers::checkIntentionAndArchive($model);
-
-
+        $model = FormDataPhone::find(54);
+        $model->checkCrmInfo();
         dd($model->toArray());
     }
 

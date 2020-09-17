@@ -94,6 +94,18 @@ class FormDataController extends AdminController
                                     ->where('is_archive', 1);
                             });
                             break;
+                        case 5:
+                            $query->whereHas('phones', function ($query) {
+                                $query->where('is_repeat', '<>', 2)
+                                    ->where('medium_error', 1);
+                            });
+                            break;
+                        case 6:
+                            $query->whereHas('phones', function ($query) {
+                                $query->where('is_repeat', '<>', 2)
+                                    ->where('medium_error', 0);
+                            });
+                            break;
                     }
                 }, '建档状态')->select([
                     0 => '未查询',
@@ -101,6 +113,8 @@ class FormDataController extends AdminController
                     2 => '未建档',
                     3 => '重复建档',
                     4 => '未下单',
+                    5 => '媒介不一致',
+                    6 => '媒介未查询',
                 ]);
 
                 $filter->between('date', '日期')->date();
