@@ -32,6 +32,11 @@ class WeiboAccounts extends Model
         'lingdong' => 'mapLingDongFormListToGet',
     ];
 
+    public static $FormTypeName = [
+        'cpl'      => 'CPL表单数据',
+        'lingdong' => '灵动表单数据',
+    ];
+
     public static $_CPL_NAME_ = 'cpl';
     public static $_LINGDONG_NAME_ = 'lingdong';
 
@@ -101,16 +106,16 @@ class WeiboAccounts extends Model
 
         $method = Arr::get(static::$formListMethodName, $type, null);
         if (!$method) return false;
+        if ($type === WeiboAccounts::$_LINGDONG_NAME_) {
+            $count = 50;
+        }
 
         $result = $weiboClient->{$method}($this->customer_id, $start, $end, $count, $page);
         if (!$result) return false;
 
         $list = $result['list'];
 
-//        if ($type === WeiboAccounts::$_CPL_NAME_) {
-//
-//            dd($type, $list);
-//        }
+
         WeiboFormData::generateWeiboFormData($this->type, $list, $this);
 
         $total = $result['total'];

@@ -28,19 +28,33 @@ class WeiboFormDataController extends Controller
                 'msg'    => '错误,账户不存在',
             ]);
 
-        $result = $account->pullAccountFormData($dates[0], $dates[1]);
+        $startDate = $dates[0];
+        $endDate   = $dates[1];
+        $result    = [];
+        if ($account->enable_cpl)
+            $result[WeiboAccounts::$_CPL_NAME_] = $account->pullFormDataOfType(WeiboAccounts::$_CPL_NAME_, $startDate, $endDate);
+        if ($account->enable_lingdong)
+            $result[WeiboAccounts::$_LINGDONG_NAME_] = $account->pullFormDataOfType(WeiboAccounts::$_LINGDONG_NAME_, $startDate, $endDate);
 
-        if ($result === false) {
+
+        if (count($result) === 0) {
             return $this->response->array([
                 'status' => 0,
-                'msg'    => '错误,数据获取失败,请呼叫先关人员',
-            ]);
-        } else {
-            return $this->response->array([
-                'status' => 1,
-                'msg'    => '获取数据成功,一共获取了' . $result . '条数据.',
+                'msg'    => '请打开需要抓取的数据开关.',
             ]);
         }
+
+        $resultStr = collect($result)->map(function ($value, $key) {
+            $name  = WeiboAccounts::$FormTypeName[$key];
+            $value = $value === false ? '拉取错误' : '一个拉取了' . $value . '条数据';
+            return "{$name} : $value";
+        })->join('<br>');
+
+        return $this->response->array([
+            'status' => 1,
+            'msg'    => '获取数据成功.<br>' . $resultStr,
+        ]);
+
 
     }
 
