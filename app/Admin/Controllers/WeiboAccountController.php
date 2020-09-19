@@ -116,6 +116,8 @@ class WeiboAccountController extends AdminController
         $form->password('password', "账户密码")->required();
         $form->text('customer_id', "客户ID")->required();
         $form->switch('all_day', "全天抓取");
+        $form->switch('enable_cpl', "CPL表单抓取");
+        $form->switch('enable_lingdong', "灵动表单抓取");
         $form->timeRange('begin_time', 'end_time', "抓取时段")
             ->default(['start' => '09:00:00', 'end' => '22:00:00']);
 

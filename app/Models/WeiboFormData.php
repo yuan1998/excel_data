@@ -41,6 +41,7 @@ class WeiboFormData extends Model
         'upload_date',
         'recall_date',
         'code',
+        'form_type',
     ];
 
     /**
@@ -114,7 +115,8 @@ class WeiboFormData extends Model
     }
 
 
-    public static function fixChannelId($id) {
+    public static function fixChannelId($id)
+    {
         static::query()->update(['channel_id' => $id]);
     }
 
@@ -284,11 +286,9 @@ class WeiboFormData extends Model
      * @param $item
      * @return array
      */
-    public static function apiDataParse($item)
+    public static function parseCPLListData($item)
     {
         return [
-            'model_id'       => $item['id'],
-            'model_type'     => static::class,
             'project_id'     => $item['pageId'],
             'project_name'   => $item['pageName'],
             'post_date'      => Carbon::parse($item['timeAdd'])->toDateString(),
@@ -296,7 +296,22 @@ class WeiboFormData extends Model
             'name'           => $item['userName'],
             'phone'          => $item['userPhone'],
             'comment'        => $item['desc'],
+            'form_type'      => WeiboAccounts::$_CPL_NAME_,
         ];
+    }
+
+    public static function parseLingDongListData($item)
+    {
+        return [
+            'phone'          => $item['mobile'],
+            'name'           => $item['name'],
+            'project_name'   => $item['uuid_name'] . '_' . $item['fuuid_name'],
+            'real_post_date' => $item['submit_time'],
+            'post_date'      => Carbon::parse($item['submit_time'])->toDateString(),
+            'comment'        => $item['remark'],
+            'form_type'      => WeiboAccounts::$_LINGDONG_NAME_,
+        ];
+
     }
 
     /**
@@ -312,21 +327,20 @@ class WeiboFormData extends Model
         $now = Carbon::now()->toDateTimeString();
         foreach ($data as $item) {
             // 获取转换基础数据
-            $parserItem                = static::apiDataParse($item);
-            $parserItem['upload_date'] = $now;
-            $parserItem['channel_id']  = $account['channel_id'];
+            $item['upload_date'] = $now;
+            $item['channel_id']  = $account['channel_id'];
 
             //使用 phone 和 post_date 判断是否需要创建新的数据
             $model = WeiboFormData::firstOrCreate([
-                'phone'     => $parserItem['phone'],
-                'post_date' => $parserItem['post_date'],
+                'phone'     => $item['phone'],
+                'post_date' => $item['post_date'],
                 'type'      => $type,
-            ], $parserItem);
+            ], $item);
 
             // 如果源数据中 回访记录 为空,但更新数据中存在,则写入 回访记录
-            if (!$model->comment && $parserItem['comment']) {
+            if (!$model->comment && $item['comment']) {
                 WeiboFormData::find($model->id)->update([
-                    'comment' => $parserItem['comment'],
+                    'comment' => $item['comment'],
                 ]);
             }
         }

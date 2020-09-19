@@ -52,7 +52,7 @@ class PullWeiboFormData implements ShouldQueue
             return;
         }
 
-        Log::info("拉取微博账户表单 : 开始拉取数据", [$this->accountId]);
-        $account->pullAccountFormData($this->startDate, $this->endDate, $this->count);
+        if ($account->enable_cpl) $account->pullFormDataOfType(WeiboAccounts::$_CPL_NAME_, $this->startDate, $this->endDate, $this->count);
+        if ($account->enable_lingdong) $account->pullFormDataOfType(WeiboAccounts::$_LINGDONG_NAME_, $this->startDate, $this->endDate, $this->count);
     }
 }

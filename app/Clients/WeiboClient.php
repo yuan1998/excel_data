@@ -3,6 +3,8 @@
 namespace App\Clients;
 
 use App\Models\WeiboAccounts;
+use App\Models\WeiboFormData;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\FileCookieJar;
 use Illuminate\Support\Facades\Log;
@@ -130,7 +132,7 @@ class WeiboClient
                 'verify'      => false,
                 'http_errors' => false,
                 'headers'     => [
-                    'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+                    'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36'
                 ],
             ]);
         }
@@ -208,13 +210,16 @@ class WeiboClient
             'callback' => 'sinaSSOController.preloginCallBack',
             'su'       => $su,
             'rsakt'    => 'mod',
-            'client'   => 'ssologin.js(v1.4.15)',
+            'client'   => 'ssologin.js(v1.4.19)',
             '_'        => time() * 1000,
         ];
         $client = static::getClient();
 
         $response = $client->request('GET', 'https://login.sina.com.cn/sso/prelogin.php', [
-            'query' => $data,
+            'query'   => $data,
+            'headers' => [
+                'Referer' => 'https://login.sina.com.cn/signup/signin.php',
+            ]
         ]);
         $body     = $response->getBody()->getContents();
         preg_match("/({.*})/", $body, $matches);
@@ -244,7 +249,6 @@ class WeiboClient
         ];
 
         $RSAPassword = static::RSAWeiboPassword(json_encode($json));
-//        dd($RSAPassword);
 
         $params = [
             "entry"       => 'account',
@@ -342,9 +346,59 @@ class WeiboClient
         $body   = $res->getBody()->getContents();
         $data   = json_decode($body, true);
 
+        if ($data && isset($data['code']) && $data['code'] === 10000) {
+            $dataResult = $data['result'];
+            $list       = collect($dataResult['data'])->map(function ($item) {
+                return WeiboFormData::parseCPLListData($item);
+            });
+            return [
+                'code'  => 0,
+                'list'  => $list,
+                'total' => (int)$dataResult['total'],
+            ];
+        }
+        return false;
+    }
 
-        return (json_last_error() == JSON_ERROR_NONE && $data && isset($data['code']))
-            ? $data
-            : false;
+    public function mapLingDongFormListToGet($customerId, $start, $end, $count = 1000, $page = 1)
+    {
+        $params = [
+            "source"      => 0,
+            "mark_status" => 0,
+            "page"        => $page,
+            "page_size"   => 50,
+            "start_date"  => Carbon::parse($start)->toDateString(),
+            "end_date"    => Carbon::parse($end)->toDateString(),
+            "customer_id" => $customerId,
+            '_t'          => (time() * 1000000),
+        ];
+
+
+        $url = "https://lingdong.biz.weibo.com/form-data/list";
+
+        $client = $this->getClient();
+        $res    = $client->request('GET', $url, [
+            'query'   => $params,
+            'timeout' => 0,
+            'headers' => [
+                'Referer' => 'https://lingdong.biz.weibo.com/',
+            ]
+        ]);
+        $body   = $res->getBody()->getContents();
+        $data = json_decode($body, true);
+
+        if ($data && isset($data['code']) && $data['code'] === 0) {
+            $result = $data['data'];
+            $list   = collect($result['list'])->map(function ($item) {
+                return WeiboFormData::parseLingDongListData($item);
+            });
+            return [
+                'code'  => 0,
+                'list'  => $list,
+                'total' => (int)$result['total'],
+            ];
+        }
+
+        return false;
     }
 }

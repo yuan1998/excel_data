@@ -7,6 +7,7 @@ use App\Helpers;
 use App\Jobs\PullWeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
@@ -22,7 +23,17 @@ class WeiboAccounts extends Model
         'active',
         'all_day',
         'channel_id',
+        'enable_cpl',
+        'enable_lingdong',
     ];
+
+    public static $formListMethodName = [
+        'cpl'      => 'mapFormListToGet',
+        'lingdong' => 'mapLingDongFormListToGet',
+    ];
+
+    public static $_CPL_NAME_ = 'cpl';
+    public static $_LINGDONG_NAME_ = 'lingdong';
 
     public static $_GRAB_SETTINGS_NAME_ = "weibo_data_grab_settings_name_prefix_test_";
 
@@ -37,6 +48,18 @@ class WeiboAccounts extends Model
         $data = Redis::get(static::$_GRAB_SETTINGS_NAME_);
 
         return $data ? json_decode($data, true) : static::setAccountData();
+    }
+
+    public function authRequest()
+    {
+        $weiboClient = new WeiboClient($this->id, $this);
+        if (!$weiboClient->isLogin() && !$weiboClient->mapClientToLogin()) {
+            $this->login_status = 0;
+            $this->save();
+            return false;
+        }
+
+        return $weiboClient;
     }
 
     public static function checkAccountIsRun($beginDay, $endDay)
@@ -69,16 +92,41 @@ class WeiboAccounts extends Model
         }
     }
 
-    public function pullAccountFormData($start, $end, $count = 1000, $page = 1)
+    public function pullFormDataOfType($type, $start, $end, $count = 1000, $page = 1)
     {
-        $id          = $this->id;
-        $weiboClient = new WeiboClient($id, $this);
-        if (!$weiboClient->isLogin() && !$weiboClient->mapClientToLogin()) {
+        if (!$weiboClient = $this->authRequest()) {
             Log::info("拉取微博账户表单 : 账户登录状态错误", [$this->username]);
-            $this->login_status = 0;
-            $this->save();
             return false;
         }
+
+        $method = Arr::get(static::$formListMethodName, $type, null);
+        if (!$method) return false;
+
+        $result = $weiboClient->{$method}($this->customer_id, $start, $end, $count, $page);
+        if (!$result) return false;
+
+        $list = $result['list'];
+
+//        if ($type === WeiboAccounts::$_CPL_NAME_) {
+//
+//            dd($type, $list);
+//        }
+        WeiboFormData::generateWeiboFormData($this->type, $list, $this);
+
+        $total = $result['total'];
+        if (($count * $page) < $total) {
+            $this->pullFormDataOfType($type, $start, $end, $count, $page + 1);
+        }
+        return $total;
+    }
+
+    public function pullAccountFormData($start, $end, $count = 1000, $page = 1)
+    {
+        if (!$weiboClient = $this->authRequest()) {
+            Log::info("拉取微博账户表单 : 账户登录状态错误", [$this->username]);
+            return false;
+        }
+
         $data = $weiboClient->mapFormListToGet($this->customer_id, $start, $end, $count, $page);
 
         if (!$data)
@@ -103,6 +151,4 @@ class WeiboAccounts extends Model
 
         return false;
     }
-
-
 }

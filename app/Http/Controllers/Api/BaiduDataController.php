@@ -19,6 +19,7 @@ use App\Imports\BaiduSpendImport;
 use App\Imports\OppoSpendImport;
 use App\Imports\WeiboFormDataImport;
 use App\Imports\YiliaoImport;
+use App\Jobs\PullWeiboFormData;
 use App\Models\AccountData;
 use App\Models\ArchiveType;
 use App\Models\ArrivingData;
@@ -35,6 +36,7 @@ use App\Models\WeiboFormData;
 use App\Parsers\BaiduPlanData;
 use App\Parsers\ParserConsultantGroup;
 use App\Parsers\ParserStart;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Maatwebsite\Excel\Facades\Excel;
@@ -159,9 +161,19 @@ class BaiduDataController extends Controller
         TempCustomerData::yesterday('zx', false);
     }
 
+    public function testWeiboPullData() {
+        $id = 1;
+        $beginDay = "2020-08-27";
+        $endDay = "2020-09-01";
+        $job =  new PullWeiboFormData($id, $beginDay, $endDay);
+        $job->handle();
+//        PullWeiboFormData::dispatch($id, $beginDay, $endDay)
+//            ->onQueue('pull_weibo_data');
+    }
+
     public function test(Request $request)
     {
-        $this->testPhone();
+        $this->testWeiboPullData();
 
         return $this->response->noContent();
     }
