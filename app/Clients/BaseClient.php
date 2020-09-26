@@ -200,7 +200,7 @@ class BaseClient
     {
         $name = static::$account['username'];
         if ($name)
-            return Storage::disk('public')->exists("crm_cookie/{$name}-cookies.json");
+            return Storage::disk('public')->exists("crm_cookie/{$name}- .json");
 
         return false;
     }
@@ -232,23 +232,17 @@ class BaseClient
             $jar = static::getAccountCookie();
 
             static::$client = new Client([
-                'base_uri' => static::$base_url,
-                'cookies'  => $jar,
-                'defaults' => [
-                    'verify'      => false,
-                    'http_errors' => false,
-                ],
-                'headers'  => [
+                'cookies'     => $jar,
+                'base_uri'    => static::$base_url,
+                'verify'      => false,
+                'http_errors' => false,
+                'headers'     => [
                     'Host'             => '172.16.8.8',
                     'Origin'           => 'http://172.16.8.8',
                     'Referer'          => 'http://172.16.8.8/',
                     'X-Requested-With' => 'XMLHttpRequest',
                     'User-Agent'       => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
                 ],
-                'curl'     => [
-                    CURLOPT_REFERER => static::$base_url,
-                    CURLOPT_HEADER  => 1,
-                ]
             ]);
         }
 
@@ -276,13 +270,14 @@ class BaseClient
     /**
      * 登录接口,获取新的Token
      * @return boolean
+     * @throws GuzzleException
      */
     public static function login()
     {
         $account = static::$account;
 
         $client = static::getClient();
-        $client->post(static::$login_url, [
+        $client->request("POST", static::$login_url, [
             'form_params' => $account,
         ]);
 
@@ -296,7 +291,7 @@ class BaseClient
 
 
         $client = static::getClient();
-        $result = $client->get('/');
+        $result = $client->request("GET", '/');
 
         $response = $result->getBody()->getContents();
 
