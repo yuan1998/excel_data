@@ -14,7 +14,7 @@ class ChangeBaiduSpendTableAddAccountNameField extends Migration
     public function up()
     {
         Schema::table('baidu_spends', function (Blueprint $table) {
-            $table->string('account_name')->nullable();
+//            $table->string('account_name')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class ChangeBaiduSpendTableAddAccountNameField extends Migration
     public function down()
     {
         Schema::table('baidu_spends', function (Blueprint $table) {
-            $table->dropColumn('account_name');
+//            $table->dropColumn('account_name');
         });
     }
 }
