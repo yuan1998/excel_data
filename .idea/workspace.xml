@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Models/ArrivingData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ArrivingData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/BillAccountData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BillAccountData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/TempCustomerData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/TempCustomerData.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/horizon.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/horizon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +24,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/CustomerPhone.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="787">
@@ -36,6 +32,15 @@
               <folding>
                 <element signature="e#30#46#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
             </state>
           </provider>
         </entry>
@@ -370,6 +375,12 @@
             <path>
               <item name="excelData" type="b2602c69:ProjectViewProjectNode" />
               <item name="excelData" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
+              <item name="tmp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="excelData" type="b2602c69:ProjectViewProjectNode" />
+              <item name="excelData" type="462c0819:PsiDirectoryNode" />
               <item name="storage" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -381,7 +392,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/NodeScript" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/database/tmp" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -390,19 +401,19 @@
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/NodeScript" />
-      <recent name="$PROJECT_DIR$/PythonScript" />
-      <recent name="$PROJECT_DIR$/resources/js/utils" />
-      <recent name="$PROJECT_DIR$/app/Exports" />
-      <recent name="$PROJECT_DIR$/app/Admin/Actions/SpendData" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Http/Controllers/Api" />
       <recent name="$PROJECT_DIR$/database/tmp" />
       <recent name="$PROJECT_DIR$/app/Admin/Actions/Weibo" />
       <recent name="$PROJECT_DIR$/database/migrations" />
       <recent name="$PROJECT_DIR$/public/css" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/database/tmp" />
+      <recent name="$PROJECT_DIR$/NodeScript" />
+      <recent name="$PROJECT_DIR$/PythonScript" />
+      <recent name="$PROJECT_DIR$/resources/js/utils" />
+      <recent name="$PROJECT_DIR$/app/Exports" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -482,12 +493,12 @@
       <workItem from="1599300399298" duration="4244000" />
       <workItem from="1599306924948" duration="879000" />
       <workItem from="1600076716961" duration="29502000" />
-      <workItem from="1600594674195" duration="7431000" />
+      <workItem from="1600594674195" duration="7671000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1642028000" />
+    <option name="totallyTimeSpent" value="1642268000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-160" y="-1417" width="2560" height="1417" extended-state="6" />
@@ -596,13 +607,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Models/Channel.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="22" column="27" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Jobs/ClueDataCheck.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
@@ -962,6 +966,13 @@
           <folding>
             <element signature="e#30#46#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
