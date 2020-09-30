@@ -15,7 +15,7 @@ class CrmGrabLogObserver
      */
     public function created(CrmGrabLog $crmGrabLog)
     {
-        CrmGrabLogJob::dispatch($crmGrabLog)->onQueue('crm_grab_log_queue');
+        CrmGrabLogJob::dispatch($crmGrabLog->id)->onQueue('crm_grab_log_queue');
     }
 
     /**

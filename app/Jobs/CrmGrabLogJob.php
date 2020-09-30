@@ -21,18 +21,18 @@ class CrmGrabLogJob implements ShouldQueue
     /**
      * @var CrmGrabLog
      */
-    public $model;
+    public $id;
 
     public $timeout = 600;
 
     /**
      * Create a new job instance.
      *
-     * @param $model
+     * @param $id
      */
-    public function __construct($model)
+    public function __construct($id)
     {
-        $this->model = $model;
+        $this->id = $id;
     }
 
 
@@ -43,25 +43,26 @@ class CrmGrabLogJob implements ShouldQueue
      */
     public function handle()
     {
-        $model = $this->model;
-        Log::info('model', [$model]);
-        if ($model && $dataModel = Helpers::getDataModel($model->model_type)) {
-            $model->status = 1;
-            $model->save();
+        if ($model = CrmGrabLog::find($this->id)) {
+            if ($dataModel = Helpers::getDataModel($model->model_type)) {
+                $model->status = 1;
+                $model->save();
 
-            try {
-                $data = $dataModel::getDataOfDate($model->type, $model->start_date, $model->end_date);
-                Log::info($model->name, $data);
-                $model->status = 2;
-            } catch (Exception $exception) {
-                Log::error('抓取数据时错误', [$model->model_type, $exception]);
-                $model->status = 3;
+                try {
+                    $data = $dataModel::getDataOfDate($model->type, $model->start_date, $model->end_date);
+                    Log::info($model->name, $data);
+                    $model->status = 2;
+                } catch (Exception $exception) {
+                    Log::error('抓取数据时错误', [$model->model_type, $exception]);
+                    $model->status = 3;
+                }
+
+            } else {
+                $model->status = 1;
             }
-
-        } else {
-            $model->status = 1;
+            $model->save();
         }
-        $model->save();
+
     }
 
 
@@ -73,10 +74,11 @@ class CrmGrabLogJob implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $model         = $this->model;
-        $model->status = 3;
-        Log::error('抓取数据时错误', [$model->model_type, $exception]);
-        $model->save();
+        $model = CrmGrabLog::find($this->id);
+        if ($model) {
+            $model->status = 3;
+            $model->save();
+        }
         // Send user notification of failure, etc...
     }
 }
