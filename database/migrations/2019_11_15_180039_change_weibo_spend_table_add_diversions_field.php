@@ -14,9 +14,9 @@ class ChangeWeiboSpendTableAddDiversionsField extends Migration
     public function up()
     {
         Schema::table('weibo_spends', function (Blueprint $table) {
-            $table->string('diversions')->nullable();
-            $table->string('diversions_fans')->nullable();
-            $table->string('advertiser_account')->nullable();
+//            $table->string('diversions')->nullable();
+//            $table->string('diversions_fans')->nullable();
+//            $table->string('advertiser_account')->nullable();
         });
     }
 
@@ -28,9 +28,9 @@ class ChangeWeiboSpendTableAddDiversionsField extends Migration
     public function down()
     {
         Schema::table('weibo_spends', function (Blueprint $table) {
-            $table->dropColumn('diversions');
-            $table->dropColumn('diversions_fans');
-            $table->dropColumn('advertiser_account');
+//            $table->dropColumn('diversions');
+//            $table->dropColumn('diversions_fans');
+//            $table->dropColumn('advertiser_account');
         });
     }
 }

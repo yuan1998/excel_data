@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_11_13_210650_change_weibo_spend_data_table_add_new_field.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_11_13_210650_change_weibo_spend_data_table_add_new_field.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_11_15_180039_change_weibo_spend_table_add_diversions_field.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_11_15_180039_change_weibo_spend_table_add_diversions_field.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,11 +51,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/database/migrations/2019_11_13_210650_change_weibo_spend_data_table_add_new_field.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="50" selection-end-column="53" />
+            <state relative-caret-position="801">
+              <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/database/migrations/2019_11_15_180039_change_weibo_spend_table_add_diversions_field.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="628">
+              <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/WeiboSpend.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -82,8 +100,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>二次</find>
-      <find>post</find>
       <find>postU</find>
       <find>postUriGetDom</find>
       <find>medium_err</find>
@@ -112,6 +128,8 @@
       <find>advertiser_plan</find>
       <find>weibo_spends</find>
       <find>follow_count_fans</find>
+      <find>diversions</find>
+      <find>advertiser_account</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/database/migrations</dir>
@@ -123,7 +141,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Jobs/ExportJob.php" />
         <option value="$PROJECT_DIR$/resources/js/app.js" />
         <option value="$PROJECT_DIR$/resources/js/components/modelGenerateWeiboQrCode.vue" />
         <option value="$PROJECT_DIR$/app/Admin/Actions/RecheckFormAction.php" />
@@ -174,6 +191,7 @@
         <option value="$PROJECT_DIR$/database/migrations/2019_10_06_092915_create_baidu_data_table.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_10_17_134539_change_weibo_spend_data_table_add_plan_field.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_13_210650_change_weibo_spend_data_table_add_new_field.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2019_11_15_180039_change_weibo_spend_table_add_diversions_field.php" />
       </list>
     </option>
   </component>
@@ -453,12 +471,12 @@
       <workItem from="1599300399298" duration="4244000" />
       <workItem from="1599306924948" duration="879000" />
       <workItem from="1600076716961" duration="29502000" />
-      <workItem from="1600594674195" duration="4417000" />
+      <workItem from="1600594674195" duration="4499000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1639014000" />
+    <option name="totallyTimeSpent" value="1639096000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-160" y="-1417" width="2560" height="1417" extended-state="6" />
@@ -567,13 +585,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Admin/Controllers/ArrivingDataController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_10_28_170403_change_customer_phones_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="310">
@@ -910,13 +921,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/WeiboSpend.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="24" column="44" lean-forward="true" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_10_10_171709_create_weibo_spends_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
@@ -926,8 +930,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_11_13_210650_change_weibo_spend_data_table_add_new_field.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="50" selection-end-column="53" />
+        <state relative-caret-position="801">
+          <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/WeiboSpend.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2019_11_15_180039_change_weibo_spend_table_add_diversions_field.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="628">
+          <caret line="30" column="14" selection-start-line="30" selection-start-column="14" selection-end-line="30" selection-end-column="14" />
         </state>
       </provider>
     </entry>
