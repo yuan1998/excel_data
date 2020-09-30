@@ -14,7 +14,6 @@ class ChangeWeiboSpendDataTableAddPlanField extends Migration
     public function up()
     {
         Schema::table('weibo_spends', function (Blueprint $table) {
-            $table->string('advertiser_plan')->nullable();
             $table->dropColumn('advertiser_account');
 
         });
@@ -28,7 +27,6 @@ class ChangeWeiboSpendDataTableAddPlanField extends Migration
     public function down()
     {
         Schema::table('weibo_spends', function (Blueprint $table) {
-            $table->dropColumn('advertiser_plan');
             $table->string('advertiser_account')->nullable();
         });
     }
