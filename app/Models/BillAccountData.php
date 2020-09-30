@@ -123,6 +123,10 @@ class BillAccountData extends Model
         return $this->belongsTo(ArchiveType::class, 'archive_id', 'id');
     }
 
+    public function customerPhone()
+    {
+        return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
+    }
 
     public static function fixArchiveBy()
     {
@@ -202,9 +206,18 @@ class BillAccountData extends Model
             $item             = array_merge($item, $consultantResult);
 
             $uuid->push($item['uuid']);
-            static::updateOrCreate([
-                'uuid' => $item['uuid'],
-            ], $item);
+            static::query()
+                ->where('uuid', $item['uuid'])
+                ->delete();
+            static::create($item);
+
+            CustomerPhone::firstOrCreate([
+                'customer_id'   => $item['customer_id'],
+                'type'          => $type,
+                'client'        => $clientName,
+                'customer_type' => CustomerPhone::$customerType,
+            ]);
+
         });
         return $uuid;
     }

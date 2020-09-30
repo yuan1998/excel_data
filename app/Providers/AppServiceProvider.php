@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\models\CrmGrabLog;
+use App\Models\CustomerPhone;
 use App\Models\ExportDataLog;
 use App\Models\FormDataPhone;
 use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use App\Observers\CrmGrabLogObserver;
+use App\Observers\CustomerPhoneObserver;
 use App\Observers\ExportDataLogObserver;
 use App\Observers\FormDataPhoneObserver;
 use App\Observers\WeiboFormDataObserver;
@@ -40,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
 
         WeiboUser::observe(WeiboUserObserver::class);
         WeiboFormData::observe(WeiboFormDataObserver::class);
+        CustomerPhone::observe(CustomerPhoneObserver::class);
     }
 }

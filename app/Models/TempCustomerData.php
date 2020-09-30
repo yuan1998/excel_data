@@ -157,9 +157,19 @@ class TempCustomerData extends Model
 
             $uuid->push($item['uuid']);
 
-            static::updateOrCreate([
-                'uuid' => $item['uuid'],
-            ], $item);
+            static::query()
+                ->where('uuid', $item['uuid'])
+                ->delete();
+            static::create(
+                $item
+            );
+
+            CustomerPhone::firstOrCreate([
+                'customer_id'   => $item['customer_id'],
+                'type'          => $type,
+                'customer_type' => CustomerPhone::$tempCustomerType,
+                'client'        => $clientName,
+            ]);
         });
 
         return $uuid;
@@ -202,7 +212,7 @@ class TempCustomerData extends Model
         }
     }
 
-    public static function yesterday($type,$queue =true)
+    public static function yesterday($type, $queue = true)
     {
 
         $date = Carbon::yesterday()->toDateString();
