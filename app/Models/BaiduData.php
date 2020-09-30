@@ -36,7 +36,7 @@ class BaiduData extends Model
         "竞价词"      => 'bidding_keyword',
         "站点"       => 'site',
         "线索"       => 'clue',
-        "数据类型"     => 'type',
+//        "数据类型"     => 'type',
     ];
 
     protected $fillable = [
