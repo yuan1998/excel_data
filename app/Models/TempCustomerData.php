@@ -167,9 +167,11 @@ class TempCustomerData extends Model
             CustomerPhone::firstOrCreate([
                 'customer_id'   => $item['customer_id'],
                 'type'          => $type,
-                'customer_type' => CustomerPhone::$tempCustomerType,
-                'client'        => $clientName,
+                'customer_type' => CustomerPhone::$customerType,
+            ], [
+                'client' => $clientName
             ]);
+
         });
 
         return $uuid;

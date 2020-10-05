@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static updateOrCreate(array $array, array $array1)
+ * @method static CustomerPhone firstOrCreate(array $array, array $array1 = [])
  */
 class CustomerPhone extends Model
 {
@@ -30,12 +31,22 @@ class CustomerPhone extends Model
     ];
 
 
-    public static function recheckPhone()
+    public static function recheckPhone($queue = false, $limit = null)
     {
-        static::query()->whereNull('phone')
-            ->get()->each(function ($phone) {
+        $phones = static::query()->whereNull('phone');
+
+        if ($limit)
+            $phones->limit($limit);
+
+        $phones = $phones->get();
+
+        foreach ($phones as $phone) {
+            if ($queue) {
                 CustomerPhoneCheckJob::dispatch($phone->id)->onQueue('check_customer_phone');
-            });
+            } else {
+                $phone->checkPhone();
+            }
+        }
     }
 
     public function checkPhone()
@@ -59,6 +70,9 @@ class CustomerPhone extends Model
                 'phone' => $phone,
             ]);
         }
+        return $phone;
     }
+
+
 
 }

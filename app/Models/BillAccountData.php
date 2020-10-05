@@ -214,8 +214,9 @@ class BillAccountData extends Model
             CustomerPhone::firstOrCreate([
                 'customer_id'   => $item['customer_id'],
                 'type'          => $type,
-                'client'        => $clientName,
                 'customer_type' => CustomerPhone::$customerType,
+            ], [
+                'client' => $clientName
             ]);
 
         });

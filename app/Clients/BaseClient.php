@@ -439,7 +439,7 @@ class BaseClient
             'Isxiangxi'        => 'Y',
         ], $data ?? []);
 
-        if (static::$mediaSourceType) {
+        if (env("USE_MEDIA_TYPE") && static::$mediaSourceType) {
             $data['MediaSourceType'] = static::$mediaSourceType;
         }
 

@@ -170,7 +170,7 @@ class ArrivingData extends Model
     {
         return $this->belongsTo(Consultant::class, 'online_customer_id', 'id');
     }
-    
+
     public function customerPhone()
     {
         return $this->belongsTo(CustomerPhone::class, 'customer_id', 'customer_id');
@@ -259,8 +259,9 @@ class ArrivingData extends Model
                 CustomerPhone::firstOrCreate([
                     'customer_id'   => $item['customer_id'],
                     'type'          => $type,
-                    'client'        => $clientName,
                     'customer_type' => CustomerPhone::$customerType,
+                ], [
+                    'client' => $clientName
                 ]);
 
             });

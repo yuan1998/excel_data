@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Observers/CrmGrabLogObserver.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Observers/CrmGrabLogObserver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/SfClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/SfClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ArrivingData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ArrivingData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/BillAccountData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/BillAccountData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/CustomerPhone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/CustomerPhone.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/TempCustomerData.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/TempCustomerData.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/horizon.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/horizon.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +21,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Clients/SfClient.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="765">
+              <caret line="242" lean-forward="true" selection-start-line="242" selection-end-line="242" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/CustomerPhone.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="787">
-              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="1041">
+              <caret line="75" selection-start-line="75" selection-end-line="75" />
               <folding>
                 <element signature="e#30#46#0#PHP" expanded="true" />
               </folding>
@@ -29,60 +43,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitattributes">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+        <entry file="file://$PROJECT_DIR$/config/horizon.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+            <state relative-caret-position="4836">
+              <caret line="156" column="135" selection-start-line="156" selection-start-column="135" selection-end-line="156" selection-end-column="135" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
+        <entry file="file://$PROJECT_DIR$/app/Models/ArrivingData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="13" column="21" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="556">
-              <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+            <state relative-caret-position="346">
+              <caret line="284" selection-start-line="284" selection-end-line="284" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Observers/CrmGrabLogObserver.php">
+        <entry file="file://$PROJECT_DIR$/app/Models/BillAccountData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="577" column="8" selection-start-line="577" selection-start-column="8" selection-end-line="580" selection-end-column="43" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Clients/SfClient.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="327" column="36" selection-start-line="327" selection-start-column="36" selection-end-line="327" selection-end-column="36" />
+            <state relative-caret-position="927">
+              <caret line="220" selection-start-line="220" selection-end-line="220" />
             </state>
           </provider>
         </entry>
@@ -90,17 +72,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/TempCustomerData.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
-              <caret line="219" column="21" lean-forward="true" selection-start-line="219" selection-start-column="21" selection-end-line="219" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/horizon.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="534">
-              <caret line="162" column="31" lean-forward="true" selection-start-line="162" selection-start-column="31" selection-end-line="162" selection-end-column="31" />
+            <state relative-caret-position="618">
+              <caret line="165" selection-start-line="165" selection-end-line="165" />
             </state>
           </provider>
         </entry>
@@ -109,8 +82,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>medium_err</find>
-      <find>tempCustomerInfoArchiveCheck</find>
       <find>dd</find>
       <find>dd(</find>
       <find>reservationSearchIntention</find>
@@ -139,6 +110,8 @@
       <find>advertiser_account</find>
       <find>CustomerPhone</find>
       <find>CrmGrabLogJob::</find>
+      <find>$mediaSourceType</find>
+      <find>CustomerPhoneCheckJob</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/database/migrations</dir>
@@ -165,14 +138,12 @@
         <option value="$PROJECT_DIR$/app/Models/DataOrigin.php" />
         <option value="$PROJECT_DIR$/app/Console/Kernel.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/ArrivingDataController.php" />
-        <option value="$PROJECT_DIR$/app/Clients/SfClient.php" />
         <option value="$PROJECT_DIR$/app/Clients/ZxClient.php" />
         <option value="$PROJECT_DIR$/app/Jobs/ClueDataCheck.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_09_16_110125_change_form_data_phone_table_add_field_medium_error.php" />
         <option value="$PROJECT_DIR$/app/Helpers.php" />
         <option value="$PROJECT_DIR$/app/Models/FormDataPhone.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/FormDataController.php" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/database/migrations/2020_09_19_163404_change_weibo_accounts_table_add_start_field.php" />
         <option value="$PROJECT_DIR$/app/Admin/Controllers/WeiboAccountController.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_09_19_164110_change_weibo_form_data_table_add_form_type_field.php" />
@@ -182,25 +153,27 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/BaiduDataController.php" />
         <option value="$PROJECT_DIR$/app/Models/WeiboAccounts.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/WeiboFormDataController.php" />
-        <option value="$PROJECT_DIR$/app/Clients/BaseClient.php" />
         <option value="$PROJECT_DIR$/app/Models/BaiduData.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_10_06_092915_create_baidu_data_table.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_10_17_134539_change_weibo_spend_data_table_add_plan_field.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_13_210650_change_weibo_spend_data_table_add_new_field.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_15_180039_change_weibo_spend_table_add_diversions_field.php" />
         <option value="$PROJECT_DIR$/database/migrations/2019_11_17_095153_change_baidu_spend_table_add_account_name_field.php" />
-        <option value="$PROJECT_DIR$/app/Models/TempCustomerData.php" />
-        <option value="$PROJECT_DIR$/app/Models/BillAccountData.php" />
-        <option value="$PROJECT_DIR$/app/Models/ArrivingData.php" />
-        <option value="$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php" />
         <option value="$PROJECT_DIR$/database/migrations/2020_09_30_160149_change_temp_customer_data_table_address_to_text_type.php" />
         <option value="$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php" />
         <option value="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" />
-        <option value="$PROJECT_DIR$/config/horizon.php" />
-        <option value="$PROJECT_DIR$/app/Models/CustomerPhone.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/app/Observers/CrmGrabLogObserver.php" />
         <option value="$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/app/Clients/BaseClient.php" />
+        <option value="$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php" />
+        <option value="$PROJECT_DIR$/config/horizon.php" />
+        <option value="$PROJECT_DIR$/app/Models/BillAccountData.php" />
+        <option value="$PROJECT_DIR$/app/Models/TempCustomerData.php" />
+        <option value="$PROJECT_DIR$/app/Models/ArrivingData.php" />
+        <option value="$PROJECT_DIR$/app/Models/CustomerPhone.php" />
+        <option value="$PROJECT_DIR$/app/Clients/SfClient.php" />
       </list>
     </option>
   </component>
@@ -487,12 +460,12 @@
       <workItem from="1599300399298" duration="4244000" />
       <workItem from="1599306924948" duration="879000" />
       <workItem from="1600076716961" duration="29502000" />
-      <workItem from="1600594674195" duration="8067000" />
+      <workItem from="1600594674195" duration="15022000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1642664000" />
+    <option name="totallyTimeSpent" value="1649619000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-160" y="-1417" width="2560" height="1417" extended-state="6" />
@@ -601,13 +574,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/yarn.lock">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="2502" column="43" selection-start-line="2502" selection-start-column="43" selection-end-line="2502" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonScript/weibo_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
@@ -808,13 +774,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/BillAccountData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="117" column="65" selection-start-line="117" selection-start-column="65" selection-end-line="117" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Console/Kernel.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-116">
@@ -832,27 +791,10 @@
         <state relative-caret-position="-612" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="26" column="57" lean-forward="true" selection-start-line="26" selection-start-column="57" selection-end-line="26" selection-end-column="57" />
-          <folding>
-            <element signature="e#33#68#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_10_14_195537_create_customer_phones_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
           <caret line="16" column="40" lean-forward="true" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/ArrivingData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1009">
-          <caret line="187" column="23" selection-start-line="187" selection-start-column="23" selection-end-line="187" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -894,46 +836,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Clients/ZxClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="17" column="31" lean-forward="true" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="721">
+          <caret line="51" column="14" lean-forward="true" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Observers/CrmGrabLogObserver.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-208">
+          <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="577" column="8" selection-start-line="577" selection-start-column="8" selection-end-line="580" selection-end-column="43" />
+        <state relative-caret-position="333">
+          <caret line="156" column="18" selection-start-line="156" selection-start-column="18" selection-end-line="156" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Clients/SfClient.php">
+    <entry file="file://$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="327" column="36" selection-start-line="327" selection-start-column="36" selection-end-line="327" selection-end-column="36" />
+        <state relative-caret-position="-54">
+          <caret line="56" column="39" lean-forward="true" selection-start-line="56" selection-start-column="39" selection-end-line="56" selection-end-column="39" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/TempCustomerData.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="219" column="21" lean-forward="true" selection-start-line="219" selection-start-column="21" selection-end-line="219" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/horizon.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="162" column="31" lean-forward="true" selection-start-line="162" selection-start-column="31" selection-end-line="162" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/CustomerPhone.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="787">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <element signature="e#30#46#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitattributes">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
@@ -942,24 +878,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
+    <entry file="file://$PROJECT_DIR$/.gitattributes">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Observers/CustomerPhoneObserver.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="13" column="21" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="21" />
+        <state relative-caret-position="341">
+          <caret line="17" selection-start-line="17" selection-end-line="18" />
+          <folding>
+            <element signature="e#33#68#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Observers/CrmGrabLogObserver.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/BillAccountData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+        <state relative-caret-position="927">
+          <caret line="220" selection-start-line="220" selection-end-line="220" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Jobs/CrmGrabLogJob.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/TempCustomerData.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+        <state relative-caret-position="618">
+          <caret line="165" selection-start-line="165" selection-end-line="165" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/ArrivingData.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="284" selection-start-line="284" selection-end-line="284" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/horizon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4836">
+          <caret line="156" column="135" selection-start-line="156" selection-start-column="135" selection-end-line="156" selection-end-column="135" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/CustomerPhone.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1041">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
+          <folding>
+            <element signature="e#30#46#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Clients/SfClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="242" lean-forward="true" selection-start-line="242" selection-end-line="242" />
         </state>
       </provider>
     </entry>

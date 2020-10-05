@@ -154,7 +154,7 @@ return [
         'local'      => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue'      => ['form_data_phone', 'crm_grab_log_queue', 'data_exports', 'sanfang_data_export', 'check_customer_phone'],
+                'queue'      => ['form_data_phone', 'crm_grab_log_queue', 'data_exports', 'check_customer_phone', 'sanfang_data_export'],
                 'balance'    => 'false',
                 'processes'  => 5,
                 'tries'      => 1,

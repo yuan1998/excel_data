@@ -8,6 +8,7 @@ use App\Exports\TestExport;
 use App\Helpers;
 use App\Models\ArrivingData;
 use App\Models\BillAccountData;
+use App\Models\CustomerPhone;
 use App\Models\MediumType;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -19,12 +20,12 @@ class SfClient extends BaseClient
     public static $cookie_name = '172.16.8.880_AdminContext_';
     public static $base_url = 'http://172.16.8.8/';
     public static $domain = '172.16.8.8';
-    public static $companyApi = true;
+//    public static $companyApi = true;
     public static $mediaSourceType = 'E10D9F6497004F29BE8DA99600EF5B1D';
 
     public static $account = [
-        'username' => '7016',
-        'password' => 'hm2018',
+        'username' => '6003',
+        'password' => '666888',
     ];
 
     public $startDate = '';
@@ -64,6 +65,7 @@ class SfClient extends BaseClient
 //        $ids = $this->getMediumIds();
 
         return ArrivingData::query()
+            ->with(['customerPhone'])
             ->where('medium', 'like', '%三方转诊%')
             ->where('type', 'zx')
             ->whereDate('reception_date', $date)
@@ -81,6 +83,7 @@ class SfClient extends BaseClient
     public function getBillAccountData($date)
     {
         return BillAccountData::query()
+            ->with(['customerPhone'])
             ->where('medium', 'like', '%三方转诊%')
             ->where('type', 'zx')
             ->whereDate('pay_date', $date)
@@ -254,7 +257,7 @@ class SfClient extends BaseClient
 
 
             $tmpItem = $this->generateItemTemp($item);
-            $id      = $item['customer_id'];
+            $id = $item['customer_id'];
 
             if (!Arr::exists($item, 'account_data')) {
                 $this->saveResultItem($day, $tmpItem);
@@ -288,9 +291,21 @@ class SfClient extends BaseClient
 
     public function generateItemTemp($item)
     {
-        $id = $item['customer_id'];
+        $id    = $item['customer_id'];
+        $phone = CustomerPhone::firstOrCreate([
+            'customer_id'   => $item['customer_id'],
+            'type'          => $item['type'],
+            'customer_type' => CustomerPhone::$customerType,
+        ], [
+            'client' => $item['client'],
+        ]);
 
-        $phone = $this->checkPhone($id);
+
+        if (!$phone['phone']) {
+            $phoneNumber = $phone->checkPhone();
+        } else {
+            $phoneNumber = $phone['phone'];
+        }
 
         $info = $this->custInfo($id);
 
@@ -299,7 +314,7 @@ class SfClient extends BaseClient
             'is_transaction'       => $item['is_transaction'],
             'customer_status'      => $item['customer_status'],
             'customer'             => $item['customer'],
-            'phone'                => Arr::get($phone, 0, '无'),
+            'phone'                => $phoneNumber ?? '无',
             'online_customer'      => $item['online_customer'],
             'medium'               => $item['medium'],
             'down'                 => $info,
@@ -307,7 +322,7 @@ class SfClient extends BaseClient
             'archive_type'         => $item['archive_type'],
             'project'              => '未成交',
             'account'              => 0,
-            'comment'              => Arr::get($phone, 1, '无'),
+            'comment'              => '无',
         ];
     }
 
@@ -370,5 +385,16 @@ class SfClient extends BaseClient
         return $match ? $match[1] : '未知';
     }
 
+
+    public static function test()
+    {
+
+        $start = '2020-10-01';
+        $end = '2020-10-01';
+//        ArrivingData::getDataOfDate('sf', $start, $end);
+//        BillAccountData::getDataOfDate('sf', $start, $end);
+        $client = new static($start, $end);
+        $client->main();
+    }
 }
 
