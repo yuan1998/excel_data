@@ -18,8 +18,6 @@ class CustomerPhoneCheckJob implements ShouldQueue
 
     public $modelId;
 
-    public $timeout = 600;
-
     /**
      * Create a new job instance.
      *
@@ -42,4 +40,6 @@ class CustomerPhoneCheckJob implements ShouldQueue
             $model->checkPhone();
         }
     }
+
+
 }

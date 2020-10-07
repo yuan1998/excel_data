@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Redis;
  * @property mixed data_type
  * @property mixed project_info
  * @property mixed department_info
+ * @property FormDataPhone[] phones
  * @method  static FormData updateOrCreate(array $array, array $parseFormData)
  */
 class FormData extends Model

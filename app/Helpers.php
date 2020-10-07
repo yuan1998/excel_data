@@ -346,7 +346,7 @@ class Helpers
         static::checkIntention($model);
         if ($model->intention <= 1 || $isBaidu) {
             static::baiduCheckArchive($model);
-            if ($model->is_archive == 0) {
+            if ($model->is_archive !== 1) {
                 static::tempCustInfoArchive($model);
             }
         }
@@ -433,6 +433,12 @@ class Helpers
     /**
      * 查询并写入 Model数据 的建档状态
      * @param $model
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \PHPHtmlParser\Exceptions\ChildNotFoundException
+     * @throws \PHPHtmlParser\Exceptions\CircularException
+     * @throws \PHPHtmlParser\Exceptions\CurlException
+     * @throws \PHPHtmlParser\Exceptions\NotLoadedException
+     * @throws \PHPHtmlParser\Exceptions\StrictException
      */
     public static function checkIsArchive($model)
     {
@@ -450,7 +456,7 @@ class Helpers
     /**
      * 获取 Crm 客户端类型.
      * @param string $type 类型名称
-     * @return string|bool
+     * @return BaseClient|bool
      */
     public static function typeClient($type)
     {

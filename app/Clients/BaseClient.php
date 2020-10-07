@@ -823,12 +823,10 @@ class BaseClient
             'is_archive' => 2,
         ];
 
-
         return [
             'is_archive'   => 1,
             'intention'    => Helpers::intentionCheck($item['intention']),
             'is_repeat'    => 2,
-            'medium_error' => $model->checkMediumIsError($item['medium']),
         ];
     }
 

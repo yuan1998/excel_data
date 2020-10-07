@@ -23,7 +23,6 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
-    public $timeout = 999999;
 
     /**
      * @var ExportDataLog
