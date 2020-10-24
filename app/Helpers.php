@@ -343,6 +343,10 @@ class Helpers
      */
     public static function checkIntentionAndArchive($model, $isBaidu = false)
     {
+        Log::info("Debug 查询手机号码 无法正常工作问题 Step 1 : ", [
+            'title' => '方法开始',
+            'Model' => $model,
+        ]);
         static::checkIntention($model);
         if ($model->intention <= 1 || $isBaidu) {
             static::baiduCheckArchive($model);
@@ -350,6 +354,10 @@ class Helpers
                 static::tempCustInfoArchive($model);
             }
         }
+
+        Log::info("Debug 查询手机号码 无法正常工作问题 Step : 5  ", [
+            'title' => '步骤结束',
+        ]);
     }
 
     public static function tempCustInfoArchive($model)
@@ -359,6 +367,12 @@ class Helpers
             return;
         }
         $data = $client::tempCustomerInfoArchiveCheck($model);
+        Log::info("Debug 查询手机号码 无法正常工作问题 Step 4 : ", [
+            'title' => 'tempCustInfoArchive 查询结果',
+            'phone' => $model->phone,
+            'data'  => $data,
+        ]);
+
         $model->fill($data);
         $model->save();
     }
@@ -376,6 +390,12 @@ class Helpers
         $data = $client::baiduTempSearch([
             'phone' => $model->phone
         ], $model);
+
+        Log::info("Debug 查询手机号码 无法正常工作问题 Step 3 : ", [
+            'title' => 'baiduCheckArchive 查询结果',
+            'phone' => $model->phone,
+            'data'  => $data,
+        ]);
 
         if ($data) {
             $model->fill($data);
@@ -425,6 +445,12 @@ class Helpers
         $data = $client::reservationSearchIntention([
             'phone' => $model->phone
         ], $model);
+
+        Log::info("Debug 查询手机号码 无法正常工作问题 Step 2 : ", [
+            'title' => 'checkIntention 查询结束',
+            'phone' => $model->phone,
+            'data'  => $data,
+        ]);
 
         $model->fill($data);
         $model->save();

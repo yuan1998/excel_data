@@ -32,8 +32,9 @@ class AdminClient extends BaseClient
 
     public static function test()
     {
+//        static::getReportOfDate("2020-10-10");
         $result = collect();
-        Helpers::dateRangeForEach(['2020-04-01', '2020-09-30'], function ($date) use (&$result) {
+        Helpers::dateRangeForEach(['2020-09-25', '2020-09-30'], function ($date) use (&$result) {
             $dateString = $date->toDateString();
             $data       = static::getReportOfDate($dateString)->map(function ($item) use ($dateString) {
                 $item['日期'] = $dateString;
@@ -74,7 +75,7 @@ class AdminClient extends BaseClient
 
     public static function getReportExcel($data)
     {
-        $response = static::postUriGetDom(static::$url, $data);
+        $response = static::postUriGetDom(static::$url, $data, true, false);
 
 
         $keysHtml = $response->find('table[id=report1_$_top] tr[rn=3]')->find('td');

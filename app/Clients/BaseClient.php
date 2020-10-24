@@ -222,6 +222,24 @@ class BaseClient
         return false;
     }
 
+
+    public static function createClient($jar = true)
+    {
+        return new Client([
+            'cookies'     => $jar,
+            'base_uri'    => static::$base_url,
+            'verify'      => false,
+            'http_errors' => false,
+            'headers'     => [
+                'Host'             => '172.16.8.8',
+                'Origin'           => 'http://172.16.8.8',
+                'Referer'          => 'http://172.16.8.8/',
+                'X-Requested-With' => 'XMLHttpRequest',
+                'User-Agent'       => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
+            ],
+        ]);
+    }
+
     /**
      * 获取 Client
      * @return Client
@@ -231,19 +249,7 @@ class BaseClient
         if (!static::$client) {
             $jar = static::getAccountCookie();
 
-            static::$client = new Client([
-                'cookies'     => $jar,
-                'base_uri'    => static::$base_url,
-                'verify'      => false,
-                'http_errors' => false,
-                'headers'     => [
-                    'Host'             => '172.16.8.8',
-                    'Origin'           => 'http://172.16.8.8',
-                    'Referer'          => 'http://172.16.8.8/',
-                    'X-Requested-With' => 'XMLHttpRequest',
-                    'User-Agent'       => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
-                ],
-            ]);
+            static::$client = static::createClient($jar);
         }
 
         return static::$client;
@@ -300,10 +306,16 @@ class BaseClient
 
     public static function authRequest()
     {
-        if (!static::isLogin() && !static::login())
-            throw new \Exception("登录验证失败!");
+        if (!static::isLogin() && !static::login()) {
+            Log::info("Debug 查询手机号码 无法正常工作问题 特别篇 : ", [
+                'title' => 'authRequest 登录状态错误',
+                'class' => static::class,
+            ]);
 
-        return static::$client;
+            throw new \Exception("登录验证失败!");
+        }
+
+        return static::getClient();
     }
 
 
@@ -824,9 +836,9 @@ class BaseClient
         ];
 
         return [
-            'is_archive'   => 1,
-            'intention'    => Helpers::intentionCheck($item['intention']),
-            'is_repeat'    => 2,
+            'is_archive' => 1,
+            'intention'  => Helpers::intentionCheck($item['intention']),
+            'is_repeat'  => 2,
         ];
     }
 
@@ -847,19 +859,20 @@ class BaseClient
     }
 
     /**
-     * @param $uri
-     * @param $data
-     * @param $toDom
+     * @param      $uri
+     * @param      $data
+     * @param bool $toDom
+     * @param      $auth
      * @return Dom|string
-     * @throws GuzzleException
      * @throws ChildNotFoundException
      * @throws CircularException
      * @throws CurlException
+     * @throws GuzzleException
      * @throws StrictException
      */
-    public static function postUriGetDom($uri, $data, $toDom = true)
+    public static function postUriGetDom($uri, $data, $toDom = true, $auth = true)
     {
-        $client = static::authRequest();
+        $client = $auth ? static::authRequest() : static::createClient();
 
         $result = $client->request('POST', $uri, [
             'form_params' => $data,

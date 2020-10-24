@@ -41,7 +41,6 @@ class ClueDataCheck implements ShouldQueue
         $model = $this->model;
         if ($model && $model = FormDataPhone::find($this->model)) {
             $model->checkCrmInfo();
-            Redis::del($model->getTable() . '_' . $model->id . '_queue_clue_loading');
         }
     }
 }
