@@ -345,7 +345,7 @@ class Helpers
     {
         Log::info("Debug 查询手机号码 无法正常工作问题 Step 1 : ", [
             'title' => '方法开始',
-            'Model' => $model,
+            'Model' => $model->phone,
         ]);
         static::checkIntention($model);
         if ($model->intention <= 1 || $isBaidu) {
