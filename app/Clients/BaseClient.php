@@ -314,6 +314,7 @@ class BaseClient
 
     public static function authRequest()
     {
+        dd(static::isLogin(), static::login());
         if (!static::isLogin() && !static::login()) {
             Log::info("Debug 查询手机号码 无法正常工作问题 特别篇 : ", [
                 'title' => 'authRequest 登录状态错误',
