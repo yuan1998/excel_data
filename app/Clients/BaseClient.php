@@ -225,9 +225,10 @@ class BaseClient
     public static function clearAuth()
     {
         $path = static::cookiePath();
-        unlink($path);
+        if (file_exists($path)) {
+            unlink($path);
+        }
         static::$client = null;
-        var_dump(file_exists($path));
     }
 
 
@@ -295,7 +296,7 @@ class BaseClient
         $response = $client->request("POST", static::$login_url, [
             'form_params' => $account,
         ]);
-        dd($response->getBody()->getContents());
+//        dd($response->getBody()->getContents());
 
         return static::isLogin(false);
     }
@@ -316,7 +317,7 @@ class BaseClient
 
     public static function authRequest()
     {
-        dd(static::isLogin(), static::login());
+//        dd(static::isLogin(), static::login());
         if (!static::isLogin() && !static::login()) {
             Log::info("Debug 查询手机号码 无法正常工作问题 特别篇 : ", [
                 'title' => 'authRequest 登录状态错误',

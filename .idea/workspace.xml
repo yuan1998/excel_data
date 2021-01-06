@@ -51,8 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="297" column="48" selection-start-line="297" selection-start-column="48" selection-end-line="297" selection-end-column="48" />
+            <state relative-caret-position="632">
+              <caret line="320" column="36" lean-forward="true" selection-start-line="320" selection-start-column="36" selection-end-line="320" selection-end-column="36" />
               <folding>
                 <element signature="e#31#47#0#PHP" expanded="true" />
                 <element signature="e#764#3971#0#PHP" />
@@ -475,12 +475,12 @@
       <workItem from="1606029276773" duration="1887000" />
       <workItem from="1607304470377" duration="1681000" />
       <workItem from="1607939145854" duration="1850000" />
-      <workItem from="1609896050194" duration="977000" />
+      <workItem from="1609896050194" duration="1201000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1722098000" />
+    <option name="totallyTimeSpent" value="1722322000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1175" extended-state="6" />
@@ -589,13 +589,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/database/migrations/2019_10_10_142508_change_bill_account_data_add_customer_id_field.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="11" column="19" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2019_10_08_152108_create_bill_account_data_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="589">
@@ -889,20 +882,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="899">
-          <caret line="37" column="25" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/CustomerPhone.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Jobs/ExportJob.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -944,10 +923,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Clients/ZxClient.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="8" column="47" lean-forward="true" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Jobs/CustomerPhoneCheckJob.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="899">
+          <caret line="37" column="25" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/CustomerPhone.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Clients/BaseClient.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="297" column="48" selection-start-line="297" selection-start-column="48" selection-end-line="297" selection-end-column="48" />
+        <state relative-caret-position="632">
+          <caret line="320" column="36" lean-forward="true" selection-start-line="320" selection-start-column="36" selection-end-line="320" selection-end-column="36" />
           <folding>
             <element signature="e#31#47#0#PHP" expanded="true" />
             <element signature="e#764#3971#0#PHP" />
