@@ -149,7 +149,7 @@ class BaseClient
     public static $customer_info_check_url = '/Reservation/TempCustInfo/Index';
 
     // 预约单查询
-    public static $reservation_search_url = '/ReportCenter/NetBillAccountDtl/CareIndex';
+    public static $reservation_search_url = '/Reservation/ReservationSearch/Index';
     // 预约单查询 (公司)
     public static $reservation_search_company_index = '/Reservation/ReservationSearch/CompayIndex';
 
@@ -222,6 +222,13 @@ class BaseClient
         return false;
     }
 
+    public static function clearAuth()
+    {
+        $path = static::cookiePath();
+        unlink($path);
+        static::$client = null;
+    }
+
 
     public static function createClient($jar = true)
     {
@@ -280,6 +287,7 @@ class BaseClient
      */
     public static function login()
     {
+        static::clearAuth();
         $account = static::$account;
 
         $client = static::getClient();
@@ -440,7 +448,7 @@ class BaseClient
      * @throws CurlException
      * @throws StrictException
      */
-    public static function reservationSearchApi($data)
+    public static function reservationSearchApi($data = [])
     {
         $data = array_merge([
             'DatetimeRegStart' => '',

@@ -171,7 +171,6 @@ class BillAccountData extends Model
             'pageCurrent'           => '1',
             "orderField"            => '',
             "orderDirection"        => '',
-
         ]);
     }
 

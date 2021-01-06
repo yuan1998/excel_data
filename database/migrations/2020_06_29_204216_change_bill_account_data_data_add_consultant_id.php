@@ -15,21 +15,22 @@ class ChangeBillAccountDataDataAddConsultantId extends Migration
     {
         Schema::table('bill_account_data', function (Blueprint $table) {
             $table->unsignedBigInteger('online_return_visit_by_id')->index()->nullable();
+            $table->unsignedBigInteger('account_by_id')->index()->nullable();
+            $table->unsignedBigInteger('online_customer_id')->index()->nullable();
+            $table->unsignedBigInteger('archive_by_id')->index()->nullable();
+
             $table->foreign('online_return_visit_by_id')
                 ->references('id')
                 ->on('consultants')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('account_by_id')->index()->nullable();
             $table->foreign('account_by_id')
                 ->references('id')
                 ->on('consultants')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('online_customer_id')->index()->nullable();
             $table->foreign('online_customer_id')
                 ->references('id')
                 ->on('consultants')
                 ->onDelete('set null');
-            $table->unsignedBigInteger('archive_by_id')->index()->nullable();
             $table->foreign('archive_by_id')
                 ->references('id')
                 ->on('consultants')

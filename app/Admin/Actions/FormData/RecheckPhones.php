@@ -28,11 +28,15 @@ SCIPRT;
 
     public function handle(FormData $model)
     {
-        foreach ($model->phones as $phone) {
-            $phone->checkCrmInfo();
+        try {
+            foreach ($model->phones as $phone) {
+                $phone->checkCrmInfo();
+            }
+            return $this->response()->swal()->success('查询成功,稍后刷新页面查看结果')->refresh();
+        } catch (\Exception $e) {
+            return $this->response()->swal()->error($e->getMessage())->refresh();
         }
 
-        return $this->response()->swal()->success('查询成功,稍后刷新页面查看结果')->refresh();
     }
 
 }
