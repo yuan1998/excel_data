@@ -227,6 +227,7 @@ class BaseClient
         $path = static::cookiePath();
         unlink($path);
         static::$client = null;
+        var_dump(file_exists($path));
     }
 
 
@@ -290,10 +291,11 @@ class BaseClient
         static::clearAuth();
         $account = static::$account;
 
-        $client = static::getClient();
-        $client->request("POST", static::$login_url, [
+        $client   = static::getClient();
+        $response = $client->request("POST", static::$login_url, [
             'form_params' => $account,
         ]);
+        dd($response->getBody()->getContents());
 
         return static::isLogin(false);
     }
