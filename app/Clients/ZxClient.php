@@ -15,7 +15,7 @@ class ZxClient extends BaseClient
 
     public static $account = [
         'username' => '7010',
-        'password' => 'hm2020',
+        'password' => 'hm2018',
     ];
 
     public static $baseAccount = [

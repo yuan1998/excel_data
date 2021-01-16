@@ -357,6 +357,7 @@ class WeiboClient
                 'total' => (int)$dataResult['total'],
             ];
         }
+        //b2f5094e10a5b8d83e2e8f8be40c809d3f8c22522c78cc9ce9f812d6da710914
         return false;
     }
 
@@ -372,7 +373,6 @@ class WeiboClient
             "customer_id" => $customerId,
             '_t'          => (time() * 1000000),
         ];
-
 
         $url = "https://lingdong.biz.weibo.com/form-data/list";
 
