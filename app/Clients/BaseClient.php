@@ -222,16 +222,6 @@ class BaseClient
         return false;
     }
 
-    public static function clearAuth()
-    {
-        $path = static::cookiePath();
-        if (file_exists($path)) {
-            unlink($path);
-        }
-        static::$client = null;
-    }
-
-
     public static function createClient($jar = true)
     {
         return new Client([
@@ -289,7 +279,6 @@ class BaseClient
      */
     public static function login()
     {
-        static::clearAuth();
         $account = static::$account;
 
         $client   = static::getClient();

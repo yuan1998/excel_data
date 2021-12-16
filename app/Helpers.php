@@ -47,62 +47,62 @@ class Helpers
 
     public static $ExcelFields = [
         // 互动
-        'interactive'                => 0,
+        'interactive' => 0,
         // 评论
-        'comment'                    => 0,
+        'comment' => 0,
         // 私信
-        'message'                    => 0,
+        'message' => 0,
         // 评论转出
-        'comment_turn'               => 0,
+        'comment_turn' => 0,
         // 展现
-        'show'                       => 0,
+        'show' => 0,
         // 点击
-        'click'                      => 0,
+        'click' => 0,
         // 点击率
-        'click_rate'                 => 0,
+        'click_rate' => 0,
         // 点击成本
-        'click_spend'                => 0,
+        'click_spend' => 0,
         // 消费(虚)
-        'off_spend'                  => 0,
+        'off_spend' => 0,
         // 消费(实)
-        'spend'                      => 0,
+        'spend' => 0,
         // 总表单
-        'form_count'                 => 0,
+        'form_count' => 0,
         //
-        'effective_form'             => 0,
-        'turn_weixin'                => 0,
-        'form_rate'                  => 0,
-        'spend_rate'                 => 0,
-        'effective_form_rate'        => 0,
-        'form_spend'                 => 0,
-        'turn_spend'                 => 0,
-        'arriving_spend'             => 0,
-        'arriving_count'             => 0,
-        'archive_count'              => 0,
-        'un_archive_count'           => 0,
-        'new_first_arriving'         => 0,
-        'new_again_arriving'         => 0,
-        'old_arriving'               => 0,
-        'new_first_rate'             => 0,
-        'arriving_rate'              => 0,
-        'new_first_transaction'      => 0,
-        'new_again_transaction'      => 0,
+        'effective_form' => 0,
+        'turn_weixin' => 0,
+        'form_rate' => 0,
+        'spend_rate' => 0,
+        'effective_form_rate' => 0,
+        'form_spend' => 0,
+        'turn_spend' => 0,
+        'arriving_spend' => 0,
+        'arriving_count' => 0,
+        'archive_count' => 0,
+        'un_archive_count' => 0,
+        'new_first_arriving' => 0,
+        'new_again_arriving' => 0,
+        'old_arriving' => 0,
+        'new_first_rate' => 0,
+        'arriving_rate' => 0,
+        'new_first_transaction' => 0,
+        'new_again_transaction' => 0,
         'new_first_transaction_rate' => 0,
         'new_again_transaction_rate' => 0,
-        'old_transaction'            => 0,
-        'old_transaction_rate'       => 0,
-        'total_transaction'          => 0,
-        'total_transaction_rate'     => 0,
-        'new_first_account'          => 0,
-        'new_again_account'          => 0,
-        'old_account'                => 0,
-        'total_account'              => 0,
-        'new_first_average'          => 0,
-        'new_again_average'          => 0,
-        'old_average'                => 0,
-        'total_average'              => 0,
-        'proportion_total'           => 0,
-        'proportion_new'             => 0,
+        'old_transaction' => 0,
+        'old_transaction_rate' => 0,
+        'total_transaction' => 0,
+        'total_transaction_rate' => 0,
+        'new_first_account' => 0,
+        'new_again_account' => 0,
+        'old_account' => 0,
+        'total_account' => 0,
+        'new_first_average' => 0,
+        'new_again_average' => 0,
+        'old_average' => 0,
+        'total_average' => 0,
+        'proportion_total' => 0,
+        'proportion_new' => 0,
     ];
 
     public static $MediumSourceTypeCode = [
@@ -115,7 +115,7 @@ class Helpers
 
     public static $UserIdCode = [
         '口腔网电公用' => 'BF6CE41EC9204AD9BA30A994016EEDAA',
-        '洪诩'     => 'B90B67132A564A759E16A98E01269A10',
+        '洪诩' => 'B90B67132A564A759E16A98E01269A10',
     ];
 
     public static $ArchiveTypeCode = [
@@ -165,12 +165,12 @@ class Helpers
     /**
      * 将excel 转换成 array
      * @param Collection $row
-     * @param null       $fields
+     * @param null $fields
      * @return array
      */
     public static function excelToKeyArray(Collection $row, $fields = null)
     {
-        $keys   = null;
+        $keys = null;
         $result = [];
 
         $row->each(function (Collection $value) use (&$keys, &$result, $fields) {
@@ -204,7 +204,7 @@ class Helpers
 
             foreach ($cookies as $cookie) {
                 $data = explode('=', $cookie);
-                $key  = str_replace($search, '', $data[0]);
+                $key = str_replace($search, '', $data[0]);
 
                 $result[$key] = $data[1];
             }
@@ -235,8 +235,8 @@ class Helpers
     {
         $head = $dom->find('thead');
         $body = $dom->find('tbody');
-        $ths  = $head->find('th');
-        $trs  = $body->find('tr');
+        $ths = $head->find('th');
+        $trs = $body->find('tr');
 
         $keys = [];
         foreach ($ths as $th) {
@@ -245,10 +245,12 @@ class Helpers
 
         $result = [];
         foreach ($trs as $tr) {
-            $td  = $tr->find('td');
+            $td = $tr->find('td');
             $arr = [];
             foreach ($td as $index => $value) {
-                $name      = $keys[$index];
+                if ($name = data_get($keys, $index))
+                    continue;
+                
                 $valueText = $value->innerHTML;
 
                 if ($name === '客户' || $name === '客户姓名' || $name == '网电客户') {
@@ -370,7 +372,7 @@ class Helpers
         Log::info("Debug 查询手机号码 无法正常工作问题 Step 4 : ", [
             'title' => 'tempCustInfoArchive 查询结果',
             'phone' => $model->phone,
-            'data'  => $data,
+            'data' => $data,
         ]);
 
         $model->fill($data);
@@ -394,7 +396,7 @@ class Helpers
         Log::info("Debug 查询手机号码 无法正常工作问题 Step 3 : ", [
             'title' => 'baiduCheckArchive 查询结果',
             'phone' => $model->phone,
-            'data'  => $data,
+            'data' => $data,
         ]);
 
         if ($data) {
@@ -415,15 +417,15 @@ class Helpers
             return;
         }
         // 获取 模型日期月份 的第一天 和 最后一天
-        $date      = Carbon::parse($model->getDate());
+        $date = Carbon::parse($model->getDate());
         $firstDate = $date->firstOfMonth()->toDateString();
-        $lastDate  = $date->lastOfMonth()->toDateString();
+        $lastDate = $date->lastOfMonth()->toDateString();
 
         $data = $client::toHospitalSearchArriving([
-            'phone'            => $model->phone,
+            'phone' => $model->phone,
             'DatetimeRegStart' => $firstDate,
-            'DatetimeRegEnd'   => $lastDate,
-            'pageSize'         => 1,
+            'DatetimeRegEnd' => $lastDate,
+            'pageSize' => 1,
         ]);
         $model->fill($data);
         $model->save();
@@ -449,7 +451,7 @@ class Helpers
         Log::info("Debug 查询手机号码 无法正常工作问题 Step 2 : ", [
             'title' => 'checkIntention 查询结束',
             'phone' => $model->phone,
-            'data'  => $data,
+            'data' => $data,
         ]);
 
         $model->fill($data);
@@ -516,8 +518,8 @@ class Helpers
 
     /**
      *  查看传参中的 病种类型 是否匹配 关键词字符串.
-     * @param array  $types 病种类型
-     * @param string $key   关键词字符串
+     * @param array $types 病种类型
+     * @param string $key 关键词字符串
      * @param string $field
      * @return Collection|null
      */
@@ -571,7 +573,7 @@ class Helpers
             $item = MediumType::firstOrCreate([
                 'title' => $name
             ]);
-            $val  = $item->id;
+            $val = $item->id;
             Redis::set($name, $val);
         }
 
@@ -592,7 +594,7 @@ class Helpers
             $item = ArchiveType::firstOrCreate([
                 'title' => $name
             ]);
-            $val  = $item->id;
+            $val = $item->id;
             Redis::set($name, $val);
         }
 
@@ -636,11 +638,11 @@ class Helpers
 
         if (!$val) {
             $item = Consultant::firstOrCreate([
-                'name'    => $name,
+                'name' => $name,
                 'keyword' => $name,
-                'type'    => $type,
+                'type' => $type,
             ]);
-            $val  = $item->id;
+            $val = $item->id;
             Redis::set("{$prefix}{$type}_{$name}", $val);
         }
 
@@ -702,7 +704,7 @@ class Helpers
     /**
      * 验证 电话号码 是否正确
      * @param string|int $value 电话号
-     * @param bool       $str
+     * @param bool $str
      * @return bool
      */
     public static function validatePhone($value, $str = false)
@@ -749,7 +751,7 @@ class Helpers
 
     /**
      * 迭代 日期范围, 在回调中传入当前日期
-     * @param array   $dates    日期范围
+     * @param array $dates 日期范围
      * @param Closure $callBack 回调
      */
     public static function dateRangeForEach($dates, Closure $callBack)
@@ -784,14 +786,14 @@ class Helpers
     /**
      * 获取科室下的所有病种,判断 关键词字符串 是否有匹配的病种
      * @param DepartmentDataType $department 科室模型
-     * @param string             $str        关键词字符串
-     * @param string             $field      关键词字段
+     * @param string $str 关键词字符串
+     * @param string $field 关键词字段
      * @return Collection|array
      */
     public static function checkDepartmentProject($department, $str, $field = 'keyword')
     {
         // 获取 科室ID, 使用ID来获取科室下的病种
-        $id           = $department->id;
+        $id = $department->id;
         $projectTypes = static::getProjectOfDepartmentId($id);
 
         // 如果没有病种,返回null
@@ -812,8 +814,8 @@ class Helpers
     public static function getNameFromNumber($num)
     {
         $numeric = ($num - 1) % 26;
-        $letter  = chr(65 + $numeric);
-        $num2    = intval(($num - 1) / 26);
+        $letter = chr(65 + $numeric);
+        $num2 = intval(($num - 1) / 26);
         if ($num2 > 0) {
             return static::getNameFromNumber($num2) . $letter;
         } else {
@@ -855,7 +857,7 @@ class Helpers
     public static function crmDataCheckAccount($data, $type)
     {
         $mediumId = $data['medium_id'];
-        $item     = Channel::query()
+        $item = Channel::query()
             ->whereHas('mediums', function ($query) use ($mediumId) {
                 $query->where('id', $mediumId);
             })
@@ -875,8 +877,8 @@ class Helpers
 
     public static function formDataCheckAccount($item, $field, $typeField = 'form_type', $t = false)
     {
-        $type    = $item['type'];
-        $typeId  = $item[$typeField];
+        $type = $item['type'];
+        $typeId = $item[$typeField];
         $keyword = $item[$field];
 //        dd($type , $typeId , $keyword);
         if (!$keyword || !$typeId || !$type) return null;
@@ -990,7 +992,7 @@ class Helpers
         $filename = $file->getClientOriginalName();
         if (!preg_match('/\.(xls)/', $filename)) {
             $path = $file->path();
-            $ctx  = \File::get($path);
+            $ctx = \File::get($path);
 
             if (!static::is_utf8($ctx)) {
                 $ctx = mb_convert_encoding($ctx, 'UTF-8', 'gb2312');
@@ -1002,14 +1004,14 @@ class Helpers
     public static function timeBetween($start, $end, $testTime = null)
     {
         // 获取用于对比的时间
-        $now   = $testTime ? Carbon::parse($testTime) : Carbon::now();
+        $now = $testTime ? Carbon::parse($testTime) : Carbon::now();
         $start = Carbon::parse($start);
-        $end   = Carbon::parse($end);
+        $end = Carbon::parse($end);
 
         // 转换时间格式, 例: 09:00:00 => 90000
         $startTime = (int)$start->format('His');
-        $endTime   = (int)$end->format('His');
-        $nowTime   = (int)$now->format('His');
+        $endTime = (int)$end->format('His');
+        $nowTime = (int)$now->format('His');
 
         // 返回对比结果   start_time <=  now <= $end_time
         return $startTime <= $nowTime && $nowTime <= $endTime;
