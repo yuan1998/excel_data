@@ -239,6 +239,11 @@ class Helpers
      */
     public static function parserHtmlTable($dom, $_keys = null, $debug = false)
     {
+        $result = [];
+
+        if (!$dom || !count($dom))
+            return $result;
+
         $head = $dom->find('thead');
         $body = $dom->find('tbody');
         $ths = $head->find('th');
@@ -249,7 +254,6 @@ class Helpers
             $keys[] = $th->text;
         }
 
-        $result = [];
         foreach ($trs as $tr) {
             $td = $tr->find('td');
             $arr = [];
@@ -363,8 +367,10 @@ class Helpers
             }
         }
 
-        $model->fill($data);
-        $model->save();
+        if ($data) {
+            $model->fill($data);
+            $model->save();
+        }
 
         Log::info("Debug 查询手机号码 无法正常工作问题 Step : 5  ", [
             'title' => '步骤结束',
