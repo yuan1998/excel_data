@@ -115,7 +115,6 @@ class Handler extends ExceptionHandler
         }
 
         $response['status'] = $statusCode;
-        dd($response);
 
         return response()->json($response, $statusCode);
     }
