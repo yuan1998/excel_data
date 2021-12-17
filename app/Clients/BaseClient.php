@@ -277,7 +277,7 @@ class BaseClient
      * @return boolean
      * @throws GuzzleException
      */
-    public static function login()
+    public static function login($debug = false)
     {
         $account = static::$account;
 
@@ -285,34 +285,50 @@ class BaseClient
         $response = $client->request("POST", static::$login_url, [
             'form_params' => $account,
         ]);
-//        dd($response->getBody()->getContents());
 
-        return static::isLogin(false);
+        $contents = $response->getBody()->getContents();
+        $result = json_decode($contents, true);
+
+        if ($debug) {
+            Log::info('debug 登录结果查看', [
+                '登录结果' => $contents,
+            ]);
+        }
+
+        return data_get($result, 'statusCode', 0) === "200";
     }
 
     public static function isLogin($checkFile = true)
     {
-        if ($checkFile && !static::checkExistsCookieFile())
-            return false;
-
-
         $client = static::getClient();
         $result = $client->request("GET", '/');
 
         $response = $result->getBody()->getContents();
+        $result = preg_match('/用户登录/', $response);
+        Log::info('debug 登录', [
+            '登录结果' => $result,
+        ]);
 
-        return !!preg_match('/注销登陆/', $response);
+        return $result;
+    }
+
+    public static function loginStatus()
+    {
+        if (!static::isLogin()) {
+            return static::login();
+        }
+        return true;
     }
 
     public static function authRequest()
     {
 //        dd(static::isLogin(), static::login());
-        if (!static::isLogin() && !static::login()) {
+        if (!static::loginStatus()) {
             Log::info("Debug 查询手机号码 无法正常工作问题 特别篇 : ", [
                 'title' => 'authRequest 登录状态错误',
                 'class' => static::class,
             ]);
-
+            static::login(true);
             throw new \Exception("登录验证失败!");
         }
 
