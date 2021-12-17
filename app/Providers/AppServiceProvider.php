@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\models\CrmGrabLog;
+use App\Models\CrmGrabLog;
 use App\Models\CustomerPhone;
 use App\Models\ExportDataLog;
 use App\Models\FormDataPhone;
