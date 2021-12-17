@@ -391,7 +391,6 @@ class BaseClient
     public static function tempSearchData($data)
     {
         $dom = static::tempSearchApi($data);
-
         return static::parserDomTableData($dom);
     }
 

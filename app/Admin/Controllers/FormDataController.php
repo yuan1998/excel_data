@@ -148,7 +148,6 @@ class FormDataController extends AdminController
         $grid->disableCreateButton();
         $grid->exporter(new FormDataExporter());
 
-
         $grid->batchActions(function ($batch) {
             $batch->add(new BatchRecheckItem());
             $batch->add(new BatchRecheckPhones());

@@ -264,8 +264,8 @@ class Helpers
 
                 if ($name === '客户' || $name === '客户姓名' || $name == '网电客户') {
                     $aTag = $value->find('a');
-                    if ($aTag && $a = $aTag->innerHTML) {
-                        $valueText = $a;
+                    if (count($aTag)) {
+                        $valueText = $aTag->innerHTML;
                     }
                     preg_match("/CustInfo\(\'(.*?)\'\)/", $value->outerHTML, $match);
                     $arr['customer_id'] = data_get($match, 1);
