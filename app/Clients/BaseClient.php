@@ -25,93 +25,93 @@ use PHPHtmlParser\Exceptions\StrictException;
 class BaseClient
 {
     public static $result_data_type = [
-        "是否下单"    => 'is_order',
-        "是否到院"    => 'is_arriving',
-        "网电客户"    => 'temp_visitor',
-        "电话"      => 'phone',
-        "性别"      => 'gender',
-        "建档类型"    => 'archive_type',
-        "线上客服"    => 'online_customer',
-        "回访次数"    => 'return_visit_count',
-        "建档人"     => 'archive_by',
-        "回访人"     => 'return_visit_by',
-        "客户推荐人"   => 'referrer',
-        "建档时间"    => 'archive_date',
-        "到院时间"    => 'arriving_date',
-        "最后回访时间"  => 'last_return_visit_date',
-        "媒介类型"    => 'medium',
-        "媒介来源"    => 'medium_source',
-        "美容院类型"   => 'beauty_salon_type',
-        "美容院名称"   => 'beauty_salon_name',
-        "美容院"     => 'beauty_salon_name',
-        "标签名称"    => 'tag_name',
-        "备注"      => 'comment',
-        "关注问题"    => 'focus_question',
-        "婚姻状况"    => 'marriage',
-        "年龄"      => 'age',
-        "经济能力"    => 'financial_ability',
-        "省份"      => 'province',
-        "县市"      => 'county',
-        "区"       => 'area',
-        "地址"      => 'address',
-        "职业"      => 'career',
-        "微信号"     => 'weixin',
-        "QQ"      => 'qq',
-        "预约号"     => 'reservation_number',
-        "访客ID"    => 'visitor_id',
-        "员工推荐人"   => 'staff_referrer',
-        "到院"      => 'is_arriving',
-        "下单类型"    => 'order_type',
-        "临时客户"    => 'temp_visitor',
-        "预约单时间"   => 'reservation_date',
-        "意向度"     => 'intention',
-        "下单人"     => 'order_by',
-        "一级项目"    => 'project_category_1',
-        "二级项目"    => 'project_category_2',
-        "项目名称"    => 'project_name',
-        "下单时间"    => 'order_time',
-        "到场时间"    => 'arriving_date',
-        "项目备注"    => 'project_remarks',
-        "客户备注"    => 'visitor_remarks',
-        "临客备注"    => 'temp_remarks',
-        "是否成交"    => 'is_transaction',
-        "客户状态"    => 'customer_status',
-        "二次来院"    => 'again_arriving',
-        "二次到院"    => 'again_arriving',
-        "客户"      => 'customer',
-        "项目需求"    => 'project_demand',
-        "网电建档人"   => 'online_archive_by',
-        "媒介"      => 'medium',
-        "网电回访人"   => 'online_return_visit_by',
-        "美学顾问"    => 'site_consultant',
-        "医生"      => 'doctor',
-        "临客建档时间"  => 'temp_archive_date',
-        "接待时间"    => 'reception_date',
-        "应付款"     => 'payable',
-        "实付款"     => 'real_payment',
-        "收费单类型"   => 'order_type',
-        "结账时间"    => 'pay_date',
-        "接诊单编号"   => 'reception_form_number',
-        "预约单编号"   => 'reservation_form_number',
-        "收费单编号"   => 'order_form_number',
-        "咨询意向度"   => 'intention',
-        "科室"      => 'department',
-        "预约专家"    => 'reservation_expert',
-        "推荐人"     => 'referrer_by',
-        "推荐关系"    => 'referrer_relation',
-        "客户卡号"    => 'customer_card_number',
-        "微信"      => 'weixin',
-        "城市"      => 'city',
-        "开单"      => 'account_by',
-        "收费单号"    => 'order_form_number',
-        "客户姓名"    => 'customer',
-        "结账日期"    => 'pay_date',
-        "总金额"     => 'total',
-        "应付金额"    => 'payable',
-        "实付金额"    => 'real_payment',
-        "开单业绩"    => 'order_account',
+        "是否下单" => 'is_order',
+        "是否到院" => 'is_arriving',
+        "网电客户" => 'temp_visitor',
+        "电话" => 'phone',
+        "性别" => 'gender',
+        "建档类型" => 'archive_type',
+        "线上客服" => 'online_customer',
+        "回访次数" => 'return_visit_count',
+        "建档人" => 'archive_by',
+        "回访人" => 'return_visit_by',
+        "客户推荐人" => 'referrer',
+        "建档时间" => 'archive_date',
+        "到院时间" => 'arriving_date',
+        "最后回访时间" => 'last_return_visit_date',
+        "媒介类型" => 'medium',
+        "媒介来源" => 'medium_source',
+        "美容院类型" => 'beauty_salon_type',
+        "美容院名称" => 'beauty_salon_name',
+        "美容院" => 'beauty_salon_name',
+        "标签名称" => 'tag_name',
+        "备注" => 'comment',
+        "关注问题" => 'focus_question',
+        "婚姻状况" => 'marriage',
+        "年龄" => 'age',
+        "经济能力" => 'financial_ability',
+        "省份" => 'province',
+        "县市" => 'county',
+        "区" => 'area',
+        "地址" => 'address',
+        "职业" => 'career',
+        "微信号" => 'weixin',
+        "QQ" => 'qq',
+        "预约号" => 'reservation_number',
+        "访客ID" => 'visitor_id',
+        "员工推荐人" => 'staff_referrer',
+        "到院" => 'is_arriving',
+        "下单类型" => 'order_type',
+        "临时客户" => 'temp_visitor',
+        "预约单时间" => 'reservation_date',
+        "意向度" => 'intention',
+        "下单人" => 'order_by',
+        "一级项目" => 'project_category_1',
+        "二级项目" => 'project_category_2',
+        "项目名称" => 'project_name',
+        "下单时间" => 'order_time',
+        "到场时间" => 'arriving_date',
+        "项目备注" => 'project_remarks',
+        "客户备注" => 'visitor_remarks',
+        "临客备注" => 'temp_remarks',
+        "是否成交" => 'is_transaction',
+        "客户状态" => 'customer_status',
+        "二次来院" => 'again_arriving',
+        "二次到院" => 'again_arriving',
+        "客户" => 'customer',
+        "项目需求" => 'project_demand',
+        "网电建档人" => 'online_archive_by',
+        "媒介" => 'medium',
+        "网电回访人" => 'online_return_visit_by',
+        "美学顾问" => 'site_consultant',
+        "医生" => 'doctor',
+        "临客建档时间" => 'temp_archive_date',
+        "接待时间" => 'reception_date',
+        "应付款" => 'payable',
+        "实付款" => 'real_payment',
+        "收费单类型" => 'order_type',
+        "结账时间" => 'pay_date',
+        "接诊单编号" => 'reception_form_number',
+        "预约单编号" => 'reservation_form_number',
+        "收费单编号" => 'order_form_number',
+        "咨询意向度" => 'intention',
+        "科室" => 'department',
+        "预约专家" => 'reservation_expert',
+        "推荐人" => 'referrer_by',
+        "推荐关系" => 'referrer_relation',
+        "客户卡号" => 'customer_card_number',
+        "微信" => 'weixin',
+        "城市" => 'city',
+        "开单" => 'account_by',
+        "收费单号" => 'order_form_number',
+        "客户姓名" => 'customer',
+        "结账日期" => 'pay_date',
+        "总金额" => 'total',
+        "应付金额" => 'payable',
+        "实付金额" => 'real_payment',
+        "开单业绩" => 'order_account',
         "财务收支总金额" => 'total_pay',
-        "返款后业绩"   => 'total_account',
+        "返款后业绩" => 'total_account',
     ];
 
     public static $arriving_status = [
@@ -225,16 +225,16 @@ class BaseClient
     public static function createClient($jar = true)
     {
         return new Client([
-            'cookies'     => $jar,
-            'base_uri'    => static::$base_url,
-            'verify'      => false,
+            'cookies' => $jar,
+            'base_uri' => static::$base_url,
+            'verify' => false,
             'http_errors' => false,
-            'headers'     => [
-                'Host'             => '172.16.8.8',
-                'Origin'           => 'http://172.16.8.8',
-                'Referer'          => 'http://172.16.8.8/',
+            'headers' => [
+                'Host' => '172.16.8.8',
+                'Origin' => 'http://172.16.8.8',
+                'Referer' => 'http://172.16.8.8/',
                 'X-Requested-With' => 'XMLHttpRequest',
-                'User-Agent'       => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
             ],
         ]);
     }
@@ -261,7 +261,7 @@ class BaseClient
      */
     public static function getToken()
     {
-        $key  = static::$type . '_Token_Data';
+        $key = static::$type . '_Token_Data';
         $data = json_decode(Redis::get($key), true);
 
         if (true || !$data || Carbon::now()->gt(Carbon::parse($data['expires']))) {
@@ -281,7 +281,7 @@ class BaseClient
     {
         $account = static::$account;
 
-        $client   = static::getClient();
+        $client = static::getClient();
         $response = $client->request("POST", static::$login_url, [
             'form_params' => $account,
         ]);
@@ -331,7 +331,7 @@ class BaseClient
      */
     public static function getArchiveTypes()
     {
-        $dom     = static::accountSearchApi([
+        $dom = static::accountSearchApi([
             'count' => 1
         ]);
         $level_3 = $dom->find('#NetBillAccountIndex-index-select-ztreetree_0')->find('[data-level=3]');
@@ -360,7 +360,7 @@ class BaseClient
     {
         $data = array_merge([
             'DatetimeRegStart' => '',
-            'DatetimeRegEnd'   => '',
+            'DatetimeRegEnd' => '',
         ], $data ?? []);
 
         $api = static::$companyApi ? static::$temp_search_company_index : static::$temp_search_url;
@@ -372,8 +372,8 @@ class BaseClient
     {
         return static::tempSearchData([
             'DatetimeRegStart' => $start,
-            'DatetimeRegEnd'   => $end,
-            'pageSize'         => $count,
+            'DatetimeRegEnd' => $end,
+            'pageSize' => $count,
         ]);
     }
 
@@ -414,20 +414,21 @@ class BaseClient
 
     public static function baiduTempSearch(array $data, $model)
     {
-        $item = static::tempSearchData($data)->filter(function ($item) {
-            return !!$item['phone'];
-        })->first();
+        $item = static::tempSearchData($data)
+            ->filter(function ($item) {
+                return !!data_get($item, 'phone');
+            })->first();
 
         if (!$item) return [];
 
         return [
-            'is_archive'     => 1,
+            'is_archive' => 1,
             'has_visitor_id' => !!$item['qq'],
-            'has_url'        => !!$item['visitor_id'],
-            'archive_type'   => $item['archive_type'],
-            'is_repeat'      => Helpers::checkIsRepeat($model->date, $item['archive_date']),
-            'turn_weixin'    => Helpers::checkTurnWeixin($item['comment']),
-            'medium_error'   => $model->checkMediumIsError($item['medium']),
+            'has_url' => !!$item['visitor_id'],
+            'archive_type' => $item['archive_type'],
+            'is_repeat' => Helpers::checkIsRepeat($model->date, $item['archive_date']),
+            'turn_weixin' => Helpers::checkTurnWeixin($item['comment']),
+            'medium_error' => $model->checkMediumIsError($item['medium']),
         ];
     }
 
@@ -441,15 +442,15 @@ class BaseClient
      * @throws CurlException
      * @throws StrictException
      */
-    public static function reservationSearchApi($data = [])
+    public static function reservationSearchApi($data = [], $toDom = true)
     {
         $data = array_merge([
             'DatetimeRegStart' => '',
-            'DatetimeRegEnd'   => '',
-            'DatetimeRegMin'   => '',
-            'DatetimeRegMax'   => '',
-            'DatetimeReg'      => 1,
-            'Isxiangxi'        => 'Y',
+            'DatetimeRegEnd' => '',
+            'DatetimeRegMin' => '',
+            'DatetimeRegMax' => '',
+            'DatetimeReg' => 1,
+            'Isxiangxi' => 'Y',
         ], $data ?? []);
 
         if (env("USE_MEDIA_TYPE") && static::$mediaSourceType) {
@@ -458,7 +459,7 @@ class BaseClient
 
         $api = static::$companyApi ? static::$reservation_search_company_index : static::$reservation_search_url;
 
-        return static::postUriGetDom($api, $data);
+        return static::postUriGetDom($api, $data, $toDom);
     }
 
     /**
@@ -511,22 +512,21 @@ class BaseClient
     {
         $result = static::reservationSearchData($data)
             ->filter(function ($item) {
-                return !!$item['phone'];
+                return !!data_get($item, 'phone');
             });
-        $res    = [
+        $res = [
             'intention' => 1,
         ];
 
         if ($result->isNotEmpty()) {
             $item = $result->first();
-
-            $intention           = Helpers::intentionCheck($item['intention']);
+            $intention = Helpers::intentionCheck($item['intention']);
             $res['archive_type'] = $item['archive_type'];
-            $res['intention']    = $intention;
+            $res['intention'] = $intention;
             if ($intention > 1) {
-                $res['is_archive']   = 1;
-                $res['is_repeat']    = Helpers::checkIsRepeat($model->date, $item['archive_date']);
-                $res['turn_weixin']  = Helpers::checkTurnWeixin($item['visitor_remarks']);
+                $res['is_archive'] = 1;
+                $res['is_repeat'] = Helpers::checkIsRepeat($model->date, $item['archive_date']);
+                $res['turn_weixin'] = Helpers::checkTurnWeixin($item['visitor_remarks']);
                 $res['medium_error'] = $model->checkMediumIsError($item['medium']);
             }
         }
@@ -537,12 +537,11 @@ class BaseClient
     public static function normalChargeApi($id, $count)
     {
         $data = [
-            'id'       => $id,
+            'id' => $id,
             'pageSize' => $count,
         ];
 
-        $test = static::postUriGetDom(static::$normal_charge_url, $data);
-        return $test;
+        return static::postUriGetDom(static::$normal_charge_url, $data);
     }
 
     public static function custInfoApi($id)
@@ -559,7 +558,7 @@ class BaseClient
     public static function normalChargesApi($id, $count)
     {
         $data = [
-            'id'       => $id,
+            'id' => $id,
             'pageSize' => $count,
         ];
 
@@ -597,7 +596,7 @@ class BaseClient
     public static function customerPreChargeApi($id, $count)
     {
         $data = [
-            'id'       => $id,
+            'id' => $id,
             'pageSize' => $count,
         ];
 
@@ -606,7 +605,7 @@ class BaseClient
 
     public static function customerPreChargeData($id, $count = 80)
     {
-        $dom  = static::customerPreChargeApi($id, $count);
+        $dom = static::customerPreChargeApi($id, $count);
         $test = static::parserDomTableData($dom, 'table[data-nowrap]');
         return $test;
     }
@@ -625,11 +624,11 @@ class BaseClient
     public static function toHospitalSearchApi($data)
     {
         $data = array_merge([
-            'DatetimeRegStart'     => '',
-            'DatetimeRegEnd'       => '',
+            'DatetimeRegStart' => '',
+            'DatetimeRegEnd' => '',
             'TempDatetimeRegStart' => '',
-            'TempDatetimeRegEnd'   => '',
-            'pageSize'             => 1
+            'TempDatetimeRegEnd' => '',
+            'pageSize' => 1
         ], $data ?? []);
 
         if (static::$mediaSourceType) {
@@ -675,14 +674,14 @@ class BaseClient
             'arriving_type' => 1,
         ];
 
-        $item      = $data->first();
+        $item = $data->first();
         $intention = Helpers::intentionCheck($item['intention']);
 
         $arriving_type = Helpers::arrivingTypeCheck($item);
         return [
-            'intention'     => $intention,
+            'intention' => $intention,
             'arriving_type' => $arriving_type,
-            'is_archive'    => 1,
+            'is_archive' => 1,
         ];
     }
 
@@ -702,9 +701,9 @@ class BaseClient
 
         $data = array_merge([
             'DatetimeCheckoutStart' => $today,
-            'DatetimeCheckoutEnd'   => $today,
-            'isSearch'              => 1,
-            'pageSize'              => 1
+            'DatetimeCheckoutEnd' => $today,
+            'isSearch' => 1,
+            'pageSize' => 1
         ], $data ?? []);
 
         if (static::$mediaSourceType) {
@@ -739,13 +738,13 @@ class BaseClient
     {
         $date = Carbon::now()->toDateTimeString();
         $data = array_merge([
-            'DatetimeReg'    => $date,
-            'CustName'       => '自动创建',
-            'Province'       => '610000',
-            'Age'            => '1',
-            'Sex'            => '1',
-            'City'           => '610100',
-            'Country'        => '0',
+            'DatetimeReg' => $date,
+            'CustName' => '自动创建',
+            'Province' => '610000',
+            'Age' => '1',
+            'Sex' => '1',
+            'City' => '610100',
+            'Country' => '0',
             'IncomeCapacity' => 'IC_CHA',
         ], $data);
         return static::postUriGetDom(static::$customer_info_create_url, $data, false);
@@ -808,18 +807,17 @@ class BaseClient
         $data = array_merge([
             'pageCurrent' => 1,
         ], ['Phone' => $phone]);
-        return static::postUriGetDom(static::$customer_info_check_url, $data);
+        $result = static::postUriGetDom(static::$customer_info_check_url, $data);
+        return $result;
     }
 
 
     public static function tempCustomerInfoCheckData($phone)
     {
         $dom = static::tempCustomerInfoCheckApi($phone);
-        try {
-            return static::parserDomTableData($dom, 'table.table-hover');
-        } catch (\Exception $exception) {
-            return false;
-        }
+        $result = static::parserDomTableData($dom, 'table.table-hover');
+        return $result;
+
     }
 
     public static function tempCustomerInfoCheckExists($phone)
@@ -838,8 +836,8 @@ class BaseClient
 
         return [
             'is_archive' => 1,
-            'intention'  => Helpers::intentionCheck($item['intention']),
-            'is_repeat'  => 2,
+            'intention' => Helpers::intentionCheck($item['intention']),
+            'is_repeat' => 2,
         ];
     }
 
@@ -850,12 +848,12 @@ class BaseClient
      * @param null $select
      * @return \Illuminate\Support\Collection
      */
-    public static function parserDomTableData($dom, $select = null)
+    public static function parserDomTableData($dom, $select = null, $debug = false)
     {
         $select = $select ?? static::$to_hospital_search_result_selector;
 
         $dataList = $dom->find($select);
-        $data     = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type));
+        $data = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type, $debug));
         return $data;
     }
 

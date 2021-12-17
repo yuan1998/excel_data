@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Extentions\Fields;
+namespace App\Admin\Extensions\Fields;
 
 use App\Models\ArchiveType;
 use App\Models\DepartmentType;
@@ -152,7 +152,7 @@ class ProjectSelectOfDepartment extends Field
         if (currentProject) {
             var target = $(".$class");
             target.find("option").remove();
-            
+
             var s2 = $(target).select2({
                 placeholder: $placeholder,
                 allowClear: $allowClear,
@@ -163,7 +163,7 @@ class ProjectSelectOfDepartment extends Field
                 }),
             })
             s2.val($defaultSelect).trigger('change');
-        } 
+        }
 
 $(document).off('change', "{$this->getElementClassSelector()}");
 $(document).on('change', "{$this->getElementClassSelector()}", function () {
@@ -175,7 +175,7 @@ $(document).on('change', "{$this->getElementClassSelector()}", function () {
     });
     target.find("option").remove();
     console.log(data);
-    
+
      $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,
@@ -222,7 +222,7 @@ var refreshOptions = function(url, target) {
         target.find("option").remove();
         $(target).select2({
             placeholder: $placeholder,
-            allowClear: $allowClear,        
+            allowClear: $allowClear,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Extentions\Fields;
+namespace App\Admin\Extensions\Fields;
 
 use App\Models\ArchiveType;
 use App\Models\DepartmentType;
@@ -149,14 +149,14 @@ class MySelect extends Field
         if (ArchivesJson) {
             var target = $(".$class");
             target.find("option").remove();
-            
+
             var s2 = $(target).select2({
                 placeholder: $placeholder,
                 allowClear: $allowClear,
                 data: ArchivesJson,
             })
             s2.val($defaultSelect).trigger('change');
-        } 
+        }
 
 $(document).off('change', "{$this->getElementClassSelector()}");
 $(document).on('change', "{$this->getElementClassSelector()}", function () {
@@ -210,7 +210,7 @@ var refreshOptions = function(url, target) {
         target.find("option").remove();
         $(target).select2({
             placeholder: $placeholder,
-            allowClear: $allowClear,        
+            allowClear: $allowClear,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;

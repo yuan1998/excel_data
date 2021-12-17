@@ -2,7 +2,6 @@
 
 namespace App\Admin\Actions\Weibo;
 
-use App\Models\WeiboFormData;
 use App\Models\WeiboUser;
 use Carbon\Carbon;
 use Encore\Admin\Actions\BatchAction;

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions\FormData;
 
+use App\Exceptions\Handler;
 use App\Models\FormData;
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ class RecheckPhones extends RowAction
                 showConfirmButton: false,
                 allowOutsideClick: false
             });
-   
+
 //]]>
 
 SCIPRT;
@@ -34,6 +35,7 @@ SCIPRT;
             }
             return $this->response()->swal()->success('查询成功,稍后刷新页面查看结果')->refresh();
         } catch (\Exception $e) {
+            return Handler::customApiResponse($e);
             return $this->response()->swal()->error($e->getMessage())->refresh();
         }
 

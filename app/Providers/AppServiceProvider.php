@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        ini_set("max_execution_time", "3000");
+//        ini_set("max_execution_time", "3000");
 
         FormDataPhone::observe(FormDataPhoneObserver::class);
         CrmGrabLog::observe(CrmGrabLogObserver::class);

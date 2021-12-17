@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Admin\Actions\WeiboConfigAction;
 use App\Clients\WeiboClient;
 use App\Helpers;
-use App\Jobs\PullWeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 

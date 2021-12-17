@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Admin\Actions\WeiboGrab;
+use App\Admin\Actions\Weibo\WeiboGrab;
 use App\Models\Channel;
 use App\models\CrmGrabLog;
 use App\Models\WeiboAccounts;

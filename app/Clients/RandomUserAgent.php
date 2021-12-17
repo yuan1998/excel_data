@@ -3,7 +3,7 @@
 namespace App\Clients;
 
 
-class UserAgent
+class RandomUserAgent
 {
     /**
      * Agent data stored in file agent_list.json.

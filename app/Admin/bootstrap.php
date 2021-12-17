@@ -18,8 +18,8 @@
  *
  */
 
-use App\Admin\Extentions\Fields\MySelect;
-use App\Admin\Extentions\Fields\ProjectSelectOfDepartment;
+use App\Admin\Extensions\Fields\MySelect;
+use App\Admin\Extensions\Fields\ProjectSelectOfDepartment;
 use App\Admin\Filters\BetweenDate;
 use App\Admin\Filters\Test;
 use Encore\Admin\Facades\Admin;

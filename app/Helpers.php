@@ -30,6 +30,7 @@ use App\Models\YiliaoData;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Closure;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -38,7 +39,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Callable_;
+use PHPHtmlParser\Exceptions\ChildNotFoundException;
+use PHPHtmlParser\Exceptions\CircularException;
+use PHPHtmlParser\Exceptions\CurlException;
 use PHPHtmlParser\Exceptions\EmptyCollectionException;
+use PHPHtmlParser\Exceptions\NotLoadedException;
+use PHPHtmlParser\Exceptions\StrictException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -231,7 +237,7 @@ class Helpers
      * @param null $_keys
      * @return array
      */
-    public static function parserHtmlTable($dom, $_keys = null)
+    public static function parserHtmlTable($dom, $_keys = null, $debug = false)
     {
         $head = $dom->find('thead');
         $body = $dom->find('tbody');
@@ -248,28 +254,25 @@ class Helpers
             $td = $tr->find('td');
             $arr = [];
             foreach ($td as $index => $value) {
-                if ($name = data_get($keys, $index))
+                if ($debug)
+                    dd(data_get($keys, $index), $keys);
+
+                if (!$name = data_get($keys, $index))
                     continue;
-                
+
                 $valueText = $value->innerHTML;
 
                 if ($name === '客户' || $name === '客户姓名' || $name == '网电客户') {
                     $aTag = $value->find('a');
-                    if ($aTag) {
-                        try {
-                            $valueText = $aTag->innerHTML;
-                        } catch (\Exception $exception) {
-                            $valueText = $value->innerHTML;
-                        }
+                    if ($aTag && $a = $aTag->innerHTML) {
+                        $valueText = $a;
                     }
-//                    dd($value->outerHTML);
                     preg_match("/CustInfo\(\'(.*?)\'\)/", $value->outerHTML, $match);
-                    if (isset($match[1])) {
-                        $arr['customer_id'] = $match[1];
-                    }
+                    $arr['customer_id'] = data_get($match, 1);
                 }
 
-                $field = $_keys ? (isset($_keys[$name]) ? $_keys[$name] : $name) : $name;
+
+                $field = data_get($_keys, $name, $name);
 
                 $field && $arr[$field] = trim(strip_tags($valueText));
             }
@@ -349,13 +352,19 @@ class Helpers
             'title' => '方法开始',
             'Model' => $model->phone,
         ]);
-        static::checkIntention($model);
-        if ($model->intention <= 1 || $isBaidu) {
-            static::baiduCheckArchive($model);
-            if ($model->is_archive !== 1) {
-                static::tempCustInfoArchive($model);
+        $data = static::checkIntention($model);
+        $intention = data_get($data, 'intention', 0);
+
+        if ($intention <= 1 || $isBaidu) {
+            $data = static::baiduCheckArchive($model);
+            $isArchive = data_get($data, 'is_archive', 0);
+            if ($isArchive !== 1) {
+                $data = static::tempCustInfoArchive($model);
             }
         }
+
+        $model->fill($data);
+        $model->save();
 
         Log::info("Debug 查询手机号码 无法正常工作问题 Step : 5  ", [
             'title' => '步骤结束',
@@ -374,9 +383,7 @@ class Helpers
             'phone' => $model->phone,
             'data' => $data,
         ]);
-
-        $model->fill($data);
-        $model->save();
+        return $data;
     }
 
     /**
@@ -398,11 +405,8 @@ class Helpers
             'phone' => $model->phone,
             'data' => $data,
         ]);
+        return $data;
 
-        if ($data) {
-            $model->fill($data);
-            $model->save();
-        }
     }
 
 
@@ -453,20 +457,19 @@ class Helpers
             'phone' => $model->phone,
             'data' => $data,
         ]);
+        return $data;
 
-        $model->fill($data);
-        $model->save();
     }
 
     /**
      * 查询并写入 Model数据 的建档状态
      * @param $model
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \PHPHtmlParser\Exceptions\ChildNotFoundException
-     * @throws \PHPHtmlParser\Exceptions\CircularException
-     * @throws \PHPHtmlParser\Exceptions\CurlException
-     * @throws \PHPHtmlParser\Exceptions\NotLoadedException
-     * @throws \PHPHtmlParser\Exceptions\StrictException
+     * @throws GuzzleException
+     * @throws ChildNotFoundException
+     * @throws CircularException
+     * @throws CurlException
+     * @throws NotLoadedException
+     * @throws StrictException
      */
     public static function checkIsArchive($model)
     {
@@ -688,14 +691,8 @@ class Helpers
         $consultants = static::getConsultantOfType($type);
         foreach ($consultants as $consultant) {
             $keywords = preg_replace('/(\,)/', '|', $consultant['keyword']);
-
-            try {
-                if (preg_match("/{$keywords}/", $name))
-                    return $consultant['id'];
-
-            } catch (\Exception $exception) {
-
-            }
+            if (preg_match("/{$keywords}/", $name))
+                return $consultant['id'];
         }
 
         return null;

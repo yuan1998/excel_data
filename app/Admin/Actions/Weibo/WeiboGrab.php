@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Actions;
+namespace App\Admin\Actions\Weibo;
 
 use App\Clients\WeiboClient;
 use App\Imports\BaiduImport;

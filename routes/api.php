@@ -23,9 +23,11 @@ $api->version('v1', [
     'namespace'  => 'App\Http\Controllers\Api',
     'middleware' => ['bindings']
 ], function ($api) {
+
     /**
      * BaiduData:百度数据 Api
      */
+
     $api->group([
         'prefix' => 'baidu',
     ], function ($api) {
