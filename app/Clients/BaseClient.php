@@ -304,7 +304,7 @@ class BaseClient
         $result = $client->request("GET", '/');
 
         $response = $result->getBody()->getContents();
-        $result = preg_match('/用户登录/', $response);
+        $result = !preg_match('/用户登录/', $response);
         Log::info('debug 登录', [
             '登录结果' => $response,
         ]);
