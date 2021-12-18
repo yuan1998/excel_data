@@ -873,7 +873,7 @@ class BaseClient
      */
     public static function parserDomTableData($dom, $select = null, $debug = false)
     {
-        $select = $select ?? static::$to_hospital_search_result_selector;
+        $select = $select ?: static::$to_hospital_search_result_selector;
 
         $dataList = $dom->find($select);
         $data = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type, $debug));
@@ -905,9 +905,19 @@ class BaseClient
 
         $body = $result->getBody()->getContents();
 
+
         if ($toDom) {
+            $test = preg_match("/type=\"text\/javascript\"/", $body);
+            if (!$test) {
+                Log::debug('debug 请求返回数据错误', [
+                    $body
+                ]);
+            }
+
             $dom = new Dom;
             $dom->load($body);
+
+
             return $dom;
         }
         return $body;
