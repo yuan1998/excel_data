@@ -156,7 +156,7 @@ return [
                 'connection' => 'redis',
                 'queue'      => ['form_data_phone', 'crm_grab_log_queue', 'data_exports', 'check_customer_phone', 'sanfang_data_export'],
                 'balance'    => 'false',
-                'processes'  => 7,
+                'processes'  => 4,
                 'tries'      => 1,
                 'timeout'    => 900000,
             ],

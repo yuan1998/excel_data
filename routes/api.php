@@ -18,12 +18,18 @@ use Illuminate\Http\Request;
  */
 $api = app('Dingo\Api\Routing\Router');
 
+//$api->version('v2', [
+//    'namespace'  => 'App\Http\Controllers\Api',
+//],function ($api) {
+//
+//});
 
 $api->version('v1', [
     'namespace'  => 'App\Http\Controllers\Api',
     'middleware' => ['bindings']
 ], function ($api) {
-
+    $api->post('/testLogin', "FormDataPhoneController@testLogin")
+        ->name('api.v2.formDataPhone.testLogin');
     /**
      * BaiduData:百度数据 Api
      */

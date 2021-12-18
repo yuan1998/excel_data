@@ -4,9 +4,7 @@ namespace App\Clients;
 
 use App\Helpers;
 use App\Models\ArchiveType;
-use App\Models\ArrivingData;
 use App\Models\FormDataPhone;
-use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\FileCookieJar;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -194,6 +192,7 @@ class BaseClient
     public static $companyApi = false;
     public static $mediaSourceType;
     public static $baseAccount;
+    public static $jar;
 
 
     public static function checkExistsCookieFile()
@@ -205,21 +204,30 @@ class BaseClient
         return false;
     }
 
-    public static function cookiePath()
+    public static function cookiePath($name = null)
     {
-        $name = static::$account['username'];
+        $name = $name ?: static::$account['username'];
         return Storage::disk('public')->path("crm_cookie/{$name}-cookies.json");
     }
 
-    public static function getAccountCookie()
+    public static function getAccountCookie($name = null)
     {
-        $path = static::cookiePath();
+        if (!static::$jar) {
+            $path = static::cookiePath($name);
 
-        if ($path) {
-            return new FileCookieJar($path, true);
+            if ($path) {
+                static::$jar = new FileCookieJar($path, true);
+            } else {
+                return false;
+            }
+
         }
+        return static::$jar;
+    }
 
-        return false;
+    public static function setBaseUrl($url)
+    {
+        static::$base_url = $url;
     }
 
     public static function createClient($jar = true)
@@ -243,10 +251,10 @@ class BaseClient
      * 获取 Client
      * @return Client
      */
-    public static function getClient()
+    public static function getClient($name = null)
     {
         if (!static::$client) {
-            $jar = static::getAccountCookie();
+            $jar = static::getAccountCookie($name);
 
             static::$client = static::createClient($jar);
         }
@@ -277,11 +285,11 @@ class BaseClient
      * @return boolean
      * @throws GuzzleException
      */
-    public static function login($debug = false)
+    public static function login($account = null, $debug = false)
     {
-        $account = static::$account;
-
-        $client = static::getClient();
+        $account = $account ?: static::$account;
+        $name = data_get($account, 'username');
+        $client = static::getClient($name);
         $response = $client->request("POST", static::$login_url, [
             'form_params' => $account,
         ]);
@@ -869,6 +877,9 @@ class BaseClient
 
         $dataList = $dom->find($select);
         $data = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type, $debug));
+        if ($data->isEmpty()) {
+            Log::info('debug 数据为空');
+        }
         return $data;
     }
 
