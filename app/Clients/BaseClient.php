@@ -232,6 +232,7 @@ class BaseClient
 
     public static function createClient($jar = true)
     {
+        $ip = long2ip(mt_rand());
         return new Client([
             'cookies' => $jar,
             'base_uri' => static::$base_url,
@@ -239,6 +240,8 @@ class BaseClient
             'http_errors' => false,
             'headers' => [
                 'Host' => '172.16.8.8',
+                'CLIENT-IP' => $ip,
+                'X-FORWARDED-FOR' => $ip,
                 'Origin' => 'http://172.16.8.8',
                 'Referer' => 'http://172.16.8.8/',
                 'X-Requested-With' => 'XMLHttpRequest',
