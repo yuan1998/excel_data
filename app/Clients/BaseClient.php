@@ -905,9 +905,7 @@ class BaseClient
         $result = $client->request('POST', $uri, [
             'form_params' => $data,
         ]);
-
         $body = $result->getBody()->getContents();
-
 
         if ($toDom) {
             $test = preg_match("/type=\"text\/javascript\"/", $body);
@@ -919,7 +917,6 @@ class BaseClient
 
             $dom = new Dom;
             $dom->load($body);
-
 
             return $dom;
         }

@@ -245,9 +245,6 @@ class Helpers
             $td = $tr->find('td');
             $arr = [];
             foreach ($td as $index => $value) {
-                if ($debug)
-                    dd(data_get($keys, $index), $keys);
-
                 if (!$name = data_get($keys, $index))
                     continue;
 
@@ -262,8 +259,7 @@ class Helpers
                     $arr['customer_id'] = data_get($match, 1);
                 }
 
-
-                $field = data_get($_keys, $name, $name);
+                $field = $_keys ? data_get($_keys, $name, $name) : $name;
 
                 $field && $arr[$field] = trim(strip_tags($valueText));
             }
@@ -271,6 +267,21 @@ class Helpers
         }
 
         return $result;
+    }
+
+
+    public static function rand_date($min_date, $max_date)
+    {
+        /* Gets 2 dates as string, earlier and later date.
+           Returns date in between them.
+        */
+
+        $min_epoch = strtotime($min_date);
+        $max_epoch = strtotime($max_date);
+
+        $rand_epoch = rand($min_epoch, $max_epoch);
+
+        return date('Y-m-d H:i:s', $rand_epoch);
     }
 
     /**

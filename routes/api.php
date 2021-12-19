@@ -28,8 +28,22 @@ $api->version('v1', [
     'namespace'  => 'App\Http\Controllers\Api',
     'middleware' => ['bindings']
 ], function ($api) {
-    $api->post('/testLogin', "FormDataPhoneController@testLogin")
-        ->name('api.v2.formDataPhone.testLogin');
+    $api->group([
+        'prefix' => 'test'
+    ], function ($api) {
+        $api->post('login', "FormDataPhoneController@testLogin")
+            ->name('api.v2.formDataPhone.test.login');
+        $api->post('isLogin', "FormDataPhoneController@testIsLogin")
+            ->name('api.v2.formDataPhone.test.isLogin');
+        $api->post('callPlanList', "FormDataPhoneController@callPlanList")
+            ->name('api.v2.formDataPhone.test.callPlanList');
+        $api->post('callPlanEdit', "FormDataPhoneController@callPlanEdit")
+            ->name('api.v2.formDataPhone.test.callPlanEdit');
+
+
+
+    });
+
     /**
      * BaiduData:百度数据 Api
      */

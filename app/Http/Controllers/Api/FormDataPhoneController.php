@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Clients\ApiClient;
 use App\Clients\BaseClient;
 use App\Models\FormDataPhone;
 use Illuminate\Http\Request;
@@ -32,26 +33,47 @@ class FormDataPhoneController extends Controller
 
     public function testLogin(Request $request)
     {
-        $domain = $request->get('domain');
-        $username = $request->get('username');
-        $password = $request->get('password');
-        BaseClient::setBaseUrl($domain);
-        $response = BaseClient::login([
-            'username' => $username,
-            'password' => $password,
-        ]);
-        if ($response) {
-            $cookieJar = BaseClient::getAccountCookie($username);
-            return response()
-                ->json([
-                    'status' => 1,
-                    'cookies' => $cookieJar->toArray()
-                ]);
-        }
+
+        ApiClient::make();
+
+        $response = ApiClient::login();
         return response()
             ->json([
-                'status' => 0,
+                'status' => $response ? 1 : 0,
             ]);
     }
+
+    public function testIsLogin(Request $request)
+    {
+        ApiClient::make();
+        $response = ApiClient::isLogin();
+        return response()
+            ->json([
+                'status' => $response ? 1 : 0,
+            ]);
+    }
+
+    public function callPlanList()
+    {
+        ApiClient::make();
+        $data = ApiClient::callPlanList();
+        return response()
+            ->json([
+                'status' => 1,
+                'result' => $data,
+            ]);
+    }
+
+    public function callPlanEdit()
+    {
+        ApiClient::make();
+        $data = ApiClient::callPlanEdit();
+        return response()
+            ->json([
+                'status' => 1,
+                'result' => $data,
+            ]);
+    }
+
 
 }
