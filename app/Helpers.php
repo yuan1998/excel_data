@@ -350,15 +350,11 @@ class Helpers
      */
     public static function checkIntentionAndArchive($model, $isBaidu = false)
     {
-        Log::info("Debug 查询手机号码 无法正常工作问题 Step 1 : ", [
-            'title' => '方法开始',
-            'Model' => $model->phone,
-        ]);
-        $data = static::tempCustInfoArchive($model);
+//        $data = static::tempCustInfoArchive($model);
 
-//        $data = static::checkIntention($model);
-//        $intention = data_get($data, 'intention', 0);
-//
+        $data = static::checkIntention($model);
+        $intention = data_get($data, 'intention', 0);
+
 //        if ($intention <= 1 || $isBaidu) {
 //            $data = static::baiduCheckArchive($model);
 //            $isArchive = data_get($data, 'is_archive', 0);
@@ -366,15 +362,16 @@ class Helpers
 //                $data = static::tempCustInfoArchive($model);
 //            }
 //        }
-
+        Log::info("Debug 查询手机号码 无法正常工作问题  ", [
+            'data' => $data,
+            'phone' => $model->phone,
+        ]);
         if ($data) {
             $model->fill($data);
             $model->save();
         }
 
-        Log::info("Debug 查询手机号码 无法正常工作问题 Step : 5  ", [
-            'title' => '步骤结束',
-        ]);
+
     }
 
     public static function tempCustInfoArchive($model)
@@ -384,11 +381,6 @@ class Helpers
             return;
         }
         $data = $client::tempCustomerInfoArchiveCheck($model);
-        Log::info("Debug 查询手机号码 无法正常工作问题 Step 4 : ", [
-            'title' => 'tempCustInfoArchive 查询结果',
-            'phone' => $model->phone,
-            'data' => $data,
-        ]);
         return $data;
     }
 
@@ -458,11 +450,6 @@ class Helpers
             'phone' => $model->phone
         ], $model);
 
-        Log::info("Debug 查询手机号码 无法正常工作问题 Step 2 : ", [
-            'title' => 'checkIntention 查询结束',
-            'phone' => $model->phone,
-            'data' => $data,
-        ]);
         return $data;
 
     }
