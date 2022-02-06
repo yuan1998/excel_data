@@ -356,10 +356,10 @@ class Helpers
         $intention = data_get($data, 'intention', 0);
 
         if ($intention <= 1) {
-            $data = static::baiduCheckArchive($model);
+            $data = array_merge(static::baiduCheckArchive($model), $data);
             $isArchive = data_get($data, 'is_archive', 0);
             if ($isArchive !== 1) {
-                $data = static::tempCustInfoArchive($model);
+                $data = array_merge(static::tempCustInfoArchive($model), $data);
             }
         }
         Log::info("Debug 查询手机号码 无法正常工作问题  ", [
