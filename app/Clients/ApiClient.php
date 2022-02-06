@@ -167,7 +167,7 @@ class ApiClient extends BaseClient
                 'RecallLevels' => request()->get('recall_level', '1'),
                 'RecallPurposes' => '',
                 'TerminateReason' => '',
-                'TerminateText' => ''
+                'TerminateText' => '',
             ]
         ]);
         $response = $result->getBody()->getContents();

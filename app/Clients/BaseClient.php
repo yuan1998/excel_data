@@ -194,16 +194,6 @@ class BaseClient
     public static $baseAccount;
     public static $jar;
 
-
-    public static function checkExistsCookieFile()
-    {
-        $name = static::$account['username'];
-        if ($name)
-            return Storage::disk('public')->exists("crm_cookie/{$name}- .json");
-
-        return false;
-    }
-
     public static function cookiePath($name = null)
     {
         $name = $name ?: static::$account['username'];
