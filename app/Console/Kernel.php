@@ -79,23 +79,24 @@ class Kernel extends ConsoleKernel
 
         // 当天
         // 每隔15分钟,拉取一次微博表单数据
+        if (env('PULL_WEIBO_DATA', false)) {
+            $schedule->call(function () {
+                $today = Carbon::today()->toDateString();
+                WeiboAccounts::checkAccountIsRun($today, $today);
+            })->everyFifteenMinutes();
 
-        $schedule->call(function () {
-            $today = Carbon::today()->toDateString();
-            WeiboAccounts::checkAccountIsRun($today, $today);
-        })->everyFifteenMinutes();
-
-        // 隔天
-        // 每天拉取一次昨天的微博表单数据,以防错漏
-        $schedule->call(function () {
-            $yesterday = Carbon::yesterday()->toDateString();
-            WeiboAccounts::checkAccountIsRun($yesterday, $yesterday);
-        })->daily();
-//
-//        // 每个月月底,重新查询一遍表单的建档情况 (针对微博表单)
-//        $schedule->call(function () {
-//            FormData::recheckMonthPhoneStatus();
-//        })->monthlyOn(date('t'), '23:55');
+            // 隔天
+            // 每天拉取一次昨天的微博表单数据,以防错漏
+            $schedule->call(function () {
+                $yesterday = Carbon::yesterday()->toDateString();
+                WeiboAccounts::checkAccountIsRun($yesterday, $yesterday);
+            })->daily();
+            //
+            //        // 每个月月底,重新查询一遍表单的建档情况 (针对微博表单)
+            //        $schedule->call(function () {
+            //            FormData::recheckMonthPhoneStatus();
+            //        })->monthlyOn(date('t'), '23:55');
+        }
 
 
     }
