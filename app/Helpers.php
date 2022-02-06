@@ -355,13 +355,13 @@ class Helpers
         $data = static::checkIntention($model);
         $intention = data_get($data, 'intention', 0);
 
-//        if ($intention <= 1 || $isBaidu) {
-//            $data = static::baiduCheckArchive($model);
-//            $isArchive = data_get($data, 'is_archive', 0);
-//            if ($isArchive !== 1) {
-//                $data = static::tempCustInfoArchive($model);
-//            }
-//        }
+        if ($intention <= 1) {
+            $data = static::baiduCheckArchive($model);
+            $isArchive = data_get($data, 'is_archive', 0);
+            if ($isArchive !== 1) {
+                $data = static::tempCustInfoArchive($model);
+            }
+        }
         Log::info("Debug 查询手机号码 无法正常工作问题  ", [
             'data' => $data,
             'phone' => $model->phone,
