@@ -356,10 +356,10 @@ class Helpers
         $intention = data_get($data, 'intention', 0);
 
         if ($intention <= 1) {
-            $data = array_merge(static::baiduCheckArchive($model), $data);
+            $data = array_merge($data, static::baiduCheckArchive($model));
             $isArchive = data_get($data, 'is_archive', 0);
             if ($isArchive !== 1) {
-                $data = array_merge(static::tempCustInfoArchive($model), $data);
+                $data = array_merge($data, static::tempCustInfoArchive($model));
             }
         }
         Log::info("Debug 查询手机号码 无法正常工作问题  ", [
@@ -398,11 +398,6 @@ class Helpers
             'phone' => $model->phone
         ], $model);
 
-        Log::info("Debug 查询手机号码 无法正常工作问题 Step 3 : ", [
-            'title' => 'baiduCheckArchive 查询结果',
-            'phone' => $model->phone,
-            'data' => $data,
-        ]);
         return $data;
 
     }
