@@ -350,16 +350,26 @@ class Helpers
      */
     public static function checkIntentionAndArchive($model, $isBaidu = false)
     {
-//        $data = static::tempCustInfoArchive($model);
 
         $data = static::checkIntention($model);
+        Log::alert('Debug 预约单结果', [
+            $data,
+        ]);
         $intention = data_get($data, 'intention', 0);
 
         if ($intention <= 1) {
             $data = array_merge($data, static::baiduCheckArchive($model));
+            Log::alert('Debug 临客结果', [
+                $data,
+            ]);
             $isArchive = data_get($data, 'is_archive', 0);
             if ($isArchive !== 1) {
-                $data = array_merge($data, static::tempCustInfoArchive($model));
+                $arrays = static::tempCustInfoArchive($model);
+
+                Log::alert('Debug 创建预约单结果', [
+                    $arrays,
+                ]);
+                $data = array_merge($data, $arrays);
             }
         }
         Log::info("Debug 查询手机号码 无法正常工作问题  ", [

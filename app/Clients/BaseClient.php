@@ -865,9 +865,6 @@ class BaseClient
 
         $dataList = $dom->find($select);
         $data = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type, $debug));
-        if ($data->isEmpty()) {
-            Log::info('debug 数据为空');
-        }
         return $data;
     }
 
