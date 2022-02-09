@@ -305,6 +305,9 @@ class BaseClient
         $result = $client->request("GET", '/');
 
         $response = $result->getBody()->getContents();
+        Log::debug('登录验证debug', [
+            $response
+        ]);
         return !preg_match('/用户登录/', $response);
     }
 
