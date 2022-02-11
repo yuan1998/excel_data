@@ -305,7 +305,7 @@ class BaseClient
         $result = $client->request("GET", '/');
 
         $response = $result->getBody()->getContents();
-        Log::debug('登录验证debug', [
+        Log::debug('登录验证 debug', [
             $response
         ]);
         return !preg_match('/用户登录/', $response);
@@ -425,7 +425,6 @@ class BaseClient
         return static::tempSearchData($data)->isNotEmpty();
     }
 
-
     public static function baiduTempSearch(array $data, $model)
     {
         $item = static::tempSearchData($data)
@@ -509,7 +508,6 @@ class BaseClient
         return static::reservationSearchData($data)->isNotEmpty();
     }
 
-
     /**
      * 预约表单查询, 获取 意向度 1 - 6
      * @param               $data
@@ -547,7 +545,6 @@ class BaseClient
         return $res;
     }
 
-
     public static function normalChargeApi($id, $count)
     {
         $data = [
@@ -564,8 +561,8 @@ class BaseClient
             'id' => $id,
         ];
 
-        $test = static::postUriGetDom(static::$cust_info_index_url, $data, false);
-        return $test;
+        return static::postUriGetDom(static::$cust_info_index_url, $data, false);
+//        return $test;
     }
 
 
@@ -590,7 +587,6 @@ class BaseClient
     public static function trim($str)
     {
         preg_replace("/\ \'/", '', $str);
-
     }
 
     public static function baseCustomerInfoApi($id, $url = null)
@@ -620,8 +616,7 @@ class BaseClient
     public static function customerPreChargeData($id, $count = 80)
     {
         $dom = static::customerPreChargeApi($id, $count);
-        $test = static::parserDomTableData($dom, 'table[data-nowrap]');
-        return $test;
+        return static::parserDomTableData($dom, 'table[data-nowrap]');
     }
 
 

@@ -311,7 +311,7 @@ class DataOrigin extends Model
 
             $form = FormData::updateOrCreate([
                 'channel_id' => $item['channel_id'],
-                'date'       => $item['date'],
+                'date'       => Carbon::parse($item['date'])->toDateTimeString(),
                 'phone'      => $item['phone'],
             ], $makeData);
 
