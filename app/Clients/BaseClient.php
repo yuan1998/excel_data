@@ -305,10 +305,11 @@ class BaseClient
         $result = $client->request("GET", '/');
 
         $response = $result->getBody()->getContents();
+        $preg_match = preg_match('/用户登录/', $response);
         Log::debug('登录验证 debug', [
-            $response
+            $preg_match
         ]);
-        return !preg_match('/用户登录/', $response);
+        return !$preg_match;
     }
 
     public static function loginStatus()
@@ -829,12 +830,6 @@ class BaseClient
 
     }
 
-    public static function tempCustomerInfoCheckExists($phone)
-    {
-        $dom = static::tempCustomerInfoCheckApi($phone);
-        return static::parserDomTableData($dom, 'table.table-hover')->isNotEmpty();
-    }
-
     public static function tempCustomerInfoArchiveCheck($model)
     {
 
@@ -863,6 +858,11 @@ class BaseClient
 
         $dataList = $dom->find($select);
         $data = collect(Helpers::parserHtmlTable($dataList, static::$result_data_type, $debug));
+        if (!$data->count()) {
+            Log::debug('请求返回空数据', [
+                'dom' => $dom->__toString(),
+            ]);
+        }
         return $data;
     }
 
