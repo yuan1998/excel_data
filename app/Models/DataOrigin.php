@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
@@ -15,25 +16,25 @@ class DataOrigin extends Model
 
     public static $typeList = [
         'spend_type' => '消费数据',
-        'form_type'  => '表单数据',
+        'form_type' => '表单数据',
     ];
 
     public static $typePropertyField = [
         'spend_type' => [
-            'code'       => '',
-            'date'       => '',
-            'spend'      => '',
-            'show'       => '',
-            'click'      => '',
+            'code' => '',
+            'date' => '',
+            'spend' => '',
+            'show' => '',
+            'click' => '',
             'spend_name' => '',
-            'uuid'       => '',
+            'uuid' => '',
         ],
-        'form_type'  => [
+        'form_type' => [
             'consultant_code' => '',
-            'code'            => '',
-            'data_type'       => '',
-            'date'            => '',
-            'phone'           => '',
+            'code' => '',
+            'data_type' => '',
+            'date' => '',
+            'phone' => '',
         ],
     ];
 
@@ -47,7 +48,7 @@ class DataOrigin extends Model
             'spend_name',
             'uuid',
         ],
-        'form_type'  => [
+        'form_type' => [
             'code',
             'data_type',
             'date',
@@ -67,28 +68,28 @@ class DataOrigin extends Model
 
     protected $casts = [
         'property_field' => 'json',
-        'data_field'     => 'json',
-        'excel_snap'     => 'json',
+        'data_field' => 'json',
+        'excel_snap' => 'json',
     ];
 
     public static $fieldText = [
         'consultant_code' => '咨询字段',
-        'code'            => '主要标识',
-        'data_type'       => '表单名称',
-        'spend_name'      => '消费名称',
-        'click'           => '点击量',
-        'show'            => '展现量',
-        'spend'           => '消耗',
-        'phone'           => '电话',
-        'date'            => '时间',
-        'uuid'            => '唯一标识',
+        'code' => '主要标识',
+        'data_type' => '表单名称',
+        'spend_name' => '消费名称',
+        'click' => '点击量',
+        'show' => '展现量',
+        'spend' => '消耗',
+        'phone' => '电话',
+        'date' => '时间',
+        'uuid' => '唯一标识',
     ];
 
     public $timestamps = false;
 
     public $importFailLog = [
         'code_invalid' => 0,
-        'code_log'     => []
+        'code_log' => []
     ];
 
     public $importSuccessLog = [
@@ -176,7 +177,7 @@ class DataOrigin extends Model
     public function parserPropertyField($data)
     {
         $property = $this->property_field;
-        $item     = [];
+        $item = [];
 
         foreach ($property as $key => $fieldArray) {
             $item[$key] = collect($fieldArray)
@@ -199,7 +200,7 @@ class DataOrigin extends Model
         foreach (['uuid', 'spend', 'click', 'show'] as $item) {
             $value = $propertyData[$item];
             if ($value === '' || $value === null) {
-                $text                              = static::$fieldText[$item];
+                $text = static::$fieldText[$item];
                 $this->importFailLog['code_log'][] = "$codeValue 消费数据的{$text}不存在: {$value}";
                 return false;
             }
@@ -213,13 +214,17 @@ class DataOrigin extends Model
 
         foreach ($data as $raw) {
             $propertyData = $this->parserPropertyField($raw);
-            $dateValue    = $propertyData['date'];
+            $dateValue = $propertyData['date'];
 
             try {
+
+                if (is_numeric($dateValue) && strpos($dateValue, '.') !== false)
+                    throw new \Exception('float date value');
+
                 $carbonDate = Carbon::parse((string)$dateValue);
             } catch (\Exception $exception) {
                 if (is_numeric($dateValue)) {
-                    $dateValue  = Date::excelToDateTimeObject($dateValue)->format('Y-m-d');
+                    $dateValue = Date::excelToDateTimeObject($dateValue)->format('Y-m-d');
                     $carbonDate = Carbon::parse($dateValue);
                 } else {
                     $this->importFailLog['code_log'][] = "无法判断该条数据的时间格式: {$dateValue}";
@@ -228,7 +233,7 @@ class DataOrigin extends Model
             }
 
             $codeValue = $propertyData['code'];
-            $keyword   = 'keyword';
+            $keyword = 'keyword';
 
             if (!$codeValue) {
                 $this->importFailLog['code_invalid']++;
@@ -247,11 +252,11 @@ class DataOrigin extends Model
             }
 
 
-            $propertyData['date']            = $carbonDate->toDateString();
-            $propertyData['type']            = $departmentType->type;
+            $propertyData['date'] = $carbonDate->toDateString();
+            $propertyData['type'] = $departmentType->type;
             $propertyData['department_type'] = $departmentType;
-            $propertyData['department_id']   = $departmentType->id;
-            $account_type                    =
+            $propertyData['department_id'] = $departmentType->id;
+            $account_type =
             $propertyData['account_type'] = $channel->checkAccount($propertyData['type'], $codeValue, true);
 
 
@@ -271,10 +276,10 @@ class DataOrigin extends Model
                 if ($account_type) {
                     $off_spend = $off_spend / (float)$account_type['rebate'];
                 }
-                $propertyData['show']      = (float)str_replace(',', '', $propertyData['show']);
-                $propertyData['click']     = (float)str_replace(',', '', $propertyData['click']);
+                $propertyData['show'] = (float)str_replace(',', '', $propertyData['show']);
+                $propertyData['click'] = (float)str_replace(',', '', $propertyData['click']);
                 $propertyData['off_spend'] = $off_spend;
-                $keyword                   = 'spend_keyword';
+                $keyword = 'spend_keyword';
             }
 
             if ($this->data_type === 'form_type') {
@@ -291,8 +296,8 @@ class DataOrigin extends Model
 
             $propertyData['project_type'] = Helpers::checkDepartmentProject($departmentType, $codeValue, $keyword);
             $propertyData['channel_type'] = $channel;
-            $propertyData['channel_id']   = $channel->id;
-            $propertyData['data_snap']    = json_encode($raw);
+            $propertyData['channel_id'] = $channel->id;
+            $propertyData['data_snap'] = json_encode($raw);
             $arr->push($propertyData);
 
         }
@@ -311,8 +316,8 @@ class DataOrigin extends Model
 
             $form = FormData::updateOrCreate([
                 'channel_id' => $item['channel_id'],
-                'date'       => Carbon::parse($item['date'])->toDateTimeString(),
-                'phone'      => $item['phone'],
+                'date' => $item['date'],
+                'phone' => $item['phone'],
             ], $makeData);
 
             $phone = BaiduData::parseClue($item['phone']);
@@ -336,8 +341,8 @@ class DataOrigin extends Model
 
             $spend = SpendData::updateOrCreate([
                 'channel_id' => $item['channel_id'],
-                'date'       => $item['date'],
-                'uuid'       => $item['uuid'],
+                'date' => $item['date'],
+                'uuid' => $item['uuid'],
             ], $makeData);
             $spend->projects()->sync($item['project_type']);
             $this->importSuccessLog['code_log'][] = $item['code'];
@@ -347,7 +352,7 @@ class DataOrigin extends Model
 
     public function makeFormData($collection)
     {
-        $data       = Helpers::excelToKeyArray($collection);
+        $data = Helpers::excelToKeyArray($collection);
         $filterData = $this->dataTypeFilter($data);
 
         if ($this->data_type === 'spend_type') {

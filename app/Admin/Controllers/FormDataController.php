@@ -159,7 +159,7 @@ class FormDataController extends AdminController
         });
         $grid->tools(function (Grid\Tools $tools) {
             $tools->batch(function ($batch) {
-                $batch->disableDelete();
+//                $batch->disableDelete();
             });
 
             $tools->append(new RecheckFormAction());
