@@ -96,7 +96,7 @@ class ApiClient extends BaseClient
                 ]
             ]);
         $response = $result->getBody()->getContents();
-        preg_match('/共 (\d+) 条/',$response, $matches);
+        preg_match('/共 (\d+) 条/', $response, $matches);
         $totalCount = data_get($matches, 1, 0);
 
         if (!is_numeric($totalCount)) {
@@ -109,7 +109,7 @@ class ApiClient extends BaseClient
         $table = $dom->load($response)->find('.tableContent');
         $r = [
             'page' => $page,
-            'last_page' => ceil($totalCount / $pageSize),
+            'total' => $totalCount,
             'rows' => []
         ];
 
