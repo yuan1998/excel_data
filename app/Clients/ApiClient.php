@@ -86,8 +86,8 @@ class ApiClient extends BaseClient
                     'isSearch' => '1',
                     'iscompany' => '0',
                     'DataModel' => 'ToPageList',
-                    'pageSize' => '200',
-                    'pageCurrent' => '1',
+                    'pageSize' => request()->get('pageSize', '50'),
+                    'pageCurrent' => request()->get('page', '1'),
                     'orderField' => '',
                     'orderDirection' => '',
                     'total' => ''
