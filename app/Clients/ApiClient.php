@@ -35,6 +35,8 @@ class ApiClient extends BaseClient
 
         $date = Carbon::today()->toDateString();
         $client = static::getClient();
+        $pageSize = request()->get('pageSize', 50);
+        $page = request()->get('page', 1);
         $result = $client->request("POST", '/ReturnCall/ReservationReturnCallPlan/CustIndex',
             [
                 'form_params' => [
@@ -86,16 +88,18 @@ class ApiClient extends BaseClient
                     'isSearch' => '1',
                     'iscompany' => '0',
                     'DataModel' => 'ToPageList',
-                    'pageSize' => request()->get('pageSize', '50'),
-                    'pageCurrent' => request()->get('page', '1'),
+                    'pageSize' => $pageSize,
+                    'pageCurrent' => $page,
                     'orderField' => '',
                     'orderDirection' => '',
                     'total' => ''
                 ]
             ]);
         $response = $result->getBody()->getContents();
-        $test = preg_match("/type=\"text\/javascript\"/", $response);
-        if (!$test) {
+        preg_match('/共 (\d+) 条/', data_get($result, $response), $matches);
+        $totalCount = data_get($matches, 1, 0);
+
+        if (!is_numeric($totalCount)) {
             Log::debug('debug 请求返回数据错误', [
                 $response
             ]);
@@ -103,10 +107,14 @@ class ApiClient extends BaseClient
 
         $dom = new Dom;
         $table = $dom->load($response)->find('.tableContent');
-        $result = [];
+        $r = [
+            'page' => $page,
+            'last_page' => ceil($totalCount / $pageSize),
+            'rows' => []
+        ];
 
         if (!$table || !count($table))
-            return $result;
+            return $r;
 
         $head = $table->find('thead');
         $body = $table->find('tbody');
@@ -132,10 +140,10 @@ class ApiClient extends BaseClient
                 $valueText = $value->innerHTML;
                 $arr[$name] = trim(strip_tags($valueText));
             }
-            array_push($result, $arr);
+            array_push($r['rows'], $arr);
         }
 
-        return $result;
+        return $r;
     }
 
     public static function callPlanEdit()
