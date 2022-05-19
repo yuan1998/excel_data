@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Admin/bootstrap.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Admin/bootstrap.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Clients/ApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/ApiClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/weibo/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/weibo/login.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,6 +339,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/database/tmp" />
@@ -467,7 +469,8 @@
       <workItem from="1648971995688" duration="1261000" />
       <workItem from="1649897858532" duration="1200000" />
       <workItem from="1650071496849" duration="8000" />
-      <workItem from="1652925480547" duration="279000" />
+      <workItem from="1652925480547" duration="754000" />
+      <workItem from="1652953975464" duration="72000" />
     </task>
     <servers />
   </component>

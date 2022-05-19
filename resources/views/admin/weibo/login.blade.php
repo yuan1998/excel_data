@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>登录 - Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="http://unpkg.zhimg.com/element-ui@2.12.0/lib/theme-chalk/index.css">
     <style>
         * {
             -webkit-box-sizing: border-box;
@@ -66,9 +66,9 @@
         {{ test }}
     </div>
 @endverbatim
-<script src="//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/index.js"></script>
+<script src="http://unpkg.zhimg.com/vue@2.6.10/dist/vue.min.js"></script>
+<script src="http://unpkg.zhimg.com/axios@0.19.0/dist/axios.min.js"></script>
+<script src="http://unpkg.zhimg.com/element-ui@2.12.0/lib/index.js"></script>
 <script>
     ;(function () {
         'use strict';

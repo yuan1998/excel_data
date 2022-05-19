@@ -176,7 +176,6 @@ class ApiClient extends BaseClient
             'TerminateReason' => '',
             'TerminateText' => '',
         ];
-        dd($arr);
         $result = $client->request("POST", '/ReturnCall/ReservationReturnCallPlan/Edit/', [
             'form_params' => $arr
         ]);
