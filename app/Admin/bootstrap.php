@@ -26,11 +26,11 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid\Filter;
 
-Admin::css('//cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/theme-chalk/index.css');
-Admin::headerJs('//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js');
-Admin::js('https://cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js');
-Admin::js('https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js');
-Admin::js('https://cdn.jsdelivr.net/npm/xlsx@0.16.3/dist/xlsx.full.min.js');
+Admin::css('http://unpkg.zhimg.com/element-ui@2.12.0/lib/theme-chalk/index.css');
+Admin::headerJs('http://unpkg.zhimg.com/vue@2.6.10/dist/vue.min.js');
+Admin::js('http://unpkg.zhimg.com/axios@0.19.0/dist/axios.min.js');
+Admin::js('https://cdn.staticfile.org/echarts/4.5.0/echarts.min.js');
+Admin::js('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/xlsx/0.18.2/xlsx.full.min.js');
 
 Admin::js('/js/app.js');
 Admin::css('/css/app.css');

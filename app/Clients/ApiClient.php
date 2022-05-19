@@ -161,22 +161,24 @@ class ApiClient extends BaseClient
             ->hours(random_int(10, 20));
 
         $client = static::getClient();
+        $arr = [
+            'refreshTab' => 'ReturnCallReservationReturnCallPlanCustIndex',
+            'Id' => $id,
+            'datetimeRecall' => $randomDate->toDateTimeString(),
+            'IsGetThrough' => request()->get('call_result', '0'),
+            'Result' => request()->get('call_level', 'RR_YOUXIAOSIJI'),
+            'NotGetReason' => '',
+            'Feedback' => request()->get('feedback', '跟进'),
+            'OnceOnly' => 'N',
+            'DatetimePlanNext' => $randomDate->addDays(6)->toDateTimeString(),
+            'RecallLevels' => request()->get('recall_level', '1'),
+            'RecallPurposes' => '',
+            'TerminateReason' => '',
+            'TerminateText' => '',
+        ];
+        dd($arr);
         $result = $client->request("POST", '/ReturnCall/ReservationReturnCallPlan/Edit/', [
-            'form_params' => [
-                'refreshTab' => 'ReturnCallReservationReturnCallPlanCustIndex',
-                'Id' => $id,
-                'datetimeRecall' => $randomDate->toDateTimeString(),
-                'IsGetThrough' => request()->get('call_result', '0'),
-                'Result' => request()->get('call_level', 'RR_YOUXIAOSIJI'),
-                'NotGetReason' => '',
-                'Feedback' => request()->get('feedback', '跟进'),
-                'OnceOnly' => 'N',
-                'DatetimePlanNext' => $randomDate->addDays(6)->toDateTimeString(),
-                'RecallLevels' => request()->get('recall_level', '1'),
-                'RecallPurposes' => '',
-                'TerminateReason' => '',
-                'TerminateText' => '',
-            ]
+            'form_params' => $arr
         ]);
         $response = $result->getBody()->getContents();
         return json_decode($response, true);
