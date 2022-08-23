@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Clients/ApiClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/ApiClient.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/weibo/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/weibo/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -338,20 +337,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/database/tmp" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
-    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Http/Controllers/Api" />
@@ -470,7 +462,12 @@
       <workItem from="1649897858532" duration="1200000" />
       <workItem from="1650071496849" duration="8000" />
       <workItem from="1652925480547" duration="754000" />
-      <workItem from="1652953975464" duration="72000" />
+      <workItem from="1652953975464" duration="202000" />
+      <workItem from="1653717529295" duration="1255000" />
+      <workItem from="1653961635188" duration="1457000" />
+      <workItem from="1659688519850" duration="13000" />
+      <workItem from="1660637649140" duration="1387000" />
+      <workItem from="1661240090833" duration="126000" />
     </task>
     <servers />
   </component>

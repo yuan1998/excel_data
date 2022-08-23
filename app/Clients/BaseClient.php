@@ -228,6 +228,7 @@ class BaseClient
             'base_uri' => static::$base_url,
             'verify' => false,
             'http_errors' => false,
+            'timeout' => 60,
             'headers' => [
                 'Host' => '172.16.8.8',
                 'CLIENT-IP' => $ip,
@@ -306,9 +307,6 @@ class BaseClient
 
         $response = $result->getBody()->getContents();
         $preg_match = preg_match('/用户登录/', $response);
-        Log::debug('登录验证 debug', [
-            $preg_match
-        ]);
         return !$preg_match;
     }
 
