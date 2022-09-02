@@ -61,7 +61,7 @@ class ApiClient extends BaseClient
                     'KeyWords' => '',
                     'RecallPurpose' => '',
                     'Feedback' => '',
-                    'PlanExecuteByName' => '',
+                    'PlanExecuteByName' => request()->get('execute_by', ''),
                     'IsRecordcount' => '',
                     'ExecuteByName' => '',
                     'PlanExecuteDept' => '',
