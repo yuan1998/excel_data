@@ -332,4 +332,11 @@ class ArrivingData extends Model
         return $query->whereBetween('reception_date', [$start, $end]);
     }
 
+    public static function clearBeforeData() {
+        $date = Carbon::today()->addMonths(-1)->toDateTimeString();
+        static::query()
+            ->whereNull('reception_date')
+            ->orWhere('reception_date' ,'<', $date)
+            ->delete();
+    }
 }

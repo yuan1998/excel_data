@@ -53,16 +53,16 @@ class FormDataPhone extends Model
     ];
 
     /**
-     * @param FormData   $model
+     * @param FormData $model
      * @param Collection $phone
-     * @param null       $delay
+     * @param null $delay
      */
     public static function createOrUpdateItem($model, $phone, $delay = null)
     {
         $id = $model->id;
         $phone->each(function ($phone) use ($id, $delay) {
             $item = FormDataPhone::updateOrCreate([
-                'phone'        => $phone,
+                'phone' => $phone,
                 'form_data_id' => $id
             ]);
             if (!$item->is_archive) {
@@ -126,7 +126,7 @@ class FormDataPhone extends Model
     public static function recheckOfTypeAndDate($data)
     {
         $query = static::query();
-        $data  = $query->whereHas('formData', function ($query) use ($data) {
+        $data = $query->whereHas('formData', function ($query) use ($data) {
             $query->whereBetween('date', [$data['dates']])
                 ->where('type', $data['type'])
                 ->whereIn('channel_id', $data['channel_id']);
@@ -191,7 +191,13 @@ class FormDataPhone extends Model
         }
 
         return 1;
+    }
 
+    public static function clearBeforeData()
+    {
+        static::query()
+            ->doesntHave('formData')
+            ->delete();
     }
 
 

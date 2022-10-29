@@ -226,5 +226,13 @@ class TempCustomerData extends Model
         }
     }
 
+    public static function clearBeforeData() {
+        $date = Carbon::today()->addMonths(-1)->toDateTimeString();
+        static::query()
+            ->whereNull('archive_date')
+            ->orWhere('archive_date' ,'<', $date)
+            ->delete();
+    }
+
 
 }

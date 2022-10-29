@@ -8,12 +8,14 @@ use App\Jobs\BillAccountDataYesterday;
 use App\Models\ArrivingData;
 use App\Models\BillAccountData;
 use App\Models\FormData;
+use App\Models\FormDataPhone;
 use App\Models\TempCustomerData;
 use App\Models\WeiboAccounts;
 use App\Models\WeiboFormData;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
@@ -36,45 +38,59 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        // 拉取昨天的 CRM临客数据
         $schedule->call(function () {
-            TempCustomerData::yesterday('zx');
-        })->dailyAt('03:03');
-        $schedule->call(function () {
-            TempCustomerData::yesterday('kq');
-        })->dailyAt('03:03');
+            TempCustomerData::clearBeforeData();
+            ArrivingData::clearBeforeData();
+            BillAccountData::clearBeforeData();
+            FormData::clearBeforeData();
+            FormDataPhone::clearBeforeData();
 
-        // 拉取昨天的 CRM消费数据
-        $schedule->call(function () {
-            BillAccountData::yesterdayBillAccountData('zx');
-        })->dailyAt('03:01');
-        $schedule->call(function () {
-            BillAccountData::yesterdayBillAccountData('kq');
-        })->dailyAt('03:01');
+        })->daily();
 
-        // 拉取昨天的 CRM到院数据
-        $schedule->call(function () {
-            ArrivingData::getYesterday('zx');
-        })->dailyAt('03:02');
-        $schedule->call(function () {
-            ArrivingData::getYesterday('kq');
-        })->dailyAt('03:02');
 
-        // 在每个月最后一天,重新拉取整个月的 到院数据
-        $schedule->call(function () {
-            ArrivingData::getCurrentMonth('zx');
-        })->monthlyOn(date('t'), '03:04');
-        $schedule->call(function () {
-            ArrivingData::getCurrentMonth('kq');
-        })->monthlyOn(date('t'), '03:04');
+        if (env('PULL_CRM_DATA',false)) {
+            // 拉取昨天的 CRM临客数据
+            $schedule->call(function () {
+                TempCustomerData::yesterday('zx');
+            })->dailyAt('03:03');
+            $schedule->call(function () {
+                TempCustomerData::yesterday('kq');
+            })->dailyAt('03:03');
 
-        // 在每个月最后一天,重新拉取整个月的 消费数据
-        $schedule->call(function () {
-            BillAccountData::monthBillAccountData('zx');
-        })->monthlyOn(date('t'), '03:05');
-        $schedule->call(function () {
-            BillAccountData::monthBillAccountData('kq');
-        })->monthlyOn(date('t'), '03:05');
+            // 拉取昨天的 CRM消费数据
+            $schedule->call(function () {
+                BillAccountData::yesterdayBillAccountData('zx');
+            })->dailyAt('03:01');
+            $schedule->call(function () {
+                BillAccountData::yesterdayBillAccountData('kq');
+            })->dailyAt('03:01');
+
+            // 拉取昨天的 CRM到院数据
+            $schedule->call(function () {
+                ArrivingData::getYesterday('zx');
+            })->dailyAt('03:02');
+            $schedule->call(function () {
+                ArrivingData::getYesterday('kq');
+            })->dailyAt('03:02');
+
+            // 在每个月最后一天,重新拉取整个月的 到院数据
+            $schedule->call(function () {
+                ArrivingData::getCurrentMonth('zx');
+            })->monthlyOn(date('t'), '03:04');
+            $schedule->call(function () {
+                ArrivingData::getCurrentMonth('kq');
+            })->monthlyOn(date('t'), '03:04');
+
+            // 在每个月最后一天,重新拉取整个月的 消费数据
+            $schedule->call(function () {
+                BillAccountData::monthBillAccountData('zx');
+            })->monthlyOn(date('t'), '03:05');
+            $schedule->call(function () {
+                BillAccountData::monthBillAccountData('kq');
+            })->monthlyOn(date('t'), '03:05');
+        }
+
+
 
 
         // 当天

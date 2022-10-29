@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use stringEncode\Exception;
 use Illuminate\Support\Facades\Redis;
 
@@ -59,15 +60,15 @@ class FormData extends Model
 
     // 平台类型列表
     public static $FormTypeList = [
-        1  => '百度信息流',
-        2  => '微博',
-        3  => '头条',
-        4  => '抖音',
-        5  => '百度竞价',
-        6  => '搜狗',
-        7  => '神马',
-        8  => 'oppo',
-        9  => 'vivo',
+        1 => '百度信息流',
+        2 => '微博',
+        3 => '头条',
+        4 => '抖音',
+        5 => '百度竞价',
+        6 => '搜狗',
+        7 => '神马',
+        8 => 'oppo',
+        9 => 'vivo',
         10 => '美柚',
         11 => '穿山甲',
         12 => '快手',
@@ -88,24 +89,43 @@ class FormData extends Model
 
     // 表单数量基础格式
     public static $FormCountDataFormat = [
-        'form_count'    => 0,
-        'is_repeat-0'   => 0,
-        'is_repeat-1'   => 0,
-        'is_repeat-2'   => 0,
+        'form_count' => 0,
+        'is_repeat-0' => 0,
+        'is_repeat-1' => 0,
+        'is_repeat-2' => 0,
         'turn_weixin-0' => 0,
         'turn_weixin-1' => 0,
         'turn_weixin-2' => 0,
-        'is_archive-0'  => 0,
-        'is_archive-1'  => 0,
-        'is_archive-2'  => 0,
-        'intention-0'   => 0,
-        'intention-1'   => 0,
-        'intention-2'   => 0,
-        'intention-3'   => 0,
-        'intention-4'   => 0,
-        'intention-5'   => 0,
-        'intention-6'   => 0,
+        'is_archive-0' => 0,
+        'is_archive-1' => 0,
+        'is_archive-2' => 0,
+        'intention-0' => 0,
+        'intention-1' => 0,
+        'intention-2' => 0,
+        'intention-3' => 0,
+        'intention-4' => 0,
+        'intention-5' => 0,
+        'intention-6' => 0,
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($item) {
+            try {
+                $item->projects->delete();
+            }catch (\Exception $exception) {
+
+            }
+            try {
+                $item->phones->delete();
+            }catch (\Exception $exception) {
+            }
+
+        });
+    }
+
 
     public function formModel()
     {
@@ -166,9 +186,9 @@ class FormData extends Model
         foreach ($data as $item) {
             $value = [
                 'channel_id' => $item->typeChannel->id,
-                'code'       => $item->data_type,
-                'phone'      => $item->phones()->pluck('phone')->join(','),
-                'data_snap'  => $item['model'] ? $item['model']->toJson() : null,
+                'code' => $item->data_type,
+                'phone' => $item->phones()->pluck('phone')->join(','),
+                'data_snap' => $item['model'] ? $item['model']->toJson() : null,
             ];
             $item->update($value);
         }
@@ -193,9 +213,9 @@ class FormData extends Model
 
         foreach ($data as $item) {
             $modelType = $item['model_type'];
-            $code      = null;
-            $id        = null;
-            $model     = $item['model'];
+            $code = null;
+            $id = null;
+            $model = $item['model'];
             switch ($modelType) {
                 case BaiduData::class:
                     $code = $model['visitor_name'];
@@ -216,7 +236,7 @@ class FormData extends Model
                         })->first();
                     if ($consultant && $consultant['consultant_id']) {
                         $code = $consultant['name'];
-                        $id   = $consultant['id'];
+                        $id = $consultant['id'];
                     }
                     break;
                 case YiliaoData::class:
@@ -228,7 +248,7 @@ class FormData extends Model
                 $id = Helpers::checkConsultantNameOf($item['type'], $code);
             }
             $item->update([
-                'consultant_id'   => $id,
+                'consultant_id' => $id,
                 'consultant_code' => $code,
             ]);
         }
@@ -244,30 +264,30 @@ class FormData extends Model
             ->orWhereNotNull('weibo_id')
             ->get();
         $data->each(function ($item) {
-            $id    = null;
+            $id = null;
             $model = null;
             try {
                 if ($item->baidu_id) {
                     $model = BaiduData::class;
-                    $id    = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
+                    $id = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
                 } elseif ($item->weibo_id) {
                     $weibo = WeiboData::query()->where('weibo_id', $item->weibo_id)->first();
                     if ($weibo) {
                         $model = WeiboData::class;
-                        $id    = $weibo->id;
+                        $id = $weibo->id;
                     } else {
                         $model = WeiboFormData::class;
-                        $id    = $item->weibo_id;
+                        $id = $item->weibo_id;
                     }
                 } elseif ($item->feiyu_id) {
                     $model = FeiyuData::class;
-                    $id    = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
+                    $id = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
                 }
 
                 if ($id && $model) {
                     $item->update([
                         'model_type' => $model,
-                        'model_id'   => $id,
+                        'model_id' => $id,
                     ]);
                 }
 
@@ -284,24 +304,24 @@ class FormData extends Model
             ->whereNull('model_type')
             ->get();
         $data->each(function ($item) {
-            $id    = null;
+            $id = null;
             $model = null;
             try {
                 if ($item->baidu_id) {
                     $model = BaiduData::class;
-                    $id    = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
+                    $id = BaiduData::query()->where('visitor_id', $item->baidu_id)->first()->id;
                 } elseif ($item->weibo_id) {
                     $model = WeiboFormData::class;
-                    $id    = $item->weibo_id;
+                    $id = $item->weibo_id;
                 } elseif ($item->feiyu_id) {
                     $model = FeiyuData::class;
-                    $id    = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
+                    $id = FeiyuData::query()->where('clue_id', $item->feiyu_id)->first()->id;
                 }
 
                 if ($id && $model) {
                     $item->update([
                         'model_type' => $model,
-                        'model_id'   => $id,
+                        'model_id' => $id,
                     ]);
                 }
 
@@ -314,7 +334,7 @@ class FormData extends Model
 
     public static function isModel($data, $fields)
     {
-        $keys  = array_keys($fields);
+        $keys = array_keys($fields);
         $first = $data->get(0);
 
         $diff = $first->diff($keys);
@@ -335,14 +355,14 @@ class FormData extends Model
 
     /**
      * 创建 FormData 数据,同时生成 FormDataPhone
-     * @param array $data  数据
-     * @param null  $delay 电话号码创建延迟
+     * @param array $data 数据
+     * @param null $delay 电话号码创建延迟
      * @return mixed
      */
     public static function updateOrCreateItem($data, $delay = null)
     {
         // 判断所属科室,如果存在则写入ID
-        $departmentType     = Helpers::checkDepartment($data['code']);
+        $departmentType = Helpers::checkDepartment($data['code']);
         $data['account_id'] = Channel::checkAccountByChannelId($data['channel_id'], $data['type'], $data['code']);
 
         $data['department_id'] = $departmentType ? $departmentType->id : null;
@@ -350,8 +370,8 @@ class FormData extends Model
         // 创建 FormData Model
         $form = FormData::updateOrCreate([
             'channel_id' => $data['channel_id'],
-            'date'       => $data['date'],
-            'phone'      => $data['phone'],
+            'date' => $data['date'],
+            'phone' => $data['phone'],
         ], $data);
 
         FormDataPhone::createOrUpdateItem($form, collect($data['phone']), $delay);
@@ -368,9 +388,9 @@ class FormData extends Model
 
     public static function recheckMonthPhoneStatus()
     {
-        $date  = Carbon::today();
+        $date = Carbon::today();
         $start = $date->firstOfMonth()->toDateString();
-        $end   = $date->lastOfMonth()->toDateString();
+        $end = $date->lastOfMonth()->toDateString();
         static::recheckPhoneArchiveStatus($start, $end);
     }
 
@@ -396,9 +416,9 @@ class FormData extends Model
     public function itemRecheck()
     {
         $departmentType = Helpers::checkDepartment($this['data_type']);
-        $data           = [
+        $data = [
             'department_id' => $departmentType ? $departmentType->id : null,
-            'account_id'    => Helpers::formDataCheckAccount($this, 'data_type')
+            'account_id' => Helpers::formDataCheckAccount($this, 'data_type')
         ];
         $this->update($data);
 
@@ -459,26 +479,26 @@ class FormData extends Model
 
     public static function parseFormData($item)
     {
-        $date           = Carbon::parse($item['date'])->toDateString();
+        $date = Carbon::parse($item['date'])->toDateString();
         $consultantCode = Arr::get($item, 'consultant_code', null);
-        $consultantId   = Helpers::checkConsultantNameOf($item['type'], $consultantCode);
+        $consultantId = Helpers::checkConsultantNameOf($item['type'], $consultantCode);
 
         return [
-            'data_type'       => $item['code'],
-            'form_type'       => $item['form_type'],
-            'type'            => $item['type'],
-            'department_id'   => $item['department_id'],
-            'date'            => $date,
-            'account_id'      => Helpers::formDataCheckAccount($item, 'code'),
+            'data_type' => $item['code'],
+            'form_type' => $item['form_type'],
+            'type' => $item['type'],
+            'department_id' => $item['department_id'],
+            'date' => $date,
+            'account_id' => Helpers::formDataCheckAccount($item, 'code'),
             'account_keyword' => $item['code'],
             'consultant_code' => $consultantCode,
-            'consultant_id'   => $consultantId,
+            'consultant_id' => $consultantId,
         ];
     }
 
     public static function baseMakeFormData($className, $item, $condition)
     {
-        $value   = implode('_', $condition);
+        $value = implode('_', $condition);
         $lockKey = "{$className}_LOCK_{$value}";
         if (Redis::exists($lockKey))
             return;
@@ -489,9 +509,9 @@ class FormData extends Model
 
         $phone = $item['phone'];
         if ($phone) {
-            $form  = static::updateOrCreate(
+            $form = static::updateOrCreate(
                 [
-                    'model_id'   => $model->id,
+                    'model_id' => $model->id,
                     'model_type' => $className,
                 ], static::parseFormData($item));
             $phone = BaiduData::parseClue($phone);
@@ -500,5 +520,17 @@ class FormData extends Model
         }
     }
 
+    public static function clearBeforeData()
+    {
+        $date = Carbon::today()->addMonths(-2)->toDateTimeString();
+        DB::table('admin_operation_log')
+            ->where('created_at', '<', $date)
+            ->delete();
+
+        static::query()
+            ->whereNull('date')
+            ->orWhere('date', '<', $date)
+            ->delete();
+    }
 
 }

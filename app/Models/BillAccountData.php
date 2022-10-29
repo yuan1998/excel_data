@@ -290,5 +290,11 @@ class BillAccountData extends Model
         return static::getDataOfDate($type, $start, $end);
     }
 
-
+    public static function clearBeforeData() {
+        $date = Carbon::today()->addMonths(-1)->toDateTimeString();
+        static::query()
+            ->whereNull('pay_date')
+            ->orWhere('pay_date' ,'<', $date)
+            ->delete();
+    }
 }
