@@ -90,9 +90,6 @@ class Kernel extends ConsoleKernel
             })->monthlyOn(date('t'), '03:05');
         }
 
-
-
-
         // 当天
         // 每隔15分钟,拉取一次微博表单数据
         if (env('PULL_WEIBO_DATA', false)) {

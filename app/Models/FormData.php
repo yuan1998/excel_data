@@ -114,7 +114,7 @@ class FormData extends Model
 
         static::deleting(function ($item) {
             try {
-                $item->projects->delete();
+                $item->projects->detach();
             }catch (\Exception $exception) {
 
             }
