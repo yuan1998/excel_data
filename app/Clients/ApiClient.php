@@ -62,13 +62,13 @@ class ApiClient extends BaseClient
                     'RecallPurpose' => '',
                     'Feedback' => '',
                     'PlanExecuteByName' => request()->get('execute_by', ''),
+                    'RecallStatus' => '0',
                     'IsRecordcount' => '',
                     'ExecuteByName' => '',
                     'PlanExecuteDept' => '',
                     'PlanExecuteDeptMenus' => '',
                     'ExecuteDept' => '',
                     'ExecuteDeptMenus' => '',
-                    'RecallStatus' => '0',
                     'RecallLevel' => '',
                     'RecallStage' => '',
                     'IsOnceOnly' => '',
@@ -85,14 +85,14 @@ class ApiClient extends BaseClient
                     'IsBlock' => '',
                     'City' => '0',
                     'EmpStatus' => '',
+                    'orderField' => '',
+                    'orderDirection' => '',
+                    'total' => '',
                     'isSearch' => '1',
                     'iscompany' => '0',
                     'DataModel' => 'ToPageList',
                     'pageSize' => $pageSize,
                     'pageCurrent' => $page,
-                    'orderField' => '',
-                    'orderDirection' => '',
-                    'total' => ''
                 ]
             ]);
         $response = $result->getBody()->getContents();

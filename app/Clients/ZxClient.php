@@ -14,12 +14,12 @@ class ZxClient extends BaseClient
 //    public static $account_search_url = '/ReportCenter/NetBillAccountDtl/CareIndex';
 
     public static $account = [
-        'username' => '7010',
+        'username' => '7023',
         'password' => 'hm2018',
     ];
 
     public static $baseAccount = [
-        'username' => '7010',
+        'username' => '7023',
         'password' => 'hm2018',
     ];
 
