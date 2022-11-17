@@ -15,7 +15,7 @@ class ClueDataCheck implements ShouldQueue
     public $model;
     public $type;
     public $isBaidu;
-    public $timeout = 0;
+    public $timeout = 60;
 
     /**
      * Create a new job instance.
