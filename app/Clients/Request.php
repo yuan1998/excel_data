@@ -77,6 +77,7 @@ abstract class Request
             'base_uri' => $this->baseUrl,
             'verify' => false,
             'http_errors' => false,
+            'timeout' => 60,
             'headers' => [
                 'Host' => $urlArr['host'],
                 'CLIENT-IP' => $ip,
