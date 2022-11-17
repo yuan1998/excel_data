@@ -143,7 +143,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'connection' => 'redis',
+                'connection' => 'database',
                 'queue'      => ['form_data_phone', 'crm_grab_log_queue', 'data_exports', 'sanfang_data_export'],
                 'balance'    => 'false',
                 'processes'  => env('HORIZON_PROCESSES',2),
@@ -153,7 +153,7 @@ return [
         ],
         'local'      => [
             'supervisor-1' => [
-                'connection' => 'redis',
+                'connection' => 'database',
                 'queue'      => ['form_data_phone', 'crm_grab_log_queue', 'data_exports', 'check_customer_phone', 'sanfang_data_export'],
                 'balance'    => 'false',
                 'processes'  => env('HORIZON_PROCESSES',2),
@@ -161,7 +161,7 @@ return [
                 'timeout'    => 180,
             ],
             'PullWeiBo'    => [
-                'connection' => 'redis',
+                'connection' => 'database',
                 'queue'      => ['pull_weibo_data'],
                 'balance'    => 'false',
                 'processes'  => 1,
