@@ -27,8 +27,10 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use PHPHtmlParser\Dom;
 use PHPHtmlParser\Exceptions\ChildNotFoundException;
 use PHPHtmlParser\Exceptions\CircularException;
 use PHPHtmlParser\Exceptions\CurlException;
@@ -346,9 +348,8 @@ class Helpers
     /**
      * 查询Model 数据的意向度和是否已建档
      * @param $model
-     * @param $isBaidu
      */
-    public static function checkIntentionAndArchive($model, $isBaidu = false)
+    public static function checkIntentionAndArchive($model)
     {
 
         $data = static::checkIntention($model);
@@ -380,8 +381,6 @@ class Helpers
             $model->fill($data);
             $model->save();
         }
-
-
     }
 
     public static function tempCustInfoArchive($model)
@@ -568,14 +567,14 @@ class Helpers
      */
     public static function getMediumTypeId($name)
     {
-        $val = Redis::get("_MEDIUM_TITLE_CHECK_ID_" . $name);
+        $val = Cache::get("_MEDIUM_TITLE_CHECK_ID_" . $name);
 
         if (!$val) {
             $item = MediumType::firstOrCreate([
                 'title' => $name
             ]);
             $val = $item->id;
-            Redis::set($name, $val);
+            Cache::put($name, $val,60000);
         }
 
         return $val;
@@ -1056,6 +1055,66 @@ class Helpers
         }
         return false;
     }
+
+
+    static function tableToObject($data)
+    {
+        $result = [];
+        $keys = null;
+        foreach ($data as $item) {
+            if (!$keys) {
+                $keys = $item;
+            } else {
+                $arr = [];
+                foreach ($item as $index => $value) {
+                    $arr[$keys[$index]] = $value;
+                }
+                $result[] = $arr;
+            }
+        }
+
+        return $result;
+    }
+
+    static function parserHtmlTableToObject($body, $tableKey = 'table', $valueType = "innerHTML")
+    {
+        $data = static::_parserHtmlTable($body, $tableKey, $valueType);
+
+        return static::tableToObject($data);
+    }
+
+    static function _parserHtmlTable($body, $tableKey = 'table', $valueType = "innerHTML")
+    {
+        $result = [];
+        $dom = new Dom;
+        $dom->loadStr($body);
+        $table = $dom->find($tableKey);
+
+        if (count($table)) {
+            $table = $table[count($table)-1];
+
+            $trs = $table->find('tr');
+            foreach ($trs as $tr) {
+                $tds = $tr->find('td,th');
+                if (count($tds) <= 1) {
+                    continue;
+                }
+                $arr = [];
+                foreach ($tds as $td) {
+                    $value = trim($td->innerHTML);
+                    if(strtolower($valueType) === 'innertext') {
+                        $value = strip_tags($value);
+                    }
+                    $arr[] = $value;
+                }
+                $result[] = $arr;
+            }
+
+        }
+
+        return $result;
+    }
+
 
 }
 

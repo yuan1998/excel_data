@@ -24,13 +24,19 @@ $api = app('Dingo\Api\Routing\Router');
 //
 //});
 
+
+
 $api->version('v1', [
-    'namespace'  => 'App\Http\Controllers\Api',
+    'namespace' => 'App\Http\Controllers\Api',
     'middleware' => ['bindings']
 ], function ($api) {
     $api->group([
         'prefix' => 'test'
     ], function ($api) {
+
+        $api->get('', function () {
+            \App\Models\FormDataPhone::test();
+        });
         $api->post('login', "FormDataPhoneController@testLogin")
             ->name('api.v2.formDataPhone.test.login');
         $api->post('isLogin', "FormDataPhoneController@testIsLogin")
@@ -39,7 +45,6 @@ $api->version('v1', [
             ->name('api.v2.formDataPhone.test.callPlanList');
         $api->post('callPlanEdit', "FormDataPhoneController@callPlanEdit")
             ->name('api.v2.formDataPhone.test.callPlanEdit');
-
 
 
     });

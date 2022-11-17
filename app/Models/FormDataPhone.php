@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Clients\BaseClient;
+use App\Clients\CrmClient;
+use App\Clients\KqClient;
+use App\Clients\SfClient;
+use App\Clients\ZxClient;
 use App\Helpers;
 use App\Jobs\ClueDataCheck;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class FormDataPhone extends Model
 {
@@ -51,6 +57,8 @@ class FormDataPhone extends Model
         'form_data_id',
         'medium_error',
     ];
+
+    public $client = null;
 
     /**
      * @param FormData $model
@@ -169,10 +177,6 @@ class FormDataPhone extends Model
         return $result;
     }
 
-    public function checkCrmInfo()
-    {
-        Helpers::checkIntentionAndArchive($this, $this->isBaidu);
-    }
 
     public function checkMediumIsError($mediumName)
     {
@@ -200,5 +204,90 @@ class FormDataPhone extends Model
             ->delete();
     }
 
+    public function checkCrmInfo()
+    {
+        try {
+            $result = $this->checkStep1() ?: $this->checkStep2();
+            $result = $result ? '已建档' : '未建档';
+            Log::info("$this->phone 建档结果: {$result}");
+        } catch (\Exception $exception) {
+            Log::error("$this->phone 查询建档错误", [
+                'message' => $exception->getMessage()
+            ]);
+        }
+
+    }
+
+    const TYPE_ACCOUNTS = [
+        'zx' => [
+            'username' => '7023',
+            'password' => 'hm2018',
+        ],
+        'kq' => [
+            'username' => '7002',
+            'password' => 'ty123',
+        ],
+    ];
+
+    public function getCrmClient()
+    {
+        if (!$this->client) {
+            $type = $this->type;
+            $account = data_get(self::TYPE_ACCOUNTS, $type);
+            if (!$account)
+                throw new \Exception("$type 没有账号");
+
+            $this->client = new CrmClient($account, $type);
+        }
+        return $this->client;
+    }
+
+    public function checkStep1()
+    {
+        $client = $this->getCrmClient();
+        $result = $client->ReservationTempCustSearchIndex([
+            'Phone' => $this->phone
+        ]);
+        $item = $result->first();
+        if ($item) {
+            $this->is_archive = 1;
+            $this->archive_type = $item['建档类型'];
+
+            $this->is_repeat = Helpers::checkIsRepeat($this->date, data_get($item, '建档时间'));
+            $this->medium_error = $this->checkMediumIsError(data_get($item, '媒介'));
+
+            $this->save();
+            return true;
+        }
+        return false;
+    }
+
+    public function checkStep2()
+    {
+        $client = $this->getCrmClient();
+        $result = $client->ReservationTempCustInfoIndex([
+            'Phone' => $this->phone
+        ]);
+        $item = $result->first();
+
+        if ($item) {
+            $this->is_archive = 1;
+            $this->intention = Helpers::intentionCheck(data_get($item, '意向度'));
+            $this->is_repeat = 2;
+            $this->save();
+            return true;
+        }
+        return false;
+
+    }
+
+    public static function test()
+    {
+        $model = static::query()
+            ->where('phone', '13571039059')
+            ->first();
+        if ($model)
+            $model->checkCrmInfo();
+    }
 
 }
