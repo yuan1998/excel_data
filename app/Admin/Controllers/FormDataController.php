@@ -7,6 +7,7 @@ use App\Admin\Actions\FormData\BatchRecheckItem;
 use App\Admin\Actions\FormData\BatchRecheckPhones;
 use App\Admin\Actions\FormData\RecheckItem;
 use App\Admin\Actions\FormData\RecheckPhones;
+use App\Admin\Actions\RecheckAllUnArchive;
 use App\Admin\Actions\RecheckFormAction;
 use App\Admin\Extensions\Exporter\FormDataExporter;
 use App\Models\AccountData;
@@ -163,6 +164,7 @@ class FormDataController extends AdminController
             });
 
             $tools->append(new RecheckFormAction());
+            $tools->append(new RecheckAllUnArchive());
         });
 
         $grid->column('department_info', __('科室'))->display(function () {

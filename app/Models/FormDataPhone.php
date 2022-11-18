@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Log;
 class FormDataPhone extends Model
 {
 
-    public static $InteractiveList = [
-
-    ];
+    public static $InteractiveList = [];
 
     public static $IntentionList = [
         0 => '未查询',
@@ -116,10 +114,13 @@ class FormDataPhone extends Model
 
     public static function recheckUnArchive()
     {
-        $data = FormDataPhone::where('is_archive', 0)
+        $data = FormDataPhone::query()
+            ->where('is_archive', '<>',1)
             ->has('formData')
             ->get();
-        static::recheckHandler($data);
+        foreach ($data as $phone) {
+            ClueDataCheck::dispatch($phone->id)->onQueue('form_data_phone');
+        }
         return $data->count();
     }
 
