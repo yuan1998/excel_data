@@ -115,7 +115,7 @@ class FormDataPhone extends Model
     public static function recheckUnArchive()
     {
         $data = FormDataPhone::query()
-            ->where('is_archive', '<>',1)
+            ->where('is_archive', '<>', 1)
             ->has('formData')
             ->get();
         foreach ($data as $phone) {
@@ -275,10 +275,11 @@ class FormDataPhone extends Model
             $this->is_archive = 1;
             $this->intention = Helpers::intentionCheck(data_get($item, '意向度'));
             $this->is_repeat = 2;
-            $this->save();
-            return true;
+        } else {
+            $this->is_archive = 2;
         }
-        return false;
+        $this->save();
+        return $this->is_archive === 1;
 
     }
 
