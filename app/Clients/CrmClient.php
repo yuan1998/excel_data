@@ -59,8 +59,12 @@ class CrmClient extends Request
         ]);
         $body = $response->getBody()->getContents();
 
-        if (!preg_match("/建档时间/", $body))
+        if (!preg_match("/建档时间/", $body)) {
+            Log::debug('ReservationTempCustSearchIndex接口失败', [
+                'body' => $body
+            ]);
             throw new \Exception('ReservationTempCustSearchIndex接口失败.');
+        }
         $t = Helpers::parserHtmlTableToObject($body, '.table-striped', 'innerText');
         $result = collect($t)
             ->filter(function ($item) {
@@ -74,7 +78,7 @@ class CrmClient extends Request
         $data = array_merge([
             'pageCurrent' => 1,
         ], $data);
-        $response =$this->post("/Reservation/TempCustInfo/Index",[
+        $response = $this->post("/Reservation/TempCustInfo/Index", [
             'form_params' => $data
         ]);
         $body = $response->getBody()->getContents();
