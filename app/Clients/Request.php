@@ -20,8 +20,8 @@ abstract class Request
     public $jar = null;
 
     public $typeUrl = [
-        'zx' => 'http://172.16.8.8/',
-        'kq' => 'http://172.16.8.8:8999/',
+        'zx' => 'http://172.16.8.2/',
+        'kq' => 'http://172.16.8.1/',
     ];
 
     abstract function login(): bool;

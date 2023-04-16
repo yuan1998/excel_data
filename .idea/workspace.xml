@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb998dd-53e8-455c-8c94-e9a233f7f562" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Clients/CrmClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/CrmClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/AdminClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/AdminClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/BaseClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/BaseClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/KqClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/KqClient.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/Request.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/Request.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Clients/SfClient.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Clients/SfClient.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -482,7 +485,7 @@
       <workItem from="1671787832812" duration="802000" />
       <workItem from="1671854020144" duration="1789000" />
       <workItem from="1681103176975" duration="1902000" />
-      <workItem from="1681643992588" duration="224000" />
+      <workItem from="1681643992588" duration="846000" />
     </task>
     <servers />
   </component>

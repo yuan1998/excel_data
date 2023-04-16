@@ -17,9 +17,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class SfClient extends BaseClient
 {
     public static $type = 'zx';
-    public static $cookie_name = '172.16.8.880_AdminContext_';
-    public static $base_url = 'http://172.16.8.8/';
-    public static $domain = '172.16.8.8';
+    public static $cookie_name = '172.16.8.280_AdminContext_';
+    public static $base_url = 'http://172.16.8.2/';
+    public static $domain = '172.16.8.2';
 //    public static $companyApi = true;
     public static $mediaSourceType = 'E10D9F6497004F29BE8DA99600EF5B1D';
 

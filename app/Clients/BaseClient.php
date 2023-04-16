@@ -230,11 +230,8 @@ class BaseClient
             'http_errors' => false,
             'timeout' => 60,
             'headers' => [
-                'Host' => '172.16.8.8',
                 'CLIENT-IP' => $ip,
                 'X-FORWARDED-FOR' => $ip,
-                'Origin' => 'http://172.16.8.8',
-                'Referer' => 'http://172.16.8.8/',
                 'X-Requested-With' => 'XMLHttpRequest',
                 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36',
             ],
